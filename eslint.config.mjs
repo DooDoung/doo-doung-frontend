@@ -12,20 +12,15 @@ const compat = new FlatCompat({
 const eslintConfig = [
   // Base Next.js configuration
   ...compat.extends("next/core-web-vitals", "next/typescript"),
-
-  // Prettier integration (must be last)
+  
+  // Prettier integration
   ...compat.extends("prettier"),
-
+  
   {
     plugins: {
-      "simple-import-sort": (await import("eslint-plugin-simple-import-sort"))
-        .default,
-      prettier: (await import("eslint-plugin-prettier")).default,
+      "simple-import-sort": (await import("eslint-plugin-simple-import-sort")).default,
     },
     rules: {
-      // Prettier integration
-      "prettier/prettier": "error",
-
       // Import sorting rules
       "simple-import-sort/imports": [
         "error",
@@ -50,7 +45,8 @@ const eslintConfig = [
       ],
       "simple-import-sort/exports": "error",
 
-      // Basic TypeScript rules (not too strict)
+      // Basic rules (not too strict)
+      "no-unused-vars": "off", // Turn off base rule
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
@@ -60,12 +56,6 @@ const eslintConfig = [
         },
       ],
       "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/prefer-const": "error",
-
-      // React/Next.js specific rules
-      "react/jsx-uses-react": "off", // Not needed in React 17+
-      "react/react-in-jsx-scope": "off", // Not needed in React 17+
-      "react-hooks/exhaustive-deps": "warn",
 
       // General rules
       "no-console": ["warn", { allow: ["warn", "error"] }],
@@ -76,21 +66,6 @@ const eslintConfig = [
       "@typescript-eslint/no-non-null-assertion": "off",
       "react/no-unescaped-entities": "off",
       "@next/next/no-html-link-for-pages": "off",
-    },
-  },
-
-  // File-specific configurations
-  {
-    files: ["**/*.{ts,tsx}"],
-    languageOptions: {
-      parser: (await import("@typescript-eslint/parser")).default,
-      parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
     },
   },
 
