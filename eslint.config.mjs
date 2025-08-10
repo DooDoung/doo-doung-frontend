@@ -12,13 +12,14 @@ const compat = new FlatCompat({
 const eslintConfig = [
   // Base Next.js configuration
   ...compat.extends("next/core-web-vitals", "next/typescript"),
-  
-  // Prettier integration
+
+  // Prettier integration (must be last)
   ...compat.extends("prettier"),
-  
+
   {
     plugins: {
-      "simple-import-sort": (await import("eslint-plugin-simple-import-sort")).default,
+      "simple-import-sort": (await import("eslint-plugin-simple-import-sort"))
+        .default,
     },
     rules: {
       // Import sorting rules
@@ -45,7 +46,7 @@ const eslintConfig = [
       ],
       "simple-import-sort/exports": "error",
 
-      // Basic rules (not too strict)
+      // Basic TypeScript rules (not too strict)
       "no-unused-vars": "off", // Turn off base rule
       "@typescript-eslint/no-unused-vars": [
         "warn",
@@ -56,6 +57,12 @@ const eslintConfig = [
         },
       ],
       "@typescript-eslint/no-explicit-any": "warn",
+      // Removed invalid @typescript-eslint/prefer-const rule
+
+      // React/Next.js specific rules
+      "react/jsx-uses-react": "off", // Not needed in React 17+
+      "react/react-in-jsx-scope": "off", // Not needed in React 17+
+      "react-hooks/exhaustive-deps": "warn",
 
       // General rules
       "no-console": ["warn", { allow: ["warn", "error"] }],
@@ -80,6 +87,7 @@ const eslintConfig = [
       "*.config.mjs",
       "tailwind.config.ts",
       "postcss.config.mjs",
+      "src/components/ui/**", // Exclude shadcn/ui components
     ],
   },
 ];

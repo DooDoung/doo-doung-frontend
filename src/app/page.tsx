@@ -1,6 +1,7 @@
-import GlobalButton from "@/components/globalComponents/component-ex";
-import Image from "next/image";
 import { Laugh } from "lucide-react";
+import Image from "next/image";
+
+import GlobalButton from "@/components/globalComponents/component-ex";
 
 export default function Home() {
   return (
