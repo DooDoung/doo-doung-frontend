@@ -1,7 +1,9 @@
 import { ReactNode } from "react";
+
 import { cn } from "@/lib/utils";
-import { Header } from "./Header";
+
 import { Footer } from "./Footer";
+import { Header } from "./Header";
 
 interface DefaultLayoutProps {
   children: ReactNode;

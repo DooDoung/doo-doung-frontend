@@ -1,7 +1,7 @@
 import { Laugh } from "lucide-react";
-import { DefaultLayout } from "@/components/globalComponents";
 import Image from "next/image";
 
+import { DefaultLayout } from "@/components/globalComponents";
 import GlobalButton from "@/components/globalComponents/component-ex";
 
 export default function Home() {

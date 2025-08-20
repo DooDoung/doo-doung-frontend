@@ -1,8 +1,8 @@
 import {
-  DefaultLayout,
-  ContainerLayout,
-  FullWidthLayout,
   AuthLayout,
+  ContainerLayout,
+  DefaultLayout,
+  FullWidthLayout,
 } from "@/components/globalComponents";
 
 /**
