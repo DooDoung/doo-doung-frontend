@@ -1,6 +1,62 @@
-# Pages Directory
+# For Dev
 
-This directory contains all the page components for the DooDoung platform. Each page uses the `DefaultLayout` component and follows a consistent structure.
+We sill use /pages for more good structure in this project
+If you want to create new page, please
+
+- make sure it follow these format
+
+```tsx
+import { DefaultLayout } from "@/components/globalComponents"
+
+export default function PageName() {
+  return (
+    <DefaultLayout>
+      <p>This is {Page Name} page</p>
+    </DefaultLayout>
+  )
+}
+```
+
+- add page export into `src\pages\_exports.ts`
+- write page information in `src\pages\README.md`
+
+# Pages Directory (Pages Router)
+
+This directory contains all the page components for the DooDoung platform using Next.js Pages Router. Each page uses the `DefaultLayout` component and follows a consistent structure.
+
+## Important Files
+
+### `_app.tsx`
+
+Custom App component that wraps all pages. Handles:
+
+- Global CSS imports
+- Font loading (Geist Sans & Geist Mono)
+- Global styling classes
+
+### `_document.tsx`
+
+Custom Document component that defines the HTML document structure:
+
+- HTML lang attribute
+- Head metadata
+- Body structure
+
+### `_exports.ts`
+
+Barrel export file for easy importing of page components:
+
+```tsx
+import { LoginPage, CoursesPage } from "@/pages/_exports";
+```
+
+## Conflict Resolution
+
+**Note**: The home page (`/`) is handled by App Router (`src/app/page.tsx`), while all other routes use Pages Router. This hybrid approach allows you to:
+
+- Keep the modern App Router for the main landing page
+- Use Pages Router for all other application pages
+- Maintain consistent layout through `_app.tsx`
 
 ## Page Structure
 

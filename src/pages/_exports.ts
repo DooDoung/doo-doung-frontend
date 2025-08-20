@@ -7,26 +7,26 @@ export { default as ResetPasswordPage } from "./resetpassword";
 export { default as AccountPage } from "./account";
 export { default as AccountDetailsPage } from "./account/[account-id]";
 export { default as EditAccountPage } from "./account/edit-account";
-export { default as ProphetReportPage } from "./account/prophet/report";
 export { default as ProphetAvailabilityPage } from "./account/prophet/availability";
+export { default as ProphetReportPage } from "./account/prophet/report";
 
 // Course Pages
 export { default as CourseProphetPage } from "./course/prophet";
-export { default as CourseMySessionPage } from "./course/prophet/my-session";
 export { default as MyCoursesPage } from "./course/prophet/my-courses";
 export { default as CreateCoursePage } from "./course/prophet/my-courses/create";
 export { default as CourseDetailsPage } from "./course/prophet/my-courses/details/[courseld]";
 export { default as EditCoursePage } from "./course/prophet/my-courses/edit/[courseld]";
+export { default as CourseMySessionPage } from "./course/prophet/my-session";
 
 // Courses (Public) Pages
-export { default as CoursesPage } from "./courses";
-export { default as CourseDetailPage } from "./courses/[courseld]";
-export { default as CoursesMySessionPage } from "./courses/my-session";
+export { default as CoursesPage } from "./course";
+export { default as CourseDetailPage } from "./course/[courseld]";
+export { default as CoursesMySessionPage } from "./course/my-session";
 
 // Booking Pages
 export { default as BookingPage } from "./booking/[bookingld]";
-export { default as BookingPaymentPage } from "./booking/payment/[bookingld]";
 export { default as BookingSuccessPage } from "./booking/booking-success/[bookingld]";
+export { default as BookingPaymentPage } from "./booking/payment/[bookingld]";
 
 // Review Pages
 export { default as ReviewPage } from "./review";
