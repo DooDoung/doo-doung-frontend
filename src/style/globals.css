@@ -48,6 +48,7 @@
   --color-error: var(--error);
   --color-neutral-white: var(--neutral-white);
   --color-neutral-black: var(--neutral-black);
+  --color-neutral-gray: var(--neutral-gray);
   --color-accent-pink: var(--accent-pink);
   --color-accent-violet: var(--accent-violet);
 }
@@ -92,6 +93,7 @@
   --error: #cb7572;
   --neutral-white: #ffffff;
   --neutral-black: #3e3753;
+  --neutral-gray: #88868d;
   --accent-pink: #dc7ca0;
   --accent-violet: #b688e6;
 }
