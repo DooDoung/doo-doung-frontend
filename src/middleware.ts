@@ -38,8 +38,7 @@ const AllowProphetPath = [
 
 const AllowAdminPath = ["/admin/report"];
 
-type RoleType = "customer" | "prophet" | "admin" | null;
-
+import { RoleType } from "./types/role";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
