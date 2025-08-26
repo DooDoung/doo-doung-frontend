@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { DefaultLayout } from "@/components/globalComponents";
-import { RegisterFormData } from "@/types/user";
+import { RegisterFormData, Sex } from "@/types/user";
 
 const showToast = {
   error: (message: string) => alert(`ERROR: ${message}`),
@@ -182,9 +182,13 @@ export default function RegisterPage() {
               <option value="" disabled>
                 Select Gender
               </option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
+              {Object.values(Sex)
+                .filter((s) => s !== Sex.Undefined)
+                .map((genderValue) => (
+                  <option key={genderValue} value={genderValue}>
+                    {genderValue.replace("_", " ")}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
