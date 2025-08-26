@@ -58,7 +58,7 @@ export function Footer({ className }: FooterProps) {
 
   return (
     <footer
-      className={cn("border-border/40 bg-background mt-5 border-t", className)}
+      className={cn("border-border/40 mt-5 border-t bg-white", className)}
     >
       <div className="container mx-auto max-w-screen-2xl px-4 py-8">
         {/* Main Footer Content */}
