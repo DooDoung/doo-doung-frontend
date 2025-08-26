@@ -51,57 +51,41 @@ export default function LoginPage() {
 
   return (
     <DefaultLayout>
-      <div className="bg-background flex min-h-screen items-center justify-center">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-card text-card-foreground w-80 rounded-2xl p-8 shadow-md"
-        >
-          <h1 className="mb-6 text-center text-2xl font-semibold">Login</h1>
+      <div className="flex min-h-screen items-center justify-center">
+        <form onSubmit={handleSubmit} className="w-80">
+          <h1 className="text-center text-2xl font-semibold">Login</h1>
 
           <div className="mb-4">
-            <label className="text-foreground mb-1 block text-sm">
-              Username
-            </label>
+            <label className="block text-sm">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="border-border text-foreground focus:ring-primary-250 w-full rounded-lg border p-2 focus:ring focus:outline-none"
+              className="w-full border p-2"
             />
           </div>
 
           <div className="mb-6">
-            <label className="text-foreground mb-1 block text-sm">
-              Password
-            </label>
+            <label className="block text-sm">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="border-border text-foreground focus:ring-primary-250 w-full rounded-lg border p-2 focus:ring focus:outline-none"
+              className="w-full border p-2"
             />
           </div>
 
-          {error && (
-            <p className="text-error mb-4 text-center text-sm">{error}</p>
-          )}
+          {error && <p className="text-error text-center text-sm">{error}</p>}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-primary text-primary-foreground hover:bg-primary-500 w-full rounded-lg py-2 transition disabled:opacity-50"
-          >
+          <button type="submit" disabled={loading} className="w-full">
             {loading ? "Logging in..." : "Login"}
           </button>
 
-          <div className="mt-4 flex justify-between text-sm">
-            <a
-              href="/resetpassword"
-              className="text-accent-pink hover:underline"
-            >
+          <div className="flex justify-between text-sm">
+            <a href="/resetpassword" className="">
               Forgot Password?
             </a>
-            <a href="/register" className="text-accent-violet hover:underline">
+            <a href="/register" className="">
               Sign Up
             </a>
           </div>
