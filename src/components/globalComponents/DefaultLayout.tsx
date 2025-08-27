@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Toaster } from "react-hot-toast";
 
 import { cn } from "@/lib/utils";
 
@@ -60,6 +61,7 @@ export function DefaultLayout({
 }: DefaultLayoutProps) {
   return (
     <div className={cn("flex min-h-screen flex-col", className)}>
+      <Toaster />
       {/* Header */}
       {includeHeader && <Header {...headerProps} />}
 

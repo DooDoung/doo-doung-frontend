@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
 
 import { DefaultLayout } from "@/components/globalComponents";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -18,7 +18,7 @@ export default function LoginPage() {
         } else if (username === "notadmin" && password === "1234") {
           resolve("valid");
         } else {
-          reject("invalid");
+          reject("Wrong username or password");
         }
       }, 1000);
     });
@@ -28,22 +28,23 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!username || !password) {
-      setError("Both username and password are required.");
+      toast.error("Both username and password are required.");
       return;
     }
 
-    setError(null);
     setLoading(true);
 
     try {
       const result = await mockLogin(username, password);
       if (result === "admin") {
+        toast.success("Welcome, Admin");
         router.push("/admin/report");
       } else {
+        toast.success("Login successful");
         router.push("/course");
       }
-    } catch (err) {
-      setError(String(err));
+    } catch (err: any) {
+      toast.error(err);
     } finally {
       setLoading(false);
     }
@@ -74,8 +75,6 @@ export default function LoginPage() {
               className="w-full border p-2"
             />
           </div>
-
-          {error && <p className="text-error text-center text-sm">{error}</p>}
 
           <button type="submit" disabled={loading} className="w-full">
             {loading ? "Logging in..." : "Login"}
