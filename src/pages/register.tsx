@@ -1,11 +1,9 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 import { DefaultLayout } from "@/components/globalComponents";
 import { RegisterFormData, Sex } from "@/types/user";
 
-const showToast = {
-  error: (message: string) => alert(`ERROR: ${message}`),
-};
 export default function RegisterPage() {
   const [formData, setFormData] = useState<RegisterFormData>({
     username: "",
@@ -46,12 +44,12 @@ export default function RegisterPage() {
       if (formData.username.toLowerCase() === "error") {
         throw new Error("This username is already taken");
       }
-      alert("Registration sucessful!");
+      toast.success("Registration Successful!");
     } catch (error) {
       if (error instanceof Error) {
-        showToast.error(error.message);
+        toast.error(error.message);
       } else {
-        showToast.error("An unexpected error occured.");
+        toast.error("An unexpected error occured.");
       }
     } finally {
       setIsLoading(false);
