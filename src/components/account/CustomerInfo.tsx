@@ -1,8 +1,12 @@
 import * as React from "react";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Switch } from "../ui/switch";
 import ReservationSection from "./Reservation/ReservationSection";
 import ReviewSection from "./Review/ReviewSection";
+import { mockReservation } from "@/constants/mock-account";
+import { mockReview } from "@/constants/mock-account";
 
 const customer = {
   firstName: "John",
@@ -16,8 +20,17 @@ const customer = {
 };
 
 function CustomerInfo() {
+  const [isPublic, setIsPublic] = React.useState(false);
   return (
     <div className="flex max-h-[70vh] w-[70%] flex-col overflow-scroll border-2 p-4">
+      <div className="flex flex-col items-center self-end">
+        <p>{isPublic ? "Public" : "Private"}</p>
+        <Switch
+          className="self-end"
+          checked={isPublic}
+          onCheckedChange={(checked) => setIsPublic(checked)}
+        />
+      </div>
       <form
         id="customerInfoForm"
         className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2"
@@ -55,7 +68,8 @@ function CustomerInfo() {
             <option value="">Select</option>
             <option>Male</option>
             <option>Female</option>
-            <option>Other</option>
+            <option>LGBTQ+</option>
+            <option>Undefined</option>
           </select>
         </div>
 
@@ -106,10 +120,10 @@ function CustomerInfo() {
       </form>
 
       {/* Reservation Section */}
-      <ReservationSection />
+      <ReservationSection myReservation={mockReservation} />
 
       {/* User's Course Reviewed Section */}
-      <ReviewSection />
+      <ReviewSection myReview={mockReview} />
 
       {/* Edit Profile Button */}
       <div className="flex justify-center">

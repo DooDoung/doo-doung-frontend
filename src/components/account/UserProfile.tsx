@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
@@ -10,7 +11,7 @@ function UserProfile({ role }: { role: string }) {
         <div className="relative top-0 left-18 h-[20px] w-[20px] rounded-full bg-black"></div>
       </div>
       <p className="self-start">USERNAME</p>
-      <Input className="mb-4" placeholder="my username" />
+      <Input className="mb-4" placeholder="JohnYakDoodoung" readOnly />
       <Button className="mb-4 w-full">LOG OUT</Button>
       <a href="" className="hover:underline">
         {" "}
