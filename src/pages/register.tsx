@@ -8,6 +8,7 @@ import Step1Role from "./register/Step1Role";
 import Step2Credentials from "./register/Step2Credentials";
 import Step3PersonalInfo from "./register/Step3PersonalInfo";
 import Step4Astrological from "./register/Step4Astrological";
+import StepPrivacyPolicy from "./register/StepPrivacyPolicy";
 
 export default function RegisterPage() {
   const [step, setStep] = useState(1);
@@ -51,6 +52,8 @@ export default function RegisterPage() {
       case 1:
         return <Step1Role handleRoleSelect={handleRoleSelect} />;
       case 2:
+        return <StepPrivacyPolicy nextStep={nextStep} prevStep={prevStep} />;
+      case 3:
         return (
           <Step2Credentials
             formData={formData}
@@ -59,7 +62,7 @@ export default function RegisterPage() {
             prevStep={prevStep}
           />
         );
-      case 3:
+      case 4:
         return (
           <Step3PersonalInfo
             formData={formData}
@@ -69,7 +72,7 @@ export default function RegisterPage() {
             handleSubmit={handleSubmit}
           />
         );
-      case 4:
+      case 5:
         if (formData.role === "customer") {
           return (
             <Step4Astrological
@@ -81,7 +84,7 @@ export default function RegisterPage() {
             />
           );
         }
-        setStep(3);
+        setStep(4);
         return null;
       default:
         return <div>Form complete</div>;
