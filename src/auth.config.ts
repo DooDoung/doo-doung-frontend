@@ -13,6 +13,7 @@ export default {
       // Called on signIn("credentials", { username, password })
       authorize: async (credentials) => {
         if (!credentials) return null;
+
         const res = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -22,10 +23,15 @@ export default {
           }),
         });
 
+        // status code 200-299
         if (!res.ok) return null;
 
-        const data = await res.json();
-        // data = { accessToken, expiresAt, user: {...} }
+        const apiResponse = await res.json();
+        // Expected shape: { success: true, data: { accessToken, expiresAt, user } }
+        if (!apiResponse?.success || !apiResponse?.data) return null;
+
+        const data = apiResponse.data;
+
         if (!data?.accessToken || !data?.user) return null;
 
         return {
