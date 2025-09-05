@@ -1,6 +1,5 @@
 "use client";
 import { CirclePlus } from "lucide-react";
-
 import { DefaultLayout } from "@/components/globalComponents";
 import { AccountListItem } from "@/components/transaction/AccountListItem";
 import TransactionAccountForm from "@/components/transaction/TransactionAccountForm";
@@ -12,12 +11,14 @@ export default function ProphetTransactionAccountPage() {
     mode,
     accounts,
     editingAccount,
+    selectedAccountId,
     handleStartCreate,
     handleStartEdit,
     handleCancel,
     handleCreateConfirm,
     handleEditConfirm,
     handleDelete,
+    handleSelectAccount,
   } = useTransactionAccounts();
 
   const renderContent = () => {
@@ -52,13 +53,12 @@ export default function ProphetTransactionAccountPage() {
           </button>
         </div>
         <div className="border border-2 bg-black rounded-lg gap-4 w-3/4 h-100 overflow-y-scroll justify-center items-center flex flex-col border border-black px-8 py-16">
-          {/* 👇 4. [BUG FIX] ใช้ 'accounts' จาก state */}
           {accounts.map((account) => (
             <AccountListItem
               key={account.id}
               account={account}
-              isSelected={true}
-              onSelect={() => {}}
+              isSelected={selectedAccountId === account.id}
+              onSelect={() => handleSelectAccount(account.id)}
               onEdit={handleStartEdit}
             />
           ))}

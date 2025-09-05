@@ -10,6 +10,8 @@ export function useTransactionAccounts() {
   const [accounts, setAccounts] = useState<TransactionAccount[]>(MOCK_ACCOUNTS);
   const [editingAccount, setEditingAccount] = useState<TransactionAccount | undefined>(undefined);
 
+  const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null);
+
   const handleStartCreate = () => {
     setMode("create");
   };
@@ -52,15 +54,21 @@ export function useTransactionAccounts() {
     alert("Delete Success");
   };
 
+  const handleSelectAccount = (accountId: string) => {
+    setSelectedAccountId(accountId);
+  };
+
   return {
     mode,
     accounts,
     editingAccount,
+    selectedAccountId,
     handleStartCreate,
     handleStartEdit,
     handleCancel,
     handleCreateConfirm,
     handleEditConfirm,
     handleDelete,
+    handleSelectAccount
   };
 }

@@ -10,31 +10,37 @@ interface AccountListItemProps {
   onEdit: (account: TransactionAccount) => void;
 }
 
-
-
 export function AccountListItem({ account, isSelected, onSelect, onEdit }: AccountListItemProps) {
+
+    const handleEditClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onEdit(account);
+    };
+
     return (
         <div
-            className={`bg-white border p-4 w-full ${isSelected ? "bg-blue" : "border-gray-300 hover:bg-gray-100"}`}
+            className={`border p-4 w-full flex items-center justify-between rounded-lg cursor-pointer transition-colors ${
+                isSelected ? "bg-blue-200 border-blue-500" : "bg-white hover:bg-gray-100"
+            }`}
             onClick={() => onSelect(account.id)}
         >
             <div className="flex items-center">
                 <Image
-                    src={account.bank.logoUrl} 
-                    alt={`${account.bank.name} logo`}
-                    width={50} 
-                    height={50}
+                src={account.bank.logoUrl}
+                alt={`${account.bank.name} logo`}
+                width={50}
+                height={50}
+                className="mr-4"
                 />
                 <div>
-                    <div className="font-semibold">{account.accountName}</div>
-                    <div className="text-sm text-gray-500">{account.accountNumber}</div>
-                </div>
-                <div className="ml-auto">
-                    <button className="text-black cursor-pointer" onClick={() => onEdit(account)}>
-                        <SquarePen className="inline-block mr-1" size={32} strokeWidth={1} />
-                    </button>
+                <div className="font-semibold">{account.accountName}</div>
+                <div className="text-sm text-gray-500">{account.accountNumber}</div>
                 </div>
             </div>
-        </div> 
+
+            <button className="text-black hover:text-black cursor-pointer p-2" onClick={handleEditClick}>
+                <SquarePen size={24} strokeWidth={1.5} />
+            </button>
+        </div>
     );
 }
