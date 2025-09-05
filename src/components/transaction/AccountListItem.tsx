@@ -1,4 +1,6 @@
 import type { TransactionAccount } from "@/types/transaction";
+import { SquarePen } from "lucide-react";
+import Image from "next/image";
 
 interface AccountListItemProps {
   account: TransactionAccount;
@@ -11,15 +13,24 @@ interface AccountListItemProps {
 export function AccountListItem({ account, isSelected, onSelect }: AccountListItemProps) {
     return (
         <div
-            className={`bg-white border p-4 w-full cursor-pointer ${isSelected ? "bg-blue" : "border-gray-300 hover:bg-gray-100"}`}
+            className={`bg-white border p-4 w-full ${isSelected ? "bg-blue" : "border-gray-300 hover:bg-gray-100"}`}
             onClick={() => onSelect(account.id)}
         >
             <div className="flex items-center">
-                {/* <img src={account.bank.logoUrl} alt={account.bank.name} className="h-8 w-8 mr-2" /> */}
-                <div className="h-16 w-16 rounded-full border-2 border-gray-300 mr-2"></div>
+                <Image
+                    src={account.bank.logoUrl} 
+                    alt={`${account.bank.name} logo`}
+                    width={50} 
+                    height={50}
+                />
                 <div>
                     <div className="font-semibold">{account.accountName}</div>
                     <div className="text-sm text-gray-500">{account.accountNumber}</div>
+                </div>
+                <div className="ml-auto">
+                    <button className="text-black cursor-pointer">
+                        <SquarePen className="inline-block mr-1" size={32} strokeWidth={1} />
+                    </button>
                 </div>
             </div>
         </div> 
