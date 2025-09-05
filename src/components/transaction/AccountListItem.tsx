@@ -1,6 +1,7 @@
-import type { TransactionAccount } from "@/types/transaction";
 import { SquarePen } from "lucide-react";
 import Image from "next/image";
+
+import type { TransactionAccount } from "@/types/transaction";
 
 interface AccountListItemProps {
   account: TransactionAccount;

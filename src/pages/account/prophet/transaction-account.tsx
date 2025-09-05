@@ -1,11 +1,10 @@
 "use client"
 import { useState } from "react";
+import { CirclePlus } from "lucide-react";
 
 import { DefaultLayout } from "@/components/globalComponents";
 import { AccountListItem } from "@/components/transaction/AccountListItem";
 import { Bank, TransactionAccount } from "@/types/transaction";
-
-import { CirclePlus } from "lucide-react";
 
 type pageMode = "list" | "create" | "edit";
 
