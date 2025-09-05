@@ -4,56 +4,9 @@ import { CirclePlus } from "lucide-react";
 
 import { DefaultLayout } from "@/components/globalComponents";
 import { AccountListItem } from "@/components/transaction/AccountListItem";
-import { Bank, TransactionAccount } from "@/types/transaction";
+import { MOCK_ACCOUNTS } from "@/constants/transaction";
 
 type pageMode = "list" | "create" | "edit";
-
-const MOCK_BANKS: Bank[] = [
-  { name: "BBL", logoUrl: "/images/transaction-bank/BBL.webp" },
-  { name: "KTB", logoUrl: "/images/transaction-bank/KTB.webp" },
-  { name: "KBANK", logoUrl: "/images/transaction-bank/KBANK.webp" },
-  { name: "SCB", logoUrl: "/images/transaction-bank/SCB.webp" },
-  { name: "BAY", logoUrl: "/images/transaction-bank/BAY.webp" },
-  { name: "TTB", logoUrl: "/images/transaction-bank/TTB.webp" },
-  { name: "CIMB", logoUrl: "/images/transaction-bank/CIMB.webp" },
-  { name: "UOB", logoUrl: "/images/transaction-bank/UOB.webp" },
-  { name: "GSB", logoUrl: "/images/transaction-bank/GSB.webp" },
-  { name: "BAAC", logoUrl: "/images/transaction-bank/BAAC.webp" },
-];
-
-const MOCK_ACCOUNTS: TransactionAccount[] = [
-  {
-    id: "1",
-    bank: MOCK_BANKS[0], // BBL
-    accountName: "Raksakul Hiranas",
-    accountNumber: "123-4-56789-0",
-  },
-  {
-    id: "2",
-    bank: MOCK_BANKS[1], // KTB
-    accountName: "Raksakul Hiranas",
-    accountNumber: "987-6-54321-0",
-  },
-  {
-    id: "3",
-    bank: MOCK_BANKS[2], // KBANK
-    accountName: "Raksakul Hiranas",
-    accountNumber: "987-6-54321-0",
-  },
-  {
-    id: "4",
-    bank: MOCK_BANKS[6], // CIMB
-    accountName: "Raksakul Hiranas",
-    accountNumber: "987-6-54321-0",
-  },
-  {
-    id: "5",
-    bank: MOCK_BANKS[4], // BAY
-    accountName: "Raksakul Hiranas",
-    accountNumber: "987-6-54321-0",
-  },
-];
-
 export default function ProphetTransactionAccountPage() {
 
     const [mode, setMode] = useState<pageMode>("list");
