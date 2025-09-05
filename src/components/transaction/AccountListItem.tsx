@@ -7,11 +7,12 @@ interface AccountListItemProps {
   account: TransactionAccount;
   isSelected: boolean;
   onSelect: (accountId: string) => void;
+  onEdit: (account: TransactionAccount) => void;
 }
 
 
 
-export function AccountListItem({ account, isSelected, onSelect }: AccountListItemProps) {
+export function AccountListItem({ account, isSelected, onSelect, onEdit }: AccountListItemProps) {
     return (
         <div
             className={`bg-white border p-4 w-full ${isSelected ? "bg-blue" : "border-gray-300 hover:bg-gray-100"}`}
@@ -29,7 +30,7 @@ export function AccountListItem({ account, isSelected, onSelect }: AccountListIt
                     <div className="text-sm text-gray-500">{account.accountNumber}</div>
                 </div>
                 <div className="ml-auto">
-                    <button className="text-black cursor-pointer">
+                    <button className="text-black cursor-pointer" onClick={() => onEdit(account)}>
                         <SquarePen className="inline-block mr-1" size={32} strokeWidth={1} />
                     </button>
                 </div>
