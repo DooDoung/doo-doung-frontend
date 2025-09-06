@@ -8,13 +8,7 @@ interface GlobalButtonProps
   /**
    * The variant of the button
    */
-  variant:
-    | "primary"
-    | "secondary"
-    | "outline"
-    | "ghost"
-    | "destructive"
-    | "link";
+  variant: "primary" | "secondary" | "ghost";
   /**
    * The size of the button
    */
@@ -95,6 +89,7 @@ export function GlobalButton({
         fullWidth && "w-full",
         customVariants[mappedVariant],
         className,
+        "cursor-pointer",
       )}
       {...props}
     >
