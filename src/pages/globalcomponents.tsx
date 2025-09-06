@@ -165,12 +165,7 @@ export default function GlobalComponentShowcase() {
                 <div className="space-y-3">
                   <h4 className="text-sm font-semibold">Other Variants</h4>
                   <div className="flex flex-wrap gap-3">
-                    <GlobalButton variant="outline">Outline</GlobalButton>
                     <GlobalButton variant="ghost">Ghost</GlobalButton>
-                    <GlobalButton variant="destructive">
-                      Destructive
-                    </GlobalButton>
-                    <GlobalButton variant="link">Link</GlobalButton>
                   </div>
                 </div>
 
@@ -579,7 +574,7 @@ import {
       hintText="Email looks good!"
     />
     <GlobalButton 
-      variant="default" 
+      variant="primary" 
       icon={<Star />}
       loading={isLoading}
     >
