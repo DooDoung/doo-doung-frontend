@@ -58,13 +58,13 @@ export default function GlobalComponentShowcase() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <p className="font-sanctuary text-4xl">
-                  The quick brown fox jumps over the lazy dog
+                  (font-sanctuary) The quick brown fox jumps over the lazy dog
                 </p>
                 <p className="font-sanctuary text-4xl">ทดสอบภาษาไทย</p>
-                <p className="font-sulphur text-4xl">
-                  The quick brown fox jumps over the lazy dog
+                <p className="font-chakra text-4xl">
+                  (font-chakra) The quick brown fox jumps over the lazy dog
                 </p>
-                <p className="font-sulphur text-4xl">ทดสอบภาษาไทย</p>
+                <p className="font-chakra text-4xl">ทดสอบภาษาไทย</p>
               </CardContent>
             </Card>
           </section>
