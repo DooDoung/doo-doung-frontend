@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Table,
   TableBody,
@@ -8,23 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-interface SessionTableBaseProps {
-  variant?: "prophet" | "customer" | "base";
-  availableSlots?: Array<{ day: string; time: string }>;
-  bookingSlots?: Array<{
-    id: string;
-    day: string;
-    time: string;
-    variant: "FREE" | "TAKEN";
-  }>;
-  renderBookingSlot?: (slot: {
-    id: string;
-    day: string;
-    time: string;
-    variant: "FREE" | "TAKEN";
-  }) => React.ReactNode;
-}
+import {
+  generateTimeSlots,
+  generateWeekDays,
+} from "@/lib/session-availible-table";
+import { SessionTableBaseProps } from "@/types/session";
 
 export default function SessionTableBase({
   variant = "base",
@@ -32,42 +21,6 @@ export default function SessionTableBase({
   bookingSlots = [],
   renderBookingSlot,
 }: SessionTableBaseProps) {
-  // Generate 7 days starting from today
-  const generateWeekDays = () => {
-    const today = new Date();
-    const days = [];
-    const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i);
-
-      const dayName = dayNames[date.getDay()];
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-
-      days.push({
-        dayName,
-        display: `${dayName} ${day}/${month}`,
-        date: date,
-      });
-    }
-
-    return days;
-  };
-
-  // Generate time slots (15-minute intervals for 24 hours)
-  const generateTimeSlots = () => {
-    const slots = [];
-    for (let hour = 0; hour < 24; hour++) {
-      for (let minute = 0; minute < 60; minute += 15) {
-        const timeString = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
-        slots.push(timeString);
-      }
-    }
-    return slots;
-  };
-
   const weekDays = generateWeekDays();
   const timeSlots = generateTimeSlots();
 
