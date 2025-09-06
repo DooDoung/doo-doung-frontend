@@ -1,8 +1,17 @@
+import {
+  AlertCircle,
+  Download,
+  Heart,
+  Settings,
+  Star,
+  User,
+} from "lucide-react";
+
 import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
-import { Button } from "@/components/ui/button";
 import { GlobalInput } from "@/components/globalComponents";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,18 +19,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Star,
-  Heart,
-  Download,
-  Settings,
-  User,
-  AlertCircle,
-} from "lucide-react";
 
 export default function GlobalComponentShowcase() {
   return (
@@ -37,6 +38,29 @@ export default function GlobalComponentShowcase() {
           <Badge variant="secondary" className="text-sm">
             Built with shadcn/ui + Custom Global Components
           </Badge>
+        </div>
+
+        <div className="space-y-12">
+          <section>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Star className="h-5 w-5" />
+                  Font Component
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <p className="font-sanctuary text-4xl">
+                  The quick brown fox jumps over the lazy dog
+                </p>
+                <p className="font-sanctuary text-4xl">ทดสอบภาษาไทย</p>
+                <p className="font-sulphur text-4xl">
+                  The quick brown fox jumps over the lazy dog
+                </p>
+                <p className="font-sulphur text-4xl">ทดสอบภาษาไทย</p>
+              </CardContent>
+            </Card>
+          </section>
         </div>
 
         <div className="space-y-12">
