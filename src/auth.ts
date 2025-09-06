@@ -16,7 +16,6 @@ import authConfig from "@/auth.config";
  * If expired -> session = null.
  */
 
-// Helper to check if we're in dev mock mode
 const isDevMock = process.env.NEXT_PUBLIC_USE_MOCK_AUTH === "true";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -33,8 +32,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return token;
       }
 
-      // In dev mock mode, do not refresh token, just keep using the mock token
+      // Extend expiresAt if expired
       if (isDevMock) {
+        if (!token.expiresAt || Date.now() > (token.expiresAt as number)) {
+          token.accessToken = "new-token-from-backend";
+          token.expiresAt = Date.now() + 1000 * 60 * 60 * 24; // extend 1 day
+        }
         return token;
       }
 

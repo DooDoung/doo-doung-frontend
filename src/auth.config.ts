@@ -10,7 +10,7 @@ const devAccounts = {
     email: "dev_customer@example.com",
     role: "CUSTOMER",
     accessToken: "mock-access-token-customer",
-    expiresAt: Date.now() + 1000 * 60 * 60, // 1 hour
+    expiresAt: Date.now() + 1000 * 60 * 60 * 24, // 1 day
   },
   dev_prophet: {
     id: "2",
@@ -18,7 +18,7 @@ const devAccounts = {
     email: "dev_prophet@example.com",
     role: "PROPHET",
     accessToken: "mock-access-token-prophet",
-    expiresAt: Date.now() + 1000 * 60 * 60,
+    expiresAt: Date.now() + 1000 * 60 * 60 * 24,
   },
   dev_admin: {
     id: "3",
