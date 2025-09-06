@@ -49,6 +49,9 @@ export default function Step4Astrological({
   };
   return (
     <form onSubmit={onSubmit} className="space-y-4">
+      <div className="text-center text-sm text-gray-500">
+        ... The stars in your birth date whisper your story ...
+      </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className={labelStyle}>Date of Birth</label>
