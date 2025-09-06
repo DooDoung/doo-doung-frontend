@@ -3,12 +3,13 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-interface GlobalButtonProps extends React.ComponentProps<typeof Button> {
+interface GlobalButtonProps
+  extends Omit<React.ComponentProps<typeof Button>, "variant"> {
   /**
    * The variant of the button
    */
   variant:
-    | "default"
+    | "primary"
     | "secondary"
     | "outline"
     | "ghost"
@@ -43,7 +44,7 @@ interface GlobalButtonProps extends React.ComponentProps<typeof Button> {
  * with default and secondary variants, loading states, and icons
  */
 export function GlobalButton({
-  variant = "default",
+  variant = "primary",
   size = "default",
   loading = false,
   loadingText = "Loading...",
@@ -85,11 +86,16 @@ export function GlobalButton({
     `,
   };
 
+  const mappedVariant = variant === "primary" ? "default" : variant;
   return (
     <Button
       size={size}
       disabled={disabled || loading}
-      className={cn(fullWidth && "w-full", customVariants[variant], className)}
+      className={cn(
+        fullWidth && "w-full",
+        customVariants[mappedVariant],
+        className,
+      )}
       {...props}
     >
       {/* 

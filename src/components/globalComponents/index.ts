@@ -12,6 +12,18 @@ export { GlobalButton } from "./Button";
 export { Footer } from "./Footer";
 export { Header } from "./Header";
 export { GlobalInput } from "./Input";
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "./Select";
 
 // Re-export default
 export { default as Layout } from "./DefaultLayout";

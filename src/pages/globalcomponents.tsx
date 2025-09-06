@@ -9,6 +9,13 @@ import {
 
 import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
 import { GlobalInput } from "@/components/globalComponents";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/globalComponents";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -84,13 +91,13 @@ export default function GlobalComponentShowcase() {
                     Default & Secondary Variants
                   </h4>
                   <div className="flex flex-wrap gap-3">
-                    <GlobalButton variant="default">
+                    <GlobalButton variant="primary">
                       Default Button
                     </GlobalButton>
                     <GlobalButton variant="secondary">
                       Secondary Button
                     </GlobalButton>
-                    <GlobalButton variant="default" size="sm">
+                    <GlobalButton variant="primary" size="sm">
                       Small Default
                     </GlobalButton>
                     <GlobalButton variant="secondary" size="lg">
@@ -103,7 +110,7 @@ export default function GlobalComponentShowcase() {
                 <div className="space-y-3">
                   <h4 className="text-sm font-semibold">Loading States</h4>
                   <div className="flex flex-wrap gap-3">
-                    <GlobalButton variant="default" loading>
+                    <GlobalButton variant="primary" loading>
                       Saving...
                     </GlobalButton>
                     <GlobalButton
@@ -121,7 +128,7 @@ export default function GlobalComponentShowcase() {
                   <h4 className="text-sm font-semibold">With Icons</h4>
                   <div className="flex flex-wrap gap-3">
                     <GlobalButton
-                      variant="default"
+                      variant="primary"
                       icon={<Download className="h-4 w-4" />}
                     >
                       Download
@@ -133,7 +140,7 @@ export default function GlobalComponentShowcase() {
                       Like
                     </GlobalButton>
                     <GlobalButton
-                      variant="default"
+                      variant="primary"
                       icon={<Settings className="h-4 w-4" />}
                     >
                       Settings
@@ -145,7 +152,7 @@ export default function GlobalComponentShowcase() {
                 <div className="space-y-3">
                   <h4 className="text-sm font-semibold">Full Width</h4>
                   <div className="space-y-2">
-                    <GlobalButton variant="default" fullWidth>
+                    <GlobalButton variant="primary" fullWidth>
                       Full Width Default Button
                     </GlobalButton>
                     <GlobalButton variant="secondary" fullWidth>
@@ -171,7 +178,7 @@ export default function GlobalComponentShowcase() {
                 <div className="space-y-3">
                   <h4 className="text-sm font-semibold">Disabled States</h4>
                   <div className="flex flex-wrap gap-3">
-                    <GlobalButton variant="default" disabled>
+                    <GlobalButton variant="primary" disabled>
                       Disabled Default
                     </GlobalButton>
                     <GlobalButton variant="secondary" disabled>
@@ -317,6 +324,51 @@ export default function GlobalComponentShowcase() {
                     />
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Global Select Component Section */}
+          <section>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Settings className="h-5 w-5" />
+                  Global Select Component
+                </CardTitle>
+                <CardDescription>
+                  Enhanced select component with custom styling, states, and
+                  sizing options
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <Select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select your pokemon" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">Bulbasaur</SelectItem>
+                    <SelectItem value="2">Ivysaur</SelectItem>
+                    <SelectItem value="3">Venusaur</SelectItem>
+                    <SelectItem value="4">Charmander</SelectItem>
+                    <SelectItem value="5">Charmeleon</SelectItem>
+                    <SelectItem value="6">Charizard</SelectItem>
+                    <SelectItem value="7">Squirtle</SelectItem>
+                    <SelectItem value="8">Wartortle</SelectItem>
+                    <SelectItem value="9">Blastoise</SelectItem>
+                    <SelectItem value="10">Caterpie</SelectItem>
+                    <SelectItem value="11">Metapod</SelectItem>
+                    <SelectItem value="12">Butterfree</SelectItem>
+                    <SelectItem value="13">Weedle</SelectItem>
+                    <SelectItem value="14">Kakuna</SelectItem>
+                    <SelectItem value="15">Beedrill</SelectItem>
+                    <SelectItem value="16">Pidgey</SelectItem>
+                    <SelectItem value="17">Pidgeotto</SelectItem>
+                    <SelectItem value="18">Pidgeot</SelectItem>
+                    <SelectItem value="19">Rattata</SelectItem>
+                    <SelectItem value="20">Raticate</SelectItem>
+                  </SelectContent>
+                </Select>
               </CardContent>
             </Card>
           </section>
@@ -503,7 +555,14 @@ export default function GlobalComponentShowcase() {
                   <pre className="bg-muted overflow-x-auto rounded-lg p-4 text-sm">
                     {`import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"`}
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/globalComponents";`}
                   </pre>
                 </div>
 
@@ -512,6 +571,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"`}
                   <pre className="bg-muted overflow-x-auto rounded-lg p-4 text-sm">
                     {`<DefaultLayout>
   <div className="container mx-auto p-4">
+    <Label htmlFor="email">Email</Label>
     <GlobalInput
       placeholder="Enter your email"
       type="email"
@@ -525,6 +585,16 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"`}
     >
       Save Changes
     </GlobalButton>
+
+    <Select>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select your pokemon" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="1">Bulbasaur</SelectItem>
+        <SelectItem value="2">Ivysaur</SelectItem>
+      </SelectContent>
+    </Select>
   </div>
 </DefaultLayout>`}
                   </pre>
