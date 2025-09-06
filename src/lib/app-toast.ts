@@ -7,11 +7,8 @@ import {
   Info,
 } from "lucide-react";
 
-// สไตล์กลางสำหรับไอคอน
-const iconStyle = "h-6 w-6";
-
-// สไตล์กลางสำหรับตัว Toast (ยกเว้นสีขอบ)
-const baseToastStyle = "bg-white text-neutral-900";
+// --- Base Styles ---
+const baseToastStyle = "bg-white text-neutral-black font-chakra border drop-shadow-sm px-4 py-3 rounded-lg flex items-center space-x-3";
 
 /**
  * Custom toast functions for the application, providing consistent styling.
@@ -19,26 +16,42 @@ const baseToastStyle = "bg-white text-neutral-900";
 export const AppToast = {
   success: (message: string) => {
     toast(message, {
-      className: `${baseToastStyle} border-2 border-green-500`,
-      icon: React.createElement(CheckCircle2, { className: `${iconStyle} text-green-500` }),
+      className: `${baseToastStyle} border-success drop-shadow-success`,
+      icon: React.createElement(
+        "div",
+        { className: "bg-success p-2 rounded-full" },
+        React.createElement(CheckCircle2, { className: "h-6 w-6 text-neutral-white" })
+      ),
     });
   },
   error: (message: string) => {
     toast(message, {
-      className: `${baseToastStyle} border-2 border-red-500`,
-      icon: React.createElement(AlertCircle, { className: `${iconStyle} text-red-500` }),
+      className: `${baseToastStyle} border-error drop-shadow-error`,
+      icon: React.createElement(
+        "div",
+        { className: "bg-error p-2 rounded-full" },
+        React.createElement(AlertCircle, { className: "h-6 w-6 text-neutral-white" })
+      ),
     });
   },
   warning: (message: string) => {
     toast(message, {
-      className: `${baseToastStyle} border-2 border-yellow-500`,
-      icon: React.createElement(AlertTriangle, { className: `${iconStyle} text-yellow-500` }),
+      className: `${baseToastStyle} border-warning drop-shadow-warning`,
+      icon: React.createElement(
+        "div",
+        { className: "bg-warning p-2 rounded-full" },
+        React.createElement(AlertTriangle, { className: "h-6 w-6 text-neutral-white" })
+      ),
     });
   },
   info: (message: string) => {
     toast(message, {
-      className: `${baseToastStyle} border-2 border-blue-500`,
-      icon: React.createElement(Info, { className: `${iconStyle} text-blue-500` }),
+      className: `${baseToastStyle} border-accent-violet drop-shadow-accent-violet`,
+      icon: React.createElement(
+        "div",
+        { className: "bg-accent-violet p-2 rounded-full" },
+        React.createElement(Info, { className: "h-6 w-6 text-neutral-white" })
+      ),
     });
   },
 };
