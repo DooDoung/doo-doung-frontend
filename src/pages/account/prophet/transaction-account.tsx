@@ -19,6 +19,7 @@ export default function ProphetTransactionAccountPage() {
     handleEditConfirm,
     handleDelete,
     handleSelectAccount,
+    handleSetDefault,
   } = useTransactionAccounts();
 
   const renderContent = () => {
@@ -47,12 +48,13 @@ export default function ProphetTransactionAccountPage() {
     return (
       <div className="justify-center items-center flex flex-col gap-4">
         <div className="flex flex gap-4">
-          <h1>Select Your Transaction Account</h1>
+          <h1>Choose Your Default Account</h1>
           <button className="cursor-pointer" onClick={handleStartCreate}>
             <CirclePlus className="inline-block mr-1" size={32} strokeWidth={1} />
           </button>
         </div>
         <div className="border border-2 bg-black rounded-lg gap-4 w-3/4 h-100 overflow-y-scroll justify-center items-center flex flex-col border border-black px-8 py-16">
+          <div className="mt-32" />
           {accounts.map((account) => (
             <AccountListItem
               key={account.id}
@@ -63,8 +65,14 @@ export default function ProphetTransactionAccountPage() {
             />
           ))}
         </div>
-        <button className="border border-2 border-black px-4 py-2 rounded-md hover:bg-black hover:text-white hover:border-white">
-          Confirm
+        <button className="border border-2 border-black px-4 py-2 rounded-md hover:bg-black hover:text-white hover:border-white"
+          onClick={() => {
+            if (selectedAccountId) {
+              handleSetDefault(selectedAccountId);
+            }
+          }}
+        >
+          Set as Default Account
         </button>
       </div>
     );

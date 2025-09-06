@@ -1,7 +1,7 @@
-import { useEffect,useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
-import type { Bank,TransactionAccount } from "@/types/transaction";
+import type { Bank, TransactionAccount } from "@/types/transaction";
 
 interface TransactionAccountFormProps {
   initialData?: TransactionAccount;
@@ -92,11 +92,9 @@ export default function TransactionAccountForm({
             Delete
           </button>
         )}
-        {!isEditMode && (
-          <button className="border border-2 border-black px-4 py-2 rounded-md hover:bg-black hover:text-white hover:border-white" type="button" onClick={onCancel}>
+        <button className="border border-2 border-black px-4 py-2 rounded-md hover:bg-black hover:text-white hover:border-white" type="button" onClick={onCancel}>
             Cancel
           </button>
-        )}
         <button className="border border-2 border-black px-4 py-2 rounded-md hover:bg-black hover:text-white hover:border-white" type="submit">
           Confirm
         </button>

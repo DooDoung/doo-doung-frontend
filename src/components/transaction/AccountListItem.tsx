@@ -11,6 +11,7 @@ interface AccountListItemProps {
 }
 
 export function AccountListItem({ account, isSelected, onSelect, onEdit }: AccountListItemProps) {
+    const isDefault = account.isDefault;
 
     const handleEditClick = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -20,7 +21,7 @@ export function AccountListItem({ account, isSelected, onSelect, onEdit }: Accou
     return (
         <div
             className={`border p-4 w-full flex items-center justify-between rounded-lg cursor-pointer transition-colors ${
-                isSelected ? "bg-blue-200 border-blue-500" : "bg-white hover:bg-gray-100"
+                isSelected ? "bg-pink-200 border-pink-500" : "bg-white hover:bg-gray-100"
             }`}
             onClick={() => onSelect(account.id)}
         >
@@ -38,9 +39,12 @@ export function AccountListItem({ account, isSelected, onSelect, onEdit }: Accou
                 </div>
             </div>
 
-            <button className="text-black hover:text-black cursor-pointer p-2" onClick={handleEditClick}>
-                <SquarePen size={24} strokeWidth={1.5} />
-            </button>
+            <div className="flex items-center">
+                {isDefault && <div className="text-sm text-green-600 font-semibold mr-4 border border-green-600 border-2 py-2 px-4 rounded-lg bg-green-100">Default</div>}
+                <button className="text-black hover:text-black cursor-pointer p-2" onClick={handleEditClick}>
+                    <SquarePen size={24} strokeWidth={1.5} />
+                </button>
+            </div>
         </div>
     );
 }

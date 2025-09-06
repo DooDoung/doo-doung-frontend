@@ -58,6 +58,15 @@ export function useTransactionAccounts() {
     setSelectedAccountId(accountId);
   };
 
+  const handleSetDefault = (accountId: string) => {
+    setAccounts(prevAccounts =>
+      prevAccounts.map(acc =>
+        acc.id === accountId ? { ...acc, isDefault: true } : { ...acc, isDefault: false }
+      )
+    );
+    alert("Default account set successfully");
+  };
+
   return {
     mode,
     accounts,
@@ -69,6 +78,7 @@ export function useTransactionAccounts() {
     handleCreateConfirm,
     handleEditConfirm,
     handleDelete,
-    handleSelectAccount
+    handleSelectAccount,
+    handleSetDefault,
   };
 }

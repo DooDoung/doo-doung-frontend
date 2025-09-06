@@ -8,4 +8,5 @@ export interface TransactionAccount {
   bank: Bank;
   accountName: string;
   accountNumber: string;
+  isDefault?: boolean;
 }
