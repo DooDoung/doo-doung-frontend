@@ -1,6 +1,7 @@
 // auth.ts
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
+import { refreshAccessToken } from "@/mock-auth";
 
 /**
  * NextAuth session format:
@@ -32,11 +33,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return token;
       }
 
-      // Extend expiresAt if expired
+      // In dev mock mode, refresh token using mock logic if expired
       if (isDevMock) {
         if (!token.expiresAt || Date.now() > (token.expiresAt as number)) {
-          token.accessToken = "new-token-from-backend";
-          token.expiresAt = Date.now() + 1000 * 60 * 60 * 24; // extend 1 day
+          return refreshAccessToken(token);
         }
         return token;
       }
