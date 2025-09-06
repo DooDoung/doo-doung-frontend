@@ -1,5 +1,4 @@
 import SessionTableBase from "./SessionTableBase";
-import SessionTableTimeBlock from "./SessionTableTimeBlock";
 
 export default function SessionTableProphet() {
   // Mock available times with variance and max 4 hours continuous
@@ -52,12 +51,79 @@ export default function SessionTableProphet() {
     return timeBlocks;
   };
 
-  const availableTimeBlocks = generateMockAvailableTimes();
+  // Convert time blocks to individual slots
+  const generateAvailableSlots = () => {
+    const timeBlocks = generateMockAvailableTimes();
+    const slots: Array<{ day: string; time: string }> = [];
 
-  return (
-    <div className="relative">
-      <SessionTableBase />
-      <SessionTableTimeBlock timeBlocks={availableTimeBlocks} />
-    </div>
-  );
+    timeBlocks.forEach((block) => {
+      const startHour = parseInt(block.startTime.split(":")[0]);
+      const startMinute = parseInt(block.startTime.split(":")[1]);
+      const endHour = parseInt(block.endTime.split(":")[0]);
+      const endMinute = parseInt(block.endTime.split(":")[1]);
+
+      let currentDay = block.startDay;
+      let currentHour = startHour;
+      let currentMinute = startMinute;
+
+      // Handle same day blocks
+      if (block.startDay === block.endDay) {
+        while (
+          currentHour < endHour ||
+          (currentHour === endHour && currentMinute < endMinute)
+        ) {
+          const timeString = `${currentHour.toString().padStart(2, "0")}:${currentMinute.toString().padStart(2, "0")}`;
+          slots.push({ day: currentDay, time: timeString });
+
+          currentMinute += 15;
+          if (currentMinute >= 60) {
+            currentMinute = 0;
+            currentHour++;
+          }
+        }
+      } else {
+        // Handle cross-day blocks
+        const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+        const startDayIndex = days.indexOf(block.startDay);
+        const endDayIndex = days.indexOf(block.endDay);
+
+        // First day (from start time to end of day)
+        while (currentHour < 24) {
+          const timeString = `${currentHour.toString().padStart(2, "0")}:${currentMinute.toString().padStart(2, "0")}`;
+          slots.push({ day: currentDay, time: timeString });
+
+          currentMinute += 15;
+          if (currentMinute >= 60) {
+            currentMinute = 0;
+            currentHour++;
+          }
+        }
+
+        // Second day (from start of day to end time)
+        currentDay = block.endDay;
+        currentHour = 0;
+        currentMinute = 0;
+
+        while (
+          currentHour < endHour ||
+          (currentHour === endHour && currentMinute < endMinute)
+        ) {
+          const timeString = `${currentHour.toString().padStart(2, "0")}:${currentMinute.toString().padStart(2, "0")}`;
+          slots.push({ day: currentDay, time: timeString });
+
+          currentMinute += 15;
+          if (currentMinute >= 60) {
+            currentMinute = 0;
+            currentHour++;
+          }
+        }
+      }
+    });
+
+    return slots;
+  };
+
+  const availableSlots = generateAvailableSlots();
+
+  return <SessionTableBase variant="prophet" availableSlots={availableSlots} />;
 }
