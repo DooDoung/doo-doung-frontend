@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ## Getting Started
 
 First, run the development server:
@@ -7,19 +5,8 @@ First, run the development server:
 ```bash
 npm run dev
 # or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
 
 
 ## How to Enable Mock Auth
@@ -41,33 +28,74 @@ Set the environment variable in your `.env` file:
 
 ---
 
-Example: Using `signIn` with Mock Data
+For login system, call `signIn` with username and passowrd like this
 
 ```typescript
 import { signIn } from "next-auth/react";
 
-// Example: Sign in as dev_customer
+// Example: Sign in with dev_account
 await signIn("credentials", {
   username: "dev_customer",
   password: "dev_password",
 });
 
+//For real login system, use username and password from input
+
 ```
 
-- **To test real backend auth:**  
+**To test real backend auth:**  
   Set `NEXT_PUBLIC_USE_MOCK_AUTH=false` (or remove it) in your `.env` and restart the dev server.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## NextAuth Session Example
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+When a user signs in with `signIn("credentials")`, the session object returned by NextAuth will look like this:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```jsonc
+{
+  "user": {
+    "id": "123",
+    "username": "dev_customer",
+    "email": "customer@example.com",
+    "role": "CUSTOMER",
+    "name": "dev_customer",
+    "image": null
+  },
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expiresAt": 1757209872, // access token expire time
+  "expires": "2025-09-07T08:36:47.000Z" // next auth token expire time
+}
+```
 
-## Deploy on Vercel
+### Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+ You can access this session in:
+  * **Client components** with `useSession()`
+  * **Server components / API routes** with `getServerSession(authOptions)`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Example usage
+---
+**Client:**
+
+```tsx
+"use client";
+import { useSession } from "next-auth/react";
+
+export default function Profile() {
+  const { data: session } = useSession();
+  return <pre>{JSON.stringify(session, null, 2)}</pre>;
+}
+```
+
+**Server:**
+
+```ts
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+export default async function Page() {
+  const session = await getServerSession(authOptions);
+  console.log(session?.accessToken);
+  return <div>Welcome {session?.user.username}</div>;
+}
+```
