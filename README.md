@@ -20,6 +20,43 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+
+
+## How to Enable Mock Auth
+
+
+Set the environment variable in your `.env` file:
+    ```
+    NEXT_PUBLIC_USE_MOCK_AUTH=true
+    ```
+
+
+## Dev Accounts
+
+| Username      | Password      | Role      |
+|---------------|--------------|-----------|
+| dev_customer  | dev_password | CUSTOMER  |
+| dev_prophet   | dev_password | PROPHET   |
+| dev_admin     | dev_password | ADMIN     |
+
+---
+
+Example: Using `signIn` with Mock Data
+
+```typescript
+import { signIn } from "next-auth/react";
+
+// Example: Sign in as dev_customer
+await signIn("credentials", {
+  username: "dev_customer",
+  password: "dev_password",
+});
+
+```
+
+- **To test real backend auth:**  
+  Set `NEXT_PUBLIC_USE_MOCK_AUTH=false` (or remove it) in your `.env` and restart the dev server.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
