@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Chakra_Petch } from "next/font/google";
 
 import "../style/globals.css";
 
@@ -13,9 +13,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const chakra = Chakra_Petch({
+  weight: "400",
+  variable: "--font-chakra",
+  subsets: ["latin"],
+});
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <div
+      className={`${geistSans.variable} ${geistMono.variable} ${chakra.variable} antialiased`}
+    >
       <Component {...pageProps} />
     </div>
   );
