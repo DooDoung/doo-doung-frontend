@@ -1,19 +1,23 @@
 // auth.ts
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
+
 /**
  * NextAuth session format:
  * {
- *   user: { 
- *      id, 
- *      username, 
- *      email, 
- *      role 
+ *   user: {
+ *      id,
+ *      username,
+ *      email,
+ *      role
  * },
  *   accessToken: string
  * }
  * If expired -> session = null.
  */
+
+// Helper to check if we're in dev mock mode
+const isDevMock = process.env.NEXT_PUBLIC_USE_MOCK_AUTH === "true";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
@@ -29,6 +33,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return token;
       }
 
+      // In dev mock mode, do not refresh token, just keep using the mock token
+      if (isDevMock) {
+        return token;
+      }
+
       // If access token is still valid, return it
       if (
         token.accessToken &&
@@ -38,7 +47,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return token;
       }
 
-      // If expired, return empty
+      // If expired, return empty (could trigger refresh logic in real app)
       return {};
     },
 
