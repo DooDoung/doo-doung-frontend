@@ -2,13 +2,12 @@ import { useState } from "react";
 import { toast } from "react-hot-toast/headless";
 
 import { DefaultLayout } from "@/components/globalComponents";
+import Step1Role from "@/components/register/Step1Role";
+import Step2Credentials from "@/components/register/Step2Credentials";
+import Step3PersonalInfo from "@/components/register/Step3PersonalInfo";
+import Step4Astrological from "@/components/register/Step4Astrological";
+import StepPrivacyPolicy from "@/components/register/StepPrivacyPolicy";
 import { RegisterFormData, Sex, ZodiacSign } from "@/types/user";
-
-import Step1Role from "./register/Step1Role";
-import Step2Credentials from "./register/Step2Credentials";
-import Step3PersonalInfo from "./register/Step3PersonalInfo";
-import Step4Astrological from "./register/Step4Astrological";
-import StepPrivacyPolicy from "./register/StepPrivacyPolicy";
 
 export default function RegisterPage() {
   const [step, setStep] = useState(1);
