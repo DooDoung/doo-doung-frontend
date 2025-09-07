@@ -7,7 +7,7 @@ import Step2Credentials from "@/components/register/Step2Credentials";
 import Step3PersonalInfo from "@/components/register/Step3PersonalInfo";
 import Step4Astrological from "@/components/register/Step4Astrological";
 import StepPrivacyPolicy from "@/components/register/StepPrivacyPolicy";
-import { RegisterFormData, Sex, ZodiacSign } from "@/types/user";
+import { RegisterFormData } from "@/types/user";
 
 export default function RegisterPage() {
   const [step, setStep] = useState(1);

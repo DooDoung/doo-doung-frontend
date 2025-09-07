@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { z } from "zod";
 
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
@@ -16,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { customerSchema } from "@/lib/validators/auth"; // <-- Import our schema
 import { RegisterFormData, ZodiacSign } from "@/types/user";
 
 interface Step4Props {
@@ -28,6 +31,16 @@ interface Step4Props {
   prevStep: () => void;
 }
 
+// Create a schema specifically for this step's fields
+const step4Schema = customerSchema.pick({
+  birthDate: true,
+  birthTime: true,
+  zodiacSign: true,
+});
+
+// A type for our validation errors
+type Step4Errors = z.inferFlattenedErrors<typeof step4Schema>["fieldErrors"];
+
 export default function Step4Astrological({
   formData,
   setFormData,
@@ -35,7 +48,9 @@ export default function Step4Astrological({
   handleSubmit,
   prevStep,
 }: Step4Props) {
+  const [errors, setErrors] = useState<Step4Errors>({});
   const labelStyle = "block text-sm font-medium text-gray-700 mb-1";
+
   const handleZodiacChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -44,9 +59,23 @@ export default function Step4Astrological({
   };
 
   const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
+
+    // 1. Validate the data
+    const result = step4Schema.safeParse(formData);
+
+    // 2. If validation fails, show errors
+    if (!result.success) {
+      setErrors(result.error.flatten().fieldErrors);
+      return;
+    }
+
+    // 3. If validation succeeds, clear errors and submit
+    setErrors({});
     handleSubmit(e);
     toast.success("Data saved successfully!");
   };
+
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="text-center text-sm text-gray-500">
@@ -76,17 +105,14 @@ export default function Step4Astrological({
                 mode="single"
                 selected={formData.birthDate}
                 onSelect={(date) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    birthDate:
-                      date instanceof Date && !isNaN(date.getTime())
-                        ? date
-                        : undefined,
-                  }))
+                  setFormData((prev) => ({ ...prev, birthDate: date }))
                 }
               />
             </PopoverContent>
           </Popover>
+          {errors.birthDate && (
+            <p className="mt-1 text-sm text-red-500">{errors.birthDate[0]}</p>
+          )}
         </div>
         <div>
           <label htmlFor="birthTime" className={labelStyle}>
@@ -99,6 +125,9 @@ export default function Step4Astrological({
             value={formData.birthTime}
             onChange={handleChange}
           />
+          {errors.birthTime && (
+            <p className="mt-1 text-sm text-red-500">{errors.birthTime[0]}</p>
+          )}
         </div>
       </div>
       <div>
@@ -117,6 +146,9 @@ export default function Step4Astrological({
             ))}
           </SelectContent>
         </Select>
+        {errors.zodiacSign && (
+          <p className="mt-1 text-sm text-red-500">{errors.zodiacSign[0]}</p>
+        )}
       </div>
 
       <div className="flex justify-between gap-4">

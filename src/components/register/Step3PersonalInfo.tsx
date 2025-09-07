@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { z } from "zod";
 
+import { baseSchema } from "@/lib/validators/auth"; // Make sure this path is correct
 import { RegisterFormData, Sex } from "@/types/user";
 
 interface Step3Props {
@@ -12,6 +15,23 @@ interface Step3Props {
   handleSubmit: (e: React.FormEvent) => void;
 }
 
+// We create a schema that includes all possible fields for this step
+const step3Schema = baseSchema
+  .pick({
+    firstName: true,
+    lastName: true,
+    gender: true,
+    email: true,
+    phoneNumber: true,
+  })
+  .extend({
+    // lineId is only for prophets, so we make it optional here
+    lineId: z.string().optional(),
+  });
+
+// A type for our validation errors
+type Step3Errors = z.inferFlattenedErrors<typeof step3Schema>["fieldErrors"];
+
 export default function Step3PersonalInfo({
   formData,
   handleChange,
@@ -19,6 +39,8 @@ export default function Step3PersonalInfo({
   prevStep,
   handleSubmit,
 }: Step3Props) {
+  const [errors, setErrors] = useState<Step3Errors>({});
+
   const inputStyle = "w-full p-2 border border-gray-300 rounded-md";
   const labelStyle = "block text-sm font-medium text-gray-700 mb-1";
   const buttonStyle =
@@ -27,6 +49,22 @@ export default function Step3PersonalInfo({
   const isProphet = formData.role === "prophet";
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // For prophets, we also need to validate the lineId
+    const schemaToUse = isProphet
+      ? step3Schema.extend({
+          lineId: z.string().min(3, "LINE ID must be at least 3 characters"),
+        })
+      : step3Schema;
+
+    const result = schemaToUse.safeParse(formData);
+
+    if (!result.success) {
+      setErrors(result.error.flatten().fieldErrors);
+      return;
+    }
+
+    setErrors({}); // Clear errors on success
+
     if (isProphet) {
       handleSubmit(e as any);
       toast.success("Data saved successfully!");
@@ -50,6 +88,9 @@ export default function Step3PersonalInfo({
             onChange={handleChange}
             className={inputStyle}
           />
+          {errors.firstName && (
+            <p className="mt-1 text-sm text-red-500">{errors.firstName[0]}</p>
+          )}
         </div>
         <div>
           <label htmlFor="lastName" className={labelStyle}>
@@ -62,10 +103,13 @@ export default function Step3PersonalInfo({
             onChange={handleChange}
             className={inputStyle}
           />
+          {errors.lastName && (
+            <p className="mt-1 text-sm text-red-500">{errors.lastName[0]}</p>
+          )}
         </div>
       </div>
 
-      {/* Customer: Gender & Email, then Phone. Prophet: Gender & LINE, then Email & Phone */}
+      {/* Conditional Fields based on Role */}
       {isProphet ? (
         <>
           <div className="grid grid-cols-2 gap-4">
@@ -90,6 +134,9 @@ export default function Step3PersonalInfo({
                     </option>
                   ))}
               </select>
+              {errors.gender && (
+                <p className="mt-1 text-sm text-red-500">{errors.gender[0]}</p>
+              )}
             </div>
             <div>
               <label htmlFor="lineId" className={labelStyle}>
@@ -102,6 +149,9 @@ export default function Step3PersonalInfo({
                 onChange={handleChange}
                 className={inputStyle}
               />
+              {errors.lineId && (
+                <p className="mt-1 text-sm text-red-500">{errors.lineId[0]}</p>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -116,6 +166,9 @@ export default function Step3PersonalInfo({
                 onChange={handleChange}
                 className={inputStyle}
               />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-500">{errors.email[0]}</p>
+              )}
             </div>
             <div>
               <label htmlFor="phoneNumber" className={labelStyle}>
@@ -128,6 +181,11 @@ export default function Step3PersonalInfo({
                 onChange={handleChange}
                 className={inputStyle}
               />
+              {errors.phoneNumber && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.phoneNumber[0]}
+                </p>
+              )}
             </div>
           </div>
         </>
@@ -155,6 +213,9 @@ export default function Step3PersonalInfo({
                     </option>
                   ))}
               </select>
+              {errors.gender && (
+                <p className="mt-1 text-sm text-red-500">{errors.gender[0]}</p>
+              )}
             </div>
             <div>
               <label htmlFor="email" className={labelStyle}>
@@ -167,6 +228,9 @@ export default function Step3PersonalInfo({
                 onChange={handleChange}
                 className={inputStyle}
               />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-500">{errors.email[0]}</p>
+              )}
             </div>
           </div>
           <div>
@@ -180,6 +244,11 @@ export default function Step3PersonalInfo({
               onChange={handleChange}
               className={inputStyle}
             />
+            {errors.phoneNumber && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.phoneNumber[0]}
+              </p>
+            )}
           </div>
         </>
       )}
