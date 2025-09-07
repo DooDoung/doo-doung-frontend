@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { customerSchema } from "@/lib/validators/auth"; // <-- Import our schema
+import { customerSchema } from "@/lib/validators/auth";
 import { RegisterFormData, ZodiacSign } from "@/types/user";
 
 interface Step4Props {
@@ -31,14 +31,12 @@ interface Step4Props {
   prevStep: () => void;
 }
 
-// Create a schema specifically for this step's fields
 const step4Schema = customerSchema.pick({
   birthDate: true,
   birthTime: true,
   zodiacSign: true,
 });
 
-// A type for our validation errors
 type Step4Errors = z.inferFlattenedErrors<typeof step4Schema>["fieldErrors"];
 
 export default function Step4Astrological({
@@ -59,18 +57,15 @@ export default function Step4Astrological({
   };
 
   const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
 
-    // 1. Validate the data
     const result = step4Schema.safeParse(formData);
 
-    // 2. If validation fails, show errors
     if (!result.success) {
       setErrors(result.error.flatten().fieldErrors);
       return;
     }
 
-    // 3. If validation succeeds, clear errors and submit
     setErrors({});
     handleSubmit(e);
     toast.success("Data saved successfully!");

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { z } from "zod";
 
-import { baseSchema } from "@/lib/validators/auth"; // Make sure this path is correct
+import { baseSchema } from "@/lib/validators/auth";
 import { RegisterFormData, Sex } from "@/types/user";
 
 interface Step3Props {
@@ -15,7 +15,6 @@ interface Step3Props {
   handleSubmit: (e: React.FormEvent) => void;
 }
 
-// We create a schema that includes all possible fields for this step
 const step3Schema = baseSchema
   .pick({
     firstName: true,
@@ -25,11 +24,9 @@ const step3Schema = baseSchema
     phoneNumber: true,
   })
   .extend({
-    // lineId is only for prophets, so we make it optional here
     lineId: z.string().optional(),
   });
 
-// A type for our validation errors
 type Step3Errors = z.inferFlattenedErrors<typeof step3Schema>["fieldErrors"];
 
 export default function Step3PersonalInfo({
@@ -49,7 +46,6 @@ export default function Step3PersonalInfo({
   const isProphet = formData.role === "prophet";
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // For prophets, we also need to validate the lineId
     const schemaToUse = isProphet
       ? step3Schema.extend({
           lineId: z.string().min(3, "LINE ID must be at least 3 characters"),
@@ -63,10 +59,10 @@ export default function Step3PersonalInfo({
       return;
     }
 
-    setErrors({}); // Clear errors on success
+    setErrors({});
 
     if (isProphet) {
-      handleSubmit(e as any);
+      handleSubmit(e as React.MouseEvent<HTMLButtonElement>);
       toast.success("Data saved successfully!");
     } else {
       nextStep();
@@ -75,7 +71,6 @@ export default function Step3PersonalInfo({
 
   return (
     <div className="space-y-4">
-      {/* First Name & Last Name */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label htmlFor="firstName" className={labelStyle}>
@@ -109,7 +104,6 @@ export default function Step3PersonalInfo({
         </div>
       </div>
 
-      {/* Conditional Fields based on Role */}
       {isProphet ? (
         <>
           <div className="grid grid-cols-2 gap-4">

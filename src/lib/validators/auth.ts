@@ -33,7 +33,6 @@ export const baseSchema = z.object({
   phoneNumber: z
     .string()
     .regex(/^[0-9]{9,10}$/, "Please enter a valid 9 or 10-digit phone number"),
-  // FIXED: Explicitly handle the empty string case for dropdowns
   gender: z
     .union([z.nativeEnum(Sex), z.literal("")])
     .refine((val) => val !== "", { message: "Please select a gender" }),
@@ -41,7 +40,6 @@ export const baseSchema = z.object({
 
 export const customerSchema = baseSchema.extend({
   role: z.literal("customer"),
-  // FIXED: Explicitly handle the undefined case for the date picker
   birthDate: z
     .union([z.date(), z.undefined()])
     .refine((val) => val !== undefined, { message: "Please pick a birth date" })
@@ -49,7 +47,6 @@ export const customerSchema = baseSchema.extend({
       message: "Birth year must be 1970 or later.",
     }),
   birthTime: z.string().min(1, "Birth time is required"),
-  // FIXED: Explicitly handle the empty string case
   zodiacSign: z
     .union([z.nativeEnum(ZodiacSign), z.literal("")])
     .refine((val) => val !== "", { message: "Please select a zodiac sign" }),

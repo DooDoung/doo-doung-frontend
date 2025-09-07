@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 
-import { baseSchema } from "@/lib/validators/auth"; // <-- We now import baseSchema
+import { baseSchema } from "@/lib/validators/auth";
 import { RegisterFormData } from "@/types/user";
 
 interface Step2Props {
@@ -11,23 +11,19 @@ interface Step2Props {
   prevStep: () => void;
 }
 
-// Create a schema for this step from the baseSchema
 const step2Schema = baseSchema
   .pick({
     username: true,
     password: true,
   })
   .extend({
-    // We add confirmPassword here since it's not in the baseSchema
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    // We also add the password match logic here
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
-// A type to hold our validation errors
 type Step2Errors = z.inferFlattenedErrors<typeof step2Schema>["fieldErrors"];
 
 export default function Step2Credentials({
