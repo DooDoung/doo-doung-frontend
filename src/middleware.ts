@@ -29,6 +29,7 @@ const AllowProphetPath = [
   "/account/edit-account",
   "/account/prophet/report",
   "/account/prophet/availability",
+  "/account/prophet/transaction-account",
   "/course/prophet",
   "/course/prophet/my-session",
   "/course/prophet/my-courses",
