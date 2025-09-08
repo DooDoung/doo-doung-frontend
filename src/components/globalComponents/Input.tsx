@@ -53,27 +53,26 @@ export const GlobalInput = React.forwardRef<HTMLInputElement, GlobalInputProps>(
     };
 
     const baseClasses = `
-      flex rounded-lg bg-white text-neutral-black
-      file:border-0 file:bg-transparent file:text-sm file:font-medium
-      placeholder:text-gray-400
+      flex rounded-md bg-neutral-white/50 text-neutral-black
+      shadow-[4px_4px_14px_0_rgba(0,0,0,0.25),inset_4px_4px_10px_0_rgba(255,255,255,1)]
+      backdrop-blur-[10px] 
+      placeholder:text-[rgba(209, 209, 214, 1)]
       disabled:cursor-not-allowed disabled:opacity-50
-      shadow-[4px_4px_4px_0px_rgba(0,0,0,0.25)]
-      border-2 border-transparent
-      transition-all duration-200 ease-in-out
+      focus:ring-0
+      font-chakra
     `;
-
     const stateClasses = {
       default: `
         hover:shadow-[2px_2px_4px_0px_rgba(0,0,0,0.25)]
-        focus-visible:outline-none 
-        focus-visible:shadow-[0_0_8px_4px_rgba(236,72,153,0.5),_0_0_8px_4px_rgba(139,92,246,0.5)]
+        focus-visible:shadow-[4px_4px_14px_0px_var(--accent-pink)]
       `,
       invalid: `
-        !border-red-500 !shadow-[0_0_8px_4px_rgba(239,68,68,0.5)]
-        focus-visible:!ring-red-500
+        shadow-[4px_4px_14px_0px_var(--error)]
+        hover:shadow-[2px_2px_4px_0px_var(--error)]
       `,
       valid: `
-        !border-green-500 !shadow-[0_0_8px_4px_rgba(34,197,94,0.5)]
+        shadow-[4px_4px_14px_0px_var(--success)]
+        hover:shadow-[2px_2px_4px_0px_var(--success)]
       `,
     };
 
@@ -81,7 +80,6 @@ export const GlobalInput = React.forwardRef<HTMLInputElement, GlobalInputProps>(
       baseClasses,
       sizeClasses[size],
       fullWidth && "w-full",
-      // Apply conditional state classes
       {
         [stateClasses.invalid]: isInvalid,
         [stateClasses.valid]: isValid,
@@ -95,9 +93,9 @@ export const GlobalInput = React.forwardRef<HTMLInputElement, GlobalInputProps>(
         <Input ref={ref} className={combinedClasses} {...props} />
         {hintText && (
           <p
-            className={cn("mt-2 text-sm", {
-              "text-red-500": isInvalid,
-              "text-green-500": isValid,
+            className={cn("font-chakra mt-2 text-sm", {
+              "text-error": isInvalid,
+              "text-success": isValid,
             })}
           >
             {hintText}
