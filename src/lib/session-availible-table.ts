@@ -1,12 +1,24 @@
-// Generate 7 days starting from today
-export const generateWeekDays = () => {
-  const today = new Date();
+export const generateWeekDays = (startMonday?: Date) => {
+  let startDate: Date;
+
+  if (startMonday) {
+    startDate = new Date(startMonday);
+  } else {
+    // Find the Monday of current week
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Calculate days to get to Monday
+    startDate = new Date(today);
+    startDate.setDate(today.getDate() + daysToMonday);
+  }
+
   const days = [];
   const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
+  // Generate 7 days starting from Monday
   for (let i = 0; i < 7; i++) {
-    const date = new Date(today);
-    date.setDate(today.getDate() + i);
+    const date = new Date(startDate);
+    date.setDate(startDate.getDate() + i);
 
     const dayName = dayNames[date.getDay()];
     const day = date.getDate();
@@ -15,14 +27,13 @@ export const generateWeekDays = () => {
     days.push({
       dayName,
       display: `${dayName} ${day}/${month}`,
-      date: date,
+      date: new Date(date), // Create a new Date object to avoid reference issues
     });
   }
 
   return days;
 };
 
-// Generate time slots (15-minute intervals for 24 hours)
 export const generateTimeSlots = () => {
   const slots = [];
   for (let hour = 0; hour < 24; hour++) {

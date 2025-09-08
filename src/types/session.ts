@@ -13,4 +13,6 @@ export interface SessionTableBaseProps {
     time: string;
     variant: "FREE" | "TAKEN";
   }) => React.ReactNode;
+  startMonday?: Date; // Optional parameter for what Monday should be
+  onToggleProphetAvail?: (day: Date, time: string) => void;
 }
