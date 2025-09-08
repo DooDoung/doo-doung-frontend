@@ -19,6 +19,7 @@ export const MOCK_ACCOUNTS: TransactionAccount[] = [
     bank: BANKS[0], // BBL
     accountName: "Raksakul Hiranas",
     accountNumber: "123-4-56789-0",
+    isDefault: true,
   },
   {
     id: "2",
