@@ -76,7 +76,7 @@ export default function SessionTableBase({
                       variant === "prophet" && isAvailable
                         ? "bg-primary-500 border-primary-500 cursor-pointer"
                         : "border-neutral-gray"
-                    } ${variant === "prophet" ? "cursor-pointer hover:bg-gray-50" : ""}`}
+                    } ${variant === "prophet" ? "cursor-pointer hover:bg-gray-200" : ""}`}
                     onClick={() =>
                       variant === "prophet" &&
                       handleProphetCellClick(day.date, time)

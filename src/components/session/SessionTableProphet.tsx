@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+
 import { generateMockAvailableTimes } from "./mockProphetAvailData";
 import SessionTableBase from "./SessionTableBase";
 
