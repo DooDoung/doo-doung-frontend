@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import { Geist, Geist_Mono, Chakra_Petch } from "next/font/google";
+import { Chakra_Petch,Geist, Geist_Mono } from "next/font/google";
 
 import "../style/globals.css";
 
