@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { toast } from "react-hot-toast";
+import { AppToast } from "@/lib/app-toast";
 import { useRouter } from "next/router";
-
 import { DefaultLayout, GlobalButton, GlobalInput } from "@/components/globalComponents";
 
 export default function LoginPage() {
@@ -28,7 +27,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!username || !password) {
-      toast.error("Both username and password are required.");
+      AppToast.error("Both username and password are required.");
       return;
     }
 
@@ -37,14 +36,14 @@ export default function LoginPage() {
     try {
       const result = await mockLogin(username, password);
       if (result === "admin") {
-        toast.success("Welcome, Admin");
+        AppToast.success("Welcome, Admin");
         router.push("/admin/report");
       } else {
-        toast.success("Login successful");
+        AppToast.success("Login successful");
         router.push("/course");
       }
     } catch (err: any) {
-      toast.error(err);
+      AppToast.error(err);
     } finally {
       setLoading(false);
     }
