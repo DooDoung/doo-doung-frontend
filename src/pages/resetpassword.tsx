@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from "next/router";
 
@@ -8,8 +8,19 @@ import { AppToast } from "@/lib/app-toast";
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
   const router = useRouter();
+
   const isEmailInvalid = (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) ? true: false;
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (cooldown > 0) {
+      timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [cooldown]);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,11 +37,24 @@ export default function ResetPasswordPage() {
 
     setLoading(true);
     
-    /// send token to email
-    AppToast.success("A reset password has been sent to your email.");
-    AppToast.info("Reset already requested. Please check your email");
-
-    setLoading(false);
+    try {
+      /// send token to email
+      if (cooldown > 0) {
+        AppToast.info("Reset already requested. Please check your email");
+        return;
+      } else {
+        setCooldown(15);
+        /*** 
+         Send email by Sendgrid
+        ***/
+        AppToast.success("A reset password has been sent to your email.");
+        return;
+      }
+    } catch (err: any) {
+      AppToast.error(err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -42,8 +66,8 @@ export default function ResetPasswordPage() {
       <div className="relative flex flex-col min-h-[80vh] w-8/9 items-center justify-center bg-neutral-black/50 backdrop-blur-[10px] rounded-4xl shadow-[0_0_20px] shadow-neutral-white">
         <h3 className="absolute top-8 left-10 font-sanctuary text-xl lg:text-3xl xl:text-5xl text-neutral-white">Doodoung</h3>
 
-        <h2 className="mb-4 font-sanctuary text-neutral-white text-[42px] lg:text-5xl xl:text-[64px]">Forgot your password?</h2>
-        <a className="mb-6 font-chakra text-neutral-white text-base lg:text-lg xl:text-xl">Enter your email to reset your password.</a>
+        <h2 className="mb-4 font-sanctuary text-neutral-white text-[42px] lg:text-5xl xl:text-[64px] text-center">Forgot your password?</h2>
+        <a className="mb-6 font-chakra text-neutral-white text-sm lg:text-base xl:text-lg">Enter your email to reset your password.</a>
       
         <form onSubmit={handleSubmit} className="w-80">
           <div className="mb-6 font-chakra text-base lg:text-xl xl:text-2xl text-neutral-white">
@@ -69,7 +93,7 @@ export default function ResetPasswordPage() {
                 loading={loading}
                 loadingText="Logging in..."
                 onClick={handleSubmit}
-              >Send email</GlobalButton>
+              >{cooldown > 0 ? `Wait ${cooldown}s`:"Send email"}</GlobalButton>
             </div>
           </div>
         </form>
