@@ -47,7 +47,7 @@ export default function ResetPasswordPage() {
         AppToast.info("Reset already requested. Please check your email");
         return;
       } else {
-        setCooldown(15);
+        setCooldown(45);
         /*** 
          Send email by Sendgrid
         ***/
@@ -68,24 +68,25 @@ export default function ResetPasswordPage() {
       contentClassName="flex min-h-screen items-center justify-center bg-gradient-to-b from-neutral-black to-neutral-dark"
     >
       <div className="bg-neutral-black/50 shadow-neutral-white relative flex min-h-[80vh] w-8/9 flex-col items-center justify-center rounded-4xl shadow-[0_0_20px] backdrop-blur-[10px]">
-        <h3 className="font-sanctuary text-neutral-white absolute top-8 left-10 text-xl lg:text-3xl xl:text-5xl">
+        <h3 className="font-sanctuary text-neutral-white absolute top-8 left-10 text-5xl">
           Doodoung
         </h3>
 
-        <h2 className="font-sanctuary text-neutral-white mb-4 text-center text-[42px] lg:text-5xl xl:text-[64px]">
+        <h2 className="font-sanctuary text-neutral-white mb-4 text-center text-[64px]">
           Forgot your password?
         </h2>
-        <a className="font-chakra text-neutral-white mb-6 text-sm lg:text-base xl:text-lg">
+        <a className="font-chakra text-neutral-white mb-6 text-lg">
           Enter your email to reset your password.
         </a>
 
         <form onSubmit={handleSubmit} className="w-80">
-          <div className="font-chakra text-neutral-white mb-6 text-base lg:text-xl xl:text-2xl">
+          <div className="font-chakra text-neutral-white mb-6 text-2xl">
             <div className="mb-8">
               <label className="mb-2 block">Email</label>
               <GlobalInput
                 type="email"
-                className="w-full text-sm lg:text-base xl:text-xl"
+                size="lg"
+                className="w-full text-xl"
                 placeholder="example@gmail.com"
                 isInvalid={email == "" ? false : isEmailInvalid}
                 isValid={email == "" ? false : !isEmailInvalid}
@@ -105,7 +106,7 @@ export default function ResetPasswordPage() {
                 type="submit"
                 variant="primary"
                 size="lg"
-                className="text-l w-fit lg:text-xl xl:text-2xl"
+                className="w-fit text-xl"
                 loading={loading}
                 loadingText="Logging in..."
                 onClick={handleSubmit}
@@ -121,7 +122,7 @@ export default function ResetPasswordPage() {
             type="button"
             variant="secondary"
             size="sm"
-            className="w-fit text-base lg:text-lg xl:text-xl"
+            className="w-fit text-lg"
             loading={loading}
             icon={<ArrowLeft className="text-accent-pink" strokeWidth={3} />}
             onClick={() => router.push("/login")}

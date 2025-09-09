@@ -30,17 +30,17 @@ export default function ResetPasswordSuccessfulPage() {
       contentClassName="flex min-h-screen items-center justify-center bg-gradient-to-b from-neutral-black to-neutral-dark"
     >
       <div className="bg-neutral-black/50 shadow-neutral-white relative flex min-h-[80vh] w-8/9 flex-col items-center justify-center rounded-4xl shadow-[0_0_20px] backdrop-blur-[10px]">
-        <h3 className="font-sanctuary text-neutral-white absolute top-8 left-10 text-xl lg:text-3xl xl:text-5xl">
+        <h3 className="font-sanctuary text-neutral-white absolute top-8 left-10 text-5xl">
           Doodoung
         </h3>
 
-        <div className="text-neutral-white mb-2 h-32 w-32 lg:h-40 lg:w-40 xl:h-48 xl:w-48">
+        <div className="text-neutral-white mb-2 h-48 w-48">
           <CircleCheck className="h-full w-full" strokeWidth={0.5} />
         </div>
-        <h2 className="font-sanctuary text-neutral-white mb-4 text-center text-[42px] lg:text-5xl xl:text-[64px]">
+        <h2 className="font-sanctuary text-neutral-white mb-4 text-center text-[64px]">
           Successfully reset password
         </h2>
-        <a className="font-chakra text-neutral-white mb-10 text-sm lg:text-base xl:text-lg">
+        <a className="font-chakra text-neutral-white mb-10 text-lg">
           Your password has been changed successfully
         </a>
 
@@ -49,7 +49,7 @@ export default function ResetPasswordSuccessfulPage() {
             type="button"
             variant="primary"
             size="lg"
-            className="text-l w-fit lg:text-xl xl:text-2xl"
+            className="w-fit text-xl"
             loading={loading}
             loadingText="Logging in..."
             onClick={handleSubmit}
