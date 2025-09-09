@@ -61,9 +61,7 @@ export function DefaultLayout({
 }: DefaultLayoutProps) {
   return (
     <div className={cn("flex min-h-screen flex-col bg-white", className)}>
-      <Toaster 
-        position="top-right"
-      />
+      <Toaster position="top-right" />
       {/* Header */}
       {includeHeader && <Header {...headerProps} />}
 

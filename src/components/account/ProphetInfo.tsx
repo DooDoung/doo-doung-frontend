@@ -1,8 +1,11 @@
 import * as React from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import ProphetCard from "./ProphetCard";
+
 import { prophetFeat } from "@/constants/mock-account";
+
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+
+import ProphetCard from "./ProphetCard";
 
 const prophet = {
   firstName: "John",
