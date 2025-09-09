@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-import { DefaultLayout, GlobalButton, GlobalInput } from "@/components/globalComponents";
+import {
+  DefaultLayout,
+  GlobalButton,
+  GlobalInput,
+} from "@/components/globalComponents";
 import { AppToast } from "@/lib/app-toast";
 
 export default function LoginPage() {
@@ -56,15 +60,19 @@ export default function LoginPage() {
       includeHeader={false}
       contentClassName="flex min-h-screen items-center justify-center bg-gradient-to-b from-neutral-black to-neutral-dark"
     >
-      <div className="absolute flex flex-col min-h-[80vh] w-8/9 items-center justify-center bg-neutral-black/50 backdrop-blur-[10px] rounded-4xl shadow-[0_0_20px] shadow-neutral-white">
-        <h3 className="absolute top-8 left-10 font-sanctuary text-xl lg:text-3xl xl:text-5xl text-neutral-white">Doodoung</h3>
+      <div className="bg-neutral-black/50 shadow-neutral-white absolute flex min-h-[80vh] w-8/9 flex-col items-center justify-center rounded-4xl shadow-[0_0_20px] backdrop-blur-[10px]">
+        <h3 className="font-sanctuary text-neutral-white absolute top-8 left-10 text-xl lg:text-3xl xl:text-5xl">
+          Doodoung
+        </h3>
 
-        <h2 className="mb-6 font-sanctuary text-neutral-white text-[42px] lg:text-5xl xl:text-[64px] text-center">Log in to DooDoung</h2>
+        <h2 className="font-sanctuary text-neutral-white mb-6 text-center text-[42px] lg:text-5xl xl:text-[64px]">
+          Log in to DooDoung
+        </h2>
 
         <form onSubmit={handleSubmit} className="w-80">
-          <div className="mb-6 font-chakra text-base lg:text-xl xl:text-2xl text-neutral-white">
+          <div className="font-chakra text-neutral-white mb-6 text-base lg:text-xl xl:text-2xl">
             <div className="mb-4">
-              <label className="block mb-2">Username</label>
+              <label className="mb-2 block">Username</label>
               <GlobalInput
                 type="text"
                 className="w-full text-sm lg:text-base xl:text-xl"
@@ -74,7 +82,7 @@ export default function LoginPage() {
             </div>
 
             <div className="mb-8">
-              <label className="block mb-2">Password</label>
+              <label className="mb-2 block">Password</label>
               <GlobalInput
                 type="password"
                 className="w-full text-sm lg:text-base xl:text-xl"
@@ -88,14 +96,17 @@ export default function LoginPage() {
                 type="submit"
                 variant="primary"
                 size="lg"
-                className="w-fit text-l lg:text-xl xl:text-2xl"
+                className="text-l w-fit lg:text-xl xl:text-2xl"
                 loading={loading}
                 loadingText="Logging in..."
                 onClick={handleSubmit}
-              >Log in</GlobalButton></div>
+              >
+                Log in
+              </GlobalButton>
+            </div>
           </div>
 
-          <div className="flex justify-between font-chakra text-sm lg:text-base text-neutral-white">
+          <div className="font-chakra text-neutral-white flex justify-between text-sm lg:text-base">
             <a href="/resetpassword" className="">
               Forgot Password?
             </a>

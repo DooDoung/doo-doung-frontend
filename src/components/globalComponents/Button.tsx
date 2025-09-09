@@ -105,7 +105,7 @@ export function GlobalButton({
         </>
       ) : (
         <>
-          {icon && <span className="mr-1">{icon}</span>}
+          {icon && <span className="mr-2">{icon}</span>}
           {children}
         </>
       )}
