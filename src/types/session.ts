@@ -15,4 +15,5 @@ export interface SessionTableBaseProps {
   }) => React.ReactNode;
   startMonday?: Date; // Optional parameter for what Monday should be
   onToggleProphetAvail?: (day: Date, time: string) => void;
+  isEdit?: boolean; // Controls whether the table is in edit mode
 }
