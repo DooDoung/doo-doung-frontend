@@ -1,12 +1,14 @@
 import * as React from "react";
 
+import { mockReservation } from "@/constants/mock-account";
+import { mockReview } from "@/constants/mock-account";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Switch } from "../ui/switch";
+
 import ReservationSection from "./Reservation/ReservationSection";
 import ReviewSection from "./Review/ReviewSection";
-import { mockReservation } from "@/constants/mock-account";
-import { mockReview } from "@/constants/mock-account";
 
 const customer = {
   firstName: "John",

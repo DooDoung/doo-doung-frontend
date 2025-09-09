@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { AppToast } from "@/lib/app-toast";
 import { useRouter } from "next/router";
+
 import { DefaultLayout, GlobalButton, GlobalInput } from "@/components/globalComponents";
+import { AppToast } from "@/lib/app-toast";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
