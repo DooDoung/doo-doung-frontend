@@ -59,7 +59,6 @@ export const GlobalInput = React.forwardRef<HTMLInputElement, GlobalInputProps>(
       placeholder:text-[rgba(209, 209, 214, 1)]
       disabled:cursor-not-allowed disabled:opacity-50
       focus:ring-0
-      font-chakra
     `;
     const stateClasses = {
       default: `
@@ -93,7 +92,7 @@ export const GlobalInput = React.forwardRef<HTMLInputElement, GlobalInputProps>(
         <Input ref={ref} className={combinedClasses} {...props} />
         {hintText && (
           <p
-            className={cn("font-chakra mt-2 text-sm", {
+            className={cn("mt-2 text-sm", {
               "text-error": isInvalid,
               "text-success": isValid,
             })}

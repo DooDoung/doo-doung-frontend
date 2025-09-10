@@ -15,7 +15,9 @@ const geistMono = Geist_Mono({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <div
+      className={`font-chakra ${geistSans.variable} ${geistMono.variable} antialiased`}
+    >
       <Component {...pageProps} />
     </div>
   );

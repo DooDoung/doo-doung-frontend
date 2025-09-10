@@ -125,11 +125,10 @@ export function GlobalButton({
       size={size}
       disabled={disabled || loading}
       className={cn(
-        "font-chakra group",
+        "group cursor-pointer",
         fullWidth && "w-full",
         customVariants[mappedVariant],
         className,
-        "cursor-pointer",
         sizeClasses[size as keyof typeof sizeClasses],
       )}
       {...props}

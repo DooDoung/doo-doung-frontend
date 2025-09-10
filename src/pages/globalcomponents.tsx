@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import {
+  Checkbox,
   DefaultLayout,
   GlobalButton,
   GlobalInput,
@@ -16,9 +17,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Checkbox,
 } from "@/components/globalComponents";
-
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

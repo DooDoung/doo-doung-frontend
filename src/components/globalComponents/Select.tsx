@@ -4,9 +4,10 @@ import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import SimpleBar from "simplebar-react";
-import "simplebar-react/dist/simplebar.min.css";
 
 import { cn } from "@/lib/utils";
+
+import "simplebar-react/dist/simplebar.min.css";
 
 function Select({
   ...props
@@ -39,7 +40,7 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground font-chakra",
+        "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground",
         "aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
         "shadow-[4px_4px_14px_0px_#00000040] backdrop-blur-md",
         "bg-neutral-white/50 flex w-fit min-w-[10rem] items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none",
@@ -99,10 +100,7 @@ function SelectLabel({
   return (
     <SelectPrimitive.Label
       data-slot="select-label"
-      className={cn(
-        "text-muted-foreground font-chakra px-2 py-1.5 text-xs",
-        className,
-      )}
+      className={cn("text-muted-foreground px-2 py-1.5 text-xs", className)}
       {...props}
     />
   );
@@ -119,7 +117,7 @@ function SelectItem({
       className={cn(
         "focus:bg-secondary [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className,
-        "text-neutral-black font-chakra",
+        "text-neutral-black",
       )}
       {...props}
     >
