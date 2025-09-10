@@ -7,10 +7,10 @@ export {
 } from "./DefaultLayout";
 
 // Global UI Components
-export { Footer } from "./Footer";
-export { Header } from "./Header";
 export { GlobalButton } from "./Button";
 export { Checkbox } from "./Checkbox";
+export { Footer } from "./Footer";
+export { Header } from "./Header";
 export { GlobalInput } from "./Input";
 export {
   Select,
