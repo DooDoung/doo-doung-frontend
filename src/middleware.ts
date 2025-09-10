@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const AllowNoAuthPath = [
   "/login",
+  "/globalcomponents",
   "/register",
   "/resetpassword",
   "/course",
