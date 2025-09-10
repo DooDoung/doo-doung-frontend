@@ -22,6 +22,7 @@ export {
   SelectTrigger,
   SelectValue,
 } from "./Select";
+export { Checkbox } from "./Checkbox";
 
 // Re-export default
 export { default as Layout } from "./DefaultLayout";

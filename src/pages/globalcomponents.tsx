@@ -7,15 +7,18 @@ import {
   User,
 } from "lucide-react";
 
-import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
-import { GlobalInput } from "@/components/globalComponents";
 import {
+  DefaultLayout,
+  GlobalButton,
+  GlobalInput,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Checkbox,
 } from "@/components/globalComponents";
+
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -393,6 +396,99 @@ export default function GlobalComponentShowcase() {
                     <SelectItem value="20">Raticate</SelectItem>
                   </SelectContent>
                 </Select>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Global Checkbox Component Section */}
+          <section>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Settings className="h-5 w-5" />
+                  Global Select Component
+                </CardTitle>
+                <CardDescription>
+                  Enhanced select component with custom styling, states, and
+                  sizing options
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex flex-col gap-6">
+                  <div className="flex items-center gap-3">
+                    <Checkbox id="terms" />
+                    <Label htmlFor="terms">Accept terms and conditions</Label>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Checkbox id="terms-2" defaultChecked />
+                    <div className="grid gap-2">
+                      <Label htmlFor="terms-2">
+                        Accept terms and conditions
+                      </Label>
+                      <p className="text-muted-foreground text-sm">
+                        By clicking this checkbox, you agree to the terms and
+                        conditions.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Checkbox id="toggle" disabled />
+                    <Label htmlFor="toggle">Enable notifications</Label>
+                  </div>
+                  <Label className="hover:bg-accent/50 has-[[aria-checked=true]]:border-accent-violet has-[[aria-checked=true]]:bg-accent-pink/40 dark:has-[[aria-checked=true]]:border-accent-violet-900 dark:has-[[aria-checked=true]]:bg-accent-pink-950 flex items-start gap-3 rounded-lg border p-3">
+                    <Checkbox id="toggle-2" defaultChecked />
+                    <div className="grid gap-1.5 font-normal">
+                      <p className="text-sm leading-none font-medium">
+                        Enable notifications
+                      </p>
+                      <p className="text-muted-foreground text-sm">
+                        You can enable or disable notifications at any time.
+                      </p>
+                    </div>
+                  </Label>
+                </div>
+                <div className="space-y-3">
+                  <h4 className="text-sm font-semibold">Example Usage</h4>
+                  <pre className="bg-muted overflow-x-auto rounded-lg p-4 text-sm">
+                    {`#2
+<div className="flex items-start gap-3">
+<Checkbox id="terms-2" defaultChecked />
+<div className="grid gap-2">
+  <Label htmlFor="terms-2">
+    Accept terms and conditions
+  </Label>
+  <p className="text-muted-foreground text-sm">
+    By clicking this checkbox, you agree to the terms and
+    conditions.
+  </p>
+</div>
+
+#3
+<div className="flex items-start gap-3">
+  <Checkbox id="toggle" disabled />
+  <Label htmlFor="toggle">Enable notifications</Label>
+</div>
+
+#4
+<div className="flex items-start gap-3">
+    <Checkbox id="toggle" disabled />
+    <Label htmlFor="toggle">Enable notifications</Label>
+  </div>
+  <Label className="hover:bg-accent/50 has-[[aria-checked=true]]:border-accent-violet has-[[aria-checked=true]]:bg-accent-pink/40 dark:has-[[aria-checked=true]]:border-accent-violet-900 dark:has-[[aria-checked=true]]:bg-accent-pink-950 flex items-start gap-3 rounded-lg border p-3">
+    <Checkbox id="toggle-2" defaultChecked />
+    <div className="grid gap-1.5 font-normal">
+      <p className="text-sm leading-none font-medium">
+        Enable notifications
+      </p>
+      <p className="text-muted-foreground text-sm">
+        You can enable or disable notifications at any time.
+      </p>
+    </div>
+  </Label>
+</div>
+`}
+                  </pre>
+                </div>
               </CardContent>
             </Card>
           </section>
