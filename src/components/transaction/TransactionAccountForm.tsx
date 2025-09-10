@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Image from "next/image";
 import localFont from "next/font/local";
+import Image from "next/image";
 
 import GlobalButton from "@/components/globalComponents/Button";
 import { Input } from "@/components/ui/input";
@@ -49,30 +49,38 @@ export default function TransactionAccountForm({
       <h1 className={cn(sanctuaryOrnate.className, "text-4xl")}>{isEditMode ? "Edit Your Transaction Account" : "Create New Transaction Account"}</h1>
 
       <div className="flex items-center gap-16">
-        <div className="flex flex-col bg-gray-100 p-4 rounded-lg">
+        <div className="flex flex-col p-10 rounded-lg">
             <p className="m-2">Select Your Bank</p>
             <div className="grid grid-cols-4 gap-4">
-              {banks.map((bank) => (
-                <button
-                  type="button"
-                  key={bank.name}
-                  onClick={() => setSelectedBank(bank)}
-                  className={`p-2 rounded-full transition-opacity ${
-                    selectedBank?.name === bank.name
-                      ? "border-2 border-red-500 opacity-100"
-                      : `border border-gray-300 ${
-                          selectedBank ? "opacity-30 hover:opacity-100" : "opacity-100"
-                        }`
-                  }`}
-                >
-                  <Image src={bank.logoUrl} alt={bank.name} width={50} height={50} className="rounded-full" />
-                </button>
-              ))}
+              {banks.map((bank) => {
+                const isSelected = selectedBank?.name === bank.name;
+                return (
+                  <button
+                    type="button"
+                    key={bank.name}
+                    onClick={() => setSelectedBank(bank)}
+                    className={`rounded-full transition-all duration-150 ease-in-out active:scale-90 drop-shadow-[0_0_4px_rgba(255,255,255,0.75)] ${
+                      !isSelected && selectedBank ? "opacity-30 hover:opacity-100" : "opacity-100"
+                    }`}
+                  >
+                    <div
+                      className={cn(
+                        "rounded-full",
+                        isSelected && "bg-gradient-to-r from-[#DC7CA0] to-[#B389EC] p-0.5"
+                      )}
+                    >
+                      <div className={cn("p-1 rounded-full", !isSelected && "border border-gray-300")}>
+                        <Image src={bank.logoUrl} alt={bank.name} width={60} height={60} className="rounded-full" />
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
         </div>
 
-        <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
-            <div className="grid w-full max-w-sm items-center gap-1.5">
+        <div className="flex flex-col gap-4 p-10 rounded-lg">
+            <div className="grid w-full max-w-md items-center gap-1.5">
               <Label htmlFor="accountName">Account Name</Label>
               <Input
                 id="accountName"

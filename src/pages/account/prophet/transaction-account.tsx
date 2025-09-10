@@ -62,7 +62,7 @@ export default function ProphetTransactionAccountPage() {
             <CirclePlus className="inline-block mr-1" size={32} strokeWidth={1} />
           </button>
         </div>
-        <div className="border-2 bg-black rounded-lg gap-4 w-3/4 h-100 overflow-y-scroll justify-center items-center flex flex-col border border-black px-8 py-16">
+        <div className="border-2 bg-black rounded-lg gap-4 w-3/4 h-140 overflow-y-scroll justify-center items-center flex flex-col border border-black px-8 py-16">
           <div className="mt-32" />
           {accounts.map((account) => (
             <AccountListItem

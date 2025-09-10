@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { AppToast } from "@/lib/app-toast";
 import { MOCK_ACCOUNTS } from "@/constants/transaction";
+import { AppToast } from "@/lib/app-toast";
 import type { TransactionAccount } from "@/types/transaction";
 
 export type PageMode = "list" | "create" | "edit";
@@ -69,7 +69,7 @@ export function useTransactionAccounts() {
         acc.id === accountId ? { ...acc, isDefault: true } : { ...acc, isDefault: false }
       )
     );
-    alert("Default account set successfully");
+    AppToast.success("Default account updated!");
   };
 
   return {
