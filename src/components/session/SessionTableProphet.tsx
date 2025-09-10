@@ -1,59 +1,60 @@
+import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+
+import { generateMockAvailableTimes } from "./mockProphetAvailData";
 import SessionTableBase from "./SessionTableBase";
 
 export default function SessionTableProphet() {
-  // Mock available times with variance and max 4 hours continuous
-  const generateMockAvailableTimes = () => {
-    const timeBlocks = [
-      // Monday morning block (2 hours)
-      {
-        startDay: "MON",
-        startTime: "09:00",
-        endDay: "MON",
-        endTime: "11:00",
-      },
-      // Tuesday afternoon to evening (3.5 hours)
-      {
-        startDay: "TUE",
-        startTime: "14:00",
-        endDay: "TUE",
-        endTime: "17:30",
-      },
-      // Wednesday late evening to Thursday early morning (cross-day, 4 hours)
-      {
-        startDay: "WED",
-        startTime: "22:00",
-        endDay: "THU",
-        endTime: "02:00",
-      },
-      // Friday afternoon (2.5 hours)
-      {
-        startDay: "FRI",
-        startTime: "15:00",
-        endDay: "FRI",
-        endTime: "17:30",
-      },
-      // Saturday morning (3 hours)
-      {
-        startDay: "SAT",
-        startTime: "08:00",
-        endDay: "SAT",
-        endTime: "11:00",
-      },
-      // Sunday afternoon to evening (4 hours max)
-      {
-        startDay: "SUN",
-        startTime: "13:00",
-        endDay: "SUN",
-        endTime: "17:00",
-      },
-    ];
+  const [currentWeek, setCurrentWeek] = useState(0);
+  const [isEdit, setIsEdit] = useState(false);
+  const [weeklyAvailability, setWeeklyAvailability] = useState(() => {
+    const availability: Record<
+      number,
+      Array<{ day: string; time: string }>
+    > = {};
+    for (let week = 0; week < 4; week++) {
+      availability[week] = generateAvailableSlots(week);
+    }
+    return availability;
+  });
 
-    return timeBlocks;
+  const ToggleProphetAvail = (day: Date, time: string) => {
+    // Only allow toggle when in edit mode
+    if (!isEdit) {
+      return;
+    }
+
+    // TODO : API toggle here
+    console.log(day.toDateString(), time);
+
+    const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    const dayName = dayNames[day.getDay()];
+    setWeeklyAvailability((prev) => {
+      const currentAvailability = [...prev[currentWeek]];
+      const existingIndex = currentAvailability.findIndex(
+        (slot) => slot.day === dayName && slot.time === time,
+      );
+
+      if (existingIndex >= 0) {
+        currentAvailability.splice(existingIndex, 1);
+      } else {
+        currentAvailability.push({ day: dayName, time });
+      }
+
+      return {
+        ...prev,
+        [currentWeek]: currentAvailability,
+      };
+    });
   };
 
   // Convert time blocks to individual slots
-  const generateAvailableSlots = () => {
-    const timeBlocks = generateMockAvailableTimes();
+  function generateAvailableSlots(
+    weekIndex: number,
+  ): Array<{ day: string; time: string }> {
+    const timeBlocks = generateMockAvailableTimes(weekIndex);
     const slots: Array<{ day: string; time: string }> = [];
 
     timeBlocks.forEach((block) => {
@@ -121,9 +122,100 @@ export default function SessionTableProphet() {
     });
 
     return slots;
+  }
+
+  const getCurrentWeekMonday = () => {
+    const today = new Date();
+    const currentMonday = new Date(today);
+    const dayOfWeek = today.getDay();
+    const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+
+    currentMonday.setDate(today.getDate() + daysToMonday);
+    currentMonday.setDate(currentMonday.getDate() + currentWeek * 7);
+    return currentMonday;
   };
 
-  const availableSlots = generateAvailableSlots();
+  const applyToMonth = () => {
+    const currentWeekAvailability = weeklyAvailability[currentWeek];
+    const newAvailability = { ...weeklyAvailability };
 
-  return <SessionTableBase variant="prophet" availableSlots={availableSlots} />;
+    for (let week = 0; week < 4; week++) {
+      newAvailability[week] = [...currentWeekAvailability];
+    }
+
+    setWeeklyAvailability(newAvailability);
+    alert("Apply to Month");
+  };
+
+  // Pagination Table ----------------
+  const goToPreviousWeek = () => {
+    if (currentWeek > 0) {
+      setCurrentWeek(currentWeek - 1);
+    }
+  };
+
+  const goToNextWeek = () => {
+    if (currentWeek < 3) {
+      setCurrentWeek(currentWeek + 1);
+    }
+  };
+
+  const availableSlots = weeklyAvailability[currentWeek] || [];
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={goToPreviousWeek}
+            disabled={currentWeek === 0}
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Previous Week
+          </Button>
+
+          <span className="font-medium">Week {currentWeek + 1} of 4</span>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={goToNextWeek}
+            disabled={currentWeek === 3}
+          >
+            Next Week
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Button
+            variant={isEdit ? "destructive" : "secondary"}
+            size="sm"
+            onClick={() => setIsEdit(!isEdit)}
+          >
+            {isEdit ? "Stop Edit" : "Edit"}
+          </Button>
+
+          <Button
+            variant="default"
+            size="sm"
+            onClick={applyToMonth}
+            disabled={!isEdit}
+          >
+            Apply to Month
+          </Button>
+        </div>
+      </div>
+
+      <SessionTableBase
+        variant="prophet"
+        availableSlots={availableSlots}
+        startMonday={getCurrentWeekMonday()}
+        onToggleProphetAvail={ToggleProphetAvail}
+        isEdit={isEdit}
+      />
+    </div>
+  );
 }

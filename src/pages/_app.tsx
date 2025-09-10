@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Chakra_Petch, Geist, Geist_Mono } from "next/font/google";
 
 import "../style/globals.css";
 
@@ -15,7 +15,9 @@ const geistMono = Geist_Mono({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <div
+      className={`font-chakra ${geistSans.variable} ${geistMono.variable} antialiased`}
+    >
       <Component {...pageProps} />
     </div>
   );

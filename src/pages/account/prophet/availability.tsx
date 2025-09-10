@@ -1,5 +1,4 @@
 import { DefaultLayout } from "@/components/globalComponents";
-import AddProphetAvailSlot from "@/components/session/AddProphetAvailSlot";
 import SessionTableCustomer from "@/components/session/SessionTableCustomer";
 import SessionTableProphet from "@/components/session/SessionTableProphet";
 
@@ -8,9 +7,7 @@ export default function ProphetAvailabilityPage() {
     <DefaultLayout>
       <p>This is Prophet Availability page</p>
       <div className="flex w-full flex-col items-center justify-center">
-        <div>
-          <AddProphetAvailSlot />
-        </div>
+        <div></div>
         <div className="w-8/10 items-center self-center">
           <p className="my-3 text-xl">This is Prophet Availability </p>
           <SessionTableProphet />

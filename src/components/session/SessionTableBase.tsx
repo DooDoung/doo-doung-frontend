@@ -20,8 +20,11 @@ export default function SessionTableBase({
   availableSlots = [],
   bookingSlots = [],
   renderBookingSlot,
+  startMonday,
+  onToggleProphetAvail,
+  isEdit = false,
 }: SessionTableBaseProps) {
-  const weekDays = generateWeekDays();
+  const weekDays = generateWeekDays(startMonday);
   const timeSlots = generateTimeSlots();
 
   // Check if a slot is available (for prophet variant)
@@ -34,6 +37,13 @@ export default function SessionTableBase({
   // Get booking slot data (for customer variant)
   const getBookingSlot = (day: string, time: string) => {
     return bookingSlots.find((slot) => slot.day === day && slot.time === time);
+  };
+
+  // Handle prophet cell click
+  const handleProphetCellClick = (dayDate: Date, time: string) => {
+    if (variant === "prophet" && onToggleProphetAvail && isEdit) {
+      onToggleProphetAvail(dayDate, time);
+    }
   };
 
   return (
@@ -67,7 +77,18 @@ export default function SessionTableBase({
                       variant === "prophet" && isAvailable
                         ? "bg-primary-500 border-primary-500"
                         : "border-neutral-gray"
+                    } ${
+                      variant === "prophet" && isEdit
+                        ? "cursor-pointer hover:bg-gray-200"
+                        : variant === "prophet"
+                          ? "cursor-default"
+                          : ""
                     }`}
+                    onClick={() =>
+                      variant === "prophet" &&
+                      isEdit &&
+                      handleProphetCellClick(day.date, time)
+                    }
                   >
                     {variant === "customer" &&
                       bookingSlot &&
