@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { AppToast } from "@/lib/app-toast";
 import { MOCK_ACCOUNTS } from "@/constants/transaction";
 import type { TransactionAccount } from "@/types/transaction";
 
@@ -22,18 +23,21 @@ export function useTransactionAccounts() {
   };
 
   const handleCancel = () => {
+    if (mode === "create") {
+      AppToast.info("Account Creation Cancelled");
+    }
     setEditingAccount(undefined);
     setMode("list");
   };
 
   const handleCreateConfirm = (data: Omit<TransactionAccount, 'id'>) => {
-    alert("Creating account:" + JSON.stringify(data));
     const newAccount: TransactionAccount = {
       id: Date.now().toString(),
       ...data,
     };
     setAccounts(prevAccounts => [...prevAccounts, newAccount]);
     setMode("list");
+    AppToast.success("Account Created!");
   };
 
   const handleEditConfirm = (data: Omit<TransactionAccount, 'id'>) => {
@@ -45,13 +49,14 @@ export function useTransactionAccounts() {
     );
     setMode("list");
     setEditingAccount(undefined);
+    AppToast.success("Account Updated!");
   };
 
   const handleDelete = (id: string) => {
     setAccounts(prevAccounts => prevAccounts.filter(acc => acc.id !== id));
     setMode("list");
     setEditingAccount(undefined);
-    alert("Delete Success");
+    AppToast.info("Account Deleted!");
   };
 
   const handleSelectAccount = (accountId: string) => {

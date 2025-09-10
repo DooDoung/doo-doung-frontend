@@ -1,7 +1,18 @@
 import { useState } from "react";
 import Image from "next/image";
+import localFont from "next/font/local";
 
+import GlobalButton from "@/components/globalComponents/Button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { AppToast } from "@/lib/app-toast";
+import { cn } from "@/lib/utils";
 import type { Bank, TransactionAccount } from "@/types/transaction";
+
+const sanctuaryOrnate = localFont({
+  src: "../../../public/fonts/SanctuaryOrnate-PersonalUse.ttf",
+  display: "swap",
+});
 
 interface TransactionAccountFormProps {
   initialData?: TransactionAccount;
@@ -27,7 +38,7 @@ export default function TransactionAccountForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedBank || !accountName || !accountNumber) {
-      alert("Please fill all fields");
+      AppToast.error("Every field must be completed.");
       return;
     }
     onConfirm({ bank: selectedBank, accountName, accountNumber });
@@ -35,7 +46,7 @@ export default function TransactionAccountForm({
 
   return (
     <form className="flex flex-col gap-4 justify-center items-center" onSubmit={handleSubmit}>
-      <h1>{isEditMode ? "Edit Your Transaction Account" : "Create New Transaction Account"}</h1>
+      <h1 className={cn(sanctuaryOrnate.className, "text-4xl")}>{isEditMode ? "Edit Your Transaction Account" : "Create New Transaction Account"}</h1>
 
       <div className="flex items-center gap-16">
         <div className="flex flex-col bg-gray-100 p-4 rounded-lg">
@@ -46,10 +57,12 @@ export default function TransactionAccountForm({
                   type="button"
                   key={bank.name}
                   onClick={() => setSelectedBank(bank)}
-                  className={`p-2 rounded-full ${
+                  className={`p-2 rounded-full transition-opacity ${
                     selectedBank?.name === bank.name
-                      ? "border-2 border-red-500"
-                      : "border border-gray-300"
+                      ? "border-2 border-red-500 opacity-100"
+                      : `border border-gray-300 ${
+                          selectedBank ? "opacity-30 hover:opacity-100" : "opacity-100"
+                        }`
                   }`}
                 >
                   <Image src={bank.logoUrl} alt={bank.name} width={50} height={50} className="rounded-full" />
@@ -59,27 +72,25 @@ export default function TransactionAccountForm({
         </div>
 
         <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
-            <div className="flex gap-4">
-              <label htmlFor="accountName">Account Name</label>
-              <input
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="accountName">Account Name</Label>
+              <Input
                 id="accountName"
                 type="text"
                 value={accountName}
                 onChange={(e) => setAccountName(e.target.value)}
                 placeholder="Enter your Account Name"
-                className="border border-gray-300 p-2 rounded-md"
               />
             </div>
 
-            <div>
-              <label htmlFor="accountNumber">Account Number</label>
-              <input
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="accountNumber">Account Number</Label>
+              <Input
                 id="accountNumber"
                 type="text"
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
                 placeholder="Enter your Account Number"
-                className="border border-gray-300 p-2 rounded-md"
               />
             </div>
           </div>
@@ -88,16 +99,16 @@ export default function TransactionAccountForm({
 
       <div className="flex gap-4">
         {isEditMode && onDelete && (
-          <button className="border border-2 border-black px-4 py-2 rounded-md hover:bg-black hover:text-white hover:border-white" type="button" onClick={() => onDelete(initialData.id)}>
+          <GlobalButton variant="secondary" type="button" onClick={() => onDelete(initialData.id)}>
             Delete
-          </button>
+          </GlobalButton>
         )}
-        <button className="border border-2 border-black px-4 py-2 rounded-md hover:bg-black hover:text-white hover:border-white" type="button" onClick={onCancel}>
+        <GlobalButton variant="secondary" type="button" onClick={onCancel}>
             Cancel
-          </button>
-        <button className="border border-2 border-black px-4 py-2 rounded-md hover:bg-black hover:text-white hover:border-white" type="submit">
+          </GlobalButton>
+        <GlobalButton variant="primary" type="submit">
           Confirm
-        </button>
+        </GlobalButton>
       </div>
     </form>
   );
