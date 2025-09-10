@@ -706,7 +706,11 @@ import {
     </GlobalButton>
 
     <Select>
+<<<<<<< HEAD
       <SelectTrigger">
+=======
+      <SelectTrigger className="w-[180px]">
+>>>>>>> 2c901b96d40610e83ee84978d026a8addfeff46b
         <SelectValue placeholder="Select your pokemon" />
       </SelectTrigger>
       <SelectContent>

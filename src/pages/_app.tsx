@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Chakra_Petch, Geist, Geist_Mono } from "next/font/google";
 
 import "../style/globals.css";
 
@@ -10,6 +10,12 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const chakra = Chakra_Petch({
+  weight: "400",
+  variable: "--font-chakra",
   subsets: ["latin"],
 });
 

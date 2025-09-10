@@ -29,6 +29,7 @@ const AllowProphetPath = [
   "/account/edit-account",
   "/account/prophet/report",
   "/account/prophet/availability",
+  "/account/prophet/transaction-account",
   "/course/prophet",
   "/course/prophet/my-session",
   "/course/prophet/my-courses",
@@ -47,7 +48,7 @@ export function middleware(request: NextRequest) {
   const role: RoleType = "customer";
 
   // FOR DEV : if you don't want to check role, remove comment of this line
-  // return NextResponse.next();
+  return NextResponse.next();
 
   // Skip middleware for static files, API routes, Files with extensions, and Next.js internals
   if (
