@@ -3,6 +3,8 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+// todo: Ghost button, Secondary disable
+
 interface GlobalButtonProps
   extends Omit<React.ComponentProps<typeof Button>, "variant"> {
   /**
@@ -110,6 +112,13 @@ export function GlobalButton({
     ghost: ``,
   };
 
+  const sizeClasses: Record<string, string> = {
+    sm: "h-10 text-sm", // Increased from h-9 px-3
+    default: "h-11 text-base", // Increased from h-10 px-4
+    lg: "h-12 text-lg", // Increased from h-11 px-8
+    icon: "h-11 w-14", // Increased from h-10 w-10
+  };
+
   const mappedVariant = variant === "primary" ? "default" : variant;
   return (
     <Button
@@ -121,13 +130,14 @@ export function GlobalButton({
         customVariants[mappedVariant],
         className,
         "cursor-pointer",
+        sizeClasses[size as keyof typeof sizeClasses],
       )}
       {...props}
     >
       <div
         className={cn(
           containerStyle[mappedVariant],
-          "flex items-center justify-center rounded-sm",
+          "rounded-md-minus flex items-center justify-center",
         )}
       >
         {loading ? (
