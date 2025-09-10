@@ -13,12 +13,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const chakra = Chakra_Petch({
-  weight: "400",
-  variable: "--font-chakra",
-  subsets: ["latin"],
-});
-
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div
