@@ -1,4 +1,5 @@
 import { DefaultLayout } from "@/components/globalComponents";
+
 import { AppToast } from "../lib/app-toast";
 
 export default function TestToastPage() {

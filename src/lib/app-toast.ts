@@ -1,9 +1,9 @@
 import React from "react";
 import { toast } from "react-hot-toast";
 import {
-  CheckCircle2,
   AlertCircle,
   AlertTriangle,
+  CheckCircle2,
   Info,
 } from "lucide-react";
 

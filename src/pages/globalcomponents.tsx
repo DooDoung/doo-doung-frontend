@@ -7,9 +7,11 @@ import {
   User,
 } from "lucide-react";
 
-import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
-import { GlobalInput } from "@/components/globalComponents";
 import {
+  Checkbox,
+  DefaultLayout,
+  GlobalButton,
+  GlobalInput,
   Select,
   SelectContent,
   SelectItem,
@@ -338,7 +340,7 @@ export default function GlobalComponentShowcase() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <Select>
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger>
                     <SelectValue placeholder="Select your pokemon" />
                   </SelectTrigger>
                   <SelectContent>
@@ -364,6 +366,128 @@ export default function GlobalComponentShowcase() {
                     <SelectItem value="20">Raticate</SelectItem>
                   </SelectContent>
                 </Select>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="short" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">
+                      Bulbasauasdfasdfljaslkdjfr
+                    </SelectItem>
+                    <SelectItem value="2">Ivysaur</SelectItem>
+                    <SelectItem value="3">Venusaur</SelectItem>
+                    <SelectItem value="4">Charmander</SelectItem>
+                    <SelectItem value="5">Charmeleon</SelectItem>
+                    <SelectItem value="6">Charizard</SelectItem>
+                    <SelectItem value="7">Squirtle</SelectItem>
+                    <SelectItem value="8">Wartortle</SelectItem>
+                    <SelectItem value="9">Blastoise</SelectItem>
+                    <SelectItem value="10">Caterpie</SelectItem>
+                    <SelectItem value="11">Metapod</SelectItem>
+                    <SelectItem value="12">Butterfree</SelectItem>
+                    <SelectItem value="13">Weedle</SelectItem>
+                    <SelectItem value="14">Kakuna</SelectItem>
+                    <SelectItem value="15">Beedrill</SelectItem>
+                    <SelectItem value="16">Pidgey</SelectItem>
+                    <SelectItem value="17">Pidgeotto</SelectItem>
+                    <SelectItem value="18">Pidgeot</SelectItem>
+                    <SelectItem value="19">Rattata</SelectItem>
+                    <SelectItem value="20">Raticate</SelectItem>
+                  </SelectContent>
+                </Select>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Global Checkbox Component Section */}
+          <section>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Settings className="h-5 w-5" />
+                  Global Select Component
+                </CardTitle>
+                <CardDescription>
+                  Enhanced select component with custom styling, states, and
+                  sizing options
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex flex-col gap-6">
+                  <div className="flex items-center gap-3">
+                    <Checkbox id="terms" />
+                    <Label htmlFor="terms">Accept terms and conditions</Label>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Checkbox id="terms-2" defaultChecked />
+                    <div className="grid gap-2">
+                      <Label htmlFor="terms-2">
+                        Accept terms and conditions
+                      </Label>
+                      <p className="text-muted-foreground text-sm">
+                        By clicking this checkbox, you agree to the terms and
+                        conditions.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Checkbox id="toggle" disabled />
+                    <Label htmlFor="toggle">Enable notifications</Label>
+                  </div>
+                  <Label className="hover:bg-accent/50 has-[[aria-checked=true]]:border-accent-violet has-[[aria-checked=true]]:bg-accent-pink/40 dark:has-[[aria-checked=true]]:border-accent-violet-900 dark:has-[[aria-checked=true]]:bg-accent-pink-950 flex items-start gap-3 rounded-lg border p-3">
+                    <Checkbox id="toggle-2" defaultChecked />
+                    <div className="grid gap-1.5 font-normal">
+                      <p className="text-sm leading-none font-medium">
+                        Enable notifications
+                      </p>
+                      <p className="text-muted-foreground text-sm">
+                        You can enable or disable notifications at any time.
+                      </p>
+                    </div>
+                  </Label>
+                </div>
+                <div className="space-y-3">
+                  <h4 className="text-sm font-semibold">Example Usage</h4>
+                  <pre className="bg-muted overflow-x-auto rounded-lg p-4 text-sm">
+                    {`#2
+<div className="flex items-start gap-3">
+<Checkbox id="terms-2" defaultChecked />
+<div className="grid gap-2">
+  <Label htmlFor="terms-2">
+    Accept terms and conditions
+  </Label>
+  <p className="text-muted-foreground text-sm">
+    By clicking this checkbox, you agree to the terms and
+    conditions.
+  </p>
+</div>
+
+#3
+<div className="flex items-start gap-3">
+  <Checkbox id="toggle" disabled />
+  <Label htmlFor="toggle">Enable notifications</Label>
+</div>
+
+#4
+<div className="flex items-start gap-3">
+    <Checkbox id="toggle" disabled />
+    <Label htmlFor="toggle">Enable notifications</Label>
+  </div>
+  <Label className="hover:bg-accent/50 has-[[aria-checked=true]]:border-accent-violet has-[[aria-checked=true]]:bg-accent-pink/40 dark:has-[[aria-checked=true]]:border-accent-violet-900 dark:has-[[aria-checked=true]]:bg-accent-pink-950 flex items-start gap-3 rounded-lg border p-3">
+    <Checkbox id="toggle-2" defaultChecked />
+    <div className="grid gap-1.5 font-normal">
+      <p className="text-sm leading-none font-medium">
+        Enable notifications
+      </p>
+      <p className="text-muted-foreground text-sm">
+        You can enable or disable notifications at any time.
+      </p>
+    </div>
+  </Label>
+</div>
+`}
+                  </pre>
+                </div>
               </CardContent>
             </Card>
           </section>
@@ -582,7 +706,7 @@ import {
     </GlobalButton>
 
     <Select>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger">
         <SelectValue placeholder="Select your pokemon" />
       </SelectTrigger>
       <SelectContent>
