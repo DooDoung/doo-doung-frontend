@@ -5,20 +5,20 @@ import { mockReview } from "@/constants/mock-account";
 
 import {
   GlobalButton,
+  GlobalInput,
   SelectContent,
   SelectItem,
-  GlobalInput,
 } from "../globalComponents";
+import { Select, SelectTrigger, SelectValue } from "../ui/select";
 import { Switch } from "../ui/switch";
 
 import ReservationSection from "./Reservation/ReservationSection";
 import ReviewSection from "./Review/ReviewSection";
-import { Select, SelectTrigger, SelectValue } from "../ui/select";
 
 const customer = {
   firstName: "John",
   lastName: "Doe",
-  gender: "Male",
+  gender: "male",
   dob: "1995-07-20",
   tob: "08:30",
   zodiac: "Cancer",
@@ -29,7 +29,7 @@ const customer = {
 function CustomerInfo() {
   const [isPublic, setIsPublic] = React.useState(false);
   return (
-    <div className="flex max-h-[70vh] w-[70%] flex-col overflow-scroll p-4">
+    <div className="flex max-h-[70vh] w-[70%] flex-col overflow-y-auto p-4">
       <div className="flex flex-col items-center self-end font-light text-white uppercase">
         <p>{isPublic ? "Public" : "Private"}</p>
         <Switch
