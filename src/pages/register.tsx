@@ -1,9 +1,9 @@
-import { DefaultLayout } from "@/components/globalComponents";
+import { AuthLayout } from "@/components/globalComponents";
 
 export default function RegisterPage() {
   return (
-    <DefaultLayout>
+    <AuthLayout>
       <p>This is Register page</p>
-    </DefaultLayout>
+    </AuthLayout>
   );
 }
