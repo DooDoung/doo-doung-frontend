@@ -1,6 +1,7 @@
 interface Reservation {
   imageUrl: string;
-  rating: number;
+  score: number;
+  status: "confirmed" | "completed" | "failed";
   courseName: string;
   prophetName: string;
   price: number;
@@ -13,7 +14,7 @@ interface Review {
   userName: string;
   courseName: string;
   comment: string;
-  rating: number;
+  score: number;
   date: string;
   time: string;
 }

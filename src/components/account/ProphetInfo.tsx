@@ -1,11 +1,9 @@
 import * as React from "react";
 
+import ProphetCard from "@/components/account/ProphetCard";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { prophetFeat } from "@/constants/mock-account";
-
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-
-import ProphetCard from "./ProphetCard";
 
 const prophet = {
   firstName: "John",
@@ -18,7 +16,7 @@ const prophet = {
 
 function ProphetInfo() {
   return (
-    <div className="flex max-h-[70vh] w-[70%] flex-col overflow-scroll border-2 p-4">
+    <div className="flex max-h-[70vh] w-[70%] flex-col overflow-scroll p-4">
       <form
         id="prophetInfoForm"
         className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2"
