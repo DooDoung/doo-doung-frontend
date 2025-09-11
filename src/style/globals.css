@@ -154,3 +154,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.shadow-all-around {
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.7); /* h-shadow v-shadow blur-radius color */
+}
