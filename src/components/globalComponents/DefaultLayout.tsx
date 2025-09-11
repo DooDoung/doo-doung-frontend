@@ -62,7 +62,7 @@ export function DefaultLayout({
   return (
     <div
       className={cn(
-        "flex min-h-screen flex-col bg-white bg-[url('/images/background/BG_clound.webp')] bg-cover bg-center",
+        "flex min-h-screen flex-col bg-white bg-[url('/images/background/BG_cloud.webp')] bg-cover bg-center",
         className,
       )}
     >
