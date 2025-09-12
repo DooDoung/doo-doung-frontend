@@ -22,6 +22,7 @@ export default function SessionTableBase({
   renderBookingSlot,
   startMonday,
   onToggleProphetAvail,
+  isEdit = false,
 }: SessionTableBaseProps) {
   const weekDays = generateWeekDays(startMonday);
   const timeSlots = generateTimeSlots();
@@ -40,7 +41,7 @@ export default function SessionTableBase({
 
   // Handle prophet cell click
   const handleProphetCellClick = (dayDate: Date, time: string) => {
-    if (variant === "prophet" && onToggleProphetAvail) {
+    if (variant === "prophet" && onToggleProphetAvail && isEdit) {
       onToggleProphetAvail(dayDate, time);
     }
   };
@@ -74,11 +75,18 @@ export default function SessionTableBase({
                     key={dayIndex}
                     className={`relative h-12 border-1 bg-white p-1 text-center ${
                       variant === "prophet" && isAvailable
-                        ? "bg-primary-500 border-primary-500 cursor-pointer"
+                        ? "bg-primary-500 border-primary-500"
                         : "border-neutral-gray"
-                    } ${variant === "prophet" ? "cursor-pointer hover:bg-gray-200" : ""}`}
+                    } ${
+                      variant === "prophet" && isEdit
+                        ? "cursor-pointer hover:bg-gray-200"
+                        : variant === "prophet"
+                          ? "cursor-default"
+                          : ""
+                    }`}
                     onClick={() =>
                       variant === "prophet" &&
+                      isEdit &&
                       handleProphetCellClick(day.date, time)
                     }
                   >

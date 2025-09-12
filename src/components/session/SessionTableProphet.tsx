@@ -8,6 +8,7 @@ import SessionTableBase from "./SessionTableBase";
 
 export default function SessionTableProphet() {
   const [currentWeek, setCurrentWeek] = useState(0);
+  const [isEdit, setIsEdit] = useState(false);
   const [weeklyAvailability, setWeeklyAvailability] = useState(() => {
     const availability: Record<
       number,
@@ -20,6 +21,11 @@ export default function SessionTableProphet() {
   });
 
   const ToggleProphetAvail = (day: Date, time: string) => {
+    // Only allow toggle when in edit mode
+    if (!isEdit) {
+      return;
+    }
+
     // TODO : API toggle here
     console.log(day.toDateString(), time);
 
@@ -183,9 +189,24 @@ export default function SessionTableProphet() {
           </Button>
         </div>
 
-        <Button variant="default" size="sm" onClick={applyToMonth}>
-          Apply to Month
-        </Button>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant={isEdit ? "destructive" : "secondary"}
+            size="sm"
+            onClick={() => setIsEdit(!isEdit)}
+          >
+            {isEdit ? "Stop Edit" : "Edit"}
+          </Button>
+
+          <Button
+            variant="default"
+            size="sm"
+            onClick={applyToMonth}
+            disabled={!isEdit}
+          >
+            Apply to Month
+          </Button>
+        </div>
       </div>
 
       <SessionTableBase
@@ -193,6 +214,7 @@ export default function SessionTableProphet() {
         availableSlots={availableSlots}
         startMonday={getCurrentWeekMonday()}
         onToggleProphetAvail={ToggleProphetAvail}
+        isEdit={isEdit}
       />
     </div>
   );

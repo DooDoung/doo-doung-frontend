@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 
-import { DefaultLayout } from "@/components/globalComponents";
+import { AuthLayout } from "@/components/globalComponents";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -51,7 +51,7 @@ export default function LoginPage() {
   };
 
   return (
-    <DefaultLayout>
+    <AuthLayout>
       <div className="flex min-h-screen items-center justify-center">
         <form onSubmit={handleSubmit} className="w-80">
           <h1 className="text-center text-2xl font-semibold">Login</h1>
@@ -90,6 +90,6 @@ export default function LoginPage() {
           </div>
         </form>
       </div>
-    </DefaultLayout>
+    </AuthLayout>
   );
 }
