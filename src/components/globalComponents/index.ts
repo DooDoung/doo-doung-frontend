@@ -10,6 +10,7 @@ export {
 export { GlobalButton } from "./Button";
 export { Checkbox } from "./Checkbox";
 export { Footer } from "./Footer";
+export { GlassContainer } from "./GlassContainer";
 export { Header } from "./Header";
 export { GlobalInput } from "./Input";
 export {
