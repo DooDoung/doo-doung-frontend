@@ -1,6 +1,5 @@
 "use client";
 import { CirclePlus } from "lucide-react";
-import localFont from "next/font/local";
 
 import { DefaultLayout } from "@/components/globalComponents";
 import GlobalButton from "@/components/globalComponents/Button";
@@ -70,7 +69,7 @@ export default function ProphetTransactionAccountPage() {
               />
             </button>
           </div>
-          <div className="flex w-full max-h-96 flex-col items-center gap-4 overflow-y-auto px-4 mt-4">
+          <div className="flex w-[90vh] h-[45vh] flex-col items-center gap-4 overflow-y-auto px-4 mt-4">
             {accounts.map((account) => (
               <AccountListItem
                 key={account.id}

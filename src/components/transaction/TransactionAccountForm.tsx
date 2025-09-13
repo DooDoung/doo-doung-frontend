@@ -50,7 +50,7 @@ export default function TransactionAccountForm({
         {isEditMode ? "Edit Your Transaction Account" : "Create New Transaction Account"}
       </h1>
 
-      <div className="flex items-center gap-16">
+      <div className="flex h-[40vh] items-center gap-16">
         <div className="flex flex-col p-10 rounded-lg">
             <p className="m-2 text-white">Select Your Bank</p>
             <div className="grid grid-cols-4 gap-4">
@@ -85,7 +85,7 @@ export default function TransactionAccountForm({
               <Label htmlFor="accountName" className="text-white text-xl">Account Name</Label>
               <Input
                 id="accountName"
-                className="text-lg h-12 w-80 px-4" 
+                className="text-lg h-[8vh] w-[40vh] px-4" 
                 type="text"
                 value={accountName}
                 onChange={(e) => setAccountName(e.target.value)}
@@ -97,7 +97,7 @@ export default function TransactionAccountForm({
               <Label htmlFor="accountNumber" className="text-white text-xl">Account Number</Label>
               <Input
                 id="accountNumber"
-                className="text-lg h-12 w-80 px-4" 
+                className="text-lg h-[8vh] w-[40vh] px-4" 
                 type="text"
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
