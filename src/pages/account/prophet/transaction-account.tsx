@@ -59,7 +59,7 @@ export default function ProphetTransactionAccountPage() {
     return (
       // 4. Wrap the default view content in the GlassContainer
       <GlassContainer>
-        <div className="flex flex-col items-center gap-2 p-8">
+        <div className="flex flex-col items-center gap-2 p-8 -mt-12">
           <div className="flex items-center gap-2">
             <h1 className="font-sanctuary text-white text-4xl">Choose Your Default Account</h1>
             <button className="cursor-pointer" onClick={handleStartCreate}>
@@ -70,7 +70,7 @@ export default function ProphetTransactionAccountPage() {
               />
             </button>
           </div>
-          <div className="flex w-full max-h-96 flex-col items-center gap-4 overflow-y-auto px-4">
+          <div className="flex w-full max-h-96 flex-col items-center gap-4 overflow-y-auto px-4 mt-4">
             {accounts.map((account) => (
               <AccountListItem
                 key={account.id}
@@ -83,6 +83,7 @@ export default function ProphetTransactionAccountPage() {
           </div>
           <GlobalButton
             variant="primary"
+            className="mt-4"
             onClick={() => {
               if (selectedAccountId) {
                 handleSetDefault(selectedAccountId);
