@@ -1,13 +1,13 @@
 "use client";
 import { CirclePlus } from "lucide-react";
+import localFont from 'next/font/local';
+
 import { DefaultLayout } from "@/components/globalComponents";
 import GlobalButton from "@/components/globalComponents/Button";
 import { AccountListItem } from "@/components/transaction/AccountListItem";
 import TransactionAccountForm from "@/components/transaction/TransactionAccountForm";
 import { BANKS } from "@/constants/transaction";
 import { useTransactionAccounts } from "@/hooks/useTransactionAccounts";
-
-import localFont from 'next/font/local';
 import { cn } from "@/lib/utils";
 
 const sanctuaryOrnate = localFont({
