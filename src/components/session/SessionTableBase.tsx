@@ -1,19 +1,12 @@
-import React from "react";
+"use client";
 
+import React, { useMemo } from "react";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import {
-  generateTimeSlots,
-  generateWeekDays,
-} from "@/lib/session-availible-table";
+import { generateTimeSlots, generateWeekDays } from "@/lib/session-availible-table";
 import { SessionTableBaseProps } from "@/types/session";
+import AvailabilityTableCell from "./AvailabilityTableCell";
 
 export default function SessionTableBase({
   variant = "base",
@@ -24,79 +17,51 @@ export default function SessionTableBase({
   onToggleProphetAvail,
   isEdit = false,
 }: SessionTableBaseProps) {
-  const weekDays = generateWeekDays(startMonday);
-  const timeSlots = generateTimeSlots();
+  
+  const weekDays = useMemo(() => generateWeekDays(startMonday), [startMonday]);
+  const timeSlots = useMemo(() => generateTimeSlots(), []);
 
-  // Check if a slot is available (for prophet variant)
-  const isSlotAvailable = (day: string, time: string) => {
-    return availableSlots.some(
-      (slot) => slot.day === day && slot.time === time,
-    );
-  };
+  const availableSlotsSet = useMemo(() => 
+    new Set(availableSlots.map(slot => `${slot.day}-${slot.time}`))
+  , [availableSlots]);
 
-  // Get booking slot data (for customer variant)
-  const getBookingSlot = (day: string, time: string) => {
-    return bookingSlots.find((slot) => slot.day === day && slot.time === time);
-  };
-
-  // Handle prophet cell click
-  const handleProphetCellClick = (dayDate: Date, time: string) => {
-    if (variant === "prophet" && onToggleProphetAvail && isEdit) {
-      onToggleProphetAvail(dayDate, time);
-    }
-  };
+  const bookingSlotsMap = useMemo(() => 
+    new Map(bookingSlots.map(slot => [`${slot.day}-${slot.time}`, slot]))
+  , [bookingSlots]);
 
   return (
-    <div className="relative h-130 w-full overflow-scroll rounded-2xl bg-gray-100">
+    <div className="custom-scrollbar relative h-[60vh] w-full overflow-y-auto rounded-2xl bg-gray-100">
       <Table>
         <TableCaption>Prophet available time slot</TableCaption>
         <TableHeader className="sticky top-0">
           <TableRow>
-            <TableHead className="sticky left-0 w-[100px]">Time</TableHead>
-            {weekDays.map((day, index) => (
-              <TableHead key={index} className="min-w-[120px] text-center">
+            <TableHead className="sticky left-0 w-[100px] bg-white">Time</TableHead>
+            {weekDays.map((day) => (
+              <TableHead key={day.dayName} className="min-w-[120px] text-center">
                 {day.display}
               </TableHead>
             ))}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {timeSlots.map((time, timeIndex) => (
-            <TableRow key={timeIndex} className="border-black">
-              <TableCell className="border-neutral-gray sticky left-0 border-r border-l bg-white font-medium">
+          {timeSlots.map((time) => (
+            <TableRow key={time} className="border-black">
+              <TableCell className="sticky left-0 border-r border-l bg-white font-medium">
                 {time}
               </TableCell>
-              {weekDays.map((day, dayIndex) => {
-                const isAvailable = isSlotAvailable(day.dayName, time);
-                const bookingSlot = getBookingSlot(day.dayName, time);
-
-                return (
-                  <TableCell
-                    key={dayIndex}
-                    className={`relative h-12 border-1 bg-white p-1 text-center ${
-                      variant === "prophet" && isAvailable
-                        ? "bg-primary-500 border-primary-500"
-                        : "border-neutral-gray"
-                    } ${
-                      variant === "prophet" && isEdit
-                        ? "cursor-pointer hover:bg-gray-200"
-                        : variant === "prophet"
-                          ? "cursor-default"
-                          : ""
-                    }`}
-                    onClick={() =>
-                      variant === "prophet" &&
-                      isEdit &&
-                      handleProphetCellClick(day.date, time)
-                    }
-                  >
-                    {variant === "customer" &&
-                      bookingSlot &&
-                      renderBookingSlot &&
-                      renderBookingSlot(bookingSlot)}
-                  </TableCell>
-                );
-              })}
+              {weekDays.map((day) => (
+                <AvailabilityTableCell
+                  key={day.dayName}
+                  day={day}
+                  time={time}
+                  variant={variant}
+                  isAvailable={availableSlotsSet.has(`${day.dayName}-${time}`)}
+                  isEdit={isEdit}
+                  bookingSlot={bookingSlotsMap.get(`${day.dayName}-${time}`)}
+                  renderBookingSlot={renderBookingSlot}
+                  onClick={onToggleProphetAvail!}
+                />
+              ))}
             </TableRow>
           ))}
         </TableBody>
