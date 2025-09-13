@@ -3,7 +3,6 @@ import { CirclePlus } from "lucide-react";
 
 import { DefaultLayout } from "@/components/globalComponents";
 import GlobalButton from "@/components/globalComponents/Button";
-// 1. Import the GlassContainer component
 import { GlassContainer } from "@/components/globalComponents/GlassContainer";
 import { AccountListItem } from "@/components/transaction/AccountListItem";
 import TransactionAccountForm from "@/components/transaction/TransactionAccountForm";
@@ -29,7 +28,6 @@ export default function ProphetTransactionAccountPage() {
   const renderContent = () => {
     if (mode === "create") {
       return (
-        // 2. Wrap the form in the GlassContainer
         <GlassContainer>
           <TransactionAccountForm
             banks={BANKS}
@@ -42,7 +40,6 @@ export default function ProphetTransactionAccountPage() {
 
     if (mode === "edit") {
       return (
-        // 3. Wrap the form in the GlassContainer
         <GlassContainer>
           <TransactionAccountForm
             initialData={editingAccount}
@@ -56,7 +53,6 @@ export default function ProphetTransactionAccountPage() {
     }
 
     return (
-      // 4. Wrap the default view content in the GlassContainer
       <GlassContainer>
         <div className="flex flex-col items-center gap-2 p-8 -mt-12">
           <div className="flex items-center gap-2">

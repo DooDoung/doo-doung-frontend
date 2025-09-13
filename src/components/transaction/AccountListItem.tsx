@@ -25,7 +25,6 @@ export function AccountListItem({
 
     return (
         <div
-            // 👇 การเปลี่ยนแปลงทั้งหมดอยู่ที่นี่
             className={`
                 p-4 w-full flex items-center justify-between cursor-pointer 
                 transition-all rounded-[25px] border-[3px] font-chakra
@@ -37,23 +36,22 @@ export function AccountListItem({
             `}
             onClick={() => onSelect(account.id)}
         >
-            <div className="flex items-center min-w-0"> {/* เพิ่ม min-w-0 เพื่อให้ข้อความตัดได้สวยงาม */}
+            <div className="flex items-center min-w-0"> 
                 <Image
                     src={account.bank.logoUrl}
                     alt={`${account.bank.name} logo`}
                     width={60}
                     height={60}
-                    className="mr-4 flex-shrink-0" // เพิ่ม flex-shrink-0 เพื่อไม่ให้รูปย่อ
+                    className="mr-4 flex-shrink-0"
                 />
-                <div className="min-w-0"> {/* เพิ่ม min-w-0 อีกชั้น */}
-                    <div className="font-chakra font-semibold truncate">{account.accountName}</div> {/* เพิ่ม truncate */}
+                <div className="min-w-0"> 
+                    <div className="font-chakra font-semibold truncate">{account.accountName}</div> 
                     <div className="font-chakra text-md text-gray-500">{account.accountNumber}</div>
                 </div>
             </div>
 
-            <div className="flex items-center flex-shrink-0 pl-4"> {/* เพิ่ม flex-shrink-0 และ padding left */}
+            <div className="flex items-center flex-shrink-0 pl-4"> 
                 {isDefault && (
-                    // (แนะนำ) ปรับปุ่ม Default ให้ยืดหยุ่นด้วย padding แทน w, h คงที่
                     <div className="font-chakra text-sm font-semibold mr-4 border-2 border-[#DC7CA0] rounded-[25px] bg-white text-[#DC7CA0] px-4 py-1 flex items-center justify-center">
                         Default
                     </div>

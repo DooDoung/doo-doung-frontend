@@ -1,5 +1,4 @@
 import { useState } from "react";
-// The localFont import is no longer needed for the h1 tag
 import Image from "next/image";
 
 import GlobalButton from "@/components/globalComponents/Button";
