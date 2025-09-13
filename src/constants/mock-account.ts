@@ -114,11 +114,4 @@ const mockReview: Review[] = [
   },
 ];
 
-const prophetFeat = [
-  "Transaction Account",
-  "Financial",
-  "Customer Report",
-  "Availability Calendar",
-];
-
-export { mockReservation, mockReview, prophetFeat };
+export { mockReservation, mockReview };

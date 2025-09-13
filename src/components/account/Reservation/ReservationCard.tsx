@@ -28,7 +28,7 @@ function ReservationCard({
         alt={courseName}
         className="mr-4 h-full w-30 rounded-3xl object-cover"
       />
-      <div className="text-neutral-black flex w-full flex-col p-4">
+      <div className="text-neutral-black flex w-full flex-col py-4 pr-4">
         <div className="flex justify-between">
           <StarRating score={score} className="h-5 w-5" />
           <span

@@ -8,8 +8,8 @@ import {
   GlobalInput,
   SelectContent,
   SelectItem,
-} from "../globalComponents";
-import { Select, SelectTrigger, SelectValue } from "../ui/select";
+} from "@/components/globalComponents";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "../ui/switch";
 
 import ReservationSection from "./Reservation/ReservationSection";
@@ -18,7 +18,7 @@ import ReviewSection from "./Review/ReviewSection";
 const customer = {
   firstName: "John",
   lastName: "Doe",
-  gender: "male",
+  gender: "Male",
   dob: "1995-07-20",
   tob: "08:30",
   zodiac: "Cancer",
@@ -74,7 +74,7 @@ function CustomerInfo() {
           <label className="mb-1 block font-light text-white uppercase">
             Gender
           </label>
-          <Select value={customer.gender} disabled>
+          <Select value={customer.gender.toLowerCase()} disabled>
             <SelectTrigger className="w-full cursor-not-allowed bg-white">
               <SelectValue placeholder="Select" />
             </SelectTrigger>

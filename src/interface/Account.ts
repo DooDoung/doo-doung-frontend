@@ -18,3 +18,16 @@ interface Review {
   date: string;
   time: string;
 }
+
+interface ProphetFeat {
+  name: string;
+  imageUrl: string;
+  goTo?: string;
+}
+
+interface TransactionAccount {
+  accountNumber: string;
+  accountName: string;
+  imageUrl: string;
+  bankName: string;
+}
