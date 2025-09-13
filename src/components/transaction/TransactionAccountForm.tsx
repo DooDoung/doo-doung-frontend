@@ -16,8 +16,8 @@ const sanctuaryOrnate = localFont({
 
 interface TransactionAccountFormProps {
   initialData?: TransactionAccount;
-  banks: Bank[]; 
-  onConfirm: (data: Omit<TransactionAccount, 'id'>) => void;
+  banks: Bank[];
+  onConfirm: (data: Omit<TransactionAccount, "id">) => void;
   onCancel: () => void;
   onDelete?: (id: string) => void;
 }
@@ -29,9 +29,15 @@ export default function TransactionAccountForm({
   onCancel,
   onDelete,
 }: TransactionAccountFormProps) {
-  const [selectedBank, setSelectedBank] = useState<Bank | null>(initialData?.bank || null);
-  const [accountName, setAccountName] = useState(initialData?.accountName || "");
-  const [accountNumber, setAccountNumber] = useState(initialData?.accountNumber || "");
+  const [selectedBank, setSelectedBank] = useState<Bank | null>(
+    initialData?.bank || null,
+  );
+  const [accountName, setAccountName] = useState(
+    initialData?.accountName || "",
+  );
+  const [accountNumber, setAccountNumber] = useState(
+    initialData?.accountNumber || "",
+  );
 
   const isEditMode = !!initialData;
 
@@ -103,7 +109,6 @@ export default function TransactionAccountForm({
             </div>
           </div>
         </div>
-
 
       <div className="flex gap-4">
         {isEditMode && onDelete && (

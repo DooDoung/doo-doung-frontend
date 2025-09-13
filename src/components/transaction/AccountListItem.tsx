@@ -10,13 +10,18 @@ interface AccountListItemProps {
   onEdit: (account: TransactionAccount) => void;
 }
 
-export function AccountListItem({ account, isSelected, onSelect, onEdit }: AccountListItemProps) {
-    const isDefault = account.isDefault;
+export function AccountListItem({
+  account,
+  isSelected,
+  onSelect,
+  onEdit,
+}: AccountListItemProps) {
+  const isDefault = account.isDefault;
 
-    const handleEditClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        onEdit(account);
-    };
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onEdit(account);
+  };
 
     return (
         <div

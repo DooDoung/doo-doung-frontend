@@ -9,9 +9,13 @@ export type PageMode = "list" | "create" | "edit";
 export function useTransactionAccounts() {
   const [mode, setMode] = useState<PageMode>("list");
   const [accounts, setAccounts] = useState<TransactionAccount[]>(MOCK_ACCOUNTS);
-  const [editingAccount, setEditingAccount] = useState<TransactionAccount | undefined>(undefined);
+  const [editingAccount, setEditingAccount] = useState<
+    TransactionAccount | undefined
+  >(undefined);
 
-  const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null);
+  const [selectedAccountId, setSelectedAccountId] = useState<string | null>(
+    null,
+  );
 
   const handleStartCreate = () => {
     setMode("create");
@@ -35,17 +39,17 @@ export function useTransactionAccounts() {
       id: Date.now().toString(),
       ...data,
     };
-    setAccounts(prevAccounts => [...prevAccounts, newAccount]);
+    setAccounts((prevAccounts) => [...prevAccounts, newAccount]);
     setMode("list");
     AppToast.success("Account Created!");
   };
 
-  const handleEditConfirm = (data: Omit<TransactionAccount, 'id'>) => {
+  const handleEditConfirm = (data: Omit<TransactionAccount, "id">) => {
     if (!editingAccount) return;
-    setAccounts(prevAccounts => 
-      prevAccounts.map(acc => 
-        acc.id === editingAccount.id ? { ...acc, ...data } : acc
-      )
+    setAccounts((prevAccounts) =>
+      prevAccounts.map((acc) =>
+        acc.id === editingAccount.id ? { ...acc, ...data } : acc,
+      ),
     );
     setMode("list");
     setEditingAccount(undefined);
@@ -53,7 +57,7 @@ export function useTransactionAccounts() {
   };
 
   const handleDelete = (id: string) => {
-    setAccounts(prevAccounts => prevAccounts.filter(acc => acc.id !== id));
+    setAccounts((prevAccounts) => prevAccounts.filter((acc) => acc.id !== id));
     setMode("list");
     setEditingAccount(undefined);
     AppToast.info("Account Deleted!");
@@ -64,10 +68,12 @@ export function useTransactionAccounts() {
   };
 
   const handleSetDefault = (accountId: string) => {
-    setAccounts(prevAccounts =>
-      prevAccounts.map(acc =>
-        acc.id === accountId ? { ...acc, isDefault: true } : { ...acc, isDefault: false }
-      )
+    setAccounts((prevAccounts) =>
+      prevAccounts.map((acc) =>
+        acc.id === accountId
+          ? { ...acc, isDefault: true }
+          : { ...acc, isDefault: false },
+      ),
     );
     AppToast.success("Default account updated!");
   };

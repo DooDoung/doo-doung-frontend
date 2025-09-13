@@ -59,7 +59,11 @@ export default function ProphetTransactionAccountPage() {
         <div className="flex gap-4 items-center">
           <h1 className={cn(sanctuaryOrnate.className, "text-4xl")}>Choose Your Default Account</h1>
           <button className="cursor-pointer" onClick={handleStartCreate}>
-            <CirclePlus className="inline-block mr-1" size={32} strokeWidth={1} />
+            <CirclePlus
+              className="mr-1 inline-block"
+              size={32}
+              strokeWidth={1}
+            />
           </button>
         </div>
         <div className="border-2 bg-black rounded-lg gap-4 w-3/4 h-140 overflow-y-scroll justify-center items-center flex flex-col border border-black px-8 py-16">
@@ -89,9 +93,5 @@ export default function ProphetTransactionAccountPage() {
     );
   };
 
-  return (
-    <DefaultLayout>
-      {renderContent()}
-    </DefaultLayout>
-  );
+  return <DefaultLayout>{renderContent()}</DefaultLayout>;
 }
