@@ -1,4 +1,5 @@
 export const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+export const weekdayNames = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
 export const generateWeekDays = (startMonday?: Date) => {
   let startDate: Date;
@@ -15,7 +16,6 @@ export const generateWeekDays = (startMonday?: Date) => {
   }
 
   const days = [];
-  const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
   // Generate 7 days starting from Monday
   for (let i = 0; i < 7; i++) {

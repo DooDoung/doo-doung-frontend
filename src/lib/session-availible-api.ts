@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import { dayNames, weekdayNames } from "./session-availible-table";
 
 export const ToggleProphetAvail = async (
   day: Date,
@@ -14,7 +15,6 @@ export const ToggleProphetAvail = async (
     return;
   }
 
-  const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const dayName = dayNames[day.getDay()];
 
   // Check if slot currently exists
@@ -49,12 +49,6 @@ export const ToggleProphetAvail = async (
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
-    console.log(
-      `${updateType === "add" ? "Added" : "Removed"} availability:`,
-      day.toDateString(),
-      time,
-    );
 
     // Update local state after successful API call
     setWeeklyAvailability((prev) => {
@@ -109,16 +103,10 @@ export const applyToMonth = async (
       // STEP 1: Delete ALL existing slots in this week (clear everything first)
       weekAvailability.forEach((slot) => {
         // Calculate the actual date for this slot
-        const dayIndex = [
-          "MON",
-          "TUE",
-          "WED",
-          "THU",
-          "FRI",
-          "SAT",
-          "SUN",
-        ].indexOf(slot.day);
+        const dayIndex = weekdayNames.indexOf(slot.day);
+
         const slotDate = new Date(targetWeekMonday);
+
         slotDate.setDate(slotDate.getDate() + dayIndex);
 
         itemsToUpdate.push({
@@ -131,15 +119,7 @@ export const applyToMonth = async (
       // STEP 2: Add all slots from current week to this week
       currentWeekAvailability.forEach((slot) => {
         // Calculate the actual date for this slot in the target week
-        const dayIndex = [
-          "MON",
-          "TUE",
-          "WED",
-          "THU",
-          "FRI",
-          "SAT",
-          "SUN",
-        ].indexOf(slot.day);
+        const dayIndex = weekdayNames.indexOf(slot.day);
         const slotDate = new Date(targetWeekMonday);
         slotDate.setDate(slotDate.getDate() + dayIndex);
 
@@ -150,8 +130,6 @@ export const applyToMonth = async (
         });
       });
     }
-
-    console.log(itemsToUpdate);
 
     // Make API call if there are items to update
     if (itemsToUpdate.length > 0) {
@@ -171,10 +149,6 @@ export const applyToMonth = async (
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      console.log(
-        `Applied ${itemsToUpdate.length} availability changes to all weeks`,
-      );
     }
 
     // Update local state after successful API call

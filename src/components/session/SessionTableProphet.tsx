@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { applyToMonth, ToggleProphetAvail } from "@/lib/session-availible-api";
+import { dayNames, getCurrentWeekMonday } from "@/lib/session-availible-table";
 
 import SessionTableBase from "./SessionTableBase";
-
-import { dayNames, getCurrentWeekMonday } from "@/lib/session-availible-table";
-import toast from "react-hot-toast";
-import { applyToMonth, ToggleProphetAvail } from "@/lib/session-availible-api";
 
 export default function SessionTableProphet() {
   const [currentWeek, setCurrentWeek] = useState(0);
