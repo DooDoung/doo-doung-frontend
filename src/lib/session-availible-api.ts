@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+
 import { dayNames, weekdayNames } from "./session-availible-table";
 
 export const ToggleProphetAvail = async (
@@ -68,8 +69,10 @@ export const ToggleProphetAvail = async (
         [currentWeek]: currentAvailability,
       };
     });
+    toast.success(
+      `success to ${updateType}  ${day.getDate()}/${day.getMonth() + 1} - ${time}`,
+    );
   } catch (error) {
-    console.error("Failed to update availability:", error);
     toast.error("Failed to update availability");
   }
 };
@@ -104,9 +107,7 @@ export const applyToMonth = async (
       weekAvailability.forEach((slot) => {
         // Calculate the actual date for this slot
         const dayIndex = weekdayNames.indexOf(slot.day);
-
         const slotDate = new Date(targetWeekMonday);
-
         slotDate.setDate(slotDate.getDate() + dayIndex);
 
         itemsToUpdate.push({
