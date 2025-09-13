@@ -1,19 +1,15 @@
 "use client";
 import { CirclePlus } from "lucide-react";
-import localFont from 'next/font/local';
+import localFont from "next/font/local";
 
 import { DefaultLayout } from "@/components/globalComponents";
 import GlobalButton from "@/components/globalComponents/Button";
+// 1. Import the GlassContainer component
+import { GlassContainer } from "@/components/globalComponents/GlassContainer";
 import { AccountListItem } from "@/components/transaction/AccountListItem";
 import TransactionAccountForm from "@/components/transaction/TransactionAccountForm";
 import { BANKS } from "@/constants/transaction";
 import { useTransactionAccounts } from "@/hooks/useTransactionAccounts";
-import { cn } from "@/lib/utils";
-
-const sanctuaryOrnate = localFont({
-  src: '../../../../public/fonts/SanctuaryOrnate-PersonalUse.ttf',
-  display: 'swap',
-});
 
 export default function ProphetTransactionAccountPage() {
   const {
@@ -34,64 +30,78 @@ export default function ProphetTransactionAccountPage() {
   const renderContent = () => {
     if (mode === "create") {
       return (
-        <TransactionAccountForm
-          banks={BANKS}
-          onConfirm={handleCreateConfirm}
-          onCancel={handleCancel}
-        />
+        // 2. Wrap the form in the GlassContainer
+        <GlassContainer>
+          <TransactionAccountForm
+            banks={BANKS}
+            onConfirm={handleCreateConfirm}
+            onCancel={handleCancel}
+          />
+        </GlassContainer>
       );
     }
 
     if (mode === "edit") {
       return (
-        <TransactionAccountForm
-          initialData={editingAccount}
-          banks={BANKS}
-          onConfirm={handleEditConfirm}
-          onDelete={handleDelete}
-          onCancel={handleCancel}
-        />
+        // 3. Wrap the form in the GlassContainer
+        <GlassContainer>
+          <TransactionAccountForm
+            initialData={editingAccount}
+            banks={BANKS}
+            onConfirm={handleEditConfirm}
+            onDelete={handleDelete}
+            onCancel={handleCancel}
+          />
+        </GlassContainer>
       );
     }
 
     return (
-      <div className="justify-center items-center flex flex-col gap-4">
-        <div className="flex gap-4 items-center">
-          <h1 className={cn(sanctuaryOrnate.className, "text-4xl")}>Choose Your Default Account</h1>
-          <button className="cursor-pointer" onClick={handleStartCreate}>
-            <CirclePlus
-              className="mr-1 inline-block"
-              size={32}
-              strokeWidth={1}
-            />
-          </button>
+      // 4. Wrap the default view content in the GlassContainer
+      <GlassContainer>
+        <div className="flex flex-col items-center gap-2 p-8">
+          <div className="flex items-center gap-2">
+            <h1 className="font-sanctuary text-white text-4xl">Choose Your Default Account</h1>
+            <button className="cursor-pointer" onClick={handleStartCreate}>
+              <CirclePlus
+                className="mr-1 inline-block text-white"
+                size={32}
+                strokeWidth={1}
+              />
+            </button>
+          </div>
+          <div className="flex w-full max-h-96 flex-col items-center gap-4 overflow-y-auto px-4">
+            {accounts.map((account) => (
+              <AccountListItem
+                key={account.id}
+                account={account}
+                isSelected={selectedAccountId === account.id}
+                onSelect={() => handleSelectAccount(account.id)}
+                onEdit={handleStartEdit}
+              />
+            ))}
+          </div>
+          <GlobalButton
+            variant="primary"
+            onClick={() => {
+              if (selectedAccountId) {
+                handleSetDefault(selectedAccountId);
+              }
+            }}
+            disabled={!selectedAccountId}
+          >
+            Set as Default Account
+          </GlobalButton>
         </div>
-        <div className="border-2 bg-black rounded-lg gap-4 w-3/4 h-140 overflow-y-scroll justify-center items-center flex flex-col border border-black px-8 py-16">
-          <div className="mt-32" />
-          {accounts.map((account) => (
-            <AccountListItem
-              key={account.id}
-              account={account}
-              isSelected={selectedAccountId === account.id}
-              onSelect={() => handleSelectAccount(account.id)}
-              onEdit={handleStartEdit}
-            />
-          ))}
-        </div>
-        <GlobalButton
-          variant="primary"
-          onClick={() => {
-            if (selectedAccountId) {
-              handleSetDefault(selectedAccountId);
-            }
-          }}
-          disabled={!selectedAccountId}
-        >
-          Set as Default Account
-        </GlobalButton>
-      </div>
+      </GlassContainer>
     );
   };
 
-  return <DefaultLayout>{renderContent()}</DefaultLayout>;
+  return (
+    <DefaultLayout 
+      contentClassName="flex items-start justify-center pt-5"
+    >
+      {renderContent()}
+    </DefaultLayout>
+  );
 }

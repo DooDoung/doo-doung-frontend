@@ -1,18 +1,12 @@
 import { useState } from "react";
-import localFont from "next/font/local";
+// The localFont import is no longer needed for the h1 tag
 import Image from "next/image";
 
 import GlobalButton from "@/components/globalComponents/Button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AppToast } from "@/lib/app-toast";
-import { cn } from "@/lib/utils";
 import type { Bank, TransactionAccount } from "@/types/transaction";
-
-const sanctuaryOrnate = localFont({
-  src: "../../../public/fonts/SanctuaryOrnate-PersonalUse.ttf",
-  display: "swap",
-});
 
 interface TransactionAccountFormProps {
   initialData?: TransactionAccount;
@@ -52,11 +46,13 @@ export default function TransactionAccountForm({
 
   return (
     <form className="flex flex-col gap-4 justify-center items-center" onSubmit={handleSubmit}>
-      <h1 className={cn(sanctuaryOrnate.className, "text-4xl")}>{isEditMode ? "Edit Your Transaction Account" : "Create New Transaction Account"}</h1>
+      <h1 className="font-sanctuary text-white text-4xl">
+        {isEditMode ? "Edit Your Transaction Account" : "Create New Transaction Account"}
+      </h1>
 
       <div className="flex items-center gap-16">
         <div className="flex flex-col p-10 rounded-lg">
-            <p className="m-2">Select Your Bank</p>
+            <p className="m-2 text-white">Select Your Bank</p>
             <div className="grid grid-cols-4 gap-4">
               {banks.map((bank) => {
                 const isSelected = selectedBank?.name === bank.name;
@@ -70,12 +66,11 @@ export default function TransactionAccountForm({
                     }`}
                   >
                     <div
-                      className={cn(
-                        "rounded-full",
+                      className={`rounded-full ${
                         isSelected && "bg-gradient-to-r from-[#DC7CA0] to-[#B389EC] p-0.5"
-                      )}
+                      }`}
                     >
-                      <div className={cn("p-1 rounded-full", !isSelected && "border border-gray-300")}>
+                      <div className={`p-1 rounded-full ${!isSelected && "border border-gray-300"}`}>
                         <Image src={bank.logoUrl} alt={bank.name} width={60} height={60} className="rounded-full" />
                       </div>
                     </div>
@@ -87,9 +82,10 @@ export default function TransactionAccountForm({
 
         <div className="flex flex-col gap-4 p-10 rounded-lg">
             <div className="grid w-full max-w-md items-center gap-1.5">
-              <Label htmlFor="accountName">Account Name</Label>
+              <Label htmlFor="accountName" className="text-white text-xl">Account Name</Label>
               <Input
                 id="accountName"
+                className="text-lg h-12 w-80 px-4" 
                 type="text"
                 value={accountName}
                 onChange={(e) => setAccountName(e.target.value)}
@@ -98,9 +94,10 @@ export default function TransactionAccountForm({
             </div>
 
             <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="accountNumber">Account Number</Label>
+              <Label htmlFor="accountNumber" className="text-white text-xl">Account Number</Label>
               <Input
                 id="accountNumber"
+                className="text-lg h-12 w-80 px-4" 
                 type="text"
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
