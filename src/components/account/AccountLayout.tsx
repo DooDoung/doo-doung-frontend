@@ -1,8 +1,5 @@
 import * as React from "react";
 
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-
 import CustomerInfo from "./CustomerInfo";
 import ProphetInfo from "./ProphetInfo";
 import UserProfile from "./UserProfile";
