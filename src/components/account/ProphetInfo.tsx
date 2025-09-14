@@ -1,11 +1,14 @@
 import * as React from "react";
 
-import { prophetFeat } from "@/constants/mock-account";
-
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-
-import ProphetCard from "./ProphetCard";
+import ProphetCard from "@/components/account/ProphetCard";
+import { prophetFeat } from "@/constants/constant-ex";
+import {
+  GlobalButton,
+  GlobalInput,
+  SelectContent,
+  SelectItem,
+} from "@/components/globalComponents";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const prophet = {
   firstName: "John",
@@ -14,21 +17,29 @@ const prophet = {
   phone: "+1 234 567 8900",
   email: "john.doe@gmail.com",
   line: "@johndoe",
+  transaction: {
+    accountNumber: "123-456-7890",
+    accountName: "John Doe",
+    imageUrl: "/images/transaction-bank/SCB.webp",
+    bankName: "SCB",
+  },
 };
 
 function ProphetInfo() {
   return (
-    <div className="flex max-h-[70vh] w-[70%] flex-col overflow-scroll border-2 p-4">
+    <div className="flex max-h-[70vh] w-[70%] flex-col overflow-y-auto p-4">
       <form
         id="prophetInfoForm"
         className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2"
       >
         {/* First Name */}
         <div>
-          <label className="mb-1 block font-medium">First Name</label>
-          <Input
+          <label className="mb-1 block font-light text-white uppercase">
+            First Name
+          </label>
+          <GlobalInput
             type="text"
-            className="w-full"
+            className="w-full cursor-not-allowed"
             value={prophet.firstName}
             readOnly
           />
@@ -36,10 +47,12 @@ function ProphetInfo() {
 
         {/* Last Name */}
         <div>
-          <label className="mb-1 block font-medium">Last Name</label>
-          <Input
+          <label className="mb-1 block font-light text-white uppercase">
+            Last Name
+          </label>
+          <GlobalInput
             type="text"
-            className="w-full"
+            className="w-full cursor-not-allowed"
             value={prophet.lastName}
             readOnly
           />
@@ -47,32 +60,43 @@ function ProphetInfo() {
 
         {/* Gender */}
         <div>
-          <label className="mb-1 block font-medium">Gender</label>
-          <select
-            value={prophet.gender}
-            disabled
-            className="w-full cursor-not-allowed rounded border border-gray-300 bg-gray-100 px-3 py-2"
-          >
-            <option value="">Select</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>LGBTQ+</option>
-            <option>Undefined</option>
-          </select>
+          <label className="mb-1 block font-light text-white uppercase">
+            Gender
+          </label>
+          <Select value={prophet.gender.toLowerCase()} disabled>
+            <SelectTrigger className="w-full cursor-not-allowed bg-white">
+              <SelectValue placeholder="Select" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="male">Male</SelectItem>
+              <SelectItem value="female">Female</SelectItem>
+              <SelectItem value="lgbtq+">LGBTQ+</SelectItem>
+              <SelectItem value="undefined">Undefined</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Phone Number */}
         <div>
-          <label className="mb-1 block font-medium">Phone Number</label>
-          <Input type="tel" className="w-full" value={prophet.phone} readOnly />
+          <label className="mb-1 block font-light text-white uppercase">
+            Phone Number
+          </label>
+          <GlobalInput
+            type="tel"
+            className="w-full cursor-not-allowed"
+            value={prophet.phone}
+            readOnly
+          />
         </div>
 
         {/* Email */}
         <div>
-          <label className="mb-1 block font-medium">Email</label>
-          <Input
+          <label className="mb-1 block font-light text-white uppercase">
+            Email
+          </label>
+          <GlobalInput
             type="email"
-            className="w-full"
+            className="w-full cursor-not-allowed"
             value={prophet.email}
             readOnly
           />
@@ -80,21 +104,34 @@ function ProphetInfo() {
 
         {/* Line ID */}
         <div>
-          <label className="mb-1 block font-medium">Line ID</label>
-          <Input type="text" className="w-full" value={prophet.line} readOnly />
+          <label className="mb-1 block font-light text-white uppercase">
+            Line ID
+          </label>
+          <GlobalInput
+            type="text"
+            className="w-full cursor-not-allowed"
+            value={prophet.line}
+            readOnly
+          />
         </div>
       </form>
 
       {/* Prophet Features */}
       <div className="my-4 grid grid-cols-2 gap-4 md:grid-cols-2">
         {prophetFeat.map((feat, index) => (
-          <ProphetCard key={index} featName={feat} />
+          <ProphetCard
+            key={index}
+            feat={feat}
+            transaction={prophet.transaction}
+          />
         ))}
       </div>
 
       {/* Edit Profile Button */}
       <div className="flex justify-center">
-        <Button>Edit Profile</Button>
+        <GlobalButton variant="primary" className="font-light">
+          EDIT PROFILE
+        </GlobalButton>
       </div>
     </div>
   );

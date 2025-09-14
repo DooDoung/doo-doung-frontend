@@ -1,16 +1,16 @@
 import * as React from "react";
 
-import CustomerInfo from "./CustomerInfo";
-import ProphetInfo from "./ProphetInfo";
-import UserProfile from "./UserProfile";
+import CustomerInfo from "@/components/account/CustomerInfo";
+import ProphetInfo from "@/components/account/ProphetInfo";
+import UserProfile from "@/components/account/UserProfile";
+import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 
 function AccountLayout({ role }: { role: string }) {
   return (
-    // <div className="mt-[10%] flex h-[73%] w-[87%] justify-start">
-    <div className="bg-neutral-black/50 shadow-neutral-white mt-[10%] flex h-[73%] w-[87%] justify-start rounded-4xl shadow-[0_0_20px] backdrop-blur-[10px]">
+    <GlassContainer2>
       <UserProfile role={role} />
       {role === "customer" ? <CustomerInfo /> : <ProphetInfo />}
-    </div>
+    </GlassContainer2>
   );
 }
 

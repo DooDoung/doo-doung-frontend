@@ -1,8 +1,11 @@
 import React from "react";
 
+import StarRating from "@/components/account/StarRating";
+
 function ReservationCard({
   imageUrl,
-  rating,
+  score,
+  status,
   courseName,
   prophetName,
   price,
@@ -10,7 +13,8 @@ function ReservationCard({
   time,
 }: {
   imageUrl: string;
-  rating: number;
+  score: number;
+  status: "confirmed" | "completed" | "failed";
   courseName: string;
   prophetName: string;
   price: number;
@@ -18,19 +22,28 @@ function ReservationCard({
   time: string;
 }) {
   return (
-    <div className="flex w-full rounded-md border p-4 shadow-md">
+    <div className="flex w-full rounded-3xl border bg-white shadow-md">
       <img
         src={imageUrl}
         alt={courseName}
-        className="mr-4 h-24 w-24 rounded-md object-cover"
+        className="mr-4 h-full w-30 rounded-3xl object-cover"
       />
-      <div className="flex w-full flex-col">
-        <p className="text-sm text-gray-500">{rating} stars</p>
-        <h3 className="text-lg font-semibold">{courseName}</h3>
-        <p className="text-sm text-gray-500">{prophetName}</p>
-        <p className="self-end text-sm font-bold">{price.toFixed(2)}.-</p>
-        <p className="text-sm text-gray-500">
-          {date} at {time}
+      <div className="text-neutral-black flex w-full flex-col py-4 pr-4">
+        <div className="flex justify-between">
+          <StarRating score={score} className="h-5 w-5" />
+          <span
+            className={`ml-2 text-sm ${status === "confirmed" ? "text-[#8fb08e]" : status === "completed" ? "text-primary" : "text-red-600"}`}
+          >
+            {status}
+          </span>
+        </div>
+        <h3 className="text-md font-semibold">{courseName}</h3>
+        <p className="text-xs">{prophetName}</p>
+        <p className="self-end rounded-2xl bg-[#a9607b] px-2 text-sm font-medium text-white">
+          {price}.-
+        </p>
+        <p className="text-xs uppercase">
+          {date} {time}
         </p>
       </div>
     </div>
