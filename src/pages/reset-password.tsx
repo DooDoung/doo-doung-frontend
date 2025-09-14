@@ -47,7 +47,6 @@ export default function ResetPasswordPage() {
         AppToast.info("Reset already requested. Please check your email");
         return;
       } else {
-        setCooldown(45);
         /*** 
          Send email by Sendgrid
         ***/
@@ -56,7 +55,7 @@ export default function ResetPasswordPage() {
           {
             method: "POST",
             headers: {
-              "Content-Type": "applicayion/json",
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               email: email,
@@ -69,6 +68,7 @@ export default function ResetPasswordPage() {
           return;
         }
 
+        setCooldown(45);
         AppToast.success("A reset password has been sent to your email.");
         return;
       }

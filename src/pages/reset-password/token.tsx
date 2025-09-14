@@ -28,39 +28,44 @@ export default function ResetPasswordTokenPage() {
       AppToast.error("Invalid or missing token");
       return;
     }
+    if (password !== confirmPassword) {
+      AppToast.error("Password and Confirm Password must match.");
+      return;
+    }
 
     setLoading(true);
 
     try {
-      if (password !== confirmPassword) {
-        AppToast.error("Password and Confirm Password must match.");
-        return;
-      } else {
-        const res = await fetch(
-          "http://localhost:8000/auth/reset-password/confirm",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "applicayion/json",
-            },
-            body: JSON.stringify({
-              token: token,
-              newPassword: password,
-            }),
-          },
-        );
+      const res = await fetch(
+        "http://localhost:8000/auth/reset-password/confirm",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token: token,
+            newPassword: password,
+          }),
+        },
+      );
 
-        if (!res.ok) {
-          throw new Error("Failed to reset password");
-          return;
+      if (!res.ok) {
+        // try to parse backend error message
+        let backendMessage = "Failed to reset password";
+        try {
+          const data = await res.json();
+          if (data?.message) backendMessage = data.message;
+        } catch {
+          // ignore JSON parse error
         }
-
-        AppToast.success("Reset password successful");
-        router.push("/resetpassword/successful");
-        return;
+        throw new Error(backendMessage);
       }
+
+      AppToast.success("Reset password successful");
+      router.push("/reset-password/successful");
     } catch (err: any) {
-      AppToast.error(err);
+      const message =
+        err instanceof Error ? err.message : "Something went wrong";
+      AppToast.error(message);
     } finally {
       setLoading(false);
     }
