@@ -26,7 +26,6 @@ function EditUserProfile({
 
   const handleChangeProfile = () => {
     setOpenDialog(true);
-    toast.success("Changed!");
   };
 
   return (
