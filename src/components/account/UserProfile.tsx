@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { signOut } from "next-auth/react";
 
 function UserProfile({ role }: { role: string }) {
   return (
@@ -12,8 +13,13 @@ function UserProfile({ role }: { role: string }) {
       </div>
       <p className="self-start">USERNAME</p>
       <Input className="mb-4" placeholder="JohnYakDoodoung" readOnly />
-      <Button className="mb-4 w-full">LOG OUT</Button>
-      <a href="" className="hover:underline">
+      <Button
+        className="mb-4 w-full"
+        onClick={() => signOut({ callbackUrl: "/login" })}
+      >
+        LOG OUT
+      </Button>
+      <a href="/reset-password" className="hover:underline">
         {" "}
         reset password
       </a>
