@@ -57,18 +57,20 @@ export default function ProphetReportPage() {
           {isLoading ? (
             <div className="p-10 text-center text-lg">Loading reports...</div>
           ) : (
-            <>
-              {hasExceededThreshold && (
-                <div className="mb-4">
-                  <WarningBanner threshold={WARNING_THRESHOLD} />
+            <div className="relative h-[70vh]">
+              <div className="flex h-full flex-col">
+                {hasExceededThreshold && (
+                  <div className="sticky top-0 z-10 mb-4">
+                    <WarningBanner threshold={WARNING_THRESHOLD} />
+                  </div>
+                )}
+                <div className="custom-scrollbar flex-1 space-y-4 overflow-y-auto pr-4">
+                  {reports.map((report, index) => (
+                    <ReportItem key={index} report={report} />
+                  ))}
                 </div>
-              )}
-              <div className="custom-scrollbar h-[50vh] space-y-4 overflow-y-auto pr-4">
-                {reports.map((report, index) => (
-                  <ReportItem key={index} report={report} />
-                ))}
               </div>
-            </>
+            </div>
           )}
         </main>
       </div>
