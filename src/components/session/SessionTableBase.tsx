@@ -80,7 +80,7 @@ export default function SessionTableBase({
         </div>
       </div>
       
-      <div className="h-[calc(70vh-5rem)] overflow-y-auto py-4 px-4 bg-neutral-white">
+      <div className="h-[calc(70vh-5rem)] overflow-y-auto py-4 px-4 bg-neutral-white custom-scrollbar">
           <Table className="w-full bg-neutral-white">
           {/* caption and header can be removed if header is handled outside */}
           <TableCaption>Prophet available time slot</TableCaption>
