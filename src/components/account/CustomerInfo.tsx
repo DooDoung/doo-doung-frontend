@@ -1,8 +1,5 @@
 import * as React from "react";
 
-import { mockReservation } from "@/constants/mock-account";
-import { mockReview } from "@/constants/mock-account";
-
 import {
   GlobalButton,
   GlobalInput,
@@ -10,10 +7,14 @@ import {
   SelectItem,
 } from "@/components/globalComponents";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { mockReservation } from "@/constants/mock-account";
+import { mockReview } from "@/constants/mock-account";
+
 import { Switch } from "../ui/switch";
 
 import ReservationSection from "./Reservation/ReservationSection";
 import ReviewSection from "./Review/ReviewSection";
+import { useRouter } from "next/navigation";
 
 const customer = {
   firstName: "John",
@@ -28,8 +29,9 @@ const customer = {
 
 function CustomerInfo() {
   const [isPublic, setIsPublic] = React.useState(false);
+  const router = useRouter();
   return (
-    <div className="flex max-h-[70vh] w-[70%] flex-col overflow-y-auto p-4">
+    <div className="flex max-h-[70vh] w-full flex-col sm:overflow-y-auto p-4 sm:w-[70%]">
       <div className="flex flex-col items-center self-end font-light text-white uppercase">
         <p>{isPublic ? "Public" : "Private"}</p>
         <Switch
@@ -161,7 +163,14 @@ function CustomerInfo() {
 
       {/* Edit Profile Button */}
       <div className="flex justify-center">
-        <GlobalButton variant="primary">EDIT PROFILE</GlobalButton>
+        <GlobalButton
+          variant="primary"
+          onClick={() => {
+            router.push("/account/edit-account");
+          }}
+        >
+          Edit Profile
+        </GlobalButton>
       </div>
     </div>
   );

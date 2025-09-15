@@ -1,7 +1,6 @@
 const mockReservation: Reservation[] = [
   {
-    imageUrl:
-      "https://images.pexels.com/photos/1158420/pexels-photo-1158420.jpeg",
+    imageUrl: "/images/course.svg",
     score: 4,
     status: "confirmed",
     courseName: "Course Name1",
@@ -11,8 +10,7 @@ const mockReservation: Reservation[] = [
     time: "10:00 AM",
   },
   {
-    imageUrl:
-      "https://images.pexels.com/photos/4623531/pexels-photo-4623531.jpeg",
+    imageUrl: "/images/course.svg",
     score: 5,
     status: "completed",
     courseName: "Course Name2",
@@ -22,8 +20,7 @@ const mockReservation: Reservation[] = [
     time: "11:00 AM",
   },
   {
-    imageUrl:
-      "https://images.pexels.com/photos/4623531/pexels-photo-4623531.jpeg",
+    imageUrl: "/images/course.svg",
     score: 4,
     status: "failed",
     courseName: "Course Name3",
@@ -33,8 +30,7 @@ const mockReservation: Reservation[] = [
     time: "12:00 PM",
   },
   {
-    imageUrl:
-      "https://images.pexels.com/photos/1158420/pexels-photo-1158420.jpeg",
+    imageUrl: "/images/course.svg",
     score: 5,
     status: "confirmed",
     courseName: "Course Name4",
@@ -44,8 +40,7 @@ const mockReservation: Reservation[] = [
     time: "1:00 PM",
   },
   {
-    imageUrl:
-      "https://images.pexels.com/photos/1158420/pexels-photo-1158420.jpeg",
+    imageUrl: "/images/course.svg",
     score: 4,
     status: "confirmed",
     courseName: "Course Name5",

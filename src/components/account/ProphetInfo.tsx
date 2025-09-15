@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import ProphetCard from "@/components/account/ProphetCard";
-import { prophetFeat } from "@/constants/constant-ex";
 import {
   GlobalButton,
   GlobalInput,
@@ -9,6 +8,8 @@ import {
   SelectItem,
 } from "@/components/globalComponents";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { prophetFeat } from "@/constants/constant-ex";
+import { useRouter } from "next/navigation";
 
 const prophet = {
   firstName: "John",
@@ -26,8 +27,9 @@ const prophet = {
 };
 
 function ProphetInfo() {
+  const router = useRouter();
   return (
-    <div className="flex max-h-[70vh] w-[70%] flex-col overflow-y-auto p-4">
+    <div className="flex max-h-[70vh] w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
       <form
         id="prophetInfoForm"
         className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2"
@@ -129,8 +131,14 @@ function ProphetInfo() {
 
       {/* Edit Profile Button */}
       <div className="flex justify-center">
-        <GlobalButton variant="primary" className="font-light">
-          EDIT PROFILE
+        <GlobalButton
+          variant="primary"
+          className="font-light"
+          onClick={() => {
+            router.push("/account/edit-account");
+          }}
+        >
+          Edit Profile
         </GlobalButton>
       </div>
     </div>
