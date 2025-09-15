@@ -7,6 +7,7 @@ type CourseCardProps = {
   score: number;
   courseName: string;
   prophetName: string;
+  description: string;
   price: number;
   date: string;
   time: string;
@@ -17,6 +18,7 @@ function CourseCard({
   score,
   courseName,
   prophetName,
+  description,
   price,
   date,
   time,
@@ -26,20 +28,21 @@ function CourseCard({
       <img
         src={imageUrl}
         alt={courseName}
-        className="mr-4 h-full w-30 rounded-3xl object-cover"
+        className="mr-4 w-32 rounded-3xl object-cover"
       />
-      <div className="text-neutral-black flex w-full flex-col py-4 pr-4">
-        <div className="flex justify-between">
-          <StarRating score={score} className="h-5 w-5" />
+      <div className="text-neutral-black flex justify-between w-full py-4 pr-4 gap-16">
+        <div>
+          <div className="flex justify-between">
+            <StarRating score={score} className="h-5 w-5" />
+          </div>
+          <h3 className="text-md font-semibold">{courseName}</h3>
+          <p className="text-xs">{description }</p>
         </div>
-        <h3 className="text-md font-semibold">{courseName}</h3>
-        <p className="text-xs">{prophetName}</p>
-        <p className="self-end rounded-2xl bg-[#a9607b] px-2 text-sm font-medium text-white">
-          {price}.-
-        </p>
-        <p className="text-xs uppercase">
-          {date} {time}
-        </p>
+        <div className="flex flex-col items-end justify-center">
+          <div className="self-end rounded-2xl bg-[#a9607b] px-6 py-2 text-sm font-medium text-white">
+            {price}.-
+          </div>
+        </div>
       </div>
     </div>
   );

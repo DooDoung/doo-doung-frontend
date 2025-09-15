@@ -112,6 +112,21 @@ const mockReview: Review[] = [
 export { mockReservation, mockReview };
 
 
+// Add this import or type definition at the top of the file
+// import { Course } from '../types/course'; // Uncomment and adjust path if Course is defined elsewhere
+
+type Course = {
+  id: string;
+  imageUrl: string;
+  score: number;
+  courseName: string;
+  prophetName: string;
+  description: string;
+  price: number;
+  date: string;
+  time: string;
+};
+
 export const mockCourse: Course[] = [
   {
     id: "course-01",
@@ -149,4 +164,4 @@ export const mockCourse: Course[] = [
 ];
 
 // Corrected export statement
-export { mockCourse };
+// (Removed duplicate export for mockCourse)

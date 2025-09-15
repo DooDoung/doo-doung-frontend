@@ -15,11 +15,11 @@ type Course = {
 
 function CourseSection({ courses }: { courses: Course[] }) {
   return (
-    <section className="my-8">
+    <section className="flex-col my-8">
       <h2 className="mb-4 text-2xl font-semibold text-white uppercase">
         Available Courses
       </h2>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mt-4 flex-col gap-6">
         {courses.map((course) => (
           <CourseCard key={course.id} {...course} />
         ))}
