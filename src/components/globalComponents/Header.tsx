@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { AlignJustify, Flag,Home, Search, ShoppingCart, Star, User } from "lucide-react";
 import Link from "next/link";
-import { AlignJustify, Home, Search, ShoppingCart, User, Star, Flag } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 // ------------------- Data -------------------
@@ -48,7 +49,7 @@ export function Header({ className, role = 'customer' }: HeaderProps) {
             <AlignJustify
               size={28}
               className={cn(
-                "text-white transition-transform duration-300 ease-in-out hover:text-primary-500",
+                "text-white transition-transform duration-300 ease-in-out hover:scale-110",
                 isOpen && "rotate-180 transform"
               )}
             />
@@ -60,7 +61,7 @@ export function Header({ className, role = 'customer' }: HeaderProps) {
               <Link
                 key={link.href}
                 href={link.href}
-                className="flex flex-col items-center gap-1 text-white hover:text-primary-300 transition-colors cursor-pointer hover:text-primary-500"
+                className="flex flex-col items-center gap-1 text-white hover:text-primary-300 transition-colors cursor-pointer hover:scale-110"
                 onClick={() => setIsOpen(false)}
               >
                 {link.icon}
