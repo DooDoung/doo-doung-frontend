@@ -40,7 +40,7 @@ export function Header({ className, role = 'customer' }: HeaderProps) {
     <header className={cn("fixed top-5 right-5 z-50", className)}>
       <div className={cn(
         "w-[68px] relative flex flex-col items-center gap-4 px-3 py-4 transition-all duration-300 ease-in-out",
-        "rounded-[25px] bg-[rgba(62,55,83,0.5)] shadow-[0_0_15px_0_#FFF] backdrop-blur-[2px]", // 👈 แก้ไขตรงนี้
+        "rounded-[25px] bg-[rgba(62,55,83,0.5)] shadow-[0_0_15px_0_#FFF] backdrop-blur-[2px]",
         isOpen && "gap-6 py-6"
       )}>
         {/* --- Hamburger Menu Button --- */}
