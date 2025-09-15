@@ -1,3 +1,6 @@
+export const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+export const weekdayNames = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
 export const generateWeekDays = (startMonday?: Date) => {
   let startDate: Date;
 
@@ -13,7 +16,6 @@ export const generateWeekDays = (startMonday?: Date) => {
   }
 
   const days = [];
-  const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
   // Generate 7 days starting from Monday
   for (let i = 0; i < 7; i++) {
@@ -44,4 +46,15 @@ export const generateTimeSlots = () => {
     }
   }
   return slots;
+};
+
+export const getCurrentWeekMonday = (currentWeek: number = 0) => {
+  const today = new Date();
+  const currentMonday = new Date(today);
+  const dayOfWeek = today.getDay();
+  const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+
+  currentMonday.setDate(today.getDate() + daysToMonday);
+  currentMonday.setDate(currentMonday.getDate() + currentWeek * 7);
+  return currentMonday;
 };

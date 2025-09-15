@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 
 import {
   AuthLayout,
+  GlassContainer,
   GlobalButton,
   GlobalInput,
-  GlassContainer,
 } from "@/components/globalComponents";
 import { AppToast } from "@/lib/app-toast";
 
