@@ -1,6 +1,7 @@
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { Pencil } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import {
   GlobalButton,
@@ -9,10 +10,9 @@ import {
   SelectItem,
 } from "@/components/globalComponents";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ZodiacSign } from "@/types/user";
 
 import { Switch } from "../../ui/switch";
-import { ZodiacSign } from "@/types/user";
-import { Pencil } from "lucide-react";
 
 const customer = {
   firstName: "John",

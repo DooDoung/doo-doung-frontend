@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import {
@@ -9,7 +10,7 @@ import {
 } from "@/components/globalComponents";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AppToast } from "@/lib/app-toast";
-import { Pencil } from "lucide-react";
+
 import ProphetCard from "../ProphetCard";
 
 const prophet = {

@@ -4,9 +4,10 @@ import CustomerInfo from "@/components/account/CustomerInfo";
 import ProphetInfo from "@/components/account/ProphetInfo";
 import UserProfile from "@/components/account/UserProfile";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
+
 import EditCustomerInfo from "./EditAccount/EditCustomerInfo";
-import EditUserProfile from "./EditAccount/EditUserProfile";
 import EditProphetInfo from "./EditAccount/EditProphetInfo";
+import EditUserProfile from "./EditAccount/EditUserProfile";
 
 function AccountLayout({ role, editing }: { role: string; editing: boolean }) {
   return (

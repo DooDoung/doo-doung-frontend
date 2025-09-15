@@ -3,10 +3,9 @@ import toast from "react-hot-toast";
 import { Camera, Pencil } from "lucide-react";
 import Image from "next/image";
 
+import { EditProfilePictureDialog } from "@/components/account/EditProfilePictureDialog";
 import { GlobalInput } from "@/components/globalComponents";
 import { ZodiacSign } from "@/types/user";
-
-import { EditProfilePictureDialog } from "@/components/account/EditProfilePictureDialog";
 
 const user = {
   profileUrl:
