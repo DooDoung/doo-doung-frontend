@@ -29,11 +29,31 @@ export function EditProfilePictureDialog({
   const [imageUrl, setImageUrl] = useState(currentImageUrl);
 
   useEffect(() => {
-    setImageUrl(currentImageUrl);
-  }, [currentImageUrl]);
+    if (open) {
+      const fetchProfile = async () => {
+        const res = await fetch(
+          "http://localhost:8000/account/dev_prophet_001",
+        );
+        if (!res.ok) throw new Error("Failed to fetch profile");
+        const json = await res.json();
+        setImageUrl(json.data.profileUrl);
+      };
 
-  const handleSave = () => {
+      fetchProfile();
+    }
+  }, [open, currentImageUrl]);
+
+  const handleSave = async () => {
     if (imageUrl.trim()) {
+      const res = await fetch(`http://localhost:8000/account/`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          profileUrl: imageUrl,
+          id: "dev_prophet_001",
+          role: "PROPHET",
+        }),
+      });
       onSave(imageUrl);
       onOpenChange(false);
     }
