@@ -2,7 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 
 import GlobalButton from "@/components/globalComponents/Button";
-import { Input } from "@/components/ui/input";
+import { GlobalInput } from "../globalComponents";
 import { Label } from "@/components/ui/label";
 import { AppToast } from "@/lib/app-toast";
 import type { Bank, TransactionAccount } from "@/types/transaction";
@@ -81,28 +81,30 @@ export default function TransactionAccountForm({
 
         <div className="flex flex-col gap-4 p-10 rounded-lg">
             <div className="grid w-full max-w-md items-center gap-1.5">
-              <Label htmlFor="accountName" className="font-chakra text-white text-xl">Account Name</Label>
-              <Input
-                id="accountName"
-                className="text-xl h-[6vh] w-[40vh] px-4 bg-gray-100" 
-                type="text"
-                value={accountName}
-                onChange={(e) => setAccountName(e.target.value)}
-                placeholder="Enter your Account Name"
-              />
-            </div>
+              <Label htmlFor="accountName" className="font-chakra text-white text-xl"> Account Name </Label>
+              <GlobalInput
+                 id="accountName"
+                 type="text"
+                 size="lg"
+                 className="w-[40vh] text-xl" 
+                 value={accountName}
+                 onChange={(e) => setAccountName(e.target.value)}
+                 placeholder="Enter your Account Name"
+                />
+              </div>
 
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="accountNumber" className="font-chakra text-white text-xl">Account Number</Label>
-              <Input
-                id="accountNumber"
-                className="text-xl h-[6vh] w-[40vh] px-4 bg-gray-100" 
-                type="text"
-                value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
-                placeholder="Enter your Account Number"
-              />
-            </div>
+              <GlobalInput
+                 id="accountNumber"
+                 type="text"
+                 size="lg"
+                 className="w-[40vh] text-xl"
+                 value={accountNumber}
+                 onChange={(e) => setAccountNumber(e.target.value)}
+                 placeholder="Enter your Account Number"
+                />
+              </div>
           </div>
         </div>
 
