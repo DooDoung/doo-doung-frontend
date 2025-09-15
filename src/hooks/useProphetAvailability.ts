@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import { generateMockAvailableTimes } from "@/components/session/mockProphetAvailData";
 import { dayNames, weekdayNames } from "@/lib/session-availible-table";
 
 async function generateAvailableSlots(
