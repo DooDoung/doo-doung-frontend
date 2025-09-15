@@ -25,9 +25,10 @@ export const generateWeekDays = (startMonday?: Date) => {
     const month = date.getMonth() + 1;
 
     days.push({
-      dayName,
-      display: `${dayName} ${day}/${month}`,
-      date: new Date(date), // Create a new Date object to avoid reference issues
+      dayName, // "MONDAY", "TUESDAY", etc. 
+      dayAbbr: dayName.substring(0, 3), // "MON", "TUE", etc.
+      displayDate: `${day}/${month}`,   // "29/6", "30/6", etc.
+      date: new Date(date),
     });
   }
 
