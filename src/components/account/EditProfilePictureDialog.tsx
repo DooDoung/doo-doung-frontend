@@ -1,15 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect,useState } from "react";
+
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { GlobalButton, GlobalInput } from "../globalComponents";
 import { AppToast } from "@/lib/app-toast";
+
+import { GlobalButton, GlobalInput } from "../globalComponents";
 
 interface EditProfilePictureDialogProps {
   open: boolean;

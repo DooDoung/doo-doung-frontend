@@ -2,6 +2,7 @@
 import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
+import { AppToast } from "@/lib/app-toast";
 import { devAccounts, useMock } from "@/mock-auth";
 
 export default {
@@ -34,16 +35,21 @@ export default {
           }),
         });
 
-        // status code 200-299
-        if (!res.ok) return null;
+        if (!res.ok) {
+          return null;
+        }
 
         const apiResponse = await res.json();
-        // Expected shape: { success: true, data: { accessToken, expiresAt, user } }
-        if (!apiResponse?.success || !apiResponse?.data) return null;
+        
+        if (!apiResponse?.data) {
+          return null;
+        }
 
         const data = apiResponse.data;
 
-        if (!data?.accessToken || !data?.user) return null;
+        if (!data?.accessToken || !data?.user) {
+          return null;
+        }
 
         return {
           id: String(data.user.id),

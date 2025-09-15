@@ -22,6 +22,7 @@ interface DefaultLayoutProps {
    */
   headerProps?: {
     className?: string;
+    role?: "customer" | "prophet";
   };
   /**
    * Custom footer props
@@ -59,6 +60,8 @@ export function DefaultLayout({
   footerProps,
   contentClassName,
 }: DefaultLayoutProps) {
+  // TODO : change with next auth
+  const role = "customer";
   return (
     <div
       className={cn(
@@ -68,7 +71,7 @@ export function DefaultLayout({
     >
       <Toaster position="top-right" />
       {/* Header */}
-      {includeHeader && <Header {...headerProps} />}
+      {includeHeader && <Header {...headerProps} role={role} />}
 
       {/* Main Content */}
       <main className={cn("mb-12 flex-1", contentClassName)}>{children}</main>

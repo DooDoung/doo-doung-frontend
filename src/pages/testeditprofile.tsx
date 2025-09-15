@@ -1,6 +1,7 @@
-import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
-import { EditProfilePictureDialog } from "@/components/account/EditProfilePictureDialog";
 import { useState } from "react";
+
+import { EditProfilePictureDialog } from "@/components/account/EditProfilePictureDialog";
+import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
 
 export default function TestEditProfilePage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
