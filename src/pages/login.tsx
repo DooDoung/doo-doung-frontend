@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
 
 import {
   AuthLayout,
@@ -15,20 +16,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const mockLogin = async (username: string, password: string) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (username === "admin" && password === "admin") {
-          resolve("admin");
-        } else if (username === "notadmin" && password === "1234") {
-          resolve("valid");
-        } else {
-          reject("Wrong username or password");
-        }
-      }, 1000);
-    });
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -40,16 +27,23 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const result = await mockLogin(username, password);
-      if (result === "admin") {
-        AppToast.success("Welcome, Admin");
-        router.push("/admin/report");
-      } else {
+      const result = await signIn("credentials", {
+        username,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        AppToast.error("Invalid username or password");
+        return;
+      }
+
+      if (result?.ok) {
         AppToast.success("Login successful");
-        router.push("/course");
+        router.push("/");
       }
     } catch (err: any) {
-      AppToast.error(err);
+      AppToast.error("An error occurred during login");
     } finally {
       setLoading(false);
     }
