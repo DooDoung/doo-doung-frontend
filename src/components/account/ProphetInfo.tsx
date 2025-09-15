@@ -29,7 +29,7 @@ const prophet = {
 function ProphetInfo() {
   const router = useRouter();
   return (
-    <div className="flex max-h-[70vh] w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
+    <div className="flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
       <form
         id="prophetInfoForm"
         className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2"
@@ -130,7 +130,7 @@ function ProphetInfo() {
       </div>
 
       {/* Edit Profile Button */}
-      <div className="flex justify-center">
+      <div className="mb-2 flex justify-center">
         <GlobalButton
           variant="primary"
           className="font-light"
