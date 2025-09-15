@@ -5,6 +5,7 @@ import {
   AuthLayout,
   GlobalButton,
   GlobalInput,
+  GlassContainer,
 } from "@/components/globalComponents";
 import { AppToast } from "@/lib/app-toast";
 
@@ -57,64 +58,62 @@ export default function LoginPage() {
   return (
     <AuthLayout>
       <div className="flex min-h-screen items-center justify-center">
-        <div className="bg-neutral-black/50 shadow-neutral-white absolute flex min-h-[80vh] w-8/9 flex-col items-center justify-center rounded-4xl shadow-[0_0_20px] backdrop-blur-[10px]">
-          <h3 className="font-sanctuary text-neutral-white absolute top-8 left-10 text-5xl">
-            Doodoung
-          </h3>
+        <GlassContainer>
+          <div className="absolute -mt-26 -ml-10 flex h-full w-full flex-col items-center justify-center">
+            <h2 className="font-sanctuary text-neutral-white mb-6 text-[64px]">
+              Log in to DooDoung
+            </h2>
 
-          <h2 className="font-sanctuary text-neutral-white mb-6 text-[64px]">
-            Log in to DooDoung
-          </h2>
+            <form onSubmit={handleSubmit} className="w-80">
+              <div className="font-chakra text-neutral-white mb-6 text-2xl">
+                <div className="mb-4">
+                  <label className="mb-2 block">Username</label>
+                  <GlobalInput
+                    type="text"
+                    size="lg"
+                    className="w-full text-xl"
+                    placeholder="DooDoung"
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
 
-          <form onSubmit={handleSubmit} className="w-80">
-            <div className="font-chakra text-neutral-white mb-6 text-2xl">
-              <div className="mb-4">
-                <label className="mb-2 block">Username</label>
-                <GlobalInput
-                  type="text"
-                  size="lg"
-                  className="w-full text-xl"
-                  placeholder="DooDoung"
-                  onChange={(e) => setUsername(e.target.value)}
-                />
+                <div className="mb-8">
+                  <label className="mb-2 block">Password</label>
+                  <GlobalInput
+                    type="password"
+                    size="lg"
+                    className="w-full text-xl"
+                    placeholder="Enter your password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+
+                <div className="flex justify-center">
+                  <GlobalButton
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    className="w-fit text-xl"
+                    loading={loading}
+                    loadingText="Logging in..."
+                    onClick={handleSubmit}
+                  >
+                    Log in
+                  </GlobalButton>
+                </div>
               </div>
 
-              <div className="mb-8">
-                <label className="mb-2 block">Password</label>
-                <GlobalInput
-                  type="password"
-                  size="lg"
-                  className="w-full text-xl"
-                  placeholder="Enter your password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+              <div className="font-chakra text-neutral-white flex justify-between text-base">
+                <a href="/reset-password" className="">
+                  Forgot Password?
+                </a>
+                <a href="/register" className="">
+                  Sign Up
+                </a>
               </div>
-
-              <div className="flex justify-center">
-                <GlobalButton
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  className="w-fit text-xl"
-                  loading={loading}
-                  loadingText="Logging in..."
-                  onClick={handleSubmit}
-                >
-                  Log in
-                </GlobalButton>
-              </div>
-            </div>
-
-            <div className="font-chakra text-neutral-white flex justify-between text-base">
-              <a href="/resetpassword" className="">
-                Forgot Password?
-              </a>
-              <a href="/register" className="">
-                Sign Up
-              </a>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+        </GlassContainer>
       </div>
     </AuthLayout>
   );
