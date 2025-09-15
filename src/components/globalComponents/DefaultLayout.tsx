@@ -60,10 +60,13 @@ export function DefaultLayout({
   contentClassName,
 }: DefaultLayoutProps) {
   return (
-    <div className={cn("flex min-h-screen flex-col bg-white", className)}>
-      <Toaster 
-        position="top-right"
-      />
+    <div
+      className={cn(
+        "flex min-h-screen flex-col bg-white bg-[url('/images/background/BG_cloud.webp')] bg-cover bg-center",
+        className,
+      )}
+    >
+      <Toaster position="top-right" />
       {/* Header */}
       {includeHeader && <Header {...headerProps} />}
 
@@ -120,7 +123,10 @@ export function AuthLayout({
 }: DefaultLayoutProps) {
   return (
     <DefaultLayout
-      className={cn("items-center justify-center", className)}
+      className={cn(
+        "items-center justify-center bg-[url('/images/background/BG_fullmoon.webp')] bg-cover bg-center",
+        className,
+      )}
       includeHeader={false}
       includeFooter={false}
       contentClassName="flex justify-center items-center min-h-screen"
