@@ -1,9 +1,10 @@
 import * as React from "react";
-import Image from "next/image";
-import { ZodiacSign } from "@/types/user";
-import { GlobalButton, GlobalInput } from "@/components/globalComponents";
-import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+import Image from "next/image";
+import { useRouter } from "next/router";
+
+import { GlobalButton, GlobalInput } from "@/components/globalComponents";
+import { ZodiacSign } from "@/types/user";
 
 const user = {
   profileUrl:

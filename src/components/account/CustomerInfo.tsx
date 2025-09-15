@@ -3,13 +3,8 @@ import * as React from "react";
 import { mockReservation } from "@/constants/mock-account";
 import { mockReview } from "@/constants/mock-account";
 
-import {
-  GlobalButton,
-  GlobalInput,
-  SelectContent,
-  SelectItem,
-} from "@/components/globalComponents";
-import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import { Switch } from "../ui/switch";
 
 import ReservationSection from "./Reservation/ReservationSection";
@@ -29,28 +24,25 @@ const customer = {
 function CustomerInfo() {
   const [isPublic, setIsPublic] = React.useState(false);
   return (
-    <div className="flex max-h-[70vh] w-[70%] flex-col overflow-y-auto p-4">
-      <div className="flex flex-col items-center self-end font-light text-white uppercase">
+    <div className="flex max-h-[70vh] w-[70%] flex-col overflow-scroll border-2 p-4">
+      <div className="flex flex-col items-center self-end">
         <p>{isPublic ? "Public" : "Private"}</p>
         <Switch
           className="self-end"
-          size="lg"
           checked={isPublic}
           onCheckedChange={(checked) => setIsPublic(checked)}
         />
       </div>
       <form
         id="customerInfoForm"
-        className="font-chakra mt-4 grid grid-cols-1 gap-4 md:grid-cols-2"
+        className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2"
       >
         {/* First Name */}
         <div>
-          <label className="mb-1 block font-light text-white uppercase">
-            First Name
-          </label>
-          <GlobalInput
+          <label className="mb-1 block font-medium">First Name</label>
+          <Input
             type="text"
-            className="w-full cursor-not-allowed"
+            className="w-full"
             value={customer.firstName}
             readOnly
           />
@@ -58,12 +50,10 @@ function CustomerInfo() {
 
         {/* Last Name */}
         <div>
-          <label className="mb-1 block font-light text-white uppercase">
-            Last Name
-          </label>
-          <GlobalInput
+          <label className="mb-1 block font-medium">Last Name</label>
+          <Input
             type="text"
-            className="w-full cursor-not-allowed"
+            className="w-full"
             value={customer.lastName}
             readOnly
           />
@@ -71,56 +61,38 @@ function CustomerInfo() {
 
         {/* Gender */}
         <div>
-          <label className="mb-1 block font-light text-white uppercase">
-            Gender
-          </label>
-          <Select value={customer.gender.toLowerCase()} disabled>
-            <SelectTrigger className="w-full cursor-not-allowed bg-white">
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="male">Male</SelectItem>
-              <SelectItem value="female">Female</SelectItem>
-              <SelectItem value="lgbtq+">LGBTQ+</SelectItem>
-              <SelectItem value="undefined">Undefined</SelectItem>
-            </SelectContent>
-          </Select>
+          <label className="mb-1 block font-medium">Gender</label>
+          <select
+            value={customer.gender}
+            disabled
+            className="w-full cursor-not-allowed rounded border border-gray-300 bg-gray-100 px-3 py-2"
+          >
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>LGBTQ+</option>
+            <option>Undefined</option>
+          </select>
         </div>
 
         {/* Date of Birth */}
         <div>
-          <label className="mb-1 block font-extralight text-white uppercase">
-            Date of Birth
-          </label>
-          <GlobalInput
-            type="date"
-            className="w-full cursor-not-allowed"
-            value={customer.dob}
-            readOnly
-          />
+          <label className="mb-1 block font-medium">Date of Birth</label>
+          <Input type="date" className="w-full" value={customer.dob} readOnly />
         </div>
 
         {/* Time of Birth */}
         <div>
-          <label className="mb-1 block font-light text-white uppercase">
-            Time of Birth
-          </label>
-          <GlobalInput
-            type="time"
-            className="w-full cursor-not-allowed"
-            value={customer.tob}
-            readOnly
-          />
+          <label className="mb-1 block font-medium">Time of Birth</label>
+          <Input type="time" className="w-full" value={customer.tob} readOnly />
         </div>
 
         {/* Zodiac Sign */}
         <div>
-          <label className="mb-1 block font-light text-white uppercase">
-            Zodiac Sign
-          </label>
-          <GlobalInput
+          <label className="mb-1 block font-medium">Zodiac Sign</label>
+          <Input
             type="text"
-            className="w-full cursor-not-allowed"
+            className="w-full"
             value={customer.zodiac}
             readOnly
           />
@@ -128,12 +100,10 @@ function CustomerInfo() {
 
         {/* Email */}
         <div>
-          <label className="mb-1 block font-light text-white uppercase">
-            Email
-          </label>
-          <GlobalInput
+          <label className="mb-1 block font-medium">Email</label>
+          <Input
             type="email"
-            className="w-full cursor-not-allowed"
+            className="w-full"
             value={customer.email}
             readOnly
           />
@@ -141,12 +111,10 @@ function CustomerInfo() {
 
         {/* Phone Number */}
         <div>
-          <label className="mb-1 block font-light text-white uppercase">
-            Phone Number
-          </label>
-          <GlobalInput
+          <label className="mb-1 block font-medium">Phone Number</label>
+          <Input
             type="tel"
-            className="w-full cursor-not-allowed"
+            className="w-full"
             value={customer.phone}
             readOnly
           />
@@ -161,7 +129,7 @@ function CustomerInfo() {
 
       {/* Edit Profile Button */}
       <div className="flex justify-center">
-        <GlobalButton variant="primary">EDIT PROFILE</GlobalButton>
+        <Button>Edit Profile</Button>
       </div>
     </div>
   );
