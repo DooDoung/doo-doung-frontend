@@ -1,6 +1,9 @@
 import { useState } from "react";
+
 import { useProphetAvailability } from "@/hooks/useProphetAvailability";
+
 import { GlobalButton } from "../globalComponents";
+
 import SessionTableBase from "./SessionTableBase";
 
 export default function SessionTableProphet() {
