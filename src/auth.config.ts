@@ -2,8 +2,8 @@
 import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-import { devAccounts, useMock } from "@/mock-auth";
 import { AppToast } from "@/lib/app-toast";
+import { devAccounts, useMock } from "@/mock-auth";
 
 export default {
   providers: [
