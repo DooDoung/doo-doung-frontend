@@ -51,7 +51,7 @@ export default function TransactionAccountForm({
 
       <div className="flex h-[40vh] items-center gap-16">
         <div className="flex flex-col p-10 rounded-lg">
-            <p className="m-2 text-white">Select Your Bank</p>
+            <p className="m-2 text-white font-chakra">Select Your Bank</p>
             <div className="grid grid-cols-4 gap-4">
               {banks.map((bank) => {
                 const isSelected = selectedBank?.name === bank.name;
@@ -81,10 +81,10 @@ export default function TransactionAccountForm({
 
         <div className="flex flex-col gap-4 p-10 rounded-lg">
             <div className="grid w-full max-w-md items-center gap-1.5">
-              <Label htmlFor="accountName" className="text-white text-xl">Account Name</Label>
+              <Label htmlFor="accountName" className="font-chakra text-white text-xl">Account Name</Label>
               <Input
                 id="accountName"
-                className="text-lg h-[8vh] w-[40vh] px-4" 
+                className="text-xl h-[6vh] w-[40vh] px-4 bg-gray-100" 
                 type="text"
                 value={accountName}
                 onChange={(e) => setAccountName(e.target.value)}
@@ -93,10 +93,10 @@ export default function TransactionAccountForm({
             </div>
 
             <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="accountNumber" className="text-white text-xl">Account Number</Label>
+              <Label htmlFor="accountNumber" className="font-chakra text-white text-xl">Account Number</Label>
               <Input
                 id="accountNumber"
-                className="text-lg h-[8vh] w-[40vh] px-4" 
+                className="text-xl h-[6vh] w-[40vh] px-4 bg-gray-100" 
                 type="text"
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
