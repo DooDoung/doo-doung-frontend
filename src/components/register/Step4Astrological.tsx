@@ -38,7 +38,11 @@ const step4Schema = customerSchema.pick({
   zodiacSign: true,
 });
 
-type Step4Errors = z.inferFlattenedErrors<typeof step4Schema>["fieldErrors"];
+type Step4Errors = {
+  birthDate?: string[];
+  birthTime?: string[];
+  zodiacSign?: string[];
+};
 
 export default function Step4Astrological({
   formData,

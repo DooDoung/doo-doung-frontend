@@ -1,8 +1,8 @@
 export enum Sex {
-  Male = "Male",
-  Female = "Female",
-  LGBTQ_Plus = "LGBTQ_Plus",
-  Undefined = "Undefined",
+  Male = "male",
+  Female = "female",
+  LGBTQ_Plus = "lgbtq_plus",
+  Undefined = "undefined",
 }
 
 export enum ZodiacSign {
@@ -29,7 +29,7 @@ export interface RegisterFormData {
   phoneNumber: string;
   gender: Sex | "";
   email: string;
-  role: "prophet" | "customer" | "";
+  role: "PROPHET" | "CUSTOMER" | "";
   transactionAccount?: string;
   lineId?: string;
 

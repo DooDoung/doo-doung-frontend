@@ -49,7 +49,7 @@ export default function Step3PersonalInfo({
 
   const labelStyle = "block text-sm font-medium text-white mb-1";
 
-  const isProphet = formData.role === "prophet";
+  const isProphet = formData.role === "PROPHET";
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
     const schemaToUse = isProphet

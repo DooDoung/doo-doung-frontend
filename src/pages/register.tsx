@@ -8,7 +8,7 @@ import Step3PersonalInfo from "@/components/register/Step3PersonalInfo";
 import Step4Astrological from "@/components/register/Step4Astrological";
 import StepPrivacyPolicy from "@/components/register/StepPrivacyPolicy";
 import { AppToast } from "@/lib/app-toast";
-import { RegisterFormData } from "@/types/user";
+import { RegisterFormData, ZodiacSign } from "@/types/user";
 
 export default function RegisterPage() {
   const [step, setStep] = useState(1);
@@ -35,12 +35,12 @@ export default function RegisterPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleRoleSelect = (role: "prophet" | "customer") => {
+  const handleRoleSelect = (role: "PROPHET" | "CUSTOMER") => {
     setFormData((prev) => ({ ...prev, role }));
     setStep(5); // Go to Privacy Policy step
   };
   const nextStep = () => {
-    if (step === 4 && formData.role === "customer") {
+    if (step === 4 && formData.role === "CUSTOMER") {
       setStep(6);
     } else {
       setStep((prev) => prev + 1);
@@ -55,15 +55,31 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const { confirmPassword, firstName, lastName, gender, birthDate, ...rest } =
+      formData;
+
+    const body = {
+      ...rest,
+      role: formData.role.toUpperCase(),
+      name: firstName,
+      lastname: lastName,
+      sex: formData.gender.toUpperCase(),
+      zodiacSign: (formData.zodiacSign || "").toUpperCase(),
+      birthDate: birthDate ? new Date(birthDate) : undefined,
+      // profileUrl is required by the DTO but not in the form, sending an empty string.
+      profileUrl: "",
+    };
+
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/account`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/account/register`,
         {
-          method: "PATCH",
+          method: "POST", // Changed from PATCH to POST for creation
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(body),
         },
       );
 
