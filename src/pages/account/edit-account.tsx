@@ -1,7 +1,7 @@
-import { useEffect,useState } from "react";
-
-import { EditProfilePictureDialog } from "@/components/account/EditProfilePictureDialog";
 import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
+import { EditProfilePictureDialog } from "@/components/account/EditProfilePictureDialog";
+import { useState, useEffect } from "react";
+import AccountLayout from "@/components/account/AccountLayout";
 
 const userRole = "customer";
 // const userRole = "prophet";
@@ -13,21 +13,8 @@ export default function EditAccountPage() {
   const handleSavePicture = (newUrl: string) => {};
 
   return (
-    <DefaultLayout>
-      <GlobalButton
-        variant="primary"
-        size="lg"
-        onClick={() => setIsDialogOpen(true)}
-      >
-        Edit Profile
-      </GlobalButton>
-
-      <EditProfilePictureDialog
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        onSave={handleSavePicture}
-        currentImageUrl={currentProfile}
-      />
+    <DefaultLayout contentClassName="flex justify-center items-center">
+      <AccountLayout role={userRole} editing={true} />
     </DefaultLayout>
   );
 }
