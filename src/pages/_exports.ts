@@ -1,7 +1,7 @@
 // Authentication Pages
 export { default as LoginPage } from "./login";
 export { default as RegisterPage } from "./register";
-export { default as ResetPasswordPage } from "./resetpassword";
+export { default as ResetPasswordPage } from "./reset-password";
 
 // Account Pages
 export { default as AccountPage } from "./account";

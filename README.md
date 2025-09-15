@@ -8,23 +8,19 @@ npm run dev
 pnpm dev
 ```
 
-
 ## How to Enable Mock Auth
 
-
 Set the environment variable in your `.env` file:
-    ```
-    NEXT_PUBLIC_USE_MOCK_AUTH=true
-    ```
-
+`     NEXT_PUBLIC_USE_MOCK_AUTH=true
+    `
 
 ## Dev Accounts
 
-| Username      | Password      | Role      |
-|---------------|--------------|-----------|
-| dev_customer  | dev_password | CUSTOMER  |
-| dev_prophet   | dev_password | PROPHET   |
-| dev_admin     | dev_password | ADMIN     |
+| Username     | Password     | Role     |
+| ------------ | ------------ | -------- |
+| dev_customer | dev_password | CUSTOMER |
+| dev_prophet  | dev_password | PROPHET  |
+| dev_admin    | dev_password | ADMIN    |
 
 ---
 
@@ -40,12 +36,10 @@ await signIn("credentials", {
 });
 
 //For real login system, use username and password from input
-
 ```
 
 **To test real backend auth:**  
-  Set `NEXT_PUBLIC_USE_MOCK_AUTH=false` (or remove it) in your `.env` and restart the dev server.
-
+ Set `NEXT_PUBLIC_USE_MOCK_AUTH=false` (or remove it) in your `.env` and restart the dev server.
 
 ## NextAuth Session Example
 
@@ -59,22 +53,25 @@ When a user signs in with `signIn("credentials")`, the session object returned b
     "email": "customer@example.com",
     "role": "CUSTOMER",
     "name": "dev_customer",
-    "image": null
+    "image": null,
   },
   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "expiresAt": 1757209872, // access token expire time
-  "expires": "2025-09-07T08:36:47.000Z" // next auth token expire time
+  "expires": "2025-09-07T08:36:47.000Z", // next auth token expire time
 }
 ```
 
 ### Notes
 
- You can access this session in:
-  * **Client components** with `useSession()`
-  * **Server components / API routes** with `getServerSession(authOptions)`
+You can access this session in:
+
+- **Client components** with `useSession()`
+- **Server components / API routes** with `getServerSession(authOptions)`
 
 ### Example usage
+
 ---
+
 **Client:**
 
 ```tsx

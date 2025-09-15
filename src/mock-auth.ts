@@ -30,7 +30,6 @@ export const devAccounts = {
 
 export const useMock = process.env.NEXT_PUBLIC_USE_MOCK_AUTH === "true";
 
-
 //Simulate refreshing a mock access token.
 export function refreshAccessToken(token: JWT): JWT {
   const username = token.username as keyof typeof devAccounts;

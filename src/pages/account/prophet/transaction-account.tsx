@@ -54,9 +54,11 @@ export default function ProphetTransactionAccountPage() {
 
     return (
       <GlassContainer>
-        <div className="flex flex-col items-center gap-2 p-8 -mt-12">
+        <div className="-mt-12 flex flex-col items-center gap-2 p-8">
           <div className="flex items-center gap-2">
-            <h1 className="font-sanctuary text-white text-4xl">Choose Your Default Account</h1>
+            <h1 className="font-sanctuary text-4xl text-white">
+              Choose Your Default Account
+            </h1>
             <button className="cursor-pointer" onClick={handleStartCreate}>
               <CirclePlus
                 className="mr-1 inline-block text-white"
@@ -65,7 +67,7 @@ export default function ProphetTransactionAccountPage() {
               />
             </button>
           </div>
-          <div className="flex w-[90vh] h-[45vh] flex-col items-center gap-4 overflow-y-auto px-4 mt-4">
+          <div className="mt-4 flex h-[45vh] w-[90vh] flex-col items-center gap-4 overflow-y-auto px-4">
             {accounts.map((account) => (
               <AccountListItem
                 key={account.id}
@@ -94,9 +96,7 @@ export default function ProphetTransactionAccountPage() {
   };
 
   return (
-    <DefaultLayout 
-      contentClassName="flex items-start justify-center pt-5"
-    >
+    <DefaultLayout contentClassName="flex items-start justify-center pt-5">
       {renderContent()}
     </DefaultLayout>
   );

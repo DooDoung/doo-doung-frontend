@@ -1,14 +1,10 @@
 import React from "react";
 import { toast } from "react-hot-toast";
-import {
-  AlertCircle,
-  AlertTriangle,
-  CheckCircle2,
-  Info,
-} from "lucide-react";
+import { AlertCircle, AlertTriangle, CheckCircle2, Info } from "lucide-react";
 
 // --- Base Styles ---
-const baseToastStyle = "bg-white text-neutral-black font-chakra border drop-shadow-sm px-4 py-3 rounded-lg flex items-center space-x-3";
+const baseToastStyle =
+  "bg-white text-neutral-black font-chakra border drop-shadow-sm px-4 py-3 rounded-lg flex items-center space-x-3";
 
 /**
  * Custom toast functions for the application, providing consistent styling.
@@ -20,7 +16,9 @@ export const AppToast = {
       icon: React.createElement(
         "div",
         { className: "bg-success p-2 rounded-full" },
-        React.createElement(CheckCircle2, { className: "h-6 w-6 text-neutral-white" })
+        React.createElement(CheckCircle2, {
+          className: "h-6 w-6 text-neutral-white",
+        }),
       ),
     });
   },
@@ -30,7 +28,9 @@ export const AppToast = {
       icon: React.createElement(
         "div",
         { className: "bg-error p-2 rounded-full" },
-        React.createElement(AlertCircle, { className: "h-6 w-6 text-neutral-white" })
+        React.createElement(AlertCircle, {
+          className: "h-6 w-6 text-neutral-white",
+        }),
       ),
     });
   },
@@ -40,7 +40,9 @@ export const AppToast = {
       icon: React.createElement(
         "div",
         { className: "bg-warning p-2 rounded-full" },
-        React.createElement(AlertTriangle, { className: "h-6 w-6 text-neutral-white" })
+        React.createElement(AlertTriangle, {
+          className: "h-6 w-6 text-neutral-white",
+        }),
       ),
     });
   },
@@ -50,9 +52,8 @@ export const AppToast = {
       icon: React.createElement(
         "div",
         { className: "bg-accent-violet p-2 rounded-full" },
-        React.createElement(Info, { className: "h-6 w-6 text-neutral-white" })
+        React.createElement(Info, { className: "h-6 w-6 text-neutral-white" }),
       ),
     });
   },
 };
-
