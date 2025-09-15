@@ -1,5 +1,5 @@
 // auth.ts
-import NextAuth from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 
 import authConfig from "@/auth.config";
 import { refreshAccessToken } from "@/mock-auth";
@@ -20,7 +20,7 @@ import { refreshAccessToken } from "@/mock-auth";
 
 const isDevMock = process.env.NEXT_PUBLIC_USE_MOCK_AUTH === "true";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authOptions: NextAuthOptions = {
   ...authConfig,
   callbacks: {
     async jwt({ token, user }) {
@@ -71,4 +71,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       };
     },
   },
-});
+};
