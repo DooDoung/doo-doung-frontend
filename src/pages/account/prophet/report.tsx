@@ -51,7 +51,7 @@ export default function ProphetReportPage() {
 
   return (
     <DefaultLayout>
-      <div className="mx-auto mt-[10%] flex h-[73%] w-[87%] justify-start">
+      <div className="mx-auto mt-[10%] flex h-[73%] w-[87%] justify-start rounded-3xl bg-black/20 backdrop-blur-xl">
         <UserProfile role="prophet" />
         <main className="flex-1 p-8">
           {isLoading ? (
@@ -63,7 +63,7 @@ export default function ProphetReportPage() {
                   <WarningBanner threshold={WARNING_THRESHOLD} />
                 </div>
               )}
-              <div className="h-[50vh] space-y-4 overflow-y-auto pr-4">
+              <div className="custom-scrollbar h-[50vh] space-y-4 overflow-y-auto pr-4">
                 {reports.map((report, index) => (
                   <ReportItem key={index} report={report} />
                 ))}
