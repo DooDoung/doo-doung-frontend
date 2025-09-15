@@ -132,7 +132,8 @@ export default function Step3PersonalInfo({
             <SelectContent>
               <SelectItem value={Sex.Male}>Male</SelectItem>
               <SelectItem value={Sex.Female}>Female</SelectItem>
-              <SelectItem value={Sex.LGBTQ_Plus}>Other</SelectItem>
+              <SelectItem value={Sex.LGBTQ_Plus}>LGBTQ+</SelectItem>
+              <SelectItem value={Sex.Undefined}>Other</SelectItem>
             </SelectContent>
           </Select>
           {errors.gender && (
