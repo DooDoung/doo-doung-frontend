@@ -34,6 +34,15 @@ export default function SessionTableBase({
     new Map(bookingSlots.map(slot => [`${slot.day}-${slot.time}`, slot]))
   , [bookingSlots]);
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const isToday = (dayDate: Date) => {
+    const dateToCompare = new Date(dayDate);
+    dateToCompare.setHours(0, 0, 0, 0);
+    return today.getTime() === dateToCompare.getTime();
+  };
+
   return (
     <div className="custom-scrollbar relative h-[70vh] w-full rounded-[2.5rem] overflow-hidden backdrop-blur-sm bg-[#3E3757]/50 backdrop-blur-md shadow-all-around">
 
@@ -52,7 +61,7 @@ export default function SessionTableBase({
         {/* Col 2: Day Headers */}
         <div className="flex justify-around text-white">
           {weekDays.map((day) => (
-            <div key={day.dayName} className="min-w-[120px] text-center text-white py-2 flex flex-col items-center">
+            <div key={day.dayName} className={`min-w-[120px] text-center text-white py-2 flex flex-col items-center ${isToday(day.date) ? "bg-primary rounded-lg" : ""}`}>
               <span className="font-sanctuary text-3xl">{day.dayAbbr}</span>
               <span className="font-chakra text-md font-sans">{day.displayDate}</span>
             </div>
