@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { DefaultLayout } from "@/components/globalComponents";
-import UserProfile from "@/components/account/UserProfile";
 import ReportItem from '@/components/account/Report/ReportItem';
 import WarningBanner from '@/components/account/Report/WarningBanner';
-
-import { mockReports, WARNING_THRESHOLD, type Report } from '@/constants/reportConstants';
+import UserProfile from "@/components/account/UserProfile";
+import { DefaultLayout } from "@/components/globalComponents";
+import { mockReports, type Report,WARNING_THRESHOLD } from '@/constants/reportConstants';
 
 export default function ProphetReportPage() {
   const [reports, setReports] = useState<Report[]>([]);
