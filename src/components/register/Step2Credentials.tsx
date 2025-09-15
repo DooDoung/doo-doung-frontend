@@ -71,6 +71,7 @@ export default function Step2Credentials({
           value={formData.username}
           onChange={handleChange}
           isInvalid={!!errors.username}
+          hasHintText={true}
           hintText={errors.username?.[0]}
         />
       </div>
@@ -85,6 +86,7 @@ export default function Step2Credentials({
           value={formData.password}
           onChange={handleChange}
           isInvalid={!!errors.password}
+          hasHintText={true}
           hintText={errors.password?.[0]}
         />
       </div>
@@ -99,6 +101,7 @@ export default function Step2Credentials({
           value={formData.confirmPassword}
           onChange={handleChange}
           isInvalid={!!errors.confirmPassword}
+          hasHintText={true}
           hintText={errors.confirmPassword?.[0]}
         />
       </div>

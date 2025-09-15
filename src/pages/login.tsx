@@ -73,7 +73,6 @@ export default function LoginPage() {
                     size="lg"
                     className="w-full text-xl"
                     placeholder="DooDoung"
-                    hasHintText={true}
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
@@ -85,7 +84,6 @@ export default function LoginPage() {
                     size="lg"
                     className="w-full text-xl"
                     placeholder="Enter your password"
-                    hasHintText={true}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
