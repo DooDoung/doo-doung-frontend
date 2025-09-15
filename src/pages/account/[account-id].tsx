@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { DefaultLayout } from "@/components/globalComponents";
-import { AccountData } from "@/interface/User";
 import OtherAccountLayout from "@/components/otherAccount/OtherAccountLayout";
+import { AccountData } from "@/interface/User";
 import { ZodiacSign } from "@/types/user";
 import { mapStringToZodiacSign } from "@/types/user";
 
