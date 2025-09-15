@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app";
 import { Chakra_Petch, Geist, Geist_Mono } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 
 import "../style/globals.css";
 
@@ -13,12 +14,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <div
-      className={`font-chakra ${geistSans.variable} ${geistMono.variable} antialiased`}
-    >
-      <Component {...pageProps} />
-    </div>
+    <SessionProvider session={session}>
+      <div
+        className={`font-chakra ${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <Component {...pageProps} />
+      </div>
+    </SessionProvider>
   );
 }
