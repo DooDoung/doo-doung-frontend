@@ -87,7 +87,7 @@ export default function SessionTableBase({
           {/* <TableHeader> is now handled by the div grid above */}
           <TableBody className="relative">
             {timeSlots.map((time) => (
-              <TableRow key={time} className="border-none">
+              <TableRow key={time} className="border-none hover:bg-transparent">
                 <TableCell className="sticky left-0 w-[100px] border-r border-neutral-gray p-0 ">
                   <div className="flex h-full items-center">
                       <span className="absolute inset-0 -translate-y-1.5 bg-neutral-white">{time}</span>

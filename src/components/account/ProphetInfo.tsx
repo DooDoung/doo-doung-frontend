@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useRouter } from "next/navigation";
 
 import ProphetCard from "@/components/account/ProphetCard";
 import {
@@ -9,7 +10,6 @@ import {
 } from "@/components/globalComponents";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { prophetFeat } from "@/constants/constant-ex";
-import { useRouter } from "next/navigation";
 
 const prophet = {
   firstName: "John",
