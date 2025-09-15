@@ -17,14 +17,6 @@ import { signOut } from "next-auth/react";
 function UserProfile({ role }: { role: string }) {
   const router = useRouter();
 
-  const handleClicked = () => {
-    // For now, just log to console
-    toast.success("Logged out successfully!");
-    router.push("/login");
-    console.log("User logged out");
-    // TODO: add real logout logic here (e.g., clear token, redirect)
-  };
-
   return (
     <div className="bg-primary-500/60 flex w-full flex-col items-center justify-start rounded-3xl p-12 text-center sm:w-[30%]">
       <h3 className="font-sanctuary text-neutral-black mb-8 text-5xl">
@@ -66,7 +58,7 @@ function UserProfile({ role }: { role: string }) {
         variant="primary"
         size="default"
         className="font-chakra mb-4"
-        onClick={handleClicked}
+        onClick={() => signOut({ callbackUrl: "/login" })}
       >
         LOG OUT
       </GlobalButton>
