@@ -44,7 +44,7 @@ export default function SessionTableBase({
   };
 
   return (
-    <div className="custom-scrollbar relative h-[70vh] w-full rounded-[2.5rem] overflow-hidden backdrop-blur-sm bg-[#3E3757]/50 backdrop-blur-md shadow-all-around">
+    <div className="custom-scrollbar relative h-[70vh] w-full rounded-[2.5rem] overflow-hidden backdrop-blur-sm bg-[#3E3757]/50 backdrop-blur-md shadow-all-around select-none">
 
       <div className="sticky top-0 py-2 z-10 grid grid-cols-[100px_1fr_80px] items-center">
         {/* Col 1: Left Arrow */}
@@ -52,7 +52,7 @@ export default function SessionTableBase({
           <button 
             onClick={goToPreviousWeek}
             disabled={currentWeek === 0}
-            className="disabled:opacity-25"
+            className="disabled:opacity-25 cursor-pointer disabled:cursor-not-allowed"
           >
             <ChevronLeft className="h-8 w-8" color="white" strokeWidth={1.5}/>
           </button>
@@ -73,7 +73,7 @@ export default function SessionTableBase({
           <button 
             onClick={goToNextWeek}
             disabled={currentWeek >= totalWeeks - 1}
-            className="disabled:opacity-25"
+            className="disabled:opacity-25 cursor-pointer disabled:cursor-not-allowed"
           >
             <ChevronRight className="h-8 w-8" color="white" strokeWidth={1.5}/>
           </button>
