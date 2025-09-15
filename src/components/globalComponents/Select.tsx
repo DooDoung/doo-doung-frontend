@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { CheckIcon } from "lucide-react";
 import SimpleBar from "simplebar-react";
 
 import { cn } from "@/lib/utils";
@@ -31,14 +31,17 @@ function SelectTrigger({
   className,
   size = "default",
   children,
+  isInvalid,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: "sm" | "default";
+  isInvalid?: boolean;
 }) {
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       data-size={size}
+      aria-invalid={isInvalid}
       className={cn(
         "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground",
         "aria-invalid:ring-destructive/20 aria-invalid:border-destructive",

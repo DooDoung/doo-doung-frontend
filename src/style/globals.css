@@ -158,3 +158,21 @@
 .shadow-all-around {
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.7); /* h-shadow v-shadow blur-radius color */
 }
+
+.privacy-policy-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.privacy-policy-scroll::-webkit-scrollbar-track {
+  background: #ffeaea;
+  border-radius: 10px;
+}
+
+.privacy-policy-scroll::-webkit-scrollbar-thumb {
+  background: #f9b7bb;
+  border-radius: 10px;
+}
+
+.privacy-policy-scroll::-webkit-scrollbar-thumb:hover {
+  background: #f8a8ad;
+}
