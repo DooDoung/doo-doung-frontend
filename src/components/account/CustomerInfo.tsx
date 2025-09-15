@@ -162,14 +162,14 @@ function CustomerInfo() {
       <ReviewSection myReview={mockReview} />
 
       {/* Edit Profile Button */}
-      <div className="flex justify-center mb-2">
+      <div className="mb-2 flex justify-center">
         <GlobalButton
           variant="primary"
           onClick={() => {
             router.push("/account/edit-account");
           }}
         >
-          Edit Profile
+          EDIT PROFILE
         </GlobalButton>
       </div>
     </div>

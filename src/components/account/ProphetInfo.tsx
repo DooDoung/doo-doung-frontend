@@ -29,7 +29,7 @@ const prophet = {
 function ProphetInfo() {
   const router = useRouter();
   return (
-    <div className="flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
+    <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
       <form
         id="prophetInfoForm"
         className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2"
@@ -133,12 +133,11 @@ function ProphetInfo() {
       <div className="mb-2 flex justify-center">
         <GlobalButton
           variant="primary"
-          className="font-light"
           onClick={() => {
             router.push("/account/edit-account");
           }}
         >
-          Edit Profile
+          EDIT PROFILE
         </GlobalButton>
       </div>
     </div>
