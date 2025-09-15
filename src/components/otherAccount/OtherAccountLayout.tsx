@@ -1,10 +1,10 @@
 import * as React from "react";
 
+import CustomerPublicInfo from "@/components/account/CustomerPublicInfo";
+import ProphetPublicInfo from "@/components/account/ProphetPublicInfo";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 import OtherProfile from "@/components/otherAccount/OtherProfile";
 import { AccountData } from "@/interface/User";
-import CustomerPublicInfo from "@/components/account/CustomerPublicInfo";
-import ProphetPublicInfo from "@/components/account/ProphetPublicInfo";
 
 function OtherAccountLayout({ user }: { user: AccountData }) {
   return (
