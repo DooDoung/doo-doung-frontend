@@ -40,7 +40,11 @@ export default function RegisterPage() {
     setStep(5); // Go to Privacy Policy step
   };
   const nextStep = () => {
-    if (step === 4 && formData.role === "CUSTOMER") {
+    if (step === 3) {
+      if (formData.role === "CUSTOMER") {
+        setStep(4);
+      }
+    } else if (step === 4 && formData.role === "CUSTOMER") {
       setStep(6);
     } else {
       setStep((prev) => prev + 1);

@@ -6,15 +6,15 @@ import { AppToast } from "@/lib/app-toast";
 import { RoleSelector } from "./RoleSelector";
 
 interface Step1RoleProps {
-  handleRoleSelect: (role: "prophet" | "customer") => void;
+  handleRoleSelect: (role: "PROPHET" | "CUSTOMER") => void;
 }
 
 export default function Step1Role({ handleRoleSelect }: Step1RoleProps) {
   const [selectedRole, setSelectedRole] = useState<
-    "prophet" | "customer" | null
+    "PROPHET" | "CUSTOMER" | null
   >(null);
 
-  const handleSelect = (role: "prophet" | "customer") => {
+  const handleSelect = (role: "PROPHET" | "CUSTOMER") => {
     setSelectedRole(role);
   };
 
@@ -33,14 +33,14 @@ export default function Step1Role({ handleRoleSelect }: Step1RoleProps) {
       </h3>
       <div className="mb-5 flex justify-center gap-24">
         <RoleSelector
-          onClick={() => handleSelect("prophet")}
-          selected={selectedRole === "prophet"}
+          onClick={() => handleSelect("PROPHET")}
+          selected={selectedRole === "PROPHET"}
           imageSrc="/images/register/read_the_path.webp"
           text="Read the Path"
         />
         <RoleSelector
-          onClick={() => handleSelect("customer")}
-          selected={selectedRole === "customer"}
+          onClick={() => handleSelect("CUSTOMER")}
+          selected={selectedRole === "CUSTOMER"}
           imageSrc="/images/register/find_my_path.webp"
           text="Find my Path"
         />

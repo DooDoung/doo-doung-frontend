@@ -177,8 +177,8 @@ export default function Step3PersonalInfo({
             <GlobalInput
               type="text"
               name="lineId"
-              placeholder="DooDoung"
-              value={formData.lineId}
+              placeholder="Your LINE ID"
+              value={formData.lineId || ""}
               onChange={handleChange}
               isInvalid={!!errors.lineId}
               hintText={errors.lineId?.[0]}
@@ -186,14 +186,34 @@ export default function Step3PersonalInfo({
           </div>
         )}
       </div>
-
-      <div className="flex justify-center gap-4">
-        <Button onClick={prevStep} className="w-40" variant="secondary">
+      <div className="flex justify-center gap-4 pt-2">
+        <Button
+          onClick={prevStep}
+          className="w-40"
+          variant="secondary"
+          type="button"
+        >
           Back
         </Button>
-        <Button onClick={handleNext} className="w-40" variant="primary">
-          {isProphet ? "Confirm" : "Next"}
-        </Button>
+        {isProphet ? (
+          <Button
+            variant="primary"
+            className="w-40"
+            type="button"
+            onClick={handleNext}
+          >
+            Confirm
+          </Button>
+        ) : (
+          <Button
+            variant="primary"
+            className="w-40"
+            type="button"
+            onClick={handleNext}
+          >
+            Next
+          </Button>
+        )}
       </div>
     </div>
   );

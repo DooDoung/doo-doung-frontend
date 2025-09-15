@@ -2,10 +2,11 @@ import { useState } from "react";
 import Image from "next/image";
 
 import GlobalButton from "@/components/globalComponents/Button";
-import { GlobalInput } from "../globalComponents";
 import { Label } from "@/components/ui/label";
 import { AppToast } from "@/lib/app-toast";
 import type { Bank, TransactionAccount } from "@/types/transaction";
+
+import { GlobalInput } from "../globalComponents";
 
 interface TransactionAccountFormProps {
   initialData?: TransactionAccount;
