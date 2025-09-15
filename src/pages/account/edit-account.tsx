@@ -1,9 +1,13 @@
+import AccountLayout from "@/components/account/AccountLayout";
 import { DefaultLayout } from "@/components/globalComponents";
+
+const userRole = "customer";
+// const userRole = "prophet";
 
 export default function EditAccountPage() {
   return (
-    <DefaultLayout>
-      <p>This is Edit Account page</p>
+    <DefaultLayout contentClassName="flex justify-center items-center">
+      <AccountLayout role={userRole} editing={true} />
     </DefaultLayout>
   );
 }

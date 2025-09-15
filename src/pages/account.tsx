@@ -7,7 +7,7 @@ const userRole = "customer";
 export default function AccountPage() {
   return (
     <DefaultLayout contentClassName="flex justify-center items-center">
-      <AccountLayout role={userRole} />
+      <AccountLayout role={userRole} editing={false} />
     </DefaultLayout>
   );
 }

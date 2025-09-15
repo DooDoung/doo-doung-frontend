@@ -1,10 +1,12 @@
 import * as React from "react";
 import toast from "react-hot-toast";
+import { Camera, Pencil } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/router";
 
-import { GlobalButton, GlobalInput } from "@/components/globalComponents";
+import { GlobalInput } from "@/components/globalComponents";
 import { ZodiacSign } from "@/types/user";
+
+import { EditProfilePictureDialog } from "@/components/account/EditProfilePictureDialog";
 
 const user = {
   profileUrl:
@@ -13,15 +15,19 @@ const user = {
   zodiacSign: ZodiacSign.Aquarius,
 };
 
-function UserProfile({ role }: { role: string }) {
-  const router = useRouter();
+function EditUserProfile({
+  role,
+  editing,
+}: {
+  role: string;
+  editing: boolean;
+}) {
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [profileUrl, setProfileUrl] = React.useState(user.profileUrl);
 
-  const handleClicked = () => {
-    // For now, just log to console
-    toast.success("Logged out successfully!");
-    router.push("/login");
-    console.log("User logged out");
-    // TODO: add real logout logic here (e.g., clear token, redirect)
+  const handleChangeProfile = () => {
+    setOpenDialog(true);
+    toast.success("Changed!");
   };
 
   return (
@@ -34,7 +40,7 @@ function UserProfile({ role }: { role: string }) {
       <div className="relative mb-6 h-[150px] w-[150px] rounded-full border-2 bg-white">
         <img
           alt="Profile"
-          src={user.profileUrl === "" ? "/user-profile.svg" : user.profileUrl}
+          src={user.profileUrl === "" ? "/user-profile.svg" : profileUrl}
           className="h-full w-full rounded-full object-cover p-1"
         />
 
@@ -48,40 +54,38 @@ function UserProfile({ role }: { role: string }) {
             />
           </div>
         )}
+
+        {editing && (
+          <div
+            className="bg-secondary absolute bottom-2 left-0 flex h-9 w-9 items-center justify-center rounded-full"
+            onClick={handleChangeProfile}
+          >
+            <Camera strokeWidth={1} size={26} />
+          </div>
+        )}
+
+        <EditProfilePictureDialog
+          open={openDialog}
+          onOpenChange={setOpenDialog}
+          currentImageUrl={profileUrl}
+          onSave={(url) => setProfileUrl(url)}
+        />
       </div>
 
       {/* Username */}
-      <p className="font-chakra text-neutral-black mb-4 self-start text-lg">
+      <p className="font-chakra text-neutral-black mb-4 flex items-center self-start text-lg">
         USERNAME
+        {editing && <Pencil className="ml-2" size={18} />}
       </p>
       <GlobalInput
         type="text"
-        className="font-chakra mb-4 cursor-not-allowed"
+        className={`font-chakra mb-4 ${editing ? "" : "cursor-not-allowed"}`}
         fullWidth
         value={user.username}
-        readOnly
+        readOnly={!editing}
       />
-
-      {/* Logout */}
-      <GlobalButton
-        variant="primary"
-        size="default"
-        className="font-chakra mb-4"
-        onClick={handleClicked}
-      >
-        LOG OUT
-      </GlobalButton>
-
-      {/* Reset password*/}
-      <a
-        href="/reset-password/token"
-        className="font-chakra text-neutral-black hover:underline"
-      >
-        {" "}
-        reset password
-      </a>
     </div>
   );
 }
 
-export default UserProfile;
+export default EditUserProfile;

@@ -71,7 +71,7 @@ export function DefaultLayout({
       {includeHeader && <Header {...headerProps} />}
 
       {/* Main Content */}
-      <main className={cn("flex-1", contentClassName)}>{children}</main>
+      <main className={cn("mb-12 flex-1", contentClassName)}>{children}</main>
 
       {/* Footer */}
       {includeFooter && <Footer {...footerProps} />}
