@@ -51,13 +51,18 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
 
-      // If expired, return empty (could trigger refresh logic in real app)
-      return {};
+      // If expired, return empty token to force re-authentication
+      return {}
     },
 
     async session({ session, token }) {
-      if (!token?.accessToken || Date.now() > (token.expiresAt as number)) {
-        return null as any; // force user to log in again
+      // If token is invalid or expired, return session without auth data
+      if (!token?.accessToken || !token?.expiresAt || Date.now() > (token.expiresAt as number)) {
+        return {
+          ...session,
+          user: undefined,
+          accessToken: undefined,
+        } as any;
       }
       return {
         ...session,

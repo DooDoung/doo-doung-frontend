@@ -40,7 +40,6 @@ export default function LoginPage() {
 
       if (result?.ok) {
         AppToast.success("Login successful");
-        // Let middleware handle the redirect based on user role
         router.push("/");
       }
     } catch (err: any) {

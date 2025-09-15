@@ -50,7 +50,6 @@ export default withAuth(
     const { pathname } = req.nextUrl;
     const token = req.nextauth.token;
     const role: RoleType | null = (typeof token?.role === 'string' ? token.role.toLowerCase() : null) as RoleType | null;
-
     // Check if user has access to the current path
     if (hasAccess(pathname, role)) {
       return NextResponse.next();
