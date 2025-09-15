@@ -51,7 +51,7 @@ export default function ProphetReportPage() {
 
   return (
     <DefaultLayout>
-      <div className="mx-auto mt-[10%] flex h-[73%] w-[87%] justify-start rounded-3xl bg-black/20 backdrop-blur-xl">
+      <div className="mx-auto my-5 flex h-[73%] w-[87%] justify-start rounded-3xl bg-black/20 backdrop-blur-xl">
         <UserProfile role="prophet" />
         <main className="flex-1 p-8">
           {isLoading ? (
@@ -60,7 +60,7 @@ export default function ProphetReportPage() {
             <div className="relative h-[70vh]">
               <div className="flex h-full flex-col">
                 {hasExceededThreshold && (
-                  <div className="sticky top-0 z-10 mb-4">
+                  <div className="sticky top-3 z-10 mb-4">
                     <WarningBanner threshold={WARNING_THRESHOLD} />
                   </div>
                 )}

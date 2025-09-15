@@ -18,12 +18,12 @@ function AccountLayout({ role, editing }: { role: string; editing: boolean }) {
         <UserProfile role={role} />
       )}
       {editing ? (
-        role === "customer" ? (
+        role === "CUSTOMER" ? (
           <EditCustomerInfo />
         ) : (
           <EditProphetInfo />
         )
-      ) : role === "customer" ? (
+      ) : role === "CUSTOMER" ? (
         <CustomerInfo />
       ) : (
         <ProphetInfo />

@@ -22,7 +22,7 @@ export function GlassContainer2({ children, className }: GlassContainerProps) {
         "rounded-3xl",
         "shadow-all-around",
         "p-10",
-        "mt-[1%] flex flex-col justify-start overflow-y-auto sm:flex-row",
+        "my-10 flex flex-col justify-start overflow-y-auto sm:flex-row",
         className,
       )}
     >
