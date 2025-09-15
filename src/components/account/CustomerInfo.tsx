@@ -31,7 +31,7 @@ function CustomerInfo() {
   const [isPublic, setIsPublic] = React.useState(false);
   const router = useRouter();
   return (
-    <div className="flex max-h-[70vh] w-full flex-col sm:overflow-y-auto p-4 sm:w-[70%]">
+    <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
       <div className="flex flex-col items-center self-end font-light text-white uppercase">
         <p>{isPublic ? "Public" : "Private"}</p>
         <Switch
@@ -162,14 +162,14 @@ function CustomerInfo() {
       <ReviewSection myReview={mockReview} />
 
       {/* Edit Profile Button */}
-      <div className="flex justify-center">
+      <div className="mb-2 flex justify-center">
         <GlobalButton
           variant="primary"
           onClick={() => {
             router.push("/account/edit-account");
           }}
         >
-          Edit Profile
+          EDIT PROFILE
         </GlobalButton>
       </div>
     </div>

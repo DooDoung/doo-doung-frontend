@@ -159,7 +159,7 @@
   width: 20px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: var(--primary-500)
+  background: var(--primary-500);
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: var(--primary-500);
