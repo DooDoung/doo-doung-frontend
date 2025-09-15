@@ -7,6 +7,9 @@ import { AccountData } from "@/interface/User";
 import { ZodiacSign } from "@/types/user";
 import { mapStringToZodiacSign } from "@/types/user";
 
+const userRole = "customer";
+// const userRole = "prophet";
+
 export default function AccountDetailsPage() {
   const router = useRouter();
   const { "account-id": accountId } = router.query;
