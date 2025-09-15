@@ -1,8 +1,13 @@
 import { useState } from "react";
-import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 
-import { AuthLayout } from "@/components/globalComponents";
+import {
+  AuthLayout,
+  GlassContainer,
+  GlobalButton,
+  GlobalInput,
+} from "@/components/globalComponents";
+import { AppToast } from "@/lib/app-toast";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -28,7 +33,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!username || !password) {
-      toast.error("Both username and password are required.");
+      AppToast.error("Both username and password are required.");
       return;
     }
 
@@ -37,14 +42,14 @@ export default function LoginPage() {
     try {
       const result = await mockLogin(username, password);
       if (result === "admin") {
-        toast.success("Welcome, Admin");
+        AppToast.success("Welcome, Admin");
         router.push("/admin/report");
       } else {
-        toast.success("Login successful");
+        AppToast.success("Login successful");
         router.push("/course");
       }
     } catch (err: any) {
-      toast.error(err);
+      AppToast.error(err);
     } finally {
       setLoading(false);
     }
@@ -53,42 +58,62 @@ export default function LoginPage() {
   return (
     <AuthLayout>
       <div className="flex min-h-screen items-center justify-center">
-        <form onSubmit={handleSubmit} className="w-80">
-          <h1 className="text-center text-2xl font-semibold">Login</h1>
+        <GlassContainer>
+          <div className="absolute -mt-26 -ml-10 flex h-full w-full flex-col items-center justify-center">
+            <h2 className="font-sanctuary text-neutral-white mb-6 text-[64px]">
+              Log in to DooDoung
+            </h2>
 
-          <div className="mb-4">
-            <label className="block text-sm">Username</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full border p-2"
-            />
+            <form onSubmit={handleSubmit} className="w-80">
+              <div className="font-chakra text-neutral-white mb-6 text-2xl">
+                <div className="mb-4">
+                  <label className="mb-2 block">Username</label>
+                  <GlobalInput
+                    type="text"
+                    size="lg"
+                    className="w-full text-xl"
+                    placeholder="DooDoung"
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+
+                <div className="mb-8">
+                  <label className="mb-2 block">Password</label>
+                  <GlobalInput
+                    type="password"
+                    size="lg"
+                    className="w-full text-xl"
+                    placeholder="Enter your password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+
+                <div className="flex justify-center">
+                  <GlobalButton
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    className="w-fit text-xl"
+                    loading={loading}
+                    loadingText="Logging in..."
+                    onClick={handleSubmit}
+                  >
+                    Log in
+                  </GlobalButton>
+                </div>
+              </div>
+
+              <div className="font-chakra text-neutral-white flex justify-between text-base">
+                <a href="/reset-password" className="">
+                  Forgot Password?
+                </a>
+                <a href="/register" className="">
+                  Sign Up
+                </a>
+              </div>
+            </form>
           </div>
-
-          <div className="mb-6">
-            <label className="block text-sm">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border p-2"
-            />
-          </div>
-
-          <button type="submit" disabled={loading} className="w-full">
-            {loading ? "Logging in..." : "Login"}
-          </button>
-
-          <div className="flex justify-between text-sm">
-            <a href="/resetpassword" className="">
-              Forgot Password?
-            </a>
-            <a href="/register" className="">
-              Sign Up
-            </a>
-          </div>
-        </form>
+        </GlassContainer>
       </div>
     </AuthLayout>
   );

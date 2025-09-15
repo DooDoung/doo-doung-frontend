@@ -1,0 +1,94 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { GlobalButton, GlobalInput } from "../globalComponents";
+import { AppToast } from "@/lib/app-toast";
+
+interface EditProfilePictureDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSave: (url: string) => void;
+  currentImageUrl?: string;
+}
+
+export function EditProfilePictureDialog({
+  open,
+  onOpenChange,
+  onSave,
+  currentImageUrl = "",
+}: EditProfilePictureDialogProps) {
+  const [imageUrl, setImageUrl] = useState(currentImageUrl);
+
+  useEffect(() => {
+    setImageUrl(currentImageUrl);
+  }, [currentImageUrl]);
+
+  const handleSave = () => {
+    if (imageUrl.trim()) {
+      onSave(imageUrl);
+      onOpenChange(false);
+    }
+    AppToast.success("Profile picture updated successfully!");
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent 
+        showCloseButton={false} 
+        className="
+          font-chakra text-neutral-white w-[90vw] max-w-md 
+          p-0 border-none rounded-[2rem] bg-transparent shadow-lg gap-0
+        "
+      >
+        {/* Header Section */}
+        <DialogHeader className="bg-primary rounded-t-[2rem] p-4">
+          <DialogTitle className="text-center text-xl tracking-wider">
+            EDIT PROFILE PICTURE
+          </DialogTitle>
+        </DialogHeader>
+
+        {/* Content & Footer Section */}
+        <div className="bg-primary-500 rounded-b-[2rem] p-6">
+          {/* Input Section */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="pictureUrl" className="text-sm text-neutral-white">
+              New Picture URL
+            </label>
+            <GlobalInput
+              id="pictureUrl"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              placeholder="Enter picture URL"
+            />
+          </div>
+
+          {/* Footer Section */}
+          <DialogFooter className="mt-6 flex w-full items-center justify-center gap-4">
+            <div className="w-full flex justify-center items-center gap-4">
+                <GlobalButton
+                    onClick={() => onOpenChange(false)}
+                    variant="primary"
+                    >
+                    Cancel
+                    </GlobalButton>
+                    <GlobalButton
+                    onClick={handleSave}
+                    variant="secondary" 
+                    >
+                    Save
+                </GlobalButton>
+            </div>
+
+          </DialogFooter>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

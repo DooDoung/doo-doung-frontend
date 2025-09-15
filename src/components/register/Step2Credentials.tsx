@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { z } from "zod";
 
+import { GlobalInput } from "@/components/globalComponents";
+import Button from "@/components/globalComponents/Button";
+import { AppToast } from "@/lib/app-toast";
 import { baseSchema } from "@/lib/validators/auth";
 import { RegisterFormData } from "@/types/user";
 
@@ -34,16 +37,14 @@ export default function Step2Credentials({
 }: Step2Props) {
   const [errors, setErrors] = useState<Step2Errors>({});
 
-  const inputStyle = "w-full p-2 border border-gray-300 rounded-md";
-  const labelStyle = "block text-sm font-medium text-gray-700 mb-1";
-  const buttonStyle =
-    "w-full py-2 px-4 text-white font-semibold rounded-md shadow-sm disabled:bg-gray-400";
+  const labelStyle = "block text-sm font-medium text-white mb-1";
 
   const handleNext = () => {
     const result = step2Schema.safeParse(formData);
 
     if (!result.success) {
       setErrors(result.error.flatten().fieldErrors);
+      AppToast.error("Every field must be completed.");
       return;
     }
 
@@ -52,69 +53,62 @@ export default function Step2Credentials({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-0">
+      <style>{`
+        .text-error {
+          color: #ff8a80;
+          text-shadow: 0 0 5px #ff8a80;
+        }
+      `}</style>
       <div>
         <label htmlFor="username" className={labelStyle}>
           Username
         </label>
-        <input
+        <GlobalInput
           type="text"
           name="username"
+          placeholder="DooDoung"
           value={formData.username}
           onChange={handleChange}
-          className={inputStyle}
+          isInvalid={!!errors.username}
+          hintText={errors.username?.[0]}
         />
-        {errors.username && (
-          <p className="mt-1 text-sm text-red-500">{errors.username[0]}</p>
-        )}
       </div>
       <div>
         <label htmlFor="password" className={labelStyle}>
           Password
         </label>
-        <input
+        <GlobalInput
           type="password"
           name="password"
+          placeholder="Enter your password"
           value={formData.password}
           onChange={handleChange}
-          className={inputStyle}
+          isInvalid={!!errors.password}
+          hintText={errors.password?.[0]}
         />
-        {errors.password && (
-          <p className="mt-1 text-sm text-red-500">{errors.password[0]}</p>
-        )}
       </div>
       <div>
         <label htmlFor="confirmPassword" className={labelStyle}>
           Confirm Password
         </label>
-        <input
+        <GlobalInput
           type="password"
           name="confirmPassword"
+          placeholder="Re-type your password"
           value={formData.confirmPassword}
           onChange={handleChange}
-          className={inputStyle}
+          isInvalid={!!errors.confirmPassword}
+          hintText={errors.confirmPassword?.[0]}
         />
-        {errors.confirmPassword && (
-          <p className="mt-1 text-sm text-red-500">
-            {errors.confirmPassword[0]}
-          </p>
-        )}
       </div>
-      <div className="flex justify-between gap-4">
-        <button
-          type="button"
-          onClick={prevStep}
-          className={`${buttonStyle} bg-gray-500 hover:bg-gray-600`}
-        >
+      <div className="flex justify-center gap-4">
+        <Button variant="secondary" className="w-40" onClick={prevStep}>
           Back
-        </button>
-        <button
-          type="button"
-          onClick={handleNext}
-          className={`${buttonStyle} bg-indigo-600 hover:bg-indigo-700`}
-        >
+        </Button>
+        <Button variant="primary" className="w-40" onClick={handleNext}>
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );

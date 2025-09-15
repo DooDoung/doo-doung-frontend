@@ -1,18 +1,16 @@
 import * as React from "react";
 
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import CustomerInfo from "@/components/account/CustomerInfo";
+import ProphetInfo from "@/components/account/ProphetInfo";
+import UserProfile from "@/components/account/UserProfile";
+import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 
-import CustomerInfo from "./CustomerInfo";
-import ProphetInfo from "./ProphetInfo";
-import UserProfile from "./UserProfile";
-
-function AccountLayout({role}: {role: string}) {
+function AccountLayout({ role }: { role: string }) {
   return (
-    <div className="mt-[10%] flex h-[73%] w-[87%] justify-start">
+    <GlassContainer2 className="p-0">
       <UserProfile role={role} />
       {role === "customer" ? <CustomerInfo /> : <ProphetInfo />}
-    </div>
+    </GlassContainer2>
   );
 }
 
