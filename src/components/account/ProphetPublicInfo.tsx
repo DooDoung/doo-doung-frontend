@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { mockCourse } from "@/constants/mock-account";
+
 import CourseSection from "./Course/CourseSection";
 
 

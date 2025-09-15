@@ -34,7 +34,7 @@ function CourseCard({
         </div>
         <h3 className="text-md font-semibold">{courseName}</h3>
         <p className="text-xs">{prophetName}</p>
-        <p className="self-end rounded-2xl bg-[#a9607b] px-2 text-sm font-medium text-white">
+        <p className="self-end rounded-2xl bg-accent-pink px-2 text-sm font-medium text-white">
           {price}.-
         </p>
         <p className="text-xs uppercase">

@@ -111,6 +111,17 @@ const mockReview: Review[] = [
 
 export { mockReservation, mockReview };
 
+type Course = {
+  id: string;
+  imageUrl: string;
+  score: number;
+  courseName: string;
+  prophetName: string;
+  description: string;
+  price: number;
+  date: string;
+  time: string;
+};
 
 export const mockCourse: Course[] = [
   {
@@ -147,6 +158,3 @@ export const mockCourse: Course[] = [
     time: "10:00",
   },
 ];
-
-// Corrected export statement
-export { mockCourse };
