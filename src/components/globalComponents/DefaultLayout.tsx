@@ -22,7 +22,7 @@ interface DefaultLayoutProps {
    */
   headerProps?: {
     className?: string;
-    role?: 'customer' | 'prophet';
+    role?: "customer" | "prophet";
   };
   /**
    * Custom footer props
@@ -60,7 +60,8 @@ export function DefaultLayout({
   footerProps,
   contentClassName,
 }: DefaultLayoutProps) {
-  const role = 'customer';
+  // TODO : change with next auth
+  const role = "customer";
   return (
     <div
       className={cn(

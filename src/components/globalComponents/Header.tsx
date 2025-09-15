@@ -1,9 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { AlignJustify, Flag, Home, Search, ShoppingCart, Star, User } from "lucide-react";
+import {
+  AlignJustify,
+  Flag,
+  Home,
+  Search,
+  ShoppingCart,
+  Star,
+  User,
+} from "lucide-react";
 import Link from "next/link";
-import { AlignJustify, Home, Search, ShoppingCart, User, Star, Flag } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ------------------- Data -------------------
@@ -28,31 +35,36 @@ const prophetLinks = [
 
 interface HeaderProps {
   className?: string;
-  role?: 'customer' | 'prophet';
+  role?: "customer" | "prophet";
 }
 
 // ------------------- Component -------------------
 
-export function Header({ className, role = 'customer' }: HeaderProps) {
+export function Header({ className, role = "customer" }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const links = role === 'customer' ? customerLinks : prophetLinks;
+  const links = role === "customer" ? customerLinks : prophetLinks;
 
   return (
     <header className={cn("fixed top-5 right-5 z-50", className)}>
-      <div className={cn(
-        "w-[68px] relative flex flex-col items-center gap-4 px-3 py-4 transition-all duration-300 ease-in-out",
-        "rounded-[25px] bg-[rgba(62,55,83,0.5)] shadow-[0_0_15px_0_#FFF] backdrop-blur-[2px]",
-        isOpen && "gap-6 py-6"
-      )}>
+      <div
+        className={cn(
+          "relative flex w-[68px] flex-col items-center gap-4 px-3 py-4 transition-all duration-300 ease-in-out",
+          "rounded-[25px] bg-[rgba(62,55,83,0.5)] shadow-[0_0_15px_0_#FFF] backdrop-blur-[2px]",
+          isOpen && "gap-6 py-6",
+        )}
+      >
         {/* --- Hamburger Menu Button --- */}
-        <button onClick={() => setIsOpen(!isOpen)} className="relative cursor-pointer">
-            <AlignJustify
-              size={28}
-              className={cn(
-                "text-white transition-transform duration-300 ease-in-out hover:scale-110",
-                isOpen && "rotate-180 transform"
-              )}
-            />
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="relative cursor-pointer"
+        >
+          <AlignJustify
+            size={28}
+            className={cn(
+              "text-white transition-transform duration-300 ease-in-out hover:scale-110",
+              isOpen && "rotate-180 transform",
+            )}
+          />
         </button>
 
         {isOpen && (
@@ -61,7 +73,7 @@ export function Header({ className, role = 'customer' }: HeaderProps) {
               <Link
                 key={link.href}
                 href={link.href}
-                className="flex flex-col items-center gap-1 text-white hover:text-primary-300 transition-colors cursor-pointer hover:scale-110"
+                className="hover:text-primary-300 flex cursor-pointer flex-col items-center gap-1 text-white transition-colors hover:scale-110"
                 onClick={() => setIsOpen(false)}
               >
                 {link.icon}
