@@ -1,6 +1,7 @@
 // auth.config.ts
-import Credentials from "next-auth/providers/credentials";
 import type { NextAuthOptions } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+
 import { devAccounts, useMock } from "@/mock-auth";
 
 export default {

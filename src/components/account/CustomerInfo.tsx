@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useRouter } from "next/navigation";
 
 import {
   GlobalButton,
@@ -14,7 +15,6 @@ import { Switch } from "../ui/switch";
 
 import ReservationSection from "./Reservation/ReservationSection";
 import ReviewSection from "./Review/ReviewSection";
-import { useRouter } from "next/navigation";
 
 const customer = {
   firstName: "John",
