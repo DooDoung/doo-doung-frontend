@@ -17,6 +17,10 @@ export default function SessionTableBase({
   startMonday,
   onToggleProphetAvail,
   isEdit = false,
+  currentWeek = 0,
+  totalWeeks = 4,
+  goToPreviousWeek = () => {}, 
+  goToNextWeek = () => {},
 }: SessionTableBaseProps) {
   
   const weekDays = useMemo(() => generateWeekDays(startMonday), [startMonday]);
@@ -36,7 +40,13 @@ export default function SessionTableBase({
       <div className="sticky top-0 py-2 z-10 grid grid-cols-[100px_1fr_80px] items-center">
         {/* Col 1: Left Arrow */}
         <div className="flex items-center justify-end pl-4">
-          <ChevronLeft className="h-8 w-8" color="white" strokeWidth={1.5}/>
+          <button 
+            onClick={goToPreviousWeek}
+            disabled={currentWeek === 0}
+            className="disabled:opacity-25"
+          >
+            <ChevronLeft className="h-8 w-8" color="white" strokeWidth={1.5}/>
+          </button>
         </div>
 
         {/* Col 2: Day Headers */}
@@ -51,7 +61,13 @@ export default function SessionTableBase({
 
         {/* Col 3: Right Arrow */}
         <div className="flex items-center justify-start pr-4">
-          <ChevronRight className="h-8 w-8" color="white" strokeWidth={1.5}/>
+          <button 
+            onClick={goToNextWeek}
+            disabled={currentWeek >= totalWeeks - 1}
+            className="disabled:opacity-25"
+          >
+            <ChevronRight className="h-8 w-8" color="white" strokeWidth={1.5}/>
+          </button>
         </div>
       </div>
       

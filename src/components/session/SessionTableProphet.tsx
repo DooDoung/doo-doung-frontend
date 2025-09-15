@@ -1,5 +1,3 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { useProphetAvailability } from "@/hooks/useProphetAvailability";
 
@@ -28,31 +26,16 @@ export default function SessionTableProphet() {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Button
-            variant="outline"
-            size="sm"
-            onClick={goToPreviousWeek}
-            disabled={currentWeek === 0}
+            variant="default"
+            size="lg"
           >
-            <ChevronLeft className="h-4 w-4" />
-            Previous Week
-          </Button>
-
-          <span className="font-medium">Week {currentWeek + 1} of 4</span>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={goToNextWeek}
-            disabled={currentWeek === 3}
-          >
-            Next Week
-            <ChevronRight className="h-4 w-4" />
+            Back
           </Button>
         </div>
 
         <div className="flex items-center space-x-2">
           <Button
-            variant={isEdit ? "destructive" : "secondary"}
+            variant={isEdit ? "secondary" : "default"}
             size="sm"
             onClick={() => setIsEdit(!isEdit)}
           >
@@ -60,8 +43,8 @@ export default function SessionTableProphet() {
           </Button>
 
           <Button
-            variant="default"
-            size="sm"
+            variant="secondary"
+            size="lg"
             onClick={applyToMonth}
             disabled={!isEdit}
           >
@@ -76,6 +59,9 @@ export default function SessionTableProphet() {
         startMonday={currentMonday}
         onToggleProphetAvail={ToggleProphetAvail}
         isEdit={isEdit}
+        currentWeek={currentWeek}
+        goToPreviousWeek={goToPreviousWeek}
+        goToNextWeek={goToNextWeek}
       />
     </div>
   );
