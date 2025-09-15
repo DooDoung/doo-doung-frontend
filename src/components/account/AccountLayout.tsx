@@ -7,7 +7,7 @@ import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 
 function AccountLayout({ role }: { role: string }) {
   return (
-    <GlassContainer2>
+    <GlassContainer2 className="p-0">
       <UserProfile role={role} />
       {role === "customer" ? <CustomerInfo /> : <ProphetInfo />}
     </GlassContainer2>

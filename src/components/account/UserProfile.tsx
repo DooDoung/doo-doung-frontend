@@ -24,7 +24,7 @@ function UserProfile({ role }: { role: string }) {
   };
 
   return (
-    <div className="bg-primary-500/60 flex w-[30%] flex-col items-center justify-start rounded-4xl p-12 text-center">
+    <div className="bg-primary-500/60 flex w-[30%] flex-col items-center justify-start rounded-3xl p-12 text-center">
       <h3 className="font-sanctuary text-neutral-black mb-8 text-5xl">
         {role}
       </h3>
