@@ -28,18 +28,18 @@ function CourseCard({
       <img
         src={imageUrl}
         alt={courseName}
-        className="mr-4 w-32 rounded-3xl object-cover"
+        className="mr-6 w-40 rounded-3xl object-cover"
       />
-      <div className="text-neutral-black flex justify-between w-full py-4 pr-4 gap-16">
+      <div className="text-neutral-black flex w-full justify-between gap-20 py-6 pr-6">
         <div>
           <div className="flex justify-between">
-            <StarRating score={score} className="h-5 w-5" />
+            <StarRating score={score} className="h-6 w-6" />
           </div>
-          <h3 className="text-md font-semibold">{courseName}</h3>
-          <p className="text-xs">{description }</p>
+          <h3 className="text-lg font-semibold mt-1">{courseName}</h3>
+          <p className="text-sm mt-1">{description}</p>
         </div>
         <div className="flex flex-col items-end justify-center">
-          <div className="self-end rounded-2xl bg-[#a9607b] px-6 py-2 text-sm font-medium text-white">
+          <div className="self-end rounded-lg bg-[#a9607b] px-8 py-3 text-base font-medium text-white">
             {price}.-
           </div>
         </div>

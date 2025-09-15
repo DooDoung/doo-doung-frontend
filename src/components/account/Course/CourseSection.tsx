@@ -16,11 +16,14 @@ type Course = {
 
 function CourseSection({ courses }: { courses: Course[] }) {
   return (
-    <section className="flex-col my-8">
+    // The <section> tag itself doesn't need flex properties for this layout
+    <section className="my-8">
       <h2 className="mb-4 text-2xl font-semibold text-white uppercase">
         Available Courses
       </h2>
-      <div className="mt-4 flex-col gap-6">
+      
+      {/* Added 'flex' class here to activate the flexbox layout */}
+      <div className="mt-4 flex flex-col gap-6">
         {courses.map((course) => (
           <CourseCard key={course.id} {...course} />
         ))}
