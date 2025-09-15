@@ -1,7 +1,7 @@
 import AccountLayout from "@/components/account/AccountLayout";
 import { DefaultLayout } from "@/components/globalComponents";
 
-const userRole = "customer";
+const userRole = "CUSTOMER";
 // const userRole = "prophet";
 
 export default function AccountPage() {

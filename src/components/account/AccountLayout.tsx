@@ -9,7 +9,7 @@ function AccountLayout({ role }: { role: string }) {
   return (
     <GlassContainer2 className="p-0">
       <UserProfile role={role} />
-      {role === "customer" ? <CustomerInfo /> : <ProphetInfo />}
+      {role === "CUSTOMER" ? <CustomerInfo /> : <ProphetInfo />}
     </GlassContainer2>
   );
 }

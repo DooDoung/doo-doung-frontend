@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 // Simple middleware that bypasses all authentication
 export function middleware(request: NextRequest) {
