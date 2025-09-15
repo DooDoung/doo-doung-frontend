@@ -1,13 +1,13 @@
 import AccountLayout from "@/components/account/AccountLayout";
 import { DefaultLayout } from "@/components/globalComponents";
 
-const userRole = "customer";
-// const userRole = "prophet";
+// const userRole = "CUSTOMER";
+const userRole = "PROPHET";
 
 export default function AccountPage() {
   return (
     <DefaultLayout contentClassName="flex justify-center items-center">
-      <AccountLayout role={userRole} />
+      <AccountLayout role={userRole} editing={false} />
     </DefaultLayout>
   );
 }

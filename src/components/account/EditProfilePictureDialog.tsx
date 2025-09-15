@@ -1,15 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { GlobalButton, GlobalInput } from "../globalComponents";
 import { AppToast } from "@/lib/app-toast";
+
+import { GlobalButton, GlobalInput } from "../globalComponents";
 
 interface EditProfilePictureDialogProps {
   open: boolean;
@@ -40,12 +42,9 @@ export function EditProfilePictureDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent 
-        showCloseButton={false} 
-        className="
-          font-chakra text-neutral-white w-[90vw] max-w-md 
-          p-0 border-none rounded-[2rem] bg-transparent shadow-lg gap-0
-        "
+      <DialogContent
+        showCloseButton={false}
+        className="font-chakra text-neutral-white w-[90vw] max-w-md gap-0 rounded-[2rem] border-none bg-transparent p-0 shadow-lg"
       >
         {/* Header Section */}
         <DialogHeader className="bg-primary rounded-t-[2rem] p-4">
@@ -58,7 +57,7 @@ export function EditProfilePictureDialog({
         <div className="bg-primary-500 rounded-b-[2rem] p-6">
           {/* Input Section */}
           <div className="flex flex-col gap-2">
-            <label htmlFor="pictureUrl" className="text-sm text-neutral-white">
+            <label htmlFor="pictureUrl" className="text-neutral-white text-sm">
               New Picture URL
             </label>
             <GlobalInput
@@ -71,21 +70,17 @@ export function EditProfilePictureDialog({
 
           {/* Footer Section */}
           <DialogFooter className="mt-6 flex w-full items-center justify-center gap-4">
-            <div className="w-full flex justify-center items-center gap-4">
-                <GlobalButton
-                    onClick={() => onOpenChange(false)}
-                    variant="primary"
-                    >
-                    Cancel
-                    </GlobalButton>
-                    <GlobalButton
-                    onClick={handleSave}
-                    variant="secondary" 
-                    >
-                    Save
-                </GlobalButton>
+            <div className="flex w-full items-center justify-center gap-4">
+              <GlobalButton
+                onClick={() => onOpenChange(false)}
+                variant="primary"
+              >
+                Cancel
+              </GlobalButton>
+              <GlobalButton onClick={handleSave} variant="secondary">
+                Save
+              </GlobalButton>
             </div>
-
           </DialogFooter>
         </div>
       </DialogContent>

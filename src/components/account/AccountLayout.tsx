@@ -5,11 +5,29 @@ import ProphetInfo from "@/components/account/ProphetInfo";
 import UserProfile from "@/components/account/UserProfile";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 
-function AccountLayout({ role }: { role: string }) {
+import EditCustomerInfo from "./EditAccount/EditCustomerInfo";
+import EditProphetInfo from "./EditAccount/EditProphetInfo";
+import EditUserProfile from "./EditAccount/EditUserProfile";
+
+function AccountLayout({ role, editing }: { role: string; editing: boolean }) {
   return (
-    <GlassContainer2>
-      <UserProfile role={role} />
-      {role === "customer" ? <CustomerInfo /> : <ProphetInfo />}
+    <GlassContainer2 className="p-0">
+      {editing ? (
+        <EditUserProfile role={role} editing={editing} />
+      ) : (
+        <UserProfile role={role} />
+      )}
+      {editing ? (
+        role === "CUSTOMER" ? (
+          <EditCustomerInfo />
+        ) : (
+          <EditProphetInfo />
+        )
+      ) : role === "CUSTOMER" ? (
+        <CustomerInfo />
+      ) : (
+        <ProphetInfo />
+      )}
     </GlassContainer2>
   );
 }

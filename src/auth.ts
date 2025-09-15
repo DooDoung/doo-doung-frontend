@@ -1,5 +1,5 @@
 // auth.ts
-import NextAuth from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 
 import authConfig from "@/auth.config";
 import { refreshAccessToken } from "@/mock-auth";
@@ -20,8 +20,11 @@ import { refreshAccessToken } from "@/mock-auth";
 
 const isDevMock = process.env.NEXT_PUBLIC_USE_MOCK_AUTH === "true";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authOptions: NextAuthOptions = {
   ...authConfig,
+  pages: {
+    signIn: "/login",
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -51,13 +54,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return token;
       }
 
-      // If expired, return empty (could trigger refresh logic in real app)
+      // If expired, return empty token to force re-authentication
       return {};
     },
 
     async session({ session, token }) {
-      if (!token?.accessToken || Date.now() > (token.expiresAt as number)) {
-        return null as any; // force user to log in again
+      // If token is invalid or expired, return session without auth data
+      if (
+        !token?.accessToken ||
+        !token?.expiresAt ||
+        Date.now() > (token.expiresAt as number)
+      ) {
+        return {
+          ...session,
+          user: undefined,
+          accessToken: undefined,
+        } as any;
       }
       return {
         ...session,
@@ -71,4 +83,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       };
     },
   },
-});
+};
