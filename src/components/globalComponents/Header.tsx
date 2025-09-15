@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { AlignJustify, Flag,Home, Search, ShoppingCart, Star, User } from "lucide-react";
+import { AlignJustify, Flag, Home, Search, ShoppingCart, Star, User } from "lucide-react";
 import Link from "next/link";
-
+import { AlignJustify, Home, Search, ShoppingCart, User, Star, Flag } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ------------------- Data -------------------
