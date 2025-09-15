@@ -104,6 +104,8 @@ export function useProphetAvailability() {
 
     const updateType = existingSlot ? "delete" : "add";
 
+    console.log(day.toISOString());
+
     try {
       // Create Date object for the API - use time string format for start_time
       const response = await fetch(
