@@ -1,55 +1,75 @@
 export interface Report {
-  id: number;
-  timestamp: Date;
-  user: string;
-  title: string;
-  content: string;
+  customer: string;
+  admin?: string | null;
+  reportType: string;
+  topic: string;
+  description: string;
+  reportStatus: string;
+  profileUrl?: string | null;
+  createdAt: string;
 }
-
 
 export const WARNING_THRESHOLD: number = 5;
 
 export const mockReports: Report[] = [
   {
-    id: 1,
-    timestamp: new Date('2025-08-09T12:00:00'),
-    user: "AOMYAKDOODOUNG",
-    title: "คอร์สดูดวงดาวการเรียน 1 คำถาม",
-    content: "ดูดวงกับคุณนี่เหมือนเล่นเกมเดาใจอะ บอกว่าปีนี้จะเหนื่อย แต่ก็มีโอกาสดี ๆ เข้ามา เอ้า ใครมันไม่เหนื่อยวะ? ใครมันไม่มีโอกาสเข้ามาบ้างล่ะพูดแบบนี้ผมก็เป็นหมอดูได้เหมือนกัน ขอดาวน์โหลดแอปสุ่มคำพูดก่อนนะครับ จะได้ทายแม่นพอ ๆ กัน",
+    customer: "customer65",
+    admin: null,
+    reportType: "PROPHET_ISSUE",
+    topic: "Payment Problem",
+    description: "Technical issues during the session.",
+    reportStatus: "PENDING",
+    profileUrl: "https://example.com/profile/736c8077b8414dcf.jpg",
+    createdAt: "2025-09-09T13:47:14.432Z",
   },
   {
-    id: 2,
-    timestamp: new Date('2025-08-10T13:00:00'),
-    user: "BEAMYAKDOODOUNG",
-    title: "คอร์สดูดวงดาวการเรียน 2 คำถาม",
-    content: "เสียตังค์มาฟังคำพูดมั่ว ๆ ที่ Google ก็ตอบได้ นี้เรียกว่าหมอดูหรือหมอ copy-paste?",
+    customer: "customer65",
+    admin: null,
+    reportType: "PROPHET_ISSUE",
+    topic: "Payment Problem",
+    description: "Technical issues during the session.",
+    reportStatus: "PENDING",
+    profileUrl: "https://example.com/profile/736c8077b8414dcf.jpg",
+    createdAt: "2025-09-09T13:47:14.432Z",
   },
   {
-    id: 3,
-    timestamp: new Date('2025-08-11T14:00:00'),
-    user: "NEENYAKDOODOUNG",
-    title: "คอร์สดูดวงดาวการเรียน 3 คำถาม",
-    content: "โอ้โห ดวงที่ให้มาเป๊ะจริง ๆ เลยนะคะ เป๊ะจนจับฉลากก็ได้คำตอบแบบเดียวกัน!",
+    customer: "customer65",
+    admin: null,
+    reportType: "PROPHET_ISSUE",
+    topic: "Payment Problem",
+    description: "Technical issues during the session.",
+    reportStatus: "PENDING",
+    profileUrl: "https://example.com/profile/736c8077b8414dcf.jpg",
+    createdAt: "2025-09-09T13:47:14.432Z",
   },
   {
-    id: 4,
-    timestamp: new Date('2025-08-12T15:00:00'),
-    user: "CHINCHINYAKDOODOUNG",
-    title: "คอร์สดูดวงดาวการเรียน 4 คำถาม",
-    content: "รายงานเรื่องที่ 4...",
+    customer: "customer65",
+    admin: null,
+    reportType: "PROPHET_ISSUE",
+    topic: "Payment Problem",
+    description: "Technical issues during the session.",
+    reportStatus: "PENDING",
+    profileUrl: "https://example.com/profile/736c8077b8414dcf.jpg",
+    createdAt: "2025-09-09T13:47:14.432Z",
   },
   {
-    id: 5,
-    timestamp: new Date('2025-08-13T16:00:00'),
-    user: "PRIMYAKDOODOUNG",
-    title: "คอร์สดูดวงดาวการเรียน 5 คำถาม",
-    content: "รายงานเรื่องที่ 5...",
+    customer: "customer65",
+    admin: null,
+    reportType: "PROPHET_ISSUE",
+    topic: "Payment Problem",
+    description: "Technical issues during the session.",
+    reportStatus: "PENDING",
+    profileUrl: "https://example.com/profile/736c8077b8414dcf.jpg",
+    createdAt: "2025-09-09T13:47:14.432Z",
   },
   {
-    id: 6,
-    timestamp: new Date('2025-08-14T17:00:00'),
-    user: "FLOOKYAKDOODOUNG",
-    title: "คอร์สดูดวงดาวการเรียน 6 คำถาม",
-    content: "รายงานเรื่องที่ 6... รายงานนี้ทำให้เกิน 5 แล้ว!",
+    customer: "customer65",
+    admin: null,
+    reportType: "PROPHET_ISSUE",
+    topic: "Payment Problem",
+    description: "Technical issues during the session.",
+    reportStatus: "PENDING",
+    profileUrl: "https://example.com/profile/736c8077b8414dcf.jpg",
+    createdAt: "2025-09-09T13:47:14.432Z",
   },
 ];
