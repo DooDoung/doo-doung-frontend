@@ -22,6 +22,9 @@ const isDevMock = process.env.NEXT_PUBLIC_USE_MOCK_AUTH === "true";
 
 export const authOptions: NextAuthOptions = {
   ...authConfig,
+  pages: {
+    signIn: "/login",
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -52,12 +55,16 @@ export const authOptions: NextAuthOptions = {
       }
 
       // If expired, return empty token to force re-authentication
-      return {}
+      return {};
     },
 
     async session({ session, token }) {
       // If token is invalid or expired, return session without auth data
-      if (!token?.accessToken || !token?.expiresAt || Date.now() > (token.expiresAt as number)) {
+      if (
+        !token?.accessToken ||
+        !token?.expiresAt ||
+        Date.now() > (token.expiresAt as number)
+      ) {
         return {
           ...session,
           user: undefined,
