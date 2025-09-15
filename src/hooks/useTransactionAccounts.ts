@@ -34,7 +34,7 @@ export function useTransactionAccounts() {
     setMode("list");
   };
 
-  const handleCreateConfirm = (data: Omit<TransactionAccount, 'id'>) => {
+  const handleCreateConfirm = (data: Omit<TransactionAccount, "id">) => {
     const newAccount: TransactionAccount = {
       id: Date.now().toString(),
       ...data,
