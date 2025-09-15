@@ -90,16 +90,14 @@ export const GlobalInput = React.forwardRef<HTMLInputElement, GlobalInputProps>(
     return (
       <div className={cn(fullWidth && "w-full")}>
         <Input ref={ref} className={combinedClasses} {...props} />
-        {hintText && (
-          <p
-            className={cn("mt-2 text-sm", {
-              "text-error": isInvalid,
-              "text-success": isValid,
-            })}
-          >
-            {hintText}
-          </p>
-        )}
+        <p
+          className={cn("mt-2 h-5 text-sm", {
+            "text-error": isInvalid,
+            "text-success": isValid,
+          })}
+        >
+          {hintText}
+        </p>
       </div>
     );
   },
