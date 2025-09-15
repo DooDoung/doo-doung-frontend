@@ -1,6 +1,10 @@
 import { useState } from "react";
 import Image from "next/image";
 
+import GlobalButton from "@/components/globalComponents/Button";
+import { GlobalInput } from "../globalComponents";
+import { Label } from "@/components/ui/label";
+import { AppToast } from "@/lib/app-toast";
 import type { Bank, TransactionAccount } from "@/types/transaction";
 
 interface TransactionAccountFormProps {
@@ -33,100 +37,89 @@ export default function TransactionAccountForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedBank || !accountName || !accountNumber) {
-      alert("Please fill all fields");
+      AppToast.error("Every field must be completed.");
       return;
     }
     onConfirm({ bank: selectedBank, accountName, accountNumber });
   };
 
   return (
-    <form
-      className="flex flex-col items-center justify-center gap-4"
-      onSubmit={handleSubmit}
-    >
-      <h1>
-        {isEditMode
-          ? "Edit Your Transaction Account"
-          : "Create New Transaction Account"}
+    <form className="flex flex-col gap-4 justify-center items-center" onSubmit={handleSubmit}>
+      <h1 className="font-sanctuary text-white text-4xl">
+        {isEditMode ? "Edit Your Transaction Account" : "Create New Transaction Account"}
       </h1>
 
-      <div className="flex items-center gap-16">
-        <div className="flex flex-col rounded-lg bg-gray-100 p-4">
-          <p className="m-2">Select Your Bank</p>
-          <div className="grid grid-cols-4 gap-4">
-            {banks.map((bank) => (
-              <button
-                type="button"
-                key={bank.name}
-                onClick={() => setSelectedBank(bank)}
-                className={`rounded-full p-2 ${
-                  selectedBank?.name === bank.name
-                    ? "border-2 border-red-500"
-                    : "border border-gray-300"
-                }`}
-              >
-                <Image
-                  src={bank.logoUrl}
-                  alt={bank.name}
-                  width={50}
-                  height={50}
-                  className="rounded-full"
+      <div className="flex h-[40vh] items-center gap-16">
+        <div className="flex flex-col p-10 rounded-lg">
+            <p className="m-2 text-white font-chakra">Select Your Bank</p>
+            <div className="grid grid-cols-4 gap-4">
+              {banks.map((bank) => {
+                const isSelected = selectedBank?.name === bank.name;
+                return (
+                  <button
+                    type="button"
+                    key={bank.name}
+                    onClick={() => setSelectedBank(bank)}
+                    className={`rounded-full transition-all duration-150 ease-in-out active:scale-90 drop-shadow-[0_0_4px_rgba(255,255,255,0.75)] ${
+                      !isSelected && selectedBank ? "opacity-30 hover:opacity-100" : "opacity-100"
+                    }`}
+                  >
+                    <div
+                      className={`rounded-full ${
+                        isSelected && "bg-gradient-to-r from-[#DC7CA0] to-[#B389EC] p-0.5"
+                      }`}
+                    >
+                      <div className={`p-1 rounded-full ${!isSelected && "border border-gray-300"}`}>
+                        <Image src={bank.logoUrl} alt={bank.name} width={60} height={60} className="rounded-full" />
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+        </div>
+
+        <div className="flex flex-col gap-4 p-10 rounded-lg">
+            <div className="grid w-full max-w-md items-center gap-1.5">
+              <Label htmlFor="accountName" className="font-chakra text-white text-xl"> Account Name </Label>
+              <GlobalInput
+                 id="accountName"
+                 type="text"
+                 size="lg"
+                 className="w-[40vh] text-xl" 
+                 value={accountName}
+                 onChange={(e) => setAccountName(e.target.value)}
+                 placeholder="Enter your Account Name"
                 />
-              </button>
-            ))}
+              </div>
+
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="accountNumber" className="font-chakra text-white text-xl">Account Number</Label>
+              <GlobalInput
+                 id="accountNumber"
+                 type="text"
+                 size="lg"
+                 className="w-[40vh] text-xl"
+                 value={accountNumber}
+                 onChange={(e) => setAccountNumber(e.target.value)}
+                 placeholder="Enter your Account Number"
+                />
+              </div>
           </div>
         </div>
-
-        <div className="flex flex-col gap-4 rounded-lg bg-gray-100 p-4">
-          <div className="flex gap-4">
-            <label htmlFor="accountName">Account Name</label>
-            <input
-              id="accountName"
-              type="text"
-              value={accountName}
-              onChange={(e) => setAccountName(e.target.value)}
-              placeholder="Enter your Account Name"
-              className="rounded-md border border-gray-300 p-2"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="accountNumber">Account Number</label>
-            <input
-              id="accountNumber"
-              type="text"
-              value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value)}
-              placeholder="Enter your Account Number"
-              className="rounded-md border border-gray-300 p-2"
-            />
-          </div>
-        </div>
-      </div>
 
       <div className="flex gap-4">
         {isEditMode && onDelete && (
-          <button
-            className="rounded-md border-2 border-black px-4 py-2 hover:border-white hover:bg-black hover:text-white"
-            type="button"
-            onClick={() => onDelete(initialData.id)}
-          >
+          <GlobalButton variant="secondary" type="button" onClick={() => onDelete(initialData.id)}>
             Delete
-          </button>
+          </GlobalButton>
         )}
-        <button
-          className="rounded-md border-2 border-black px-4 py-2 hover:border-white hover:bg-black hover:text-white"
-          type="button"
-          onClick={onCancel}
-        >
-          Cancel
-        </button>
-        <button
-          className="rounded-md border-2 border-black px-4 py-2 hover:border-white hover:bg-black hover:text-white"
-          type="submit"
-        >
+        <GlobalButton variant="secondary" type="button" onClick={onCancel}>
+            Cancel
+          </GlobalButton>
+        <GlobalButton variant="primary" type="submit">
           Confirm
-        </button>
+        </GlobalButton>
       </div>
     </form>
   );
