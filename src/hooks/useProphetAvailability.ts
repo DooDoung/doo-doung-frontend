@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { generateMockAvailableTimes } from "@/components/session/mockProphetAvailData";
 
 function generateAvailableSlots(

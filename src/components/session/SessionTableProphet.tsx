@@ -1,9 +1,9 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useProphetAvailability } from "@/hooks/useProphetAvailability";
 
 import SessionTableBase from "./SessionTableBase";
-import { useProphetAvailability } from "@/hooks/useProphetAvailability";
 
 export default function SessionTableProphet() {
   const {

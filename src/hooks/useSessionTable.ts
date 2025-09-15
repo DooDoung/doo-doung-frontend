@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+
 import { generateTimeSlots, generateWeekDays } from "@/lib/session-availible-table";
 import { SessionTableBaseProps } from "@/types/session";
 

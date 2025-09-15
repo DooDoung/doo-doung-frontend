@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+
 import { TableCell } from "@/components/ui/table";
 import { SessionTableBaseProps } from "@/types/session";
 
@@ -28,11 +29,11 @@ const AvailabilityTableCell = React.memo(({
 }: AvailabilityTableCellProps) => {
   
   const cellClasses = clsx(
-    "relative h-12 border-r border-white/20 p-1 text-center",
+    "relative h-12 border-l border-b border-t border-neutral-gray p-1 text-center",
     {
-      "bg-pink-500/30": variant === 'prophet' && isAvailable,
+      "bg-primary-500": variant === 'prophet' && isAvailable,
       "bg-transparent": variant === 'prophet' && !isAvailable,
-      "cursor-pointer hover:bg-white/20": variant === 'prophet' && isEdit,
+      "cursor-pointer hover:bg-primary-250": variant === 'prophet' && isEdit,
       "cursor-default": variant === 'prophet' && !isEdit,
     }
   );
