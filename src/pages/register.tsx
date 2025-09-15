@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { toast } from "react-hot-toast/headless";
+import { useRouter } from "next/router";
 
-import { DefaultLayout } from "@/components/globalComponents";
+import { AuthLayout, GlassContainer } from "@/components/globalComponents";
 import Step1Role from "@/components/register/Step1Role";
 import Step2Credentials from "@/components/register/Step2Credentials";
 import Step3PersonalInfo from "@/components/register/Step3PersonalInfo";
 import Step4Astrological from "@/components/register/Step4Astrological";
 import StepPrivacyPolicy from "@/components/register/StepPrivacyPolicy";
+import { AppToast } from "@/lib/app-toast";
 import { RegisterFormData } from "@/types/user";
 
 export default function RegisterPage() {
@@ -25,6 +26,7 @@ export default function RegisterPage() {
     birthTime: "",
     zodiacSign: "",
   });
+  const router = useRouter();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -35,15 +37,54 @@ export default function RegisterPage() {
 
   const handleRoleSelect = (role: "prophet" | "customer") => {
     setFormData((prev) => ({ ...prev, role }));
-    nextStep();
+    setStep(5); // Go to Privacy Policy step
   };
-  const nextStep = () => setStep((prev) => prev + 1);
+  const nextStep = () => {
+    if (step === 4 && formData.role === "customer") {
+      setStep(6);
+    } else {
+      setStep((prev) => prev + 1);
+    }
+  };
   const prevStep = () => setStep((prev) => prev - 1);
+
+  const handlePrivacyPolicyNext = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep(2); // Go to credentials
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Submitting Data!");
-    // Submit the form data to the server
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        const errorMessage =
+          result.error && typeof result.error === "string"
+            ? result.error
+            : "Registration failed";
+        throw new Error(errorMessage);
+      }
+
+      AppToast.success("Registration successful!");
+      router.push("/login");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        AppToast.error(
+          error.message || "An error occurred during registration.",
+        );
+      } else {
+        AppToast.error("An error occurred during registration.");
+      }
+    }
   };
 
   const renderStep = () => {
@@ -51,17 +92,15 @@ export default function RegisterPage() {
       case 1:
         return <Step1Role handleRoleSelect={handleRoleSelect} />;
       case 2:
-        return <StepPrivacyPolicy nextStep={nextStep} prevStep={prevStep} />;
-      case 3:
         return (
           <Step2Credentials
             formData={formData}
             handleChange={handleChange}
             nextStep={nextStep}
-            prevStep={prevStep}
+            prevStep={() => setStep(5)} // Go back to privacy policy
           />
         );
-      case 4:
+      case 3:
         return (
           <Step3PersonalInfo
             formData={formData}
@@ -71,33 +110,52 @@ export default function RegisterPage() {
             handleSubmit={handleSubmit}
           />
         );
+      case 4:
+        return (
+          <Step4Astrological
+            formData={formData}
+            setFormData={setFormData}
+            handleChange={handleChange}
+            nextStep={handleSubmit}
+            prevStep={prevStep}
+          />
+        );
       case 5:
-        if (formData.role === "customer") {
-          return (
-            <Step4Astrological
-              formData={formData}
-              setFormData={setFormData}
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
-              prevStep={prevStep}
-            />
-          );
-        }
-        setStep(4);
-        return null;
+        return (
+          <StepPrivacyPolicy
+            onPrev={() => setStep(1)}
+            onNext={handlePrivacyPolicyNext}
+          />
+        );
+      case 6:
+        return (
+          <button
+            type="submit"
+            className="w-full rounded bg-blue-500 py-2 text-white"
+          >
+            Register
+          </button>
+        );
       default:
-        return <div>Form complete</div>;
+        return null;
     }
   };
 
   return (
-    <DefaultLayout>
-      <div className="mx-auto max-w-md space-y-6 rounded-lg bg-white p-8 shadow-md">
-        <h2 className="text-center text-3xl font-bold text-gray-800">
-          Create New Account
-        </h2>
-        {renderStep()}
-      </div>
-    </DefaultLayout>
+    <AuthLayout>
+      <GlassContainer className="flex h-[80vh] w-[calc(80vh*45/32)] flex-col items-center justify-center">
+        {step !== 5 && (
+          <h1 className="font-sanctuary mt-2 w-full text-center text-3xl text-white">
+            Create New Account
+          </h1>
+        )}
+        <form
+          onSubmit={handleSubmit}
+          className="flex w-full max-w-md flex-col gap-4"
+        >
+          {renderStep()}
+        </form>
+      </GlassContainer>
+    </AuthLayout>
   );
 }

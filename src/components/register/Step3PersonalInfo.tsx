@@ -1,7 +1,16 @@
 import { useState } from "react";
-import { toast } from "react-hot-toast";
 import { z } from "zod";
 
+import { GlobalInput } from "@/components/globalComponents";
+import Button from "@/components/globalComponents/Button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/globalComponents/Select";
+import { AppToast } from "@/lib/app-toast";
 import { baseSchema } from "@/lib/validators/auth";
 import { RegisterFormData, Sex } from "@/types/user";
 
@@ -38,10 +47,7 @@ export default function Step3PersonalInfo({
 }: Step3Props) {
   const [errors, setErrors] = useState<Step3Errors>({});
 
-  const inputStyle = "w-full p-2 border border-gray-300 rounded-md";
-  const labelStyle = "block text-sm font-medium text-gray-700 mb-1";
-  const buttonStyle =
-    "w-full py-2 px-4 text-white font-semibold rounded-md shadow-sm";
+  const labelStyle = "block text-sm font-medium text-white mb-1";
 
   const isProphet = formData.role === "prophet";
 
@@ -56,6 +62,7 @@ export default function Step3PersonalInfo({
 
     if (!result.success) {
       setErrors(result.error.flatten().fieldErrors);
+      AppToast.error("Every field must be completed.");
       return;
     }
 
@@ -63,203 +70,130 @@ export default function Step3PersonalInfo({
 
     if (isProphet) {
       handleSubmit(e as React.MouseEvent<HTMLButtonElement>);
-      toast.success("Data saved successfully!");
+      //AppToast.success("Data saved successfully!");
     } else {
       nextStep();
     }
   };
 
+  const handleGenderChange = (value: string) => {
+    handleChange({
+      target: { name: "gender", value },
+    } as React.ChangeEvent<HTMLSelectElement>);
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-0">
+      <style>{`
+        .text-error {
+          color: #ff8a80;
+          text-shadow: 0 0 5px #ff8a80;
+        }
+      `}</style>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label htmlFor="firstName" className={labelStyle}>
             First Name
           </label>
-          <input
+          <GlobalInput
             type="text"
             name="firstName"
+            placeholder="Chuttiro"
             value={formData.firstName}
             onChange={handleChange}
-            className={inputStyle}
+            isInvalid={!!errors.firstName}
+            hintText={errors.firstName?.[0]}
           />
-          {errors.firstName && (
-            <p className="mt-1 text-sm text-red-500">{errors.firstName[0]}</p>
-          )}
         </div>
         <div>
           <label htmlFor="lastName" className={labelStyle}>
             Last Name
           </label>
-          <input
+          <GlobalInput
             type="text"
             name="lastName"
+            placeholder="ChobDooDoung"
             value={formData.lastName}
             onChange={handleChange}
-            className={inputStyle}
+            isInvalid={!!errors.lastName}
+            hintText={errors.lastName?.[0]}
           />
-          {errors.lastName && (
-            <p className="mt-1 text-sm text-red-500">{errors.lastName[0]}</p>
-          )}
         </div>
       </div>
-
-      {isProphet ? (
-        <>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="gender" className={labelStyle}>
-                Gender
-              </label>
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                className={inputStyle}
-              >
-                <option value="" disabled>
-                  Select Gender
-                </option>
-                {Object.values(Sex)
-                  .filter((s) => s !== Sex.Undefined)
-                  .map((g) => (
-                    <option key={g} value={g}>
-                      {g}
-                    </option>
-                  ))}
-              </select>
-              {errors.gender && (
-                <p className="mt-1 text-sm text-red-500">{errors.gender[0]}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="lineId" className={labelStyle}>
-                LINE ID
-              </label>
-              <input
-                type="text"
-                name="lineId"
-                value={formData.lineId}
-                onChange={handleChange}
-                className={inputStyle}
-              />
-              {errors.lineId && (
-                <p className="mt-1 text-sm text-red-500">{errors.lineId[0]}</p>
-              )}
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="email" className={labelStyle}>
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={inputStyle}
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{errors.email[0]}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="phoneNumber" className={labelStyle}>
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                className={inputStyle}
-              />
-              {errors.phoneNumber && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.phoneNumber[0]}
-                </p>
-              )}
-            </div>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="gender" className={labelStyle}>
-                Gender
-              </label>
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                className={inputStyle}
-              >
-                <option value="" disabled>
-                  Select Gender
-                </option>
-                {Object.values(Sex)
-                  .filter((s) => s !== Sex.Undefined)
-                  .map((g) => (
-                    <option key={g} value={g}>
-                      {g}
-                    </option>
-                  ))}
-              </select>
-              {errors.gender && (
-                <p className="mt-1 text-sm text-red-500">{errors.gender[0]}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="email" className={labelStyle}>
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={inputStyle}
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{errors.email[0]}</p>
-              )}
-            </div>
-          </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="gender" className={labelStyle}>
+            Gender
+          </label>
+          <Select onValueChange={handleGenderChange} value={formData.gender}>
+            <SelectTrigger className="w-full" isInvalid={!!errors.gender}>
+              <SelectValue placeholder="Select Gender" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={Sex.Male}>Male</SelectItem>
+              <SelectItem value={Sex.Female}>Female</SelectItem>
+              <SelectItem value={Sex.LGBTQ_Plus}>Other</SelectItem>
+            </SelectContent>
+          </Select>
+          {errors.gender && (
+            <p className="text-error mt-2 h-5 text-sm">{errors.gender[0]}</p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="email" className={labelStyle}>
+            Email
+          </label>
+          <GlobalInput
+            type="email"
+            name="email"
+            placeholder="emailexample@gmail.com"
+            value={formData.email}
+            onChange={handleChange}
+            isInvalid={!!errors.email}
+            hintText={errors.email?.[0]}
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="phoneNumber" className={labelStyle}>
+            Phone Number
+          </label>
+          <GlobalInput
+            type="text"
+            name="phoneNumber"
+            placeholder="0123456789"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            isInvalid={!!errors.phoneNumber}
+            hintText={errors.phoneNumber?.[0]}
+          />
+        </div>
+        {isProphet && (
           <div>
-            <label htmlFor="phoneNumber" className={labelStyle}>
-              Phone Number
+            <label htmlFor="lineId" className={labelStyle}>
+              LINE ID
             </label>
-            <input
-              type="tel"
-              name="phoneNumber"
-              value={formData.phoneNumber}
+            <GlobalInput
+              type="text"
+              name="lineId"
+              placeholder="DooDoung"
+              value={formData.lineId}
               onChange={handleChange}
-              className={inputStyle}
+              isInvalid={!!errors.lineId}
+              hintText={errors.lineId?.[0]}
             />
-            {errors.phoneNumber && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.phoneNumber[0]}
-              </p>
-            )}
           </div>
-        </>
-      )}
+        )}
+      </div>
 
-      <div className="mt-4 flex justify-between gap-4">
-        <button
-          onClick={prevStep}
-          className={`${buttonStyle} bg-gray-500 hover:bg-gray-600`}
-        >
+      <div className="flex justify-center gap-4">
+        <Button onClick={prevStep} className="w-40" variant="secondary">
           Back
-        </button>
-        <button
-          onClick={handleNext}
-          className={`${buttonStyle} bg-blue-600 hover:bg-blue-700`}
-        >
+        </Button>
+        <Button onClick={handleNext} className="w-40" variant="primary">
           {isProphet ? "Confirm" : "Next"}
-        </button>
+        </Button>
       </div>
     </div>
   );
