@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
+
 import { useProphetAvailability } from "@/hooks/useProphetAvailability";
 
 import SessionTableBase from "./SessionTableBase";
+import { GlobalButton } from "../globalComponents";
 
 export default function SessionTableProphet() {
   const {
@@ -25,31 +26,32 @@ export default function SessionTableProphet() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <Button
-            variant="default"
+          <GlobalButton
+            variant="primary"
             size="lg"
           >
             Back
-          </Button>
+
+          </GlobalButton>
         </div>
 
         <div className="flex items-center space-x-2">
-          <Button
-            variant={isEdit ? "secondary" : "default"}
+          <GlobalButton
+            variant={isEdit ? "secondary" : "primary"}
             size="sm"
             onClick={() => setIsEdit(!isEdit)}
           >
             {isEdit ? "Stop Edit" : "Edit"}
-          </Button>
+          </GlobalButton>
 
-          <Button
+          <GlobalButton
             variant="secondary"
-            size="lg"
+            size="sm"
             onClick={applyToMonth}
             disabled={!isEdit}
           >
             Apply to Month
-          </Button>
+          </GlobalButton>
         </div>
       </div>
 
