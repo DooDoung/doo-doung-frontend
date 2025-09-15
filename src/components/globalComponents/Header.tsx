@@ -1,83 +1,74 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-
+import { AlignJustify, Home, Search, ShoppingCart, User, Star, Flag } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+// ------------------- Data -------------------
+
+const customerLinks = [
+  { href: "/", label: "Home", icon: <Home size={24} /> },
+  { href: "/course/my-session", label: "Courses", icon: <Search size={24} /> },
+  { href: "/booking", label: "Booking", icon: <ShoppingCart size={24} /> },
+  { href: "/account", label: "Account", icon: <User size={24} /> },
+  { href: "/review", label: "Review", icon: <Star size={24} /> },
+  { href: "/report", label: "Report", icon: <Flag size={24} /> },
+];
+
+const prophetLinks = [
+  { href: "/", label: "Home", icon: <Home size={24} /> },
+  { href: "/course/prophet", label: "Courses", icon: <Search size={24} /> },
+  { href: "/booking", label: "Booking", icon: <ShoppingCart size={24} /> },
+  { href: "/account", label: "Account", icon: <User size={24} /> },
+];
+
+// ------------------- Props -------------------
 
 interface HeaderProps {
   className?: string;
+  role?: 'customer' | 'prophet';
 }
 
-/**
- * Global Header Component
- *
- * Features:
- * - DooDoung brand logo/text on the left
- * - Navigation links on the right (/course, /account, /review)
- * - Responsive design with mobile menu
- * - Clean and modern styling
- */
-export function Header({ className }: HeaderProps) {
-  const navigationLinks = [
-    { href: "/course", label: "Course" },
-    { href: "/account", label: "Account" },
-    { href: "/review", label: "Review" },
-  ];
+// ------------------- Component -------------------
+
+export function Header({ className, role = 'customer' }: HeaderProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const links = role === 'customer' ? customerLinks : prophetLinks;
 
   return (
-    <header
-      className={cn(
-        "border-border/40 sticky top-0 z-50 mb-5 flex w-full items-center border-b px-10 backdrop-blur",
-        className,
-      )}
-    >
-      <div className="container flex h-14 max-w-screen-2xl items-center">
-        {/* Logo/Brand */}
-        <div className="mr-4 hidden md:flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="hidden text-xl font-bold sm:inline-block">
-              DooDoung
-            </span>
-          </Link>
-        </div>
+    <header className={cn("fixed top-5 right-5 z-50", className)}>
+      <div className={cn(
+        "w-[68px] relative flex flex-col items-center gap-4 px-3 py-4 transition-all duration-300 ease-in-out",
+        "rounded-[25px] bg-[rgba(62,55,83,0.5)] shadow-[0_0_15px_0_#FFF] backdrop-blur-[2px]", // 👈 แก้ไขตรงนี้
+        isOpen && "gap-6 py-6"
+      )}>
+        {/* --- Hamburger Menu Button --- */}
+        <button onClick={() => setIsOpen(!isOpen)} className="relative cursor-pointer">
+            <AlignJustify
+              size={28}
+              className={cn(
+                "text-white transition-transform duration-300 ease-in-out hover:text-primary-500",
+                isOpen && "rotate-180 transform"
+              )}
+            />
+        </button>
 
-        {/* Mobile Logo */}
-        <div className="mr-4 flex md:hidden">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="text-xl font-bold">DooDoung</span>
-          </Link>
-        </div>
-
-        {/* Navigation */}
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <nav className="flex items-center">
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex md:gap-6">
-              {navigationLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-foreground/60 hover:text-foreground/80 text-sm font-medium transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
-            {/* Mobile Navigation */}
-            <div className="flex gap-4 md:hidden">
-              {navigationLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-foreground/60 hover:text-foreground/80 text-sm font-medium transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+        {isOpen && (
+          <nav className="flex flex-col items-center gap-6">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="flex flex-col items-center gap-1 text-white hover:text-primary-300 transition-colors cursor-pointer hover:text-primary-500"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.icon}
+                <span className="text-xs font-medium">{link.label}</span>
+              </Link>
+            ))}
           </nav>
-        </div>
+        )}
       </div>
     </header>
   );
