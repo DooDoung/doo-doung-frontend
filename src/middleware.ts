@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { withAuth } from "next-auth/middleware";
 
+// Add this flag to disable auth for testing
+const DISABLE_AUTH_FOR_TESTING = process.env.NEXT_PUBLIC_DISABLE_AUTH === "true";
+
 const AllowNoAuthPath = [
   "/login",
   "/globalcomponents",
@@ -47,6 +50,11 @@ import { RoleType } from "./types/role";
 
 export default withAuth(
   function middleware(req) {
+    // If auth is disabled for testing, allow all access
+    if (DISABLE_AUTH_FOR_TESTING) {
+      return NextResponse.next();
+    }
+
     const { pathname } = req.nextUrl;
     const token = req.nextauth.token;
     const role: RoleType | null = (typeof token?.role === 'string' ? token.role.toLowerCase() : null) as RoleType | null;
@@ -64,6 +72,11 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
+        // If auth is disabled for testing, allow all requests
+        if (DISABLE_AUTH_FOR_TESTING) {
+          return true;
+        }
+
         const { pathname } = req.nextUrl;
         
         // Allow access to public paths without authentication
