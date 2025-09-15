@@ -8,33 +8,39 @@ export function Footer({ className }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   const contributors = [
-    "Akkharaphon Chowatthakawanit", "Pitchaya Arkatvipat",
-    "Chonlanan Srisanan", "Raksakul Hiranas",
-    "Napat Srisamut", "Sivikom Nokham",
-    "Naphat Serirak", "Thananan Palanand",
-    "Nattarin Chetpattananondh", "Wanatha Chaturarat",
+    "Akkharaphon Chowatthakawanit",
+    "Pitchaya Arkatvipat",
+    "Chonlanan Srisanan",
+    "Raksakul Hiranas",
+    "Napat Srisamut",
+    "Sivikom Nokham",
+    "Naphat Serirak",
+    "Thananan Palanand",
+    "Nattarin Chetpattananondh",
+    "Wanatha Chaturarat",
   ];
 
   return (
-    <footer className={cn("text-white font-chakra", className)}>
+    <footer className={cn("font-chakra text-white", className)}>
       {/* ===== Upper Section ===== */}
-      <div className="bg-neutral-white py-12 px-2 sm:px-8">
-        <div className="flex flex-col justify-between gap-8 md:flex-row container mx-12 max-w-screen-xl">
-          
+      <div className="bg-neutral-white px-2 py-12 sm:px-8">
+        <div className="container mx-12 flex max-w-screen-xl flex-col justify-between gap-8 md:flex-row">
           {/* Col 1: Logo & Tagline */}
-          <div className="flex flex-col gap-6 text-center md:text-left mt-8">
-            <h1 className="font-sanctuary text-6xl text-primary leading-[16px] [text-shadow:20px_10px_5px_rgba(0,0,0,0.25)] select-none">
+          <div className="mt-8 flex flex-col gap-6 text-center md:text-left">
+            <h1 className="font-sanctuary text-primary text-6xl leading-[16px] select-none [text-shadow:20px_10px_5px_rgba(0,0,0,0.25)]">
               DooDoung
             </h1>
-            <p className="mt-2 text-sm text-neutral-black">
+            <p className="text-neutral-black mt-2 text-sm">
               Online fortune-telling platform
             </p>
           </div>
 
           {/* Col 2: Contact Us */}
-          <div className="text-sm text-neutral-black">
+          <div className="text-neutral-black text-sm">
             <h2 className="mb-4 text-lg font-bold">Contact us</h2>
-            <p className="font-bold text-accent-pink">Chulalongkorn University</p>
+            <p className="text-accent-pink font-bold">
+              Chulalongkorn University
+            </p>
             <p>Phayathai Road, Pathumwan,</p>
             <p>Bangkok 10330, Thailand</p>
             <br />
@@ -43,9 +49,9 @@ export function Footer({ className }: FooterProps) {
           </div>
 
           {/* Col 3: Contributors */}
-          <div className="text-sm text-neutral-black">
+          <div className="text-neutral-black text-sm">
             <h2 className="mb-4 text-lg font-bold">Contributors</h2>
-            <ul className="grid grid-cols-1 gap-x-8 gap-y-2 text-sm text-neutral-black sm:grid-cols-2">
+            <ul className="text-neutral-black grid grid-cols-1 gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
               {contributors.map((name) => (
                 <li key={name} className="flex items-start">
                   <span className="mr-2">•</span>
@@ -54,12 +60,11 @@ export function Footer({ className }: FooterProps) {
               ))}
             </ul>
           </div>
-
         </div>
       </div>
 
       {/* ===== Bottom Section ===== */}
-      <div className="bg-linear-to-r from-accent-pink to-accent-violet py-4">
+      <div className="from-accent-pink to-accent-violet bg-linear-to-r py-4">
         <div className="container mx-12 max-w-screen-xl px-4 sm:px-8">
           <p className="text-sm text-white">
             DooDoung @{currentYear} all rights reserved

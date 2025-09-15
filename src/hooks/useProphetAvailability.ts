@@ -110,6 +110,8 @@ export function useProphetAvailability() {
 
     const updateType = existingSlot ? "delete" : "add";
 
+    console.log(day.toISOString());
+
     try {
       // Use calculated slotDateString for API
       const response = await fetch(
