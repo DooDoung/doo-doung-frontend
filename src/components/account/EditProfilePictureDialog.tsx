@@ -27,11 +27,31 @@ export function EditProfilePictureDialog({
   const [imageUrl, setImageUrl] = useState(currentImageUrl);
 
   useEffect(() => {
-    setImageUrl(currentImageUrl);
-  }, [currentImageUrl]);
+    if (open) {
+      const fetchProfile = async () => {
+        const res = await fetch(
+          "http://localhost:8000/account/dev_prophet_001",
+        );
+        if (!res.ok) throw new Error("Failed to fetch profile");
+        const json = await res.json();
+        setImageUrl(json.data.profileUrl);
+      };
 
-  const handleSave = () => {
+      fetchProfile();
+    }
+  }, [open, currentImageUrl]);
+
+  const handleSave = async () => {
     if (imageUrl.trim()) {
+      const res = await fetch(`http://localhost:8000/account/`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          profileUrl: imageUrl,
+          id: "dev_prophet_001",
+          role: "PROPHET",
+        }),
+      });
       onSave(imageUrl);
       onOpenChange(false);
     }
@@ -40,12 +60,9 @@ export function EditProfilePictureDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent 
-        showCloseButton={false} 
-        className="
-          font-chakra text-neutral-white w-[90vw] max-w-md 
-          p-0 border-none rounded-[2rem] bg-transparent shadow-lg gap-0
-        "
+      <DialogContent
+        showCloseButton={false}
+        className="font-chakra text-neutral-white w-[90vw] max-w-md gap-0 rounded-[2rem] border-none bg-transparent p-0 shadow-lg"
       >
         {/* Header Section */}
         <DialogHeader className="bg-primary rounded-t-[2rem] p-4">
@@ -58,7 +75,7 @@ export function EditProfilePictureDialog({
         <div className="bg-primary-500 rounded-b-[2rem] p-6">
           {/* Input Section */}
           <div className="flex flex-col gap-2">
-            <label htmlFor="pictureUrl" className="text-sm text-neutral-white">
+            <label htmlFor="pictureUrl" className="text-neutral-white text-sm">
               New Picture URL
             </label>
             <GlobalInput
@@ -71,21 +88,17 @@ export function EditProfilePictureDialog({
 
           {/* Footer Section */}
           <DialogFooter className="mt-6 flex w-full items-center justify-center gap-4">
-            <div className="w-full flex justify-center items-center gap-4">
-                <GlobalButton
-                    onClick={() => onOpenChange(false)}
-                    variant="primary"
-                    >
-                    Cancel
-                    </GlobalButton>
-                    <GlobalButton
-                    onClick={handleSave}
-                    variant="secondary" 
-                    >
-                    Save
-                </GlobalButton>
+            <div className="flex w-full items-center justify-center gap-4">
+              <GlobalButton
+                onClick={() => onOpenChange(false)}
+                variant="primary"
+              >
+                Cancel
+              </GlobalButton>
+              <GlobalButton onClick={handleSave} variant="secondary">
+                Save
+              </GlobalButton>
             </div>
-
           </DialogFooter>
         </div>
       </DialogContent>
