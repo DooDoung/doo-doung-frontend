@@ -3,10 +3,9 @@ import toast from "react-hot-toast";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useProphetAvailability } from "@/hooks/useProphetAvailability";
 import { applyToMonth, ToggleProphetAvail } from "@/lib/session-availible-api";
 import { dayNames, getCurrentWeekMonday } from "@/lib/session-availible-table";
-
-import { useProphetAvailability } from "@/hooks/useProphetAvailability";
 
 import { GlobalButton } from "../globalComponents";
 
@@ -61,18 +60,18 @@ export default function SessionTableProphet() {
 
   //     const slots: Array<{ day: string; time: string }> = [];
 
-  //     // Calculate the Monday of the target week
-  //     const today = new Date();
-  //     const currentMonday = new Date(today);
-  //     const dayOfWeek = today.getDay();
-  //     const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-  //     currentMonday.setDate(today.getDate() + daysToMonday);
-  //     currentMonday.setDate(currentMonday.getDate() + weekIndex * 7);
+  // Calculate the Monday of the target week
+  // const today = new Date();
+  // const currentMonday = new Date(today);
+  // const dayOfWeek = today.getDay();
+  // const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+  // currentMonday.setDate(today.getDate() + daysToMonday);
+  // currentMonday.setDate(currentMonday.getDate() + weekIndex * 7);
 
-  //     // Calculate the date range for the target week
-  //     const weekStart = new Date(currentMonday);
-  //     const weekEnd = new Date(currentMonday);
-  //     weekEnd.setDate(weekEnd.getDate() + 6);
+  // // Calculate the date range for the target week
+  // const weekStart = new Date(currentMonday);
+  // const weekEnd = new Date(currentMonday);
+  // weekEnd.setDate(weekEnd.getDate() + 6);
 
   //     // Filter and convert data for the target week
   //     data.forEach((item: any) => {
