@@ -1,6 +1,7 @@
-import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
+import { useEffect,useState } from "react";
+
 import { EditProfilePictureDialog } from "@/components/account/EditProfilePictureDialog";
-import { useState, useEffect } from "react";
+import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
 
 const userRole = "customer";
 // const userRole = "prophet";
