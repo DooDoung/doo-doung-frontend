@@ -2,14 +2,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { DefaultLayout } from "@/components/globalComponents";
-
-interface AccountData {
-  username: string;
-  profileUrl: string;
-  role: string;
-  zodiacSign: string;
-  gender: string;
-}
+import { AccountData } from "@/interface/User";
+import OtherAccountLayout from "@/components/otherAccount/OtherAccountLayout";
+import { ZodiacSign } from "@/types/user";
+import { mapStringToZodiacSign } from "@/types/user";
 
 export default function AccountDetailsPage() {
   const router = useRouter();
@@ -47,11 +43,12 @@ export default function AccountDetailsPage() {
           username: result.data.username || "",
           profileUrl: result.data.profileUrl || "",
           role: result.data.role || "",
-          zodiacSign: result.data.zodiacSign || "",
+          zodiacSign: result.data.zodiacSign || "cancer",
           gender: result.data.gender || "",
         };
 
         setAccountData(extractedData);
+        console.log("Fetched account data:", extractedData);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
@@ -63,20 +60,10 @@ export default function AccountDetailsPage() {
   }, [accountId]);
 
   return (
-    <DefaultLayout>
-      <p>This is Account Details page</p>
+    <DefaultLayout contentClassName="flex justify-center items-center">
       {loading && <p>Loading account data...</p>}
       {error && <p>Error: {error}</p>}
-      {accountData && (
-        <div>
-          <p>Account ID: {accountId}</p>
-          <p>Username: {accountData.username}</p>
-          <p>Profile URL: {accountData.profileUrl}</p>
-          <p>Role: {accountData.role}</p>
-          <p>Zodiac Sign: {accountData.zodiacSign}</p>
-          <p>Gender: {accountData.gender}</p>
-        </div>
-      )}
+      {accountData && <OtherAccountLayout user={accountData} />}
     </DefaultLayout>
   );
 }

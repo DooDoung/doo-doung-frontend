@@ -20,6 +20,37 @@ export enum ZodiacSign {
   Pisces = "pisces",
 }
 
+export function mapStringToZodiacSign(zodiac: string): ZodiacSign {
+  switch (zodiac) {
+    case "aries":
+      return ZodiacSign.Aries;
+    case "taurus":
+      return ZodiacSign.Taurus;
+    case "gemini":
+      return ZodiacSign.Gemini;
+    case "cancer":
+      return ZodiacSign.Cancer;
+    case "leo":
+      return ZodiacSign.Leo;
+    case "virgo":
+      return ZodiacSign.Virgo;
+    case "libra":
+      return ZodiacSign.Libra;
+    case "scorpio":
+      return ZodiacSign.Scorpio;
+    case "sagittarius":
+      return ZodiacSign.Sagittarius;
+    case "capricorn":
+      return ZodiacSign.Capricorn;
+    case "aquarius":
+      return ZodiacSign.Aquarius;
+    case "pisces":
+      return ZodiacSign.Pisces;
+    default:
+      return ZodiacSign.Cancer;
+  }
+}
+
 export interface RegisterFormData {
   username: string;
   password: string;
