@@ -31,7 +31,7 @@ export default function ResetPasswordPage() {
     e.preventDefault();
 
     if (!email) {
-      AppToast.error("Email are required.");
+      AppToast.error("Email is required.");
       return;
     }
 
@@ -43,14 +43,12 @@ export default function ResetPasswordPage() {
     setLoading(true);
 
     try {
-      /// send token to email
       if (cooldown > 0) {
-        AppToast.info("Reset already requested. Please check your email");
+        AppToast.warning(
+          "You already requested a password reset. Please check your email",
+        );
         return;
       } else {
-        /*** 
-         Send email by Sendgrid
-        ***/
         const res = await fetch(
           "http://localhost:8000/auth/reset-password/request",
           {
@@ -65,16 +63,19 @@ export default function ResetPasswordPage() {
         );
 
         if (!res.ok) {
-          throw new Error("Failed to reset password");
-          return;
+          const data = await res.json(); // Parse the response body
+          const backendMessage = data?.message || "Failed to reset password"; // Access the message field
+          throw new Error(backendMessage);
         }
 
         setCooldown(45);
-        AppToast.success("A reset password has been sent to your email.");
+        AppToast.success("A reset password email has been sent to your email.");
         return;
       }
     } catch (err: any) {
-      AppToast.error(err.message);
+      const message =
+        err instanceof Error ? err.message : "Something went wrong";
+      AppToast.error(message);
     } finally {
       setLoading(false);
     }

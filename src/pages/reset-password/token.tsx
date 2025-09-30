@@ -50,14 +50,8 @@ export default function ResetPasswordTokenPage() {
       );
 
       if (!res.ok) {
-        // try to parse backend error message
-        let backendMessage = "Failed to reset password";
-        try {
-          const data = await res.json();
-          if (data?.message) backendMessage = data.message;
-        } catch {
-          // ignore JSON parse error
-        }
+        const data = await res.json(); // Parse the response body
+        const backendMessage = data?.message || "Failed to reset password"; // Access the message field
         throw new Error(backendMessage);
       }
 
