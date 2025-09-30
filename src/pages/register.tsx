@@ -68,7 +68,7 @@ export default function RegisterPage() {
       role: formData.role.toUpperCase(),
       name: firstName,
       lastname: lastName,
-      sex: formData.gender.toUpperCase(),
+      gender: formData.gender.toUpperCase(),
       zodiacSign: (formData.zodiacSign || "").toUpperCase(),
       birthDate: birthDate ? new Date(birthDate) : undefined,
       // profileUrl is required by the DTO but not in the form, sending an empty string.
