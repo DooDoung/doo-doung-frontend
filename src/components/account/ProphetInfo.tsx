@@ -10,23 +10,10 @@ import {
 } from "@/components/globalComponents";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { prophetFeat } from "@/constants/constant-ex";
+import type { ProphetAccount } from "@/interface/User";
 
-const prophet = {
-  firstName: "John",
-  lastName: "Doe",
-  gender: "Male",
-  phone: "+1 234 567 8900",
-  email: "john.doe@gmail.com",
-  line: "@johndoe",
-  transaction: {
-    accountNumber: "123-456-7890",
-    accountName: "John Doe",
-    imageUrl: "/images/transaction-bank/SCB.webp",
-    bankName: "SCB",
-  },
-};
 
-function ProphetInfo() {
+function ProphetInfo({prophet}:{prophet: ProphetAccount}) {
   const router = useRouter();
   return (
     <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
@@ -86,7 +73,7 @@ function ProphetInfo() {
           <GlobalInput
             type="tel"
             className="w-full cursor-not-allowed"
-            value={prophet.phone}
+            value={prophet.phoneNumber}
             readOnly
           />
         </div>

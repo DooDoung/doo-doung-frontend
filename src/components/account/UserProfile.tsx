@@ -4,22 +4,17 @@ import { useRouter } from "next/router";
 
 import { GlobalButton, GlobalInput } from "@/components/globalComponents";
 import { ZodiacSign } from "@/types/user";
+import { AccountData } from "@/interface/User";
 
-const user = {
-  profileUrl:
-    "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg",
-  username: "JohnYakDoodoung",
-  zodiacSign: ZodiacSign.Aquarius,
-};
 import { signOut } from "next-auth/react";
 
-function UserProfile({ role }: { role: string }) {
+function UserProfile({ user }: { user: AccountData }) {
   const router = useRouter();
 
   return (
     <div className="bg-primary-500/60 flex w-full flex-col items-center justify-start rounded-3xl p-12 text-center sm:w-[30%]">
       <h3 className="font-sanctuary text-neutral-black mb-8 text-5xl">
-        {role}
+        {user.role}
       </h3>
 
       {/* Profile + zodiac badge */}
@@ -30,7 +25,7 @@ function UserProfile({ role }: { role: string }) {
           className="h-full w-full rounded-full object-cover p-1"
         />
 
-        {role == "CUSTOMER" && (
+        {user.role == "CUSTOMER" && (
           <div className="bg-secondary absolute top-2 right-0 flex h-[40px] w-[40px] items-center justify-center overflow-hidden rounded-full">
             <Image
               src={`/images/zodiac-sign/${user.zodiacSign}.svg`}
