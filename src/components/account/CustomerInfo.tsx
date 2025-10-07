@@ -1,5 +1,8 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import {
   GlobalButton,
@@ -15,9 +18,6 @@ import { Switch } from "../ui/switch";
 
 import ReservationSection from "./Reservation/ReservationSection";
 import ReviewSection from "./Review/ReviewSection";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import axios from "axios";
 
 function CustomerInfo({ customer }: { customer: CustomerAccount }) {
   const [isPublic, setIsPublic] = React.useState(false);
