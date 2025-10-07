@@ -38,7 +38,7 @@ export default function ProphetCoursePage() {
 
   return (
     <DefaultLayout>
-      <div className="mx-auto flex h-[90vh] max-w-6xl gap-0">
+      <div className="mx-auto flex max-w-6xl gap-0">
         <CourseLeftPanel
           activeItem={activeItem}
           items={items}
