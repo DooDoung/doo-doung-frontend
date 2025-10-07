@@ -1,7 +1,8 @@
 import Image from "next/image";
 
-import { CourseItem } from "./types";
 import { GlobalInput } from "../globalComponents";
+
+import { CourseItem } from "./types";
 
 interface CourseLeftPanelProps {
   activeItem: CourseItem | null;
