@@ -1,8 +1,8 @@
 import * as React from "react";
+import { useEffect,useState } from "react";
+import axios from "axios";
 
 import ReviewSection from "./Review/ReviewSection";
-import axios from "axios";
-import { useState, useEffect } from "react";
 
 function CustomerPublicInfo({ accountId }: { accountId: string }) {
   const [review, setReview] = useState(null);
