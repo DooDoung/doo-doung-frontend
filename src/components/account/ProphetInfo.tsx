@@ -12,8 +12,7 @@ import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { prophetFeat } from "@/constants/constant-ex";
 import type { ProphetAccount } from "@/interface/User";
 
-
-function ProphetInfo({prophet}:{prophet: ProphetAccount}) {
+function ProphetInfo({ prophet }: { prophet: ProphetAccount }) {
   const router = useRouter();
   return (
     <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
@@ -111,7 +110,7 @@ function ProphetInfo({prophet}:{prophet: ProphetAccount}) {
           <ProphetCard
             key={index}
             feat={feat}
-            transaction={prophet.transaction}
+            transaction={prophet.txAccounts[0]}
           />
         ))}
       </div>

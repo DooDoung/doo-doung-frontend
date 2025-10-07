@@ -4,8 +4,7 @@ import { useRouter } from "next/router";
 import { DefaultLayout } from "@/components/globalComponents";
 import OtherAccountLayout from "@/components/otherAccount/OtherAccountLayout";
 import { AccountData } from "@/interface/User";
-import { ZodiacSign } from "@/types/user";
-import { mapStringToZodiacSign } from "@/types/user";
+import axios from "axios";
 
 export default function AccountDetailsPage() {
   const router = useRouter();
@@ -28,27 +27,15 @@ export default function AccountDetailsPage() {
         const backendUrl =
           process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
-        const fullUrl = `${backendUrl}/account/${accountId}`;
+        const response = await axios.get(`${backendUrl}/account/${accountId}`);
 
-        const response = await fetch(fullUrl);
-
-        if (!response.ok) {
+        if (response.status !== 200) {
           throw new Error(`Failed to fetch account data: ${response.status}`);
         }
 
-        const result = await response.json();
-
-        // Extract required fields from the response data
-        const extractedData: AccountData = {
-          username: result.data.username || "",
-          profileUrl: result.data.profileUrl || "",
-          role: result.data.role || "",
-          zodiacSign: result.data.zodiacSign || "cancer",
-          gender: result.data.gender || "",
-        };
-
-        setAccountData(extractedData);
-        console.log("Fetched account data:", extractedData);
+        const result = response.data;
+        setAccountData(result.data);
+        console.log("Fetched account data:", result);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
@@ -62,8 +49,9 @@ export default function AccountDetailsPage() {
   return (
     <DefaultLayout contentClassName="flex justify-center items-center">
       {loading && <p>Loading account data...</p>}
-      {error && <p>Error: {error}</p>}
-      {accountData && <OtherAccountLayout user={accountData} />}
+      {accountData && typeof accountId === "string" && (
+        <OtherAccountLayout user={accountData} accountId={accountId} />
+      )}
     </DefaultLayout>
   );
 }

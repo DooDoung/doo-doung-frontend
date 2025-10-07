@@ -10,14 +10,14 @@ import {
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { mockReservation } from "@/constants/mock-account";
 import { mockReview } from "@/constants/mock-account";
+import type { CustomerAccount } from "@/interface/User";
 
 import { Switch } from "../ui/switch";
 
 import ReservationSection from "./Reservation/ReservationSection";
 import ReviewSection from "./Review/ReviewSection";
-import type { CustomerAccount } from "@/interface/User";
 
-function CustomerInfo({customer}:{customer: CustomerAccount}) {
+function CustomerInfo({ customer }: { customer: CustomerAccount }) {
   const [isPublic, setIsPublic] = React.useState(false);
   const router = useRouter();
   return (
@@ -87,7 +87,7 @@ function CustomerInfo({customer}:{customer: CustomerAccount}) {
           <GlobalInput
             type="date"
             className="w-full cursor-not-allowed"
-            value={customer.birthDate}
+            value={customer.birthDate.split("T")[0]}
             readOnly
           />
         </div>
@@ -100,7 +100,7 @@ function CustomerInfo({customer}:{customer: CustomerAccount}) {
           <GlobalInput
             type="time"
             className="w-full cursor-not-allowed"
-            value={customer.birthTime}
+            value={customer.birthTime.split("T")[1].substring(0, 5)}
             readOnly
           />
         </div>
@@ -149,7 +149,7 @@ function CustomerInfo({customer}:{customer: CustomerAccount}) {
       <ReservationSection myReservation={mockReservation} />
 
       {/* User's Course Reviewed Section */}
-      <ReviewSection myReview={mockReview} />
+      <ReviewSection reviews={mockReview} />
 
       {/* Edit Profile Button */}
       <div className="mb-2 flex justify-center">

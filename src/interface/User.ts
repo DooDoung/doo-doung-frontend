@@ -23,7 +23,7 @@ export interface ProphetAccount extends BaseAccountData {
   email: string;
   phoneNumber: string;
   line: string;
-  transaction: TransactionAccount;
+  txAccounts: TransactionAccount[];
 }
 
 export type AccountData = CustomerAccount | ProphetAccount;

@@ -1,12 +1,11 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
 
 import { GlobalButton, GlobalInput } from "@/components/globalComponents";
-import { ZodiacSign } from "@/types/user";
 import { AccountData } from "@/interface/User";
-
-import { signOut } from "next-auth/react";
+import { ZodiacSign } from "@/types/user";
 
 function UserProfile({ user }: { user: AccountData }) {
   const router = useRouter();

@@ -1,14 +1,39 @@
 import * as React from "react";
 
-import { mockReview } from "@/constants/mock-account";
-
 import ReviewSection from "./Review/ReviewSection";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
+function CustomerPublicInfo({ accountId }: { accountId: string }) {
+  const [review, setReview] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const backendUrl =
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
-function CustomerPublicInfo() {
+  useEffect(() => {
+    const fetchReview = async () => {
+      try {
+        const response = await axios.get(
+          `${backendUrl}/review/account/${accountId}`,
+        );
+        const result = response.data.data;
+        setReview(result.reviews);
+        console.log("Review data:", result.reviews);
+      } catch (error) {
+        console.error("Error fetching review:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReview();
+  }, [accountId]);
+
   return (
     <div className="custom-scrollbar h-full w-full p-4 sm:overflow-y-auto">
-      <ReviewSection myReview={mockReview} />
+      {loading && <p>Loading review...</p>}
+      {review === null && !loading && <p>No reviews available.</p>}
+      {review && <ReviewSection reviews={review} />}
     </div>
   );
 }

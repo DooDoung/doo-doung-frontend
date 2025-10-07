@@ -1,7 +1,8 @@
-import AccountLayout from "@/components/account/AccountLayout";
-import { DefaultLayout } from "@/components/globalComponents";
 import { useEffect, useState } from "react";
 import axios from "axios";
+
+import AccountLayout from "@/components/account/AccountLayout";
+import { DefaultLayout } from "@/components/globalComponents";
 
 const backendUrl =
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
