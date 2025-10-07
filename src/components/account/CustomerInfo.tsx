@@ -10,24 +10,14 @@ import {
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { mockReservation } from "@/constants/mock-account";
 import { mockReview } from "@/constants/mock-account";
+import type { CustomerAccount } from "@/interface/User";
 
 import { Switch } from "../ui/switch";
 
 import ReservationSection from "./Reservation/ReservationSection";
 import ReviewSection from "./Review/ReviewSection";
 
-const customer = {
-  firstName: "John",
-  lastName: "Doe",
-  gender: "Male",
-  dob: "1995-07-20",
-  tob: "08:30",
-  zodiac: "Cancer",
-  email: "john.doe@gmail.com",
-  phone: "+1 234 567 8900",
-};
-
-function CustomerInfo() {
+function CustomerInfo({ customer }: { customer: CustomerAccount }) {
   const [isPublic, setIsPublic] = React.useState(false);
   const router = useRouter();
   return (
@@ -97,7 +87,7 @@ function CustomerInfo() {
           <GlobalInput
             type="date"
             className="w-full cursor-not-allowed"
-            value={customer.dob}
+            value={customer.birthDate.split("T")[0]}
             readOnly
           />
         </div>
@@ -110,7 +100,7 @@ function CustomerInfo() {
           <GlobalInput
             type="time"
             className="w-full cursor-not-allowed"
-            value={customer.tob}
+            value={customer.birthTime.split("T")[1].substring(0, 5)}
             readOnly
           />
         </div>
@@ -123,7 +113,7 @@ function CustomerInfo() {
           <GlobalInput
             type="text"
             className="w-full cursor-not-allowed"
-            value={customer.zodiac}
+            value={customer.zodiacSign}
             readOnly
           />
         </div>
@@ -149,7 +139,7 @@ function CustomerInfo() {
           <GlobalInput
             type="tel"
             className="w-full cursor-not-allowed"
-            value={customer.phone}
+            value={customer.phoneNumber}
             readOnly
           />
         </div>
@@ -159,7 +149,7 @@ function CustomerInfo() {
       <ReservationSection myReservation={mockReservation} />
 
       {/* User's Course Reviewed Section */}
-      <ReviewSection myReview={mockReview} />
+      <ReviewSection reviews={mockReview} />
 
       {/* Edit Profile Button */}
       <div className="mb-2 flex justify-center">
