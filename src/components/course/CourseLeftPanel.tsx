@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import { CourseItem } from "./types";
 
 interface CourseLeftPanelProps {
@@ -17,14 +18,14 @@ export default function CourseLeftPanel({
   return (
     <aside className="w-2/5 rounded-3xl bg-[#2b2342]/90 text-white shadow-xl ring-1 ring-white/10">
       {/* Header circle */}
-      <div className="relative flex items-center justify-center p-8 pb-4">
+      <div className="relative flex items-center justify-center p-5 pb-4">
         <div className="size-40 overflow-hidden rounded-full border-4 border-white/80 bg-white shadow-md">
           {activeItem && (
             <Image
               src={activeItem.prophetProfileUrl}
               alt="Prophet Profile"
-              width={320}
-              height={320}
+              width={500}
+              height={500}
               className="h-full w-full object-cover"
             />
           )}
@@ -52,30 +53,6 @@ export default function CourseLeftPanel({
           </div>
           <p className="text-center text-xl font-semibold">Course Profile</p>
         </div>
-
-        {/* Quick switcher to show we fetched 4–5 items */}
-        <div className="mt-6 border-t border-white/10 pt-4">
-          <p className="mb-2 text-sm text-white/80">Other Courses</p>
-          <div className="flex flex-wrap gap-2">
-            {(items ?? new Array(4).fill(null)).map((it, idx) => (
-              <button
-                key={it?.id ?? idx}
-                onClick={() => setActive(idx)}
-                className={`rounded-full px-3 py-1 text-sm transition ${
-                  idx === active
-                    ? "bg-white text-[#2b2342]"
-                    : "bg-white/20 text-white hover:bg-white/30"
-                }`}
-                disabled={!it}
-                title={it?.title ?? "Loading…"}
-              >
-                {it ? it.prophetName : "…"}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="h-6" />
       </div>
     </aside>
   );

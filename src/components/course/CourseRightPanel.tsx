@@ -1,6 +1,7 @@
 import ReviewCard from "@/components/account/Review/ReviewCard";
-import { CourseItem } from "./types";
+
 import Meta from "./Meta";
+import { CourseItem } from "./types";
 
 interface CourseRightPanelProps {
   activeItem: CourseItem | null;
@@ -18,7 +19,7 @@ export default function CourseRightPanel({
         </h1>
 
         {/* Meta grid */}
-        <div className="mt-6 grid grid-cols-2 gap-6 text-slate-700 md:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-6 text-slate-700">
           <Meta
             label="Prophet method"
             value={activeItem?.prophetMethod ?? " "}
@@ -54,7 +55,7 @@ export default function CourseRightPanel({
         </div>
 
         {/* Reviews list */}
-        <div className="mt-4 space-y-4">
+        <div className="mt-4 h-3/10 space-y-4 overflow-scroll">
           {(activeItem?.reviews ?? []).map((r) => (
             <ReviewCard
               key={r.id}

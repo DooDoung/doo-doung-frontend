@@ -2,11 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { DefaultLayout } from "@/components/globalComponents";
 import CourseLeftPanel from "@/components/course/CourseLeftPanel";
 import CourseRightPanel from "@/components/course/CourseRightPanel";
-import { CourseItem } from "@/components/course/types";
 import { mockCourseData } from "@/components/course/mockData";
+import { CourseItem } from "@/components/course/types";
+import { DefaultLayout } from "@/components/globalComponents";
 
 export default function ProphetCoursePage() {
   const [items, setItems] = useState<CourseItem[] | null>(null);
@@ -38,17 +38,15 @@ export default function ProphetCoursePage() {
 
   return (
     <DefaultLayout>
-      <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-rose-100 via-white to-violet-100 p-4 md:p-10">
-        <div className="mx-auto flex max-w-6xl gap-6">
-          <CourseLeftPanel
-            activeItem={activeItem}
-            items={items}
-            active={active}
-            setActive={setActive}
-          />
-          <CourseRightPanel activeItem={activeItem} />
-        </div>
-      </main>
+      <div className="mx-auto flex h-[90vh] max-w-6xl gap-0">
+        <CourseLeftPanel
+          activeItem={activeItem}
+          items={items}
+          active={active}
+          setActive={setActive}
+        />
+        <CourseRightPanel activeItem={activeItem} />
+      </div>
     </DefaultLayout>
   );
 }
