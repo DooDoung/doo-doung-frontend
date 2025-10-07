@@ -5,8 +5,8 @@ import { useSession } from "next-auth/react";
 
 import { EditProfilePictureDialog } from "@/components/account/EditProfilePictureDialog";
 import { GlobalButton, GlobalInput } from "@/components/globalComponents";
-import { ZodiacSign } from "@/types/user";
 import { AppToast } from "@/lib/app-toast";
+import { ZodiacSign } from "@/types/user";
 
 interface AccountData {
   id: string;
@@ -57,7 +57,8 @@ function EditUserProfile({
         setError("Failed to fetch account data");
       }
 
-      const data = await res.json();
+      const responseData = await res.json();
+      const data = responseData.data ?? [];
       setAccountData(data);
     } catch (error) {
       const errorMessage = "Failed to load account data";
