@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 import AccountLayout from "@/components/account/AccountLayout";
 import { DefaultLayout } from "@/components/globalComponents";
-import { useSession } from "next-auth/react";
 
 const backendUrl =
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
