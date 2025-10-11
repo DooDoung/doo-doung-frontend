@@ -13,6 +13,7 @@ const AllowNoAuthPath = [
   "/reset-password/token",
   "/course",
   "/course/[courseld]",
+  "/courses",
   "/",
 ];
 
