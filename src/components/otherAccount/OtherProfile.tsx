@@ -54,7 +54,7 @@ function OtherProfile({ user }: { user: AccountData }) {
         type="text"
         className="font-chakra cursor-not-allowed"
         fullWidth
-        value={user.gender}
+        value={user.gender?.toLowerCase() ?? ""}
         readOnly
       />
 
