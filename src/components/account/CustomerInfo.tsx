@@ -177,7 +177,7 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
       <ReservationSection myReservation={mockReservation} />
 
       {/* User's Course Reviewed Section */}
-      <ReviewSection reviews={review} />
+      <ReviewSection reviews={review} account={customer} />
 
       {/* Edit Profile Button */}
       <div className="mb-2 flex justify-center">

@@ -1,10 +1,17 @@
 import * as React from "react";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 import ReviewSection from "./Review/ReviewSection";
+import { AccountData } from "@/interface/User";
 
-function CustomerPublicInfo({ accountId }: { accountId: string }) {
+function CustomerPublicInfo({
+  account,
+  accountId,
+}: {
+  account: AccountData;
+  accountId: string;
+}) {
   const [review, setReview] = useState(null);
   const [loading, setLoading] = useState(true);
   const backendUrl =
@@ -33,7 +40,7 @@ function CustomerPublicInfo({ accountId }: { accountId: string }) {
     <div className="custom-scrollbar h-full w-full p-4 sm:overflow-y-auto">
       {loading && <p>Loading review...</p>}
       {review === null && !loading && <p>No reviews available.</p>}
-      {review && <ReviewSection reviews={review} />}
+      {review && <ReviewSection reviews={review} account={account} />}
     </div>
   );
 }
