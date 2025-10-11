@@ -2,8 +2,9 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import ReviewSection from "./Review/ReviewSection";
 import { AccountData } from "@/interface/User";
+
+import ReviewSection from "./Review/ReviewSection";
 
 function CustomerPublicInfo({
   account,
