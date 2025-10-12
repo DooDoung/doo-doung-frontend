@@ -14,11 +14,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+const chakra = Chakra_Petch({
+  weight: "400",
+  variable: "--font-chakra",
+  subsets: ["latin"],
+});
+
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   return (
     <SessionProvider session={session}>
       <div
-        className={`font-chakra ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${chakra.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Component {...pageProps} />
       </div>
