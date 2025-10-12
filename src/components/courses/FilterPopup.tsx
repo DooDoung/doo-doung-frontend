@@ -1,4 +1,3 @@
-import { X } from "lucide-react";
 import { useState } from "react";
 
 import { GlobalButton, GlobalInput } from "@/components/globalComponents";
@@ -138,7 +137,7 @@ const FilterPopup = ({ isOpen, onClose, onApply }: FilterPopupProps) => {
     return (
         <>
             <style dangerouslySetInnerHTML={{ __html: sliderStyles }} />
-            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 font-chakra">
                 <div className="bg-white rounded-3xl p-8 w-full max-w-4xl relative shadow-2xl">
 
                     {/* Sort by Section */}

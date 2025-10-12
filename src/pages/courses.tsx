@@ -48,7 +48,7 @@ export default function CoursesPage() {
 
     return (
         <DefaultLayout>
-            <div className="flex flex-col items-center justify-center w-full">
+            <div className="flex flex-col items-center justify-center w-full font-chakra">
                 <GlassContainer2>
                     <div className="w-full">
                         {/* Search and Filter */}
