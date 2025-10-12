@@ -116,6 +116,7 @@ export function GlobalButton({
     default: ``,
     secondary: `
     group-hover:text-neutral-black
+    group-active:text-accent-pink
     text-accent-pink
 
   `,
