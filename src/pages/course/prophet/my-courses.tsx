@@ -1,14 +1,28 @@
 import ProphetCourseCard from "@/components/course/Prophet/ProphetCourseCard";
-import { DefaultLayout, GlassContainer2 } from "@/components/globalComponents";
+import {
+  DefaultLayout,
+  GlassContainer2,
+  GlobalButton,
+} from "@/components/globalComponents";
+import router from "next/router";
 
 export default function MyCoursesPage() {
   const courses = mockCourse;
 
   return (
-    <DefaultLayout contentClassName="flex flex-col justify-center items-center">
+    <DefaultLayout contentClassName="relative flex flex-col justify-center items-center">
       <h1 className="font-sanctuary text-neutral-white text-center text-8xl">
         DooDoung
       </h1>
+
+      <GlobalButton
+        variant="secondary"
+        size="lg"
+        className="absolute top-16 left-17 w-36"
+        onClick={() => router.back()}
+      >
+        BACK
+      </GlobalButton>
 
       <GlassContainer2>
         {/*My course section*/}
