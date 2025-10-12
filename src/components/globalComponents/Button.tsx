@@ -112,6 +112,16 @@ export function GlobalButton({
     ghost: ``,
   };
 
+  const iconStyle: Record<string, string> = {
+    default: ``,
+    secondary: `
+    group-hover:text-neutral-black
+    text-accent-pink
+
+  `,
+    ghost: ``,
+  };
+
   const sizeClasses: Record<string, string> = {
     sm: "h-10 text-sm", // Increased from h-9 px-3
     default: "h-11 text-base", // Increased from h-10 px-4
@@ -159,7 +169,11 @@ export function GlobalButton({
                 "flex items-center justify-center",
               )}
             >
-              {icon && <span className="mr-2">{icon}</span>}
+              {icon && (
+                <span className={cn(iconStyle[mappedVariant], "mr-2")}>
+                  {icon}
+                </span>
+              )}
               {children}
             </span>
           </>
