@@ -11,6 +11,7 @@ type CourseCardProps = {
   price: number;
   date: string;
   time: string;
+  showProphetName?: boolean;
 };
 
 function CourseCard({
@@ -22,6 +23,7 @@ function CourseCard({
   price,
   date,
   time,
+  showProphetName = true,
 }: CourseCardProps) {
   return (
     <div className="flex w-full rounded-3xl border bg-white shadow-md">
@@ -32,8 +34,13 @@ function CourseCard({
       />
       <div className="text-neutral-black flex w-full justify-between gap-20 py-6 pr-6">
         <div>
-          <div className="flex justify-between">
-            <StarRating score={score} className="h-6 w-6" />
+          <div className="flex justify-start gap-2">
+            {showProphetName && <div>{prophetName}</div>}
+            <StarRating 
+              score={score} 
+              className="h-6 w-6" 
+              color={showProphetName ? "#F0E34B" : "#A0522D"}
+            />
           </div>
           <h3 className="text-lg font-semibold mt-1">{courseName}</h3>
           <p className="text-sm mt-1">{description}</p>
