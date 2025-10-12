@@ -6,12 +6,18 @@ import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 import OtherProfile from "@/components/otherAccount/OtherProfile";
 import { AccountData } from "@/interface/User";
 
-function OtherAccountLayout({ user }: { user: AccountData }) {
+function OtherAccountLayout({
+  user,
+  accountId,
+}: {
+  user: AccountData;
+  accountId: string;
+}) {
   return (
     <GlassContainer2 className="p-0">
       <OtherProfile user={user} />
       {user.role === "CUSTOMER" ? (
-        <CustomerPublicInfo />
+        <CustomerPublicInfo accountId={accountId} account={user} />
       ) : (
         <ProphetPublicInfo />
       )}
