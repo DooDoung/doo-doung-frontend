@@ -1,6 +1,8 @@
-import { Funnel,Search } from "lucide-react";
+import { Funnel, Search } from "lucide-react";
+import { useState } from "react";
 
 import CourseCard from "@/components/account/Course/CourseCard";
+import FilterPopup, { FilterState } from "@/components/courses/FilterPopup";
 import { DefaultLayout, GlobalInput } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { mockCourse } from "@/constants/mock-account";
@@ -23,15 +25,27 @@ const SearchBar = () => (
     </div>
 );
 
-const FilterButton = () => (
-    <button className={`flex items-center justify-center ${glassEffect} p-3 rounded-lg cursor-pointer hover:bg-secondary/60 transition-colors`}>
+const FilterButton = ({ onClick }: { onClick: () => void }) => (
+    <button 
+        onClick={onClick}
+        className={`flex items-center justify-center ${glassEffect} p-3 rounded-lg cursor-pointer hover:bg-secondary/60 transition-colors`}
+    >
         <Funnel className={iconStyle} size={20} />
     </button>
 );
 
+
+
 // Using existing CourseCard component
 
 export default function CoursesPage() {
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+    const handleFilterApply = (filters: FilterState) => {
+        console.log("Applied filters:", filters);
+        // TODO: Implement filter logic here
+    };
+
     return (
         <DefaultLayout>
             <div className="flex flex-col items-center justify-center w-full">
@@ -40,7 +54,7 @@ export default function CoursesPage() {
                         {/* Search and Filter */}
                         <div className="flex items-center justify-center gap-4 mb-6">
                             <SearchBar />
-                            <FilterButton />
+                            <FilterButton onClick={() => setIsFilterOpen(true)} />
                         </div>
 
                         {/* Course Cards */}
@@ -62,6 +76,13 @@ export default function CoursesPage() {
                     </div>
                 </GlassContainer2> 
             </div>
+
+            {/* Filter Popup */}
+            <FilterPopup 
+                isOpen={isFilterOpen} 
+                onClose={() => setIsFilterOpen(false)}
+                onApply={handleFilterApply}
+            />
         </DefaultLayout>
     );
 }
