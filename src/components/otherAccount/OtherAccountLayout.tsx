@@ -1,12 +1,12 @@
 import * as React from "react";
+import { useEffect,useState } from "react";
+import axios from "axios";
 
 import CustomerPublicInfo from "@/components/account/CustomerPublicInfo";
 import ProphetPublicInfo from "@/components/account/ProphetPublicInfo";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 import OtherProfile from "@/components/otherAccount/OtherProfile";
 import { AccountData, CustomerAccount } from "@/interface/User";
-import { useState, useEffect } from "react";
-import axios from "axios";
 
 function OtherAccountLayout({
   user,
