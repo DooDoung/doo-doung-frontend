@@ -53,7 +53,7 @@ function CustomerPublicInfo({
         <div className="custom-scrollbar flex h-full w-full items-center justify-center p-4 sm:overflow-y-auto">
           <div className="flex flex-col items-center gap-4">
             <Lock className="h-12 w-12 text-white opacity-70" />
-            <p className="font-chakra text-2xl font-light text-white opacity-70">
+            <p className="font-chakra font-light text-white opacity-70">
               This account is private.
             </p>
           </div>

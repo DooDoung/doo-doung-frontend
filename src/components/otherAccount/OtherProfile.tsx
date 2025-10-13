@@ -71,7 +71,7 @@ function OtherProfile({
       <GlobalButton
         variant="secondary"
         size="default"
-        className="font-chakra mt-10 w-full self-start"
+        className="font-chakra my-4 w-[70%]"
       >
         BACK
       </GlobalButton>
