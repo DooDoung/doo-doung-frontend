@@ -45,7 +45,7 @@ export default function CourseLeftPanel({
       </div>
 
       <div className="w-full rounded-2xl bg-white/90 p-4">
-        <div className="mb-3 aspect-[1.3/1] w-full overflow-hidden rounded-xl bg-slate-100">
+        <div className="mb-3 flex aspect-[1.3/1] w-full items-center justify-center overflow-hidden rounded-xl bg-slate-100">
           {activeItem && (
             <Image
               src={activeItem.courseProfileUrl}

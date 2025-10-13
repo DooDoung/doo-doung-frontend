@@ -62,7 +62,9 @@ export default function CourseRightPanel({
         </div>
 
         <div className="mt-3 flex items-start justify-between">
-          <h3 className="font-chakra text-primary mt-10 text-lg">Reviews</h3>
+          <div className="font-chakra text-accent-pink text-xl font-medium">
+            Reviews
+          </div>
           <GlobalButton
             variant="secondary"
             size="sm"

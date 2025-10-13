@@ -38,6 +38,9 @@ export default function ProphetCoursePage() {
 
   return (
     <DefaultLayout>
+      <h1 className="font-sanctuary my-4 text-center text-6xl font-bold text-white">
+        DooDoung
+      </h1>
       <div className="mx-auto flex max-w-6xl gap-0">
         <CourseLeftPanel
           activeItem={activeItem}
