@@ -10,11 +10,12 @@ import ReviewSection from "./Review/ReviewSection";
 function CustomerPublicInfo({
   account,
   accountId,
+  isPublic,
 }: {
   account: CustomerAccount;
   accountId: string;
+  isPublic?: boolean;
 }) {
-  const [isPublic, setIsPublic] = useState(false);
   const [review, setReview] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -37,40 +38,28 @@ function CustomerPublicInfo({
       }
     };
 
-    const fetchPublicStatus = async () => {
-      try {
-        const response = await axios.get(
-          `${backendUrl}/customer/public-status/${accountId}`,
-        );
-        console.log("Public status data:", response.data);
-        setIsPublic(response.data.data.isPublic);
-      } catch (error) {
-        console.error("Error fetching public status:", error);
-      }
-    };
-
     fetchReview();
-    fetchPublicStatus();
-  }, [accountId, isPublic]);
+  }, [accountId]);
 
-  if (!isPublic) {
-    return (
-      <div className="custom-scrollbar flex h-full w-full items-center justify-center p-4 sm:overflow-y-auto">
-        <div className="flex flex-col items-center gap-4">
-          <Lock className="h-12 w-12 text-white opacity-70" />
-          <p className="font-chakra text-2xl text-white">
-            This account is private.
-          </p>
-        </div>
-      </div>
-    );
-  }
   return (
-    <div className="custom-scrollbar h-full w-full p-4 sm:overflow-y-auto">
-      {loading && <p>Loading review...</p>}
-      {review === null && !loading && <p>No reviews available.</p>}
-      {review && <ReviewSection reviews={review} account={account} />}
-    </div>
+    <>
+      {isPublic ? (
+        <div className="custom-scrollbar h-full w-full p-4 sm:overflow-y-auto">
+          {loading && <p>Loading review...</p>}
+          {review === null && !loading && <p>No reviews available.</p>}
+          {review && <ReviewSection reviews={review} account={account} />}
+        </div>
+      ) : (
+        <div className="custom-scrollbar flex h-full w-full items-center justify-center p-4 sm:overflow-y-auto">
+          <div className="flex flex-col items-center gap-4">
+            <Lock className="h-12 w-12 text-white opacity-70" />
+            <p className="font-chakra text-2xl font-light text-white opacity-70">
+              This account is private.
+            </p>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

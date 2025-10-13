@@ -5,7 +5,13 @@ import { useRouter } from "next/router";
 import { GlobalButton, GlobalInput } from "@/components/globalComponents";
 import { AccountData } from "@/interface/User";
 
-function OtherProfile({ user }: { user: AccountData }) {
+function OtherProfile({
+  user,
+  isPublic,
+}: {
+  user: AccountData;
+  isPublic?: boolean;
+}) {
   const router = useRouter();
 
   return (
@@ -22,7 +28,7 @@ function OtherProfile({ user }: { user: AccountData }) {
           className="h-full w-full rounded-full object-cover p-1"
         />
 
-        {user.role == "CUSTOMER" && (
+        {user.role == "CUSTOMER" && isPublic && (
           <div className="bg-secondary absolute top-2 right-0 flex h-[40px] w-[40px] items-center justify-center overflow-hidden rounded-full">
             <Image
               src={`/images/zodiac-sign/${user.zodiacSign}.svg`}
@@ -47,16 +53,20 @@ function OtherProfile({ user }: { user: AccountData }) {
         readOnly
       />
 
-      <p className="font-chakra text-neutral-black self-start text-lg uppercase">
-        gender
-      </p>
-      <GlobalInput
-        type="text"
-        className="font-chakra cursor-not-allowed"
-        fullWidth
-        value={user.gender?.toLowerCase() ?? ""}
-        readOnly
-      />
+      {((user.role == "CUSTOMER" && isPublic) || user.role == "PROPHET") && (
+        <>
+          <p className="font-chakra text-neutral-black self-start text-lg uppercase">
+            gender
+          </p>
+          <GlobalInput
+            type="text"
+            className="font-chakra cursor-not-allowed"
+            fullWidth
+            value={user.gender?.toLowerCase() ?? ""}
+            readOnly
+          />
+        </>
+      )}
 
       <GlobalButton
         variant="secondary"

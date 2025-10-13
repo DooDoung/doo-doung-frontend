@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { headers } from "next/headers";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
@@ -18,7 +19,6 @@ import { Switch } from "../ui/switch";
 
 import ReservationSection from "./Reservation/ReservationSection";
 import ReviewSection from "./Review/ReviewSection";
-import { headers } from "next/headers";
 
 function CustomerInfo({ customer }: { customer: CustomerAccount }) {
   const [isPublic, setIsPublic] = React.useState(false);
@@ -59,7 +59,7 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
 
     fetchReview();
     fetchPublicStatus();
-  }, [accountId, isPublic, session?.accessToken, customer.isPublic]);
+  }, [accountId, isPublic, session?.accessToken]);
 
   const togglePublicStatus = async () => {
     try {
