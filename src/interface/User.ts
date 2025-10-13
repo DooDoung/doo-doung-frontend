@@ -14,6 +14,7 @@ export interface CustomerAccount extends BaseAccountData {
   birthTime: string;
   email: string;
   phoneNumber: string;
+  isPublic?: boolean;
 }
 
 export interface ProphetAccount extends BaseAccountData {

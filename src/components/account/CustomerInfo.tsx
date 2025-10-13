@@ -18,6 +18,7 @@ import { Switch } from "../ui/switch";
 
 import ReservationSection from "./Reservation/ReservationSection";
 import ReviewSection from "./Review/ReviewSection";
+import { headers } from "next/headers";
 
 function CustomerInfo({ customer }: { customer: CustomerAccount }) {
   const [isPublic, setIsPublic] = React.useState(false);
@@ -45,8 +46,34 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
       }
     };
 
+    const fetchPublicStatus = async () => {
+      try {
+        const response = await axios.get(
+          `${backendUrl}/customer/public-status/${accountId}`,
+        );
+        setIsPublic(response.data.data.isPublic);
+      } catch (error) {
+        console.error("Error fetching public status:", error);
+      }
+    };
+
     fetchReview();
-  }, [accountId]);
+    fetchPublicStatus();
+  }, [accountId, isPublic, session?.accessToken, customer.isPublic]);
+
+  const togglePublicStatus = async () => {
+    try {
+      const response = await axios.patch(
+        `${backendUrl}/customer/toggle-public`,
+        {},
+        { headers: { Authorization: `Bearer ${session?.accessToken}` } },
+      );
+      console.log("Public status updated:", response.data);
+      setIsPublic(!isPublic);
+    } catch (error) {
+      console.error("Error updating public status:", error);
+    }
+  };
 
   return (
     <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
@@ -56,7 +83,7 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
           className="self-end"
           size="lg"
           checked={isPublic}
-          onCheckedChange={(checked) => setIsPublic(checked)}
+          onCheckedChange={() => togglePublicStatus()}
         />
       </div>
       <form
