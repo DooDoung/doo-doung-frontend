@@ -12,7 +12,7 @@ export default function SessionTableBookSlot({
   variant,
 }: SessionTableBookSlotProps) {
   const BookingSession = (time: string, day: string) => {
-    console.log(time, day);
+    return;
   };
 
   const handleClick = () => {

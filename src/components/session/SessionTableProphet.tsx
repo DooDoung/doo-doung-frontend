@@ -1,3 +1,4 @@
+import { useState } from "react";
 
 import { useProphetAvailability } from "@/hooks/useProphetAvailability";
 
@@ -21,7 +22,7 @@ export default function SessionTableProphet() {
   const currentMonday = new Date(today);
   const dayOfWeek = today.getDay();
   const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-  currentMonday.setDate(today.getDate() + daysToMonday + (currentWeek * 7));
+  currentMonday.setDate(today.getDate() + daysToMonday + currentWeek * 7);
 
   return (
     <div className="space-y-4">
@@ -30,10 +31,9 @@ export default function SessionTableProphet() {
           <GlobalButton
             variant="primary"
             size="lg"
-            onClick={() => window.location.href = "/account/prophet"}
+            onClick={() => (window.location.href = "/account")}
           >
             Back
-
           </GlobalButton>
         </div>
 

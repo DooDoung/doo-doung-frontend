@@ -24,6 +24,7 @@ export default function ProphetTransactionAccountPage() {
     handleSelectAccount,
     handleSetDefault,
   } = useTransactionAccounts();
+  
 
   const renderContent = () => {
     if (mode === "create") {
