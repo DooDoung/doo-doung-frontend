@@ -4,7 +4,6 @@ import axios from "axios";
 import { headers } from "next/headers";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { AppToast } from "@/lib/app-toast";
 
 import {
   GlobalButton,
@@ -15,6 +14,7 @@ import {
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { mockReservation } from "@/constants/mock-account";
 import type { CustomerAccount } from "@/interface/User";
+import { AppToast } from "@/lib/app-toast";
 
 import { Switch } from "../ui/switch";
 
