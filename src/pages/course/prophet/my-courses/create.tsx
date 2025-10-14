@@ -1,7 +1,6 @@
-import { Pencil } from "lucide-react";
-import { AppToast } from "@/lib/app-toast";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Pencil } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { DefaultLayout } from "@/components/globalComponents";
 import {
@@ -16,6 +15,7 @@ import {
 } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
+import { AppToast } from "@/lib/app-toast";
 
 export default function CreateCoursePage() {
   const router = useRouter();
