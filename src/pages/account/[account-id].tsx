@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { useRouter } from "next/router";
 
 import { DefaultLayout } from "@/components/globalComponents";
 import OtherAccountLayout from "@/components/otherAccount/OtherAccountLayout";
 import { AccountData } from "@/interface/User";
-import axios from "axios";
 
 export default function AccountDetailsPage() {
   const router = useRouter();
@@ -16,10 +16,6 @@ export default function AccountDetailsPage() {
 
   useEffect(() => {
     const fetchAccountData = async () => {
-      if (!accountId || typeof accountId !== "string") {
-        return;
-      }
-
       try {
         setLoading(true);
         setError(null);
