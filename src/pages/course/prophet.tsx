@@ -47,7 +47,7 @@ export default function CourseProphetPage() {
           <GlobalButton
             variant={"primary"}
             size="default"
-            className="mt-4 self-end"
+            className="mt-4 mr-13 self-end"
             onClick={() => {
               try {
                 router.push("/course/prophet/my-courses");
