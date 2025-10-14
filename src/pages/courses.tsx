@@ -49,7 +49,7 @@ export default function CoursesPage() {
     return (
         <DefaultLayout>
             <div className="flex flex-col items-center justify-center w-full font-chakra">
-                <GlassContainer2>
+                <GlassContainer2 className="overflow-hidden">
                     <div className="w-full">
                         {/* Search and Filter */}
                         <div className="flex items-center justify-center gap-4 mb-6">
@@ -58,7 +58,7 @@ export default function CoursesPage() {
                         </div>
 
                         {/* Course Cards */}
-                        <div className="space-y-4">
+                        <div className="space-y-4 overflow-y-auto max-h-[70vh] p-2 custom-scrollbar">
                             {mockCourse.map((course, index) => (
                                 <CourseCard 
                                     key={course.id}
