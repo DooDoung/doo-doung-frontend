@@ -4,6 +4,7 @@ import axios from "axios";
 import { headers } from "next/headers";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { AppToast } from "@/lib/app-toast";
 
 import {
   GlobalButton,
@@ -38,9 +39,9 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
         });
         const result = response.data.data;
         setReview(result.reviews);
-        console.log("Review data:", result.reviews);
-      } catch (error) {
-        console.error("Error fetching review:", error);
+        //console.log("Review data:", result.reviews);
+      } catch (error: any) {
+        AppToast.error(`Error fetching review: ${error.message}`);
       } finally {
         setLoading(false);
       }
@@ -52,8 +53,8 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
           `${backendUrl}/customer/public-status/${accountId}`,
         );
         setIsPublic(response.data.data.isPublic);
-      } catch (error) {
-        console.error("Error fetching public status:", error);
+      } catch (error: any) {
+        AppToast.error(`Error fetching public status: ${error.message}`);
       }
     };
 
@@ -68,10 +69,10 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
         {},
         { headers: { Authorization: `Bearer ${session?.accessToken}` } },
       );
-      console.log("Public status updated:", response.data);
+      AppToast.success("Public status updated!");
       setIsPublic(!isPublic);
-    } catch (error) {
-      console.error("Error updating public status:", error);
+    } catch (error: any) {
+      AppToast.error(`Error updating public status: ${error.message}`);
     }
   };
 

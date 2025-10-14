@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 import CustomerPublicInfo from "@/components/account/CustomerPublicInfo";
@@ -7,6 +7,7 @@ import ProphetPublicInfo from "@/components/account/ProphetPublicInfo";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 import OtherProfile from "@/components/otherAccount/OtherProfile";
 import { AccountData, CustomerAccount } from "@/interface/User";
+import { AppToast } from "@/lib/app-toast";
 
 function OtherAccountLayout({
   user,
@@ -26,8 +27,8 @@ function OtherAccountLayout({
             `${backendUrl}/customer/public-status/${accountId}`,
           );
           setIsPublic(response.data.data.isPublic);
-        } catch (error) {
-          console.error("Error fetching public status:", error);
+        } catch (error: any) {
+          AppToast.error(`Error fetching public status: ${error.message}`);
         }
       };
 
