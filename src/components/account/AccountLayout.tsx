@@ -14,9 +14,20 @@ function AccountLayout({
   user,
   editing,
 }: {
-  user: AccountData;
+  user: AccountData | undefined;
   editing: boolean;
 }) {
+  // Guard clause to handle undefined user
+  if (!user) {
+    return (
+      <GlassContainer2 className="p-0">
+        <div className="flex items-center justify-center p-8 w-full">
+          <p className="text-neutral-white font-chakra">Loading user data...</p>
+        </div>
+      </GlassContainer2>
+    );
+  }
+
   return (
     <GlassContainer2 className="p-0">
       {editing ? (
@@ -26,7 +37,7 @@ function AccountLayout({
       )}
       {editing ? (
         user.role === "CUSTOMER" ? (
-          <EditCustomerInfo />
+          <EditCustomerInfo user={user} />
         ) : (
           <EditProphetInfo />
         )

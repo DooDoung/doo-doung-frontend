@@ -1,5 +1,4 @@
 import * as React from "react";
-import toast from "react-hot-toast";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -13,6 +12,8 @@ import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ZodiacSign } from "@/types/user";
 
 import { Switch } from "../../ui/switch";
+import { useSession } from "next-auth/react";
+import { AppToast } from "@/lib/app-toast";
 
 const customer = {
   firstName: "John",
@@ -25,10 +26,28 @@ const customer = {
   phone: "+1 234 567 8900",
 };
 
-function EditCustomerInfo() {
+function EditCustomerInfo({ user }: { user?: any }) {
+  const { data: session } = useSession();
   const [isPublic, setIsPublic] = React.useState(false);
   const [userInfo, setUserInfo] = React.useState(customer);
   const router = useRouter();
+
+  // Update userInfo with real user data when available
+  React.useEffect(() => {
+    if (user) {
+      setUserInfo({
+        firstName: user.firstName || customer.firstName,
+        lastName: user.lastName || customer.lastName,
+        gender: user.gender === "male" ? "Male" : user.gender === "female" ? "Female" : "Male",
+        dob: user.birthDate ? user.birthDate.split('T')[0] : customer.dob,
+        tob: user.birthDate ? new Date(user.birthDate).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }) : customer.tob,
+        zodiac: user.zodiacSign ? user.zodiacSign.charAt(0).toUpperCase() + user.zodiacSign.slice(1) : customer.zodiac,
+        email: user.email || customer.email,
+        phone: user.phoneNumber || customer.phone,
+      });
+      setIsPublic(user.isPublic || false);
+    }
+  }, [user]);
 
   const handleChange = (field: keyof typeof userInfo, value: string) => {
     setUserInfo({ ...userInfo, [field]: value });
@@ -36,16 +55,123 @@ function EditCustomerInfo() {
 
   const handleSave = async () => {
     try {
-      // mock: call API
-      console.log("Saving profile:", userInfo, { isPublic });
+      // Validate required fields
+      if (!session?.user?.id) {
+        AppToast.error("Session expired. Please log in again.");
+        return;
+      }
 
-      // TODO: replace with real API call, e.g.:
-      // await fetch("/api/user/update", { method: "POST", body: JSON.stringify(userInfo) });
+      if (!userInfo.email || !userInfo.firstName || !userInfo.lastName) {
+        AppToast.error("Please fill in all required fields (email, first name, last name)");
+        return;
+      }
 
-      toast.success("Profile updated successfully!");
+      // Fix gender mapping and test without zodiacSign first
+      let genderValue = user.gender; 
+      if (genderValue === "Male") {
+        genderValue = "MALE";
+      } else if (genderValue === "Female") {
+        genderValue = "FEMALE";
+      } else if (genderValue === "LGBTQ+") {
+        genderValue = "LGBTQ_PLUS";
+      } else {
+        genderValue = "UNDEFINED";
+      }
+
+      if (!user?.role) {
+        AppToast.error("User role is missing");
+        return;
+      }
+
+      // Validate zodiac sign
+      if (!userInfo.zodiac || userInfo.zodiac.trim() === '' || userInfo.zodiac === 'undefined') {
+        AppToast.error("Please select a zodiac sign");
+        return;
+      }
+
+      // Validate all form fields are filled
+      const requiredFields = {
+        'First Name': userInfo.firstName,
+        'Last Name': userInfo.lastName,
+        'Email': userInfo.email,
+        'Phone Number': userInfo.phone,
+        'Gender': userInfo.gender,
+        'Date of Birth': userInfo.dob,
+        'Time of Birth': userInfo.tob
+      };
+
+      for (const [fieldName, value] of Object.entries(requiredFields)) {
+        if (!value || value.toString().trim() === '') {
+          AppToast.error(`${fieldName} is required`);
+          return;
+        }
+      }
+
+      // Convert date and time to required formats
+      const birthDate = new Date(`${userInfo.dob}T00:00:00.000Z`).toISOString(); // ISO format
+      const birthTime = `${userInfo.tob}:00`; // HH:mm:ss format
+      
+      console.log("Date conversion:", {
+        originalDob: userInfo.dob,
+        originalTob: userInfo.tob,
+        birthDate: birthDate,
+        birthTime: birthTime
+      });
+
+      const requestData = {
+        id: user?.id,
+        role: user?.role, 
+        firstName: userInfo.firstName.trim(),
+        lastName: userInfo.lastName.trim(),
+        email: userInfo.email.trim(),
+        phoneNumber: userInfo.phone.trim(),
+        zodiacSign: userInfo.zodiac.toUpperCase(),
+        gender: genderValue,
+        birthDate: birthDate,
+        birthTime: birthTime
+      };
+
+      console.log("User data from props:", user);
+      console.log("User role:", user?.role);
+      console.log("Request data:", requestData);
+
+      const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const endpoint = `${baseUrl}/account`;
+
+      const response = await fetch(endpoint, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.accessToken}`,
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      console.log("Response status:", response.status);
+      console.log("Response headers:", Object.fromEntries(response.headers.entries()));
+      
+      if (!response.ok) {
+        let errorDetail = "Unknown error";
+        try {
+          const errorJson = await response.json();
+          console.error("Error response JSON:", errorJson);
+          errorDetail = errorJson.message || errorJson.error || JSON.stringify(errorJson);
+        } catch {
+          const errorText = await response.text();
+          console.error("Error response text:", errorText);
+          errorDetail = errorText;
+        }
+        AppToast.error(`Failed to update profile: ${errorDetail}`);
+        return;
+      }
+      
+      const responseData = await response.json();
+      console.log("Success response:", responseData);
+
+      AppToast.success("Profile updated successfully!");
       router.push("/account");
     } catch (err) {
-      toast.error("Failed to update profile");
+      AppToast.error("Failed to update profile");
     }
   };
 

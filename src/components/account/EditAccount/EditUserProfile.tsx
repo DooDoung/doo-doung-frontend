@@ -142,6 +142,7 @@ function EditUserProfile({
           open={openDialog}
           onOpenChange={setOpenDialog}
           currentImageUrl={accountData?.profileUrl}
+          user={accountData as any}
           onSave={(url) => setAccountData((prev) => prev ? { ...prev, profileUrl: url } : null)}
         />
       </div>
