@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+
 import { DefaultLayout } from "@/components/globalComponents";
-import { GlassContainer } from "@/components/globalComponents/GlassContainer";
 import GlobalButton from "@/components/globalComponents/Button";
+import { GlassContainer } from "@/components/globalComponents/GlassContainer";
 import { AppToast } from "@/lib/app-toast";
 
 export default function BookingSuccessPage() {

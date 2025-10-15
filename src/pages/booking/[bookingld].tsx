@@ -1,7 +1,8 @@
 import { useRouter } from "next/router";
+
 import { DefaultLayout } from "@/components/globalComponents";
-import { GlassContainer } from "@/components/globalComponents/GlassContainer";
 import GlobalButton from "@/components/globalComponents/Button";
+import { GlassContainer } from "@/components/globalComponents/GlassContainer";
 
 export default function BookingPage() {
   const router = useRouter();
