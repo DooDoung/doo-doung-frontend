@@ -52,7 +52,7 @@ function ProphetInfo({ prophet }: { prophet: ProphetAccount }) {
           <label className="mb-1 block font-light text-white uppercase">
             Gender
           </label>
-          <Select value={prophet.gender.toLowerCase()} disabled>
+          <Select value={prophet.gender === "LGBTQ_PLUS" ? "lgbtq+" : prophet.gender.toLowerCase()} disabled>
             <SelectTrigger className="w-full cursor-not-allowed bg-white">
               <SelectValue placeholder="Select" />
             </SelectTrigger>

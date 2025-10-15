@@ -127,6 +127,23 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
     }
   }, [user, hasUserMadeChanges]);
 
+  const genderForDisplay = hasUserMadeChanges
+    ? userInfo.gender
+    : (user ? mapGenderFromAPI(user.gender) : "");
+
+  const genderForSelect = genderForDisplay.toLowerCase();
+
+  const handleGenderSelect = (value: string) => {
+    const genderMap: { [key: string]: string } = {
+      'male': 'Male',
+      'female': 'Female',
+      'lgbtq+': 'LGBTQ+',
+      'undefined': 'Undefined',
+    };
+    handleChange("gender", genderMap[value] || '');
+  };
+
+
   const handleChange = (field: keyof ProphetUserInfo, value: string) => {
     setUserInfo(prev => ({ ...prev, [field]: value }));
     setHasUserMadeChanges(true);
@@ -226,10 +243,8 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
             <Pencil className="ml-2" size={18} />
           </label>
           <Select
-            value={userInfo.gender.toLowerCase() || ""}
-            onValueChange={(val) =>
-              handleChange("gender", val.charAt(0).toUpperCase() + val.slice(1))
-            }
+            value={genderForSelect}
+            onValueChange={handleGenderSelect}
           >
             <SelectTrigger className="w-full bg-white">
               <SelectValue placeholder="Select" />
