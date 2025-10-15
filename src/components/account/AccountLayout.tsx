@@ -13,9 +13,11 @@ import EditUserProfile from "./EditAccount/EditUserProfile";
 function AccountLayout({
   user,
   editing,
+  onUserUpdate,
 }: {
   user: AccountData | undefined;
   editing: boolean;
+  onUserUpdate?: (updatedUser: AccountData) => void;
 }) {
   // Guard clause to handle undefined user
   if (!user) {
@@ -37,7 +39,7 @@ function AccountLayout({
       )}
       {editing ? (
         user.role === "CUSTOMER" ? (
-          <EditCustomerInfo user={user} />
+          <EditCustomerInfo user={user} onUserUpdate={onUserUpdate} />
         ) : (
           <EditProphetInfo />
         )

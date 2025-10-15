@@ -15,6 +15,11 @@ export default function EditAccountPage() {
 
   const handleSavePicture = (newUrl: string) => {};
 
+  const handleUserUpdate = (updatedUser: AccountData) => {
+    setUser(updatedUser);
+    console.log("User updated in edit-account page:", updatedUser);
+  };
+
   useEffect(() => {
     if (!session?.user?.id || !session?.accessToken) {
       return; // Don't fetch if no session data
@@ -65,7 +70,7 @@ export default function EditAccountPage() {
 
   return (
     <DefaultLayout contentClassName="flex justify-center items-center w-full">
-      <AccountLayout user={user} editing={true} />
+      <AccountLayout user={user} editing={true} onUserUpdate={handleUserUpdate} />
     </DefaultLayout>
   );
 }

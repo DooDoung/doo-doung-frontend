@@ -15,42 +15,86 @@ import { Switch } from "../../ui/switch";
 import { useSession } from "next-auth/react";
 import { AppToast } from "@/lib/app-toast";
 
-const customer = {
-  firstName: "John",
-  lastName: "Doe",
-  gender: "Male",
-  dob: "1995-07-20",
-  tob: "08:30",
-  zodiac: "Cancer",
-  email: "john.doe@gmail.com",
-  phone: "+1 234 567 8900",
-};
 
-function EditCustomerInfo({ user }: { user?: any }) {
+function EditCustomerInfo({ user, onUserUpdate }: { user?: any; onUserUpdate?: (updatedUser: any) => void }) {
   const { data: session } = useSession();
   const [isPublic, setIsPublic] = React.useState(false);
-  const [userInfo, setUserInfo] = React.useState(customer);
+  const [userInfo, setUserInfo] = React.useState({
+    firstName: "",
+    lastName: "",
+    gender: "",
+    dob: "",
+    tob: "",
+    zodiac: "",
+    email: "",
+    phone: "",
+  });
+  const [hasUserMadeChanges, setHasUserMadeChanges] = React.useState(false);
   const router = useRouter();
 
-  // Update userInfo with real user data when available
+  // Update userInfo when user prop changes (only if user hasn't made changes)
   React.useEffect(() => {
-    if (user) {
-      setUserInfo({
-        firstName: user.firstName || customer.firstName,
-        lastName: user.lastName || customer.lastName,
-        gender: user.gender === "male" ? "Male" : user.gender === "female" ? "Female" : "Male",
-        dob: user.birthDate ? user.birthDate.split('T')[0] : customer.dob,
-        tob: user.birthDate ? new Date(user.birthDate).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }) : customer.tob,
-        zodiac: user.zodiacSign ? user.zodiacSign.charAt(0).toUpperCase() + user.zodiacSign.slice(1) : customer.zodiac,
-        email: user.email || customer.email,
-        phone: user.phoneNumber || customer.phone,
-      });
+    console.log("useEffect triggered, user:", user, "hasUserMadeChanges:", hasUserMadeChanges);
+    
+    if (user && user.zodiacSign && !hasUserMadeChanges) {
+      const processedData = {
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        gender: user.gender === "MALE" ? "Male" : user.gender === "FEMALE" ? "Female" : user.gender === "LGBTQ_PLUS" ? "LGBTQ+" : "Undefined",
+        dob: user.birthDate ? user.birthDate.split('T')[0] : "",
+        tob: user.birthTime ? new Date(user.birthTime).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }) : "",
+        zodiac: user.zodiacSign.toLowerCase(),
+        email: user.email || "",
+        phone: user.phoneNumber || "",
+      };
+      
+      console.log("Setting userInfo with processed data:", processedData);
+      
+      setUserInfo(processedData);
       setIsPublic(user.isPublic || false);
     }
-  }, [user]);
+  }, [user, user?.zodiacSign, user?.gender, hasUserMadeChanges]);
+
+  // Computed zodiac value - prioritize userInfo.zodiac if user has made changes
+  const computedZodiac = React.useMemo(() => {
+    let result = "";
+    
+    // If userInfo.zodiac exists and is not empty, use it (user has made changes)
+    if (userInfo.zodiac && userInfo.zodiac !== "") {
+      result = userInfo.zodiac.toLowerCase();
+    }
+    // Otherwise, use the initial value from user prop
+    else if (user?.zodiacSign) {
+      result = user.zodiacSign.toLowerCase();
+    }
+    
+    console.log("Computed zodiac:", { userZodiac: user?.zodiacSign, userInfoZodiac: userInfo.zodiac, result, hasUserMadeChanges });
+    return result;
+  }, [user?.zodiacSign, userInfo.zodiac, hasUserMadeChanges]);
+
+  // Computed gender value - prioritize userInfo.gender if user has made changes
+  const computedGender = React.useMemo(() => {
+    let result = "";
+    
+    // If userInfo.gender exists and is not empty, use it (user has made changes)
+    if (userInfo.gender && userInfo.gender !== "") {
+      result = userInfo.gender.toLowerCase();
+    } 
+    // Otherwise, use the initial value from user prop
+    else if (user?.gender) {
+      result = user.gender === "MALE" ? "male" : 
+               user.gender === "FEMALE" ? "female" : 
+               user.gender === "LGBTQ_PLUS" ? "lgbtq+" : 
+               "undefined";
+    }
+    
+    console.log("Computed gender:", { userGender: user?.gender, userInfoGender: userInfo.gender, result, hasUserMadeChanges });
+    return result;
+  }, [user?.gender, userInfo.gender, hasUserMadeChanges]);
 
   const handleChange = (field: keyof typeof userInfo, value: string) => {
     setUserInfo({ ...userInfo, [field]: value });
+    setHasUserMadeChanges(true); // บันทึกว่า user ได้แก้ไขข้อมูลแล้ว
   };
 
   const handleSave = async () => {
@@ -66,14 +110,16 @@ function EditCustomerInfo({ user }: { user?: any }) {
         return;
       }
 
-      // Fix gender mapping and test without zodiacSign first
-      let genderValue = user.gender; 
+      // Fix gender mapping using userInfo.gender (current form values)
+      let genderValue = userInfo.gender; 
       if (genderValue === "Male") {
         genderValue = "MALE";
       } else if (genderValue === "Female") {
         genderValue = "FEMALE";
       } else if (genderValue === "LGBTQ+") {
         genderValue = "LGBTQ_PLUS";
+      } else if (genderValue === "Undefined") {
+        genderValue = "UNDEFINED";
       } else {
         genderValue = "UNDEFINED";
       }
@@ -147,9 +193,7 @@ function EditCustomerInfo({ user }: { user?: any }) {
         body: JSON.stringify(requestData),
       });
 
-      console.log("Response status:", response.status);
-      console.log("Response headers:", Object.fromEntries(response.headers.entries()));
-      
+  
       if (!response.ok) {
         let errorDetail = "Unknown error";
         try {
@@ -168,12 +212,47 @@ function EditCustomerInfo({ user }: { user?: any }) {
       const responseData = await response.json();
       console.log("Success response:", responseData);
 
+      // Update user prop with new data from userInfo
+      const updatedUser = {
+        ...user,
+        firstName: userInfo.firstName.trim(),
+        lastName: userInfo.lastName.trim(),
+        username: userInfo.firstName.trim() || user?.username, // Keep original username if firstName is empty
+        email: userInfo.email.trim(),
+        phoneNumber: userInfo.phone.trim(),
+        zodiacSign: userInfo.zodiac.toUpperCase(),
+        gender: genderValue,
+        birthDate: birthDate,
+        birthTime: birthTime
+      };
+
+      // Call onUserUpdate callback if provided
+      if (onUserUpdate && responseData.data) {
+        onUserUpdate(responseData.data);
+      }
+
+      console.log("Updated user data:", updatedUser);
+
+      // Reset the changes flag so future updates from user prop work
+      setHasUserMadeChanges(false);
+
       AppToast.success("Profile updated successfully!");
       router.push("/account");
     } catch (err) {
       AppToast.error("Failed to update profile");
     }
   };
+
+  // Show loading state when user prop is not available
+  if (!user) {
+    return (
+      <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
+        <div className="flex items-center justify-center p-8">
+          <p className="text-white">Loading user data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
@@ -232,7 +311,7 @@ function EditCustomerInfo({ user }: { user?: any }) {
             <Pencil className="ml-2" size={18} />
           </label>
           <Select
-            value={userInfo.gender.toLowerCase()}
+            value={computedGender}
             onValueChange={(val) =>
               handleChange("gender", val.charAt(0).toUpperCase() + val.slice(1))
             }
@@ -286,8 +365,8 @@ function EditCustomerInfo({ user }: { user?: any }) {
             <Pencil className="ml-2" size={18} />
           </label>
           <Select
-            value={userInfo.zodiac.toLowerCase()}
-            onValueChange={(val) => handleChange("zodiac", val)}
+            value={computedZodiac}
+            onValueChange={(val) => handleChange("zodiac", val.charAt(0).toUpperCase() + val.slice(1))}
           >
             <SelectTrigger className="w-full bg-white">
               <SelectValue placeholder="Select" />
