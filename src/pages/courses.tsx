@@ -58,7 +58,7 @@ export default function CoursesPage() {
                         </div>
 
                         {/* Course Cards */}
-                        <div className="space-y-4 overflow-y-auto max-h-[70vh] p-2 custom-scrollbar">
+                        <div className="space-y-4 overflow-y-auto max-h-[70vh] p-2 pb-20 custom-scrollbar">
                             {mockCourse.map((course, index) => (
                                 <CourseCard 
                                     key={course.id}
