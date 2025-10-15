@@ -8,6 +8,7 @@ export const updateUserAccount = async (
   accessToken: string
 ): Promise<{ success: boolean; data?: any }> => {
   try {
+    console.log("Request data for update:", requestData);
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/account`, {
       method: "PUT",
       headers: {

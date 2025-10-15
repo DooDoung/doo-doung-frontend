@@ -156,8 +156,9 @@ function EditUserProfile({
         type="text"
         className={`font-chakra mb-4 ${editing ? "" : "cursor-not-allowed"}`}
         fullWidth
-        value={accountData?.username}
-        readOnly={!editing}
+        value={accountData?.username || ""}
+        onChange={() => {}} // Username is not editable
+        readOnly={true}
       />
     </div>
   );

@@ -13,144 +13,173 @@ import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AppToast } from "@/lib/app-toast";
 
 import type { TransactionAccount } from "@/types/transaction";
+import {
+  validateSession,
+  validateUserRole,
+} from "@/utils/validationUtils";
+import { updateUserAccount } from "@/utils/apiUtils";
+import { ProphetAccount, AccountData } from "@/interface/User";
 
-import ProphetCard from "../ProphetCard";
-import { set } from "zod";
-
-interface ProphetInfo {
-  id: string;
+interface ProphetUserInfo {
   firstName: string;
   lastName: string;
   gender: string;
-  phone: string;
   email: string;
+  phone: string;
   line: string;
-  transaction: TransactionAccount[];
 }
 
-// const prophet: ProphetInfo = {
-//   id: "1",
-//   firstName: "John",
-//   lastName: "Doe",
-//   gender: "Male",
-//   phone: "+1 234 567 8900",
-//   email: "john.doe@gmail.com",
-//   line: "@johndoe",
-//   transaction: {
-//     accountNumber: "123-456-7890",
-//     accountName: "John Doe",
-//     imageUrl: "/images/transaction-bank/SCB.webp",
-//     bankName: "SCB",
-//   },
-// };
+// Validation function for Prophet required fields
+const validateProphetRequiredFields = (userInfo: ProphetUserInfo): boolean => {
+  const requiredFields = {
+    'First Name': userInfo.firstName,
+    'Last Name': userInfo.lastName,
+    'Email': userInfo.email,
+    'Phone Number': userInfo.phone,
+    'Gender': userInfo.gender,
+    'Line ID': userInfo.line
+  };
 
-function EditProphetInfo() {
+  for (const [fieldName, value] of Object.entries(requiredFields)) {
+    if (!value || value.toString().trim() === '' || value === 'undefined') {
+      AppToast.error(`${fieldName} is required`);
+      return false;
+    }
+  }
+  return true;
+};
+
+interface EditProphetInfoProps {
+  user?: ProphetAccount;
+  onUserUpdate?: (updatedUser: AccountData) => void;
+}
+
+
+// Utils for Prophet data processing
+const mapGenderFromAPI = (apiGender: string): string => {
+  switch (apiGender) {
+    case "MALE": return "Male";
+    case "FEMALE": return "Female";
+    case "LGBTQ_PLUS": return "LGBTQ+";
+    default: return "Undefined";
+  }
+};
+
+const mapGenderToAPI = (uiGender: string): string => {
+  switch (uiGender) {
+    case "Male": return "MALE";
+    case "Female": return "FEMALE";
+    case "LGBTQ+": return "LGBTQ_PLUS";
+    case "Undefined": return "UNDEFINED";
+    default: return "UNDEFINED";
+  }
+};
+
+const processProphetData = (userData: any): ProphetUserInfo => {
+  return {
+    firstName: userData.firstName || "",
+    lastName: userData.lastName || userData.lastname || "",
+    gender: mapGenderFromAPI(userData.gender),
+    email: userData.email || "",
+    phone: userData.phoneNumber || userData.phone || "",
+    line: userData.line || userData.lineId || "",
+  };
+};
+
+const prepareProphetAPIData = (userInfo: ProphetUserInfo, user: ProphetAccount) => {
+  const userData = user as any; // Type assertion to access id field
+  
+  const requestData = {
+    username: userData.username, // Use username as identifier for Prophet API
+    role: user.role,
+    // firstName: userInfo.firstName.trim(), 
+    // lastName: userInfo.lastName.trim(), 
+    email: userInfo.email.trim(),
+    phoneNumber: userInfo.phone.trim(),
+    gender: mapGenderToAPI(userInfo.gender),
+    lineId: userInfo.line.trim(),
+  };
+  return requestData;
+};
+
+function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
   const router = useRouter();
-  const {data: session} = useSession();
+  const { data: session } = useSession();
 
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
-  const [prophetInfo, setProphetInfo] = React.useState<ProphetInfo | null>(null);
+  const [hasUserMadeChanges, setHasUserMadeChanges] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [userInfo, setUserInfo] = React.useState<ProphetUserInfo>({
+    firstName: "",
+    lastName: "",
+    gender: "",
+    email: "",
+    phone: "",
+    line: "",
+  });
 
-  const fetchProphetData = React.useCallback(async () => {
-    if (!session?.user?.id) {
-      setError("User not authenticated");
-      setLoading(false);
-      return;
+  // Process user data when user prop changes
+  React.useEffect(() => {
+    if (user && !hasUserMadeChanges) {
+      console.log("Raw prophet data received:", user);
+      const processedData = processProphetData(user);
+      setUserInfo(processedData);
+      console.log("Prophet data processed and set:", processedData);
     }
-    try {
-      setLoading(true);
-      setError(null);
+  }, [user, hasUserMadeChanges]);
 
-      const headers: HeadersInit = {
-        'Content-Type': 'application/json',
-      };
-
-      if (session.accessToken) {
-        headers['Authorization'] = `Bearer ${session.accessToken}`;
-      }
-      // Fetch basic account data
-      const accountRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/account/${session.user.id}`, {
-        method: "GET",
-        headers
-      });
-
-      if (!accountRes.ok) {
-        setError(`Failed to fetch account data: ${accountRes.status}`);
-      }
-
-      const accountData = await accountRes.json();
-      const txRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tx-account`, {
-        method: "GET",
-        headers
-      });
-
-      if (txRes.ok) {
-        const txResponseData = await txRes.json();
-        const rawTxData = txResponseData?.data || [];
-        const rawTxDataWithoutProphetId = rawTxData.map(({ prophetID, ...rest }: any) => rest);
-
-        const mergedData: ProphetInfo = {
-        id: accountData.id || session.user.id,
-        firstName: accountData.firstName || "",
-        lastName: accountData.lastName || "",
-        gender: accountData.gender || "Undefined",
-        phone: accountData.phone || "",
-        email: accountData.email || "",
-        line: accountData.line || accountData.lineId || "",
-        transaction: rawTxDataWithoutProphetId as TransactionAccount[],
-      };
-
-      setProphetInfo(mergedData);
-      } else {
-        setError("Transaction account not found");
-      }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to load prophet data";
-      setError(errorMessage);
-      AppToast.error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  }, [session?.user?.id, session?.accessToken]);
-
-  const handleChange = (field: keyof ProphetInfo, value: string) => {
-    setProphetInfo((prev) => prev ? { ...prev, [field]: value } : prev);
+  const handleChange = (field: keyof ProphetUserInfo, value: string) => {
+    setUserInfo(prev => ({ ...prev, [field]: value }));
+    setHasUserMadeChanges(true);
   };
 
   const handleSave = async () => {
     try {
-      // mock: call API
-      console.log("Saving prophet profile:", prophetInfo);
+      setIsLoading(true);
+      
+      // Debug log to check user data
+      console.log("User data for validation:", user);
+      console.log("User role:", user?.role);
+      
+      // Validation
+      if (!validateSession(session) || !user) {
+        return;
+      }
+      
+      // Check if user has role property
+      if (!user.role) {
+        AppToast.error("User role information is missing");
+        return;
+      }
 
-      // TODO: replace with real API call
-      // await fetch("/api/prophet/update", { method: "POST", body: JSON.stringify(prophetInfo) });
+      // Validate required fields
+      if (!validateProphetRequiredFields(userInfo)) {
+        return;
+      }
 
-      AppToast.success("Prophet profile updated successfully!");
-      router.push("/account"); // go back after save
+      // Prepare API data
+      const requestData = prepareProphetAPIData(userInfo, user);
+
+      // API call using the same updateUserAccount as Customer
+      const result = await updateUserAccount(requestData, session?.accessToken || "");
+      
+      if (!result.success) {
+        return;
+      }
+
+      // Handle success - transform data to ProphetAccount format
+      if (onUserUpdate && user) {
+        onUserUpdate(userInfo as unknown as ProphetAccount);
+        console.log("Updated prophet data:", userInfo);
+      }
+      
+      setHasUserMadeChanges(false);
+      router.push("/account");
     } catch (err) {
       AppToast.error("Failed to update profile");
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  React.useEffect(() => {
-    console.log("🎯 Component mounted");
-    fetchProphetData();
-  }, [fetchProphetData]);
-
-  React.useEffect(() => {
-      if (error) {
-        AppToast.error(error);
-      }
-    }, [error]);
-
-  if (loading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <p className="text-white">Loading...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
@@ -171,7 +200,7 @@ function EditProphetInfo() {
           <GlobalInput
             type="text"
             className="w-full"
-            value={prophetInfo?.firstName ?? ""}
+            value={userInfo.firstName}
             onChange={(e) => handleChange("firstName", e.target.value)}
           />
         </div>
@@ -185,7 +214,7 @@ function EditProphetInfo() {
           <GlobalInput
             type="text"
             className="w-full"
-            value={prophetInfo?.lastName ?? ""}
+            value={userInfo.lastName}
             onChange={(e) => handleChange("lastName", e.target.value)}
           />
         </div>
@@ -197,7 +226,7 @@ function EditProphetInfo() {
             <Pencil className="ml-2" size={18} />
           </label>
           <Select
-            value={prophetInfo?.gender?.toLowerCase() ?? ""}
+            value={userInfo.gender.toLowerCase() || ""}
             onValueChange={(val) =>
               handleChange("gender", val.charAt(0).toUpperCase() + val.slice(1))
             }
@@ -223,7 +252,7 @@ function EditProphetInfo() {
           <GlobalInput
             type="tel"
             className="w-full"
-            value={prophetInfo?.phone ?? ""}
+            value={userInfo.phone}
             onChange={(e) => handleChange("phone", e.target.value)}
           />
         </div>
@@ -237,7 +266,7 @@ function EditProphetInfo() {
           <GlobalInput
             type="email"
             className="w-full"
-            value={prophetInfo?.email ?? ""}
+            value={userInfo.email}
             onChange={(e) => handleChange("email", e.target.value)}
           />
         </div>
@@ -251,7 +280,7 @@ function EditProphetInfo() {
           <GlobalInput
             type="text"
             className="w-full"
-            value={prophetInfo?.line ?? ""}
+            value={userInfo.line}
             onChange={(e) => handleChange("line", e.target.value)}
           />
         </div>
@@ -274,8 +303,12 @@ function EditProphetInfo() {
 
         {/* Save Profile Button */}
         <div className="mb-2 flex justify-center md:col-span-2">
-          <GlobalButton variant="secondary" type="submit">
-            SAVE PROFILE
+          <GlobalButton 
+            variant="secondary" 
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? "SAVING..." : "SAVE PROFILE"}
           </GlobalButton>
         </div>
       </form>

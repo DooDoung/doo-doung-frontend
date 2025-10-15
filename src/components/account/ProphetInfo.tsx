@@ -14,6 +14,7 @@ import type { ProphetAccount } from "@/interface/User";
 
 function ProphetInfo({ prophet }: { prophet: ProphetAccount }) {
   const router = useRouter();
+  
   return (
     <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
       <form

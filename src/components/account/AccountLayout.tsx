@@ -41,7 +41,7 @@ function AccountLayout({
         user.role === "CUSTOMER" ? (
           <EditCustomerInfo user={user} onUserUpdate={onUserUpdate} />
         ) : (
-          <EditProphetInfo />
+          <EditProphetInfo user={user as ProphetAccount} onUserUpdate={onUserUpdate} />
         )
       ) : user.role === "CUSTOMER" ? (
         <CustomerInfo customer={user as CustomerAccount} />
