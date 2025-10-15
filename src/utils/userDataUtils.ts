@@ -40,14 +40,15 @@ export const mapGenderToAPI = (uiGender: string): string => {
 
 /**
  * Formats time from API format to HH:mm format
+ * Uses same logic as CustomerInfo.tsx for consistency
  */
 export const formatTimeFromAPI = (apiTime: string): string => {
   if (!apiTime) return "";
-  return new Date(apiTime).toLocaleTimeString('en-US', { 
-    hour12: false, 
-    hour: '2-digit', 
-    minute: '2-digit' 
-  });
+  // Use same format as CustomerInfo: split by "T" and take first 5 chars (HH:mm)
+  if (apiTime.includes("T")) {
+    return apiTime.split("T")[1].substring(0, 5);
+  }
+  return apiTime;
 };
 
 /**
