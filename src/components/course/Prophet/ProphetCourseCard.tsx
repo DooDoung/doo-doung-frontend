@@ -1,7 +1,7 @@
 import React from "react";
+import { PencilIcon } from "lucide-react";
 
 import StarRating from "@/components/account/StarRating";
-import { PencilIcon } from "lucide-react";
 
 function ProphetCourseCard({
   id,

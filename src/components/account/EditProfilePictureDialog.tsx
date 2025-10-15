@@ -10,8 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { AppToast } from "@/lib/app-toast";
 import { AccountData } from "@/interface/User";
+import { AppToast } from "@/lib/app-toast";
 
 import { GlobalButton, GlobalInput } from "../globalComponents";
 

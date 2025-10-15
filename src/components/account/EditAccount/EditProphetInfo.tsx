@@ -1,4 +1,5 @@
 import * as React from "react";
+import { de } from "date-fns/locale";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -10,18 +11,19 @@ import {
   SelectItem,
 } from "@/components/globalComponents";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AccountData,ProphetAccount } from "@/interface/User";
 import { AppToast } from "@/lib/app-toast";
-
 import type { TransactionAccount } from "@/types/transaction";
+import { updateUserAccount } from "@/utils/apiUtils";
+import { getBankImageUrl } from "@/utils/getBankImageUrl";
 import {
   validateSession,
   validateUserRole,
 } from "@/utils/validationUtils";
-import { updateUserAccount } from "@/utils/apiUtils";
-import { ProphetAccount, AccountData } from "@/interface/User";
+
+import { prophetFeat } from "@/constants/constant-ex";
+
 import ProphetCard from "../ProphetCard";
-import { getBankImageUrl } from "@/utils/getBankImageUrl";
-import { de } from "date-fns/locale";
 
 interface ProphetUserInfo {
   firstName: string;
@@ -232,9 +234,13 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
     }
   };
 
-  React.useEffect(() => {
-    console.log("User info state updated:", userInfo);
-  }, [userInfo]);
+  const prophetFeatures = prophetFeat;
+
+  prophetFeatures[0].imageUrl = getBankImageUrl(
+    defaultTransactionAccount
+      ? String(defaultTransactionAccount.bank)
+      : (userInfo.txAccounts[0] ? String(userInfo.txAccounts[0].bank) : "")
+  );
 
   return (
     <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
@@ -339,23 +345,19 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
         </div>
 
         {/* Prophet Features */}
-        {(defaultTransactionAccount || userInfo.txAccounts[0]) && (
-          <ProphetCard
-            feat={{
-              name: "Transaction Account",
-              imageUrl: getBankImageUrl(
-                defaultTransactionAccount
-                  ? String(defaultTransactionAccount.bank)
-                  : String(userInfo.txAccounts[0].bank)
-              ),
-              goTo: "/account/prophet/transaction-account",
-            }}
-            transaction={{
-              ...((defaultTransactionAccount || userInfo.txAccounts[0]) as TransactionAccount),
-              bank: String((defaultTransactionAccount || userInfo.txAccounts[0])?.bank)
-            }}
-          />
-        )}
+        <div className="my-4 grid grid-cols-2 gap-4 md:grid-cols-2 md:col-span-2">
+          {prophetFeatures.map((feat, index) => (
+            <ProphetCard
+              key={index}
+              feat={feat}
+              transaction={{
+                ...userInfo.txAccounts[0],
+                bank: String(userInfo.txAccounts[0]?.bank)
+              }}
+            />
+          ))}
+        </div>
+
 
         {/* Save Profile Button */}
         <div className="mb-2 flex justify-center md:col-span-2">

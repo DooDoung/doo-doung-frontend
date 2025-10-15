@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect,useState } from "react";
+import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Pencil } from "lucide-react";
 
 import {
   GlobalButton,
@@ -9,25 +9,22 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/globalComponents";
-import { AppToast } from "@/lib/app-toast";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "../../ui/switch";
+import { useComputedValues } from "@/hooks/useComputedValues";
+import { AppToast } from "@/lib/app-toast";
 import { ZodiacSign } from "@/types/user";
-
-
+import { updateUserAccount } from "@/utils/apiUtils";
 // Utils
 import {
-  type UserInfo,
+  prepareAPIData,
   processUserData,
-  prepareAPIData
-} from "@/utils/userDataUtils";
+  type UserInfo} from "@/utils/userDataUtils";
 import {
+  validateRequiredFields,
   validateSession,
-  validateUserRole,
-  validateRequiredFields
-} from "@/utils/validationUtils";
-import { updateUserAccount } from "@/utils/apiUtils";
-import { useComputedValues } from "@/hooks/useComputedValues";
+  validateUserRole} from "@/utils/validationUtils";
+
+import { Switch } from "../../ui/switch";
 
 interface EditCustomerInfoProps {
   user?: any;
