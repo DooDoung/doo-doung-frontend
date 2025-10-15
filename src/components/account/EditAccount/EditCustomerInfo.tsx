@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Pencil } from "lucide-react";
@@ -12,19 +12,21 @@ import {
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "../../ui/switch";
 import { ZodiacSign } from "@/types/user";
-import { AppToast } from "@/lib/app-toast";
 
-// Types
-interface UserInfo {
-  firstName: string;
-  lastName: string;
-  gender: string;
-  dob: string;
-  tob: string;
-  zodiac: string;
-  email: string;
-  phone: string;
-}
+
+// Utils
+import {
+  type UserInfo,
+  processUserData,
+  prepareAPIData
+} from "@/utils/userDataUtils";
+import {
+  validateSession,
+  validateUserRole,
+  validateRequiredFields
+} from "@/utils/validationUtils";
+import { updateUserAccount } from "@/utils/apiUtils";
+import { useComputedValues } from "@/hooks/useComputedValues";
 
 interface EditCustomerInfoProps {
   user?: any;
@@ -50,48 +52,6 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
     phone: "",
   });
 
-  // Utility functions
-  const mapGenderFromAPI = (apiGender: string): string => {
-    switch (apiGender) {
-      case "MALE": return "Male";
-      case "FEMALE": return "Female";
-      case "LGBTQ_PLUS": return "LGBTQ+";
-      default: return "Undefined";
-    }
-  };
-
-  const mapGenderToAPI = (uiGender: string): string => {
-    switch (uiGender) {
-      case "Male": return "MALE";
-      case "Female": return "FEMALE";
-      case "LGBTQ+": return "LGBTQ_PLUS";
-      case "Undefined": return "UNDEFINED";
-      default: return "UNDEFINED";
-    }
-  };
-
-  const formatTimeFromAPI = (apiTime: string): string => {
-    if (!apiTime) return "";
-    return new Date(apiTime).toLocaleTimeString('en-US', { 
-      hour12: false, 
-      hour: '2-digit', 
-      minute: '2-digit' 
-    });
-  };
-
-  const processUserData = (userData: any): UserInfo => {
-    return {
-      firstName: userData.firstName || "",
-      lastName: userData.lastName || "",
-      gender: mapGenderFromAPI(userData.gender),
-      dob: userData.birthDate ? userData.birthDate.split('T')[0] : "",
-      tob: formatTimeFromAPI(userData.birthTime),
-      zodiac: userData.zodiacSign ? userData.zodiacSign.toLowerCase() : "",
-      email: userData.email || "",
-      phone: userData.phoneNumber || "",
-    };
-  };
-
   // Update userInfo when user prop changes (only if user hasn't made changes)
   useEffect(() => {
     if (user && user.zodiacSign && !hasUserMadeChanges) {
@@ -104,63 +64,7 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
   }, [user, user?.zodiacSign, user?.gender, hasUserMadeChanges]);
 
   // Computed values for Select components
-  const computedZodiac = useMemo(() => {
-    if (userInfo.zodiac) {
-      return userInfo.zodiac.toLowerCase();
-    }
-    return user?.zodiacSign?.toLowerCase() || "";
-  }, [user?.zodiacSign, userInfo.zodiac]);
-
-  const computedGender = useMemo(() => {
-    if (userInfo.gender) {
-      return userInfo.gender.toLowerCase();
-    }
-    if (user?.gender) {
-      return user.gender === "MALE" ? "male" : 
-             user.gender === "FEMALE" ? "female" : 
-             user.gender === "LGBTQ_PLUS" ? "lgbtq+" : 
-             "undefined";
-    }
-    return "";
-  }, [user?.gender, userInfo.gender]);
-
-  // Validation functions
-  const validateSession = (): boolean => {
-    if (!session?.user?.id) {
-      AppToast.error("Session expired. Please log in again.");
-      return false;
-    }
-    return true;
-  };
-
-  const validateUserRole = (): boolean => {
-    if (!user?.role) {
-      AppToast.error("User role is missing");
-      return false;
-    }
-    return true;
-  };
-
-  const validateRequiredFields = (): boolean => {
-    const requiredFields = {
-      'First Name': userInfo.firstName,
-      'Last Name': userInfo.lastName,
-      'Email': userInfo.email,
-      'Phone Number': userInfo.phone,
-      'Gender': userInfo.gender,
-      'Date of Birth': userInfo.dob,
-      'Time of Birth': userInfo.tob,
-      'Zodiac Sign': userInfo.zodiac
-    };
-
-    for (const [fieldName, value] of Object.entries(requiredFields)) {
-      if (!value || value.toString().trim() === '' || value === 'undefined') {
-        AppToast.error(`${fieldName} is required`);
-        return false;
-      }
-    }
-    return true;
-  };
+  const { computedZodiac, computedGender } = useComputedValues(user, userInfo);
 
   // Event handlers
   const handleChange = (field: keyof UserInfo, value: string) => {
@@ -173,75 +77,27 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
       setIsLoading(true);
       
       // Validation
-      if (!validateSession() || !validateUserRole() || !validateRequiredFields()) {
+      if (!validateSession(session) || !validateUserRole(user) || !validateRequiredFields(userInfo)) {
         return;
       }
 
       // Prepare API data
-      const birthDate = new Date(`${userInfo.dob}T00:00:00.000Z`).toISOString();
-      const birthTime = `${userInfo.tob}:00`;
-      
-      const requestData = {
-        id: user?.id,
-        role: user?.role,
-        firstName: userInfo.firstName.trim(),
-        lastName: userInfo.lastName.trim(),
-        email: userInfo.email.trim(),
-        phoneNumber: userInfo.phone.trim(),
-        zodiacSign: userInfo.zodiac.toUpperCase(),
-        gender: mapGenderToAPI(userInfo.gender),
-        birthDate,
-        birthTime
-      };
+      const requestData = prepareAPIData(userInfo, user);
 
       // API call
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/account`, {
-        method: "PUT",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.accessToken}`,
-        },
-        body: JSON.stringify(requestData),
-      });
-
-  
-      if (!response.ok) {
-        let errorDetail = "Unknown error";
-        try {
-          const errorJson = await response.json();
-          console.error("Error response JSON:", errorJson);
-          errorDetail = errorJson.message || errorJson.error || JSON.stringify(errorJson);
-        } catch {
-          const errorText = await response.text();
-          console.error("Error response text:", errorText);
-          errorDetail = errorText;
-        }
-        AppToast.error(`Failed to update profile: ${errorDetail}`);
+      const result = await updateUserAccount(requestData, session?.accessToken || "");
+      
+      if (!result.success) {
         return;
       }
-      
-      const responseData = await response.json();
-      console.log("Success response:", responseData);
 
       // Handle success
-      if (onUserUpdate && responseData.data) {
-        onUserUpdate(responseData.data);
+      if (onUserUpdate && result.data) {
+        onUserUpdate(result.data);
       }
       
       setHasUserMadeChanges(false);
-
-      // Handle success
-      if (onUserUpdate && responseData.data) {
-        onUserUpdate(responseData.data);
-      }
-      
-      setHasUserMadeChanges(false);
-
-      AppToast.success("Profile updated successfully!");
       router.push("/account");
-    } catch (err) {
-      console.error("Save failed:", err);
-      AppToast.error("Failed to update profile");
     } finally {
       setIsLoading(false);
     }
