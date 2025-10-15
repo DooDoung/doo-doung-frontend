@@ -19,6 +19,9 @@ import {
 } from "@/utils/validationUtils";
 import { updateUserAccount } from "@/utils/apiUtils";
 import { ProphetAccount, AccountData } from "@/interface/User";
+import ProphetCard from "../ProphetCard";
+import { getBankImageUrl } from "@/utils/getBankImageUrl";
+import { de } from "date-fns/locale";
 
 interface ProphetUserInfo {
   firstName: string;
@@ -27,6 +30,7 @@ interface ProphetUserInfo {
   email: string;
   phone: string;
   line: string;
+  txAccounts: TransactionAccount[];
 }
 
 // Validation function for Prophet required fields
@@ -83,6 +87,7 @@ const processProphetData = (userData: any): ProphetUserInfo => {
     email: userData.email || "",
     phone: userData.phoneNumber || userData.phone || "",
     line: userData.line || userData.lineId || "",
+    txAccounts: userData.txAccounts || [],
   };
 };
 
@@ -115,7 +120,36 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
     email: "",
     phone: "",
     line: "",
+    txAccounts: [] as TransactionAccount[],
   });
+
+  const [defaultTransactionAccount, setDefaultTransactionAccount] = React.useState<TransactionAccount | null>(null);
+
+  React.useEffect(() => {
+    const fetchTxAccount = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tx-account`, {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.accessToken || ""}`,
+          },
+        });
+        const transactionData = await response.json();
+        const txAccounts = transactionData.data || [];
+        setUserInfo(prev => ({ ...prev, txAccounts }));
+        for (const account of txAccounts) {
+          if (account.isDefault) {
+            setDefaultTransactionAccount(account);
+            break;
+          }
+        }
+      } catch (error) {
+        AppToast.error("Failed to fetch transaction accounts");
+      }
+    };
+    fetchTxAccount();
+  }, [session, user]);
 
   // Process user data when user prop changes
   React.useEffect(() => {
@@ -197,6 +231,10 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
       setIsLoading(false);
     }
   };
+
+  React.useEffect(() => {
+    console.log("User info state updated:", userInfo);
+  }, [userInfo]);
 
   return (
     <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
@@ -301,20 +339,23 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
         </div>
 
         {/* Prophet Features */}
-        <div className="relative mb-4 md:col-span-2">
-          <Pencil
-            className="text-neutral-white absolute top-1 left-44 ml-2"
-            size={18}
-          />
-          {/* <ProphetCard
+        {(defaultTransactionAccount || userInfo.txAccounts[0]) && (
+          <ProphetCard
             feat={{
               name: "Transaction Account",
-              imageUrl: "",
+              imageUrl: getBankImageUrl(
+                defaultTransactionAccount
+                  ? String(defaultTransactionAccount.bank)
+                  : String(userInfo.txAccounts[0].bank)
+              ),
               goTo: "/account/prophet/transaction-account",
             }}
-            transaction={prophetInfo?.transaction}
-          /> */}
-        </div>
+            transaction={{
+              ...((defaultTransactionAccount || userInfo.txAccounts[0]) as TransactionAccount),
+              bank: String((defaultTransactionAccount || userInfo.txAccounts[0])?.bank)
+            }}
+          />
+        )}
 
         {/* Save Profile Button */}
         <div className="mb-2 flex justify-center md:col-span-2">
