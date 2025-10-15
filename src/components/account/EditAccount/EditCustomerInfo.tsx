@@ -1,6 +1,7 @@
-import * as React from "react";
-import { Pencil } from "lucide-react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { Pencil } from "lucide-react";
 
 import {
   GlobalButton,
@@ -9,17 +10,36 @@ import {
   SelectItem,
 } from "@/components/globalComponents";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ZodiacSign } from "@/types/user";
-
 import { Switch } from "../../ui/switch";
-import { useSession } from "next-auth/react";
+import { ZodiacSign } from "@/types/user";
 import { AppToast } from "@/lib/app-toast";
 
+// Types
+interface UserInfo {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  dob: string;
+  tob: string;
+  zodiac: string;
+  email: string;
+  phone: string;
+}
 
-function EditCustomerInfo({ user, onUserUpdate }: { user?: any; onUserUpdate?: (updatedUser: any) => void }) {
+interface EditCustomerInfoProps {
+  user?: any;
+  onUserUpdate?: (updatedUser: any) => void;
+}
+
+function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
   const { data: session } = useSession();
-  const [isPublic, setIsPublic] = React.useState(false);
-  const [userInfo, setUserInfo] = React.useState({
+  const router = useRouter();
+
+  // States
+  const [isPublic, setIsPublic] = useState(false);
+  const [hasUserMadeChanges, setHasUserMadeChanges] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo>({
     firstName: "",
     lastName: "",
     gender: "",
@@ -29,162 +49,153 @@ function EditCustomerInfo({ user, onUserUpdate }: { user?: any; onUserUpdate?: (
     email: "",
     phone: "",
   });
-  const [hasUserMadeChanges, setHasUserMadeChanges] = React.useState(false);
-  const router = useRouter();
+
+  // Utility functions
+  const mapGenderFromAPI = (apiGender: string): string => {
+    switch (apiGender) {
+      case "MALE": return "Male";
+      case "FEMALE": return "Female";
+      case "LGBTQ_PLUS": return "LGBTQ+";
+      default: return "Undefined";
+    }
+  };
+
+  const mapGenderToAPI = (uiGender: string): string => {
+    switch (uiGender) {
+      case "Male": return "MALE";
+      case "Female": return "FEMALE";
+      case "LGBTQ+": return "LGBTQ_PLUS";
+      case "Undefined": return "UNDEFINED";
+      default: return "UNDEFINED";
+    }
+  };
+
+  const formatTimeFromAPI = (apiTime: string): string => {
+    if (!apiTime) return "";
+    return new Date(apiTime).toLocaleTimeString('en-US', { 
+      hour12: false, 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });
+  };
+
+  const processUserData = (userData: any): UserInfo => {
+    return {
+      firstName: userData.firstName || "",
+      lastName: userData.lastName || "",
+      gender: mapGenderFromAPI(userData.gender),
+      dob: userData.birthDate ? userData.birthDate.split('T')[0] : "",
+      tob: formatTimeFromAPI(userData.birthTime),
+      zodiac: userData.zodiacSign ? userData.zodiacSign.toLowerCase() : "",
+      email: userData.email || "",
+      phone: userData.phoneNumber || "",
+    };
+  };
 
   // Update userInfo when user prop changes (only if user hasn't made changes)
-  React.useEffect(() => {
-    console.log("useEffect triggered, user:", user, "hasUserMadeChanges:", hasUserMadeChanges);
-    
+  useEffect(() => {
     if (user && user.zodiacSign && !hasUserMadeChanges) {
-      const processedData = {
-        firstName: user.firstName || "",
-        lastName: user.lastName || "",
-        gender: user.gender === "MALE" ? "Male" : user.gender === "FEMALE" ? "Female" : user.gender === "LGBTQ_PLUS" ? "LGBTQ+" : "Undefined",
-        dob: user.birthDate ? user.birthDate.split('T')[0] : "",
-        tob: user.birthTime ? new Date(user.birthTime).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }) : "",
-        zodiac: user.zodiacSign.toLowerCase(),
-        email: user.email || "",
-        phone: user.phoneNumber || "",
-      };
-      
-      console.log("Setting userInfo with processed data:", processedData);
-      
+      const processedData = processUserData(user);
       setUserInfo(processedData);
       setIsPublic(user.isPublic || false);
+      
+      console.log("User data processed and set:", processedData);
     }
   }, [user, user?.zodiacSign, user?.gender, hasUserMadeChanges]);
 
-  // Computed zodiac value - prioritize userInfo.zodiac if user has made changes
-  const computedZodiac = React.useMemo(() => {
-    let result = "";
-    
-    // If userInfo.zodiac exists and is not empty, use it (user has made changes)
-    if (userInfo.zodiac && userInfo.zodiac !== "") {
-      result = userInfo.zodiac.toLowerCase();
+  // Computed values for Select components
+  const computedZodiac = useMemo(() => {
+    if (userInfo.zodiac) {
+      return userInfo.zodiac.toLowerCase();
     }
-    // Otherwise, use the initial value from user prop
-    else if (user?.zodiacSign) {
-      result = user.zodiacSign.toLowerCase();
-    }
-    
-    console.log("Computed zodiac:", { userZodiac: user?.zodiacSign, userInfoZodiac: userInfo.zodiac, result, hasUserMadeChanges });
-    return result;
-  }, [user?.zodiacSign, userInfo.zodiac, hasUserMadeChanges]);
+    return user?.zodiacSign?.toLowerCase() || "";
+  }, [user?.zodiacSign, userInfo.zodiac]);
 
-  // Computed gender value - prioritize userInfo.gender if user has made changes
-  const computedGender = React.useMemo(() => {
-    let result = "";
-    
-    // If userInfo.gender exists and is not empty, use it (user has made changes)
-    if (userInfo.gender && userInfo.gender !== "") {
-      result = userInfo.gender.toLowerCase();
-    } 
-    // Otherwise, use the initial value from user prop
-    else if (user?.gender) {
-      result = user.gender === "MALE" ? "male" : 
-               user.gender === "FEMALE" ? "female" : 
-               user.gender === "LGBTQ_PLUS" ? "lgbtq+" : 
-               "undefined";
+  const computedGender = useMemo(() => {
+    if (userInfo.gender) {
+      return userInfo.gender.toLowerCase();
     }
-    
-    console.log("Computed gender:", { userGender: user?.gender, userInfoGender: userInfo.gender, result, hasUserMadeChanges });
-    return result;
-  }, [user?.gender, userInfo.gender, hasUserMadeChanges]);
+    if (user?.gender) {
+      return user.gender === "MALE" ? "male" : 
+             user.gender === "FEMALE" ? "female" : 
+             user.gender === "LGBTQ_PLUS" ? "lgbtq+" : 
+             "undefined";
+    }
+    return "";
+  }, [user?.gender, userInfo.gender]);
 
-  const handleChange = (field: keyof typeof userInfo, value: string) => {
-    setUserInfo({ ...userInfo, [field]: value });
-    setHasUserMadeChanges(true); // บันทึกว่า user ได้แก้ไขข้อมูลแล้ว
+  // Validation functions
+  const validateSession = (): boolean => {
+    if (!session?.user?.id) {
+      AppToast.error("Session expired. Please log in again.");
+      return false;
+    }
+    return true;
+  };
+
+  const validateUserRole = (): boolean => {
+    if (!user?.role) {
+      AppToast.error("User role is missing");
+      return false;
+    }
+    return true;
+  };
+
+  const validateRequiredFields = (): boolean => {
+    const requiredFields = {
+      'First Name': userInfo.firstName,
+      'Last Name': userInfo.lastName,
+      'Email': userInfo.email,
+      'Phone Number': userInfo.phone,
+      'Gender': userInfo.gender,
+      'Date of Birth': userInfo.dob,
+      'Time of Birth': userInfo.tob,
+      'Zodiac Sign': userInfo.zodiac
+    };
+
+    for (const [fieldName, value] of Object.entries(requiredFields)) {
+      if (!value || value.toString().trim() === '' || value === 'undefined') {
+        AppToast.error(`${fieldName} is required`);
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // Event handlers
+  const handleChange = (field: keyof UserInfo, value: string) => {
+    setUserInfo(prev => ({ ...prev, [field]: value }));
+    setHasUserMadeChanges(true);
   };
 
   const handleSave = async () => {
     try {
-      // Validate required fields
-      if (!session?.user?.id) {
-        AppToast.error("Session expired. Please log in again.");
-        return;
-      }
-
-      if (!userInfo.email || !userInfo.firstName || !userInfo.lastName) {
-        AppToast.error("Please fill in all required fields (email, first name, last name)");
-        return;
-      }
-
-      // Fix gender mapping using userInfo.gender (current form values)
-      let genderValue = userInfo.gender; 
-      if (genderValue === "Male") {
-        genderValue = "MALE";
-      } else if (genderValue === "Female") {
-        genderValue = "FEMALE";
-      } else if (genderValue === "LGBTQ+") {
-        genderValue = "LGBTQ_PLUS";
-      } else if (genderValue === "Undefined") {
-        genderValue = "UNDEFINED";
-      } else {
-        genderValue = "UNDEFINED";
-      }
-
-      if (!user?.role) {
-        AppToast.error("User role is missing");
-        return;
-      }
-
-      // Validate zodiac sign
-      if (!userInfo.zodiac || userInfo.zodiac.trim() === '' || userInfo.zodiac === 'undefined') {
-        AppToast.error("Please select a zodiac sign");
-        return;
-      }
-
-      // Validate all form fields are filled
-      const requiredFields = {
-        'First Name': userInfo.firstName,
-        'Last Name': userInfo.lastName,
-        'Email': userInfo.email,
-        'Phone Number': userInfo.phone,
-        'Gender': userInfo.gender,
-        'Date of Birth': userInfo.dob,
-        'Time of Birth': userInfo.tob
-      };
-
-      for (const [fieldName, value] of Object.entries(requiredFields)) {
-        if (!value || value.toString().trim() === '') {
-          AppToast.error(`${fieldName} is required`);
-          return;
-        }
-      }
-
-      // Convert date and time to required formats
-      const birthDate = new Date(`${userInfo.dob}T00:00:00.000Z`).toISOString(); // ISO format
-      const birthTime = `${userInfo.tob}:00`; // HH:mm:ss format
+      setIsLoading(true);
       
-      console.log("Date conversion:", {
-        originalDob: userInfo.dob,
-        originalTob: userInfo.tob,
-        birthDate: birthDate,
-        birthTime: birthTime
-      });
+      // Validation
+      if (!validateSession() || !validateUserRole() || !validateRequiredFields()) {
+        return;
+      }
 
+      // Prepare API data
+      const birthDate = new Date(`${userInfo.dob}T00:00:00.000Z`).toISOString();
+      const birthTime = `${userInfo.tob}:00`;
+      
       const requestData = {
         id: user?.id,
-        role: user?.role, 
+        role: user?.role,
         firstName: userInfo.firstName.trim(),
         lastName: userInfo.lastName.trim(),
         email: userInfo.email.trim(),
         phoneNumber: userInfo.phone.trim(),
         zodiacSign: userInfo.zodiac.toUpperCase(),
-        gender: genderValue,
-        birthDate: birthDate,
-        birthTime: birthTime
+        gender: mapGenderToAPI(userInfo.gender),
+        birthDate,
+        birthTime
       };
 
-      console.log("User data from props:", user);
-      console.log("User role:", user?.role);
-      console.log("Request data:", requestData);
-
-      const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-      const endpoint = `${baseUrl}/account`;
-
-      const response = await fetch(endpoint, {
+      // API call
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/account`, {
         method: "PUT",
         headers: {
           'Content-Type': 'application/json',
@@ -212,34 +223,27 @@ function EditCustomerInfo({ user, onUserUpdate }: { user?: any; onUserUpdate?: (
       const responseData = await response.json();
       console.log("Success response:", responseData);
 
-      // Update user prop with new data from userInfo
-      const updatedUser = {
-        ...user,
-        firstName: userInfo.firstName.trim(),
-        lastName: userInfo.lastName.trim(),
-        username: userInfo.firstName.trim() || user?.username, // Keep original username if firstName is empty
-        email: userInfo.email.trim(),
-        phoneNumber: userInfo.phone.trim(),
-        zodiacSign: userInfo.zodiac.toUpperCase(),
-        gender: genderValue,
-        birthDate: birthDate,
-        birthTime: birthTime
-      };
-
-      // Call onUserUpdate callback if provided
+      // Handle success
       if (onUserUpdate && responseData.data) {
         onUserUpdate(responseData.data);
       }
+      
+      setHasUserMadeChanges(false);
 
-      console.log("Updated user data:", updatedUser);
-
-      // Reset the changes flag so future updates from user prop work
+      // Handle success
+      if (onUserUpdate && responseData.data) {
+        onUserUpdate(responseData.data);
+      }
+      
       setHasUserMadeChanges(false);
 
       AppToast.success("Profile updated successfully!");
       router.push("/account");
     } catch (err) {
+      console.error("Save failed:", err);
       AppToast.error("Failed to update profile");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -414,8 +418,12 @@ function EditCustomerInfo({ user, onUserUpdate }: { user?: any; onUserUpdate?: (
 
         {/* Save Profile Button */}
         <div className="mb-2 flex justify-center md:col-span-2">
-          <GlobalButton variant="secondary" type="submit">
-            SAVE PROFILE
+          <GlobalButton 
+            variant="secondary" 
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? "SAVING..." : "SAVE PROFILE"}
           </GlobalButton>
         </div>
       </form>
