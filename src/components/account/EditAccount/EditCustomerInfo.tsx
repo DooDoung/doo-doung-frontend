@@ -9,6 +9,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/globalComponents";
+import { AppToast } from "@/lib/app-toast";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "../../ui/switch";
 import { ZodiacSign } from "@/types/user";
@@ -36,6 +37,7 @@ interface EditCustomerInfoProps {
 function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
   const { data: session } = useSession();
   const router = useRouter();
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
   // States
   const [isPublic, setIsPublic] = useState(false);
@@ -62,6 +64,29 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
       console.log("User data processed and set:", processedData);
     }
   }, [user, user?.zodiacSign, user?.gender, hasUserMadeChanges]);
+
+  // Fetch public status when component mounts
+  useEffect(() => {
+    const fetchPublicStatus = async () => {
+      if (!session?.user?.id || !session?.accessToken) return;
+      
+      try {
+        const res = await fetch(
+          `${backendUrl}/customer/public-status/${session.user.id}`,
+          {
+            headers: { Authorization: `Bearer ${session.accessToken}` }
+          }
+        );
+        if (!res.ok) AppToast.error("Failed to fetch public status");
+        const response = await res.json();
+        setIsPublic(response.data.isPublic);
+      } catch (error: any) {
+        console.error("Error fetching public status:", error);
+      }
+    };
+
+    fetchPublicStatus();
+  }, [session?.user?.id, session?.accessToken, backendUrl]);
 
   // Computed values for Select components
   const { computedZodiac, computedGender } = useComputedValues(user, userInfo);
@@ -93,7 +118,8 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
 
       // Handle success
       if (onUserUpdate && result.data) {
-        onUserUpdate(result.data);
+        onUserUpdate(userInfo);
+        console.log("User updated:", result.data);
       }
       
       setHasUserMadeChanges(false);
