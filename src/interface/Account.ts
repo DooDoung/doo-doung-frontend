@@ -13,7 +13,7 @@ interface Review {
   profileUrl: string;
   userName: string;
   courseName: string;
-  comment: string;
+  description: string;
   score: number;
   date: string;
   time: string;
@@ -28,6 +28,5 @@ interface ProphetFeat {
 interface TransactionAccount {
   accountNumber: string;
   accountName: string;
-  imageUrl: string;
-  bankName: string;
+  bank: string;
 }

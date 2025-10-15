@@ -11,6 +11,7 @@ export { GlobalButton } from "./Button";
 export { Checkbox } from "./Checkbox";
 export { Footer } from "./Footer";
 export { GlassContainer } from "./GlassContainer";
+export { GlassContainer2 } from "./GlassContainer2";
 export { Header } from "./Header";
 export { GlobalInput } from "./Input";
 export {

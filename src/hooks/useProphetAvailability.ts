@@ -95,6 +95,12 @@ export function useProphetAvailability() {
     });
 
     // backend intergrate part
+    // Calculate the correct slot date for PATCH API
+    const weekMonday = getCurrentWeekMonday(currentWeek);
+    const dayIndex = day.getDay(); // 0=Sun, 1=Mon, ...
+    const slotDate = new Date(weekMonday);
+    slotDate.setDate(weekMonday.getDate() + dayIndex);
+    const slotDateString = slotDate.toISOString().split("T")[0];
 
     // Check if slot currently exists
     const currentAvailability = weeklyAvailability[currentWeek];
@@ -104,8 +110,10 @@ export function useProphetAvailability() {
 
     const updateType = existingSlot ? "delete" : "add";
 
+    console.log(day.toISOString());
+
     try {
-      // Create Date object for the API - use time string format for start_time
+      // Use calculated slotDateString for API
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/prophet/availability`,
         {
@@ -116,7 +124,7 @@ export function useProphetAvailability() {
           body: JSON.stringify({
             items: [
               {
-                date: day.toISOString().split("T")[0], // Format as YYYY-MM-DD
+                date: slotDateString, // Correct date for the slot
                 start_time: time, // Send time in HH:mm format
                 update_type: updateType,
               },
@@ -129,10 +137,8 @@ export function useProphetAvailability() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Update local state after successful API call
-
       toast.success(
-        `success to ${updateType}  ${day.getDate()}/${day.getMonth() + 1} - ${time}`,
+        `success to ${updateType}  ${slotDate.getDate()}/${slotDate.getMonth() + 1} - ${time}`,
       );
     } catch (error) {
       toast.error("Failed to update availability");
@@ -180,13 +186,14 @@ export function useProphetAvailability() {
 
         // STEP 1: Delete ALL existing slots in this week (clear everything first)
         weekAvailability.forEach((slot) => {
-          // Calculate the actual date for this slot
-          const dayIndex = weekdayNames.indexOf(slot.day);
+          // Calculate the actual date for this slot using dayNames mapping
+          const dayIndex = dayNames.indexOf(slot.day);
           const slotDate = new Date(targetWeekMonday);
-          slotDate.setDate(slotDate.getDate() + dayIndex);
+          slotDate.setDate(targetWeekMonday.getDate() + dayIndex);
+          const slotDateString = slotDate.toISOString().split("T")[0];
 
           itemsToUpdate.push({
-            date: slotDate.toISOString().split("T")[0],
+            date: slotDateString,
             start_time: slot.time,
             update_type: "delete",
           });
@@ -194,13 +201,14 @@ export function useProphetAvailability() {
 
         // STEP 2: Add all slots from current week to this week
         currentWeekAvailability.forEach((slot) => {
-          // Calculate the actual date for this slot in the target week
-          const dayIndex = weekdayNames.indexOf(slot.day);
+          // Calculate the actual date for this slot in the target week using dayNames mapping
+          const dayIndex = dayNames.indexOf(slot.day);
           const slotDate = new Date(targetWeekMonday);
-          slotDate.setDate(slotDate.getDate() + dayIndex);
+          slotDate.setDate(targetWeekMonday.getDate() + dayIndex);
+          const slotDateString = slotDate.toISOString().split("T")[0];
 
           itemsToUpdate.push({
-            date: slotDate.toISOString().split("T")[0],
+            date: slotDateString,
             start_time: slot.time,
             update_type: "add",
           });

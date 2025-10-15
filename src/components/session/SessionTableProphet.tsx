@@ -31,7 +31,7 @@ export default function SessionTableProphet() {
           <GlobalButton
             variant="primary"
             size="lg"
-            onClick={() => (window.location.href = "/account/prophet")}
+            onClick={() => (window.location.href = "/account")}
           >
             Back
           </GlobalButton>

@@ -75,7 +75,6 @@ export default function ResetPasswordPage() {
       }
     } catch (err: any) {
       AppToast.error(err.message);
-      console.log(err.stack);
     } finally {
       setLoading(false);
     }

@@ -25,6 +25,7 @@ interface GlobalInputProps
    * Text to display as a hint or error message
    */
   hintText?: string;
+  hasHintText?: boolean;
 }
 
 /**
@@ -42,6 +43,7 @@ export const GlobalInput = React.forwardRef<HTMLInputElement, GlobalInputProps>(
       isValid = false,
       hintText,
       className,
+      hasHintText = false,
       ...props
     },
     ref,
@@ -90,14 +92,16 @@ export const GlobalInput = React.forwardRef<HTMLInputElement, GlobalInputProps>(
     return (
       <div className={cn(fullWidth && "w-full")}>
         <Input ref={ref} className={combinedClasses} {...props} />
-        <p
-          className={cn("mt-2 h-5 text-sm", {
-            "text-error": isInvalid,
-            "text-success": isValid,
-          })}
-        >
-          {hintText}
-        </p>
+        {hasHintText && (
+          <p
+            className={cn("mt-2 h-5 text-sm", {
+              "text-error": isInvalid,
+              "text-success": isValid,
+            })}
+          >
+            {hintText}
+          </p>
+        )}
       </div>
     );
   },
