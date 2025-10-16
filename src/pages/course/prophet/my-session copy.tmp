@@ -1,0 +1,23 @@
+import { DefaultLayout, GlassContainer } from "@/components/globalComponents";
+
+export default function MySessionPage() {
+  return (
+    <DefaultLayout includeHeader={false}>
+      <div className="flex flex-col items-center justify-center">
+        <h1 className="font-sanctuary text-5xl font-bold text-white">DooDoung</h1>
+        <GlassContainer className="mt-4 flex h-[80vh] w-[calc(80vh*1261/746)] flex-row">
+          <div className="flex h-full w-[30%] flex-col items-center rounded-l-3xl bg-[#F9B7BB]/60 py-8">
+            <h2 className="font-sanctuary text-2xl font-bold text-[#3E3753]">
+              PROPHET
+            </h2>
+            <div className="my-6 h-32 w-32 rounded-full bg-gray-200"></div>
+            <p className="text-sm text-[#3E3753]">USERNAME</p>
+            <div className="mt-2 w-2/3 rounded-full bg-white/80 px-4 py-2 text-center">
+              <p className="font-semibold text-[#3E3753]">ItsGuitar</p>
+            </div>
+          </div>
+        </GlassContainer>
+      </div>
+    </DefaultLayout>
+  );
+}
