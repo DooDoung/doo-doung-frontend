@@ -16,6 +16,9 @@ import {
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
 import { AppToast } from "@/lib/app-toast";
+import { MOCK_ACCOUNTS, BANKS } from "@/constants/transaction";
+import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
+import { EditCourseProfileDialog } from "@/components/course/Prophet/EditCourseProfileDialog";
 
 export default function CreateCoursePage() {
   const router = useRouter();
@@ -25,8 +28,10 @@ export default function CreateCoursePage() {
     duration: "",
     description: "",
     price: "",
-    transactionAccount: "test account",
+    transactionAccount: undefined,
+    courseProfile: "",
   });
+  const [openDialog, setOpenDialog] = useState(false);
 
   const user = {
     profileUrl:
@@ -47,6 +52,7 @@ export default function CreateCoursePage() {
       description,
       price,
       transactionAccount,
+      courseProfile,
     } = formData;
 
     if (
@@ -54,18 +60,20 @@ export default function CreateCoursePage() {
       !prophetMethod.trim() ||
       !duration.trim() ||
       !description.trim() ||
-      !price.trim()
+      !price.trim() ||
+      !courseProfile.trim()
     ) {
       AppToast.error("Every field must be completed.");
       return;
     }
 
-    if (transactionAccount === "Undefined" || !transactionAccount.trim()) {
+    if (transactionAccount === "Undefined" || !transactionAccount) {
       AppToast.error("Transaction account required.");
       return;
     }
 
     AppToast.success("Course created!");
+    router.push("/course/prophet/my-course");
   };
 
   const handleCancel = () => {
@@ -104,12 +112,13 @@ export default function CreateCoursePage() {
               />
             </div>
 
-            <div className="bg-secondary relative h-[300px] w-full rounded-lg border-2">
-              <img alt="Course Profile" />
+            <div className="font-chakra bg-secondary relative h-[300px] w-full rounded-lg border-2">
+              <img alt="Course Profile" src={formData.courseProfile} />
               <GlobalButton
                 variant="secondary"
                 className="absolute right-3 bottom-2"
                 icon={<Pencil />}
+                onClick={() => setOpenDialog(true)}
               >
                 Edit course profile
               </GlobalButton>
@@ -208,13 +217,23 @@ export default function CreateCoursePage() {
               <label className="text-neutral-black mb-1 flex items-center">
                 Transaction Account
               </label>
-              <GlobalInput
-                type="text"
-                placeholder="Undefined"
-                readOnly
-                disabled
+              <Select
                 value={formData.transactionAccount}
-              />
+                onValueChange={(value) =>
+                  handleChange("transactionAccount", value)
+                }
+              >
+                <SelectTrigger className="min-h-10 w-full">
+                  <SelectValue placeholder="Select Transaction Account" />
+                </SelectTrigger>
+                <SelectContent>
+                  {MOCK_ACCOUNTS.map((acc) => (
+                    <SelectItem key={acc.id} value={acc.id}>
+                      <TransactionAccountSelectItem account={acc} />
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="col-span-3">
               <GlobalButton
@@ -238,6 +257,14 @@ export default function CreateCoursePage() {
           </form>
         </div>
       </div>
+      <EditCourseProfileDialog
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+        currentImageUrl={formData.courseProfile}
+        onSave={(newUrl) => {
+          handleChange("courseProfile", newUrl);
+        }}
+      />
     </DefaultLayout>
   );
 }
