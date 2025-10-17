@@ -1,6 +1,8 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
+import { getBankImageUrl } from "@/utils/getBankImageUrl";
+
 function ProphetCard({
   feat,
   transaction,
@@ -29,8 +31,8 @@ function ProphetCard({
           ) : (
             <div className="flex w-full px-2">
               <img
-                src={transaction.imageUrl}
-                alt={transaction.bankName}
+                src={getBankImageUrl(transaction.bank)}
+                alt={transaction.bank}
                 className="mr-3 mb-2 h-full self-start rounded-full object-cover"
               />
               <div className="flex flex-col">

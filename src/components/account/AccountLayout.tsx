@@ -4,29 +4,36 @@ import CustomerInfo from "@/components/account/CustomerInfo";
 import ProphetInfo from "@/components/account/ProphetInfo";
 import UserProfile from "@/components/account/UserProfile";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
+import { AccountData, CustomerAccount, ProphetAccount } from "@/interface/User";
 
 import EditCustomerInfo from "./EditAccount/EditCustomerInfo";
 import EditProphetInfo from "./EditAccount/EditProphetInfo";
 import EditUserProfile from "./EditAccount/EditUserProfile";
 
-function AccountLayout({ role, editing }: { role: string; editing: boolean }) {
+function AccountLayout({
+  user,
+  editing,
+}: {
+  user: AccountData;
+  editing: boolean;
+}) {
   return (
     <GlassContainer2 className="p-0">
       {editing ? (
-        <EditUserProfile role={role} editing={editing} />
+        <EditUserProfile role={user.role} editing={editing} />
       ) : (
-        <UserProfile role={role} />
+        <UserProfile user={user} />
       )}
       {editing ? (
-        role === "CUSTOMER" ? (
+        user.role === "CUSTOMER" ? (
           <EditCustomerInfo />
         ) : (
           <EditProphetInfo />
         )
-      ) : role === "CUSTOMER" ? (
-        <CustomerInfo />
+      ) : user.role === "CUSTOMER" ? (
+        <CustomerInfo customer={user as CustomerAccount} />
       ) : (
-        <ProphetInfo />
+        <ProphetInfo prophet={user as ProphetAccount} />
       )}
     </GlassContainer2>
   );

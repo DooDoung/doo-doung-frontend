@@ -1,9 +1,8 @@
 import { SquarePen } from "lucide-react";
 import Image from "next/image";
-
-
-
+import { getBankImageUrl } from "@/utils/getBankImageUrl";
 import type { TransactionAccount } from "@/types/transaction";
+import { get } from "http";
 
 interface AccountListItemProps {
   account: TransactionAccount;
@@ -19,7 +18,6 @@ export function AccountListItem({
   onEdit,
 }: AccountListItemProps) {
   const isDefault = account.isDefault;
-
   const handleEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onEdit(account);
@@ -36,8 +34,9 @@ export function AccountListItem({
     >
       <div className="flex min-w-0 items-center">
         <Image
-          src={account.bank.logoUrl}
-          alt={`${account.bank.name} logo`}
+          key={String(account.bank)}
+          src={getBankImageUrl(String(account.bank))}
+          alt={`${String(account.bank)}`}
           width={60}
           height={60}
           className="mr-4 flex-shrink-0"

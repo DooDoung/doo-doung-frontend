@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 import GlobalButton from "@/components/globalComponents/Button";
 import { Label } from "@/components/ui/label";
 import { AppToast } from "@/lib/app-toast";
 import type { Bank, TransactionAccount } from "@/types/transaction";
+import { getBankImageUrl } from "@/utils/getBankImageUrl";
 
 import { GlobalInput } from "../globalComponents";
 
@@ -23,15 +24,18 @@ export default function TransactionAccountForm({
   onCancel,
   onDelete,
 }: TransactionAccountFormProps) {
-  const [selectedBank, setSelectedBank] = useState<Bank | null>(
-    initialData?.bank || null,
-  );
-  const [accountName, setAccountName] = useState(
-    initialData?.accountName || "",
-  );
-  const [accountNumber, setAccountNumber] = useState(
-    initialData?.accountNumber || "",
-  );
+  const [selectedBank, setSelectedBank] = useState<Bank | null>(null);
+  const [accountName, setAccountName] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+
+  // Initialize form with initialData
+  useEffect(() => {
+    if (initialData) {
+      setSelectedBank(initialData.bank || null);
+      setAccountName(initialData.accountName || "");
+      setAccountNumber(initialData.accountNumber || "");
+    }
+  }, [initialData]);
 
   const isEditMode = !!initialData;
 
@@ -56,54 +60,48 @@ export default function TransactionAccountForm({
       </h1>
 
       <div className="flex h-[40vh] items-center gap-16">
+        {/* Bank Selection */}
         <div className="flex flex-col rounded-lg p-10">
           <p className="font-chakra m-2 text-white">Select Your Bank</p>
           <div className="grid grid-cols-4 gap-4">
+          
             {banks.map((bank) => {
-              const isSelected = selectedBank?.name === bank.name;
-              return (
-                <button
-                  type="button"
-                  key={bank.name}
-                  onClick={() => setSelectedBank(bank)}
-                  className={`rounded-full drop-shadow-[0_0_4px_rgba(255,255,255,0.75)] transition-all duration-150 ease-in-out active:scale-90 ${
-                    !isSelected && selectedBank
-                      ? "opacity-30 hover:opacity-100"
-                      : "opacity-100"
-                  }`}
-                >
-                  <div
-                    className={`rounded-full ${
-                      isSelected &&
-                      "bg-gradient-to-r from-[#DC7CA0] to-[#B389EC] p-0.5"
-                    }`}
-                  >
-                    <div
-                      className={`rounded-full p-1 ${!isSelected && "border border-gray-300"}`}
-                    >
-                      <Image
-                        src={bank.logoUrl}
-                        alt={bank.name}
-                        width={60}
-                        height={60}
-                        className="rounded-full"
-                      />
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
+  const isSelected = selectedBank?.name === bank.name;
+
+  return (
+    <button
+      type="button"
+      key={bank.name}
+      onClick={() => setSelectedBank(bank)}
+      className={`rounded-full drop-shadow-[0_0_4px_rgba(255,255,255,0.75)] transition-all duration-150 ease-in-out active:scale-90 ${
+        !isSelected && selectedBank ? "opacity-30 hover:opacity-100" : "opacity-100"
+      }`}
+    >
+      <div className={`rounded-full ${isSelected ? "bg-gradient-to-r from-[#DC7CA0] to-[#B389EC] p-0.5" : ""}`}>
+        <div className={`rounded-full p-1 ${!isSelected ? "border border-gray-300" : ""}`}>
+<Image
+  src={getBankImageUrl(bank)} // pass the bank object
+  alt={bank.name}
+  width={60}
+  height={60}
+  className="rounded-full"
+/>
+
+        </div>
+      </div>
+    </button>
+  );
+})}
+
+
           </div>
         </div>
 
+        {/* Account Info */}
         <div className="flex flex-col gap-4 rounded-lg p-10">
           <div className="grid w-full max-w-md items-center gap-1.5">
-            <Label
-              htmlFor="accountName"
-              className="font-chakra text-xl text-white"
-            >
-              {" "}
-              Account Name{" "}
+            <Label htmlFor="accountName" className="font-chakra text-xl text-white">
+              Account Name
             </Label>
             <GlobalInput
               id="accountName"
@@ -117,10 +115,7 @@ export default function TransactionAccountForm({
           </div>
 
           <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label
-              htmlFor="accountNumber"
-              className="font-chakra text-xl text-white"
-            >
+            <Label htmlFor="accountNumber" className="font-chakra text-xl text-white">
               Account Number
             </Label>
             <GlobalInput
@@ -136,13 +131,10 @@ export default function TransactionAccountForm({
         </div>
       </div>
 
+      {/* Buttons */}
       <div className="flex gap-4">
         {isEditMode && onDelete && (
-          <GlobalButton
-            variant="secondary"
-            type="button"
-            onClick={() => onDelete(initialData.id)}
-          >
+          <GlobalButton variant="secondary" type="button" onClick={() => onDelete(initialData.id)}>
             Delete
           </GlobalButton>
         )}
