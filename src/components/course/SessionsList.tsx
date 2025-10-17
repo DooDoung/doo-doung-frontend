@@ -39,7 +39,7 @@ export default function SessionsList({ sessions, onSelect, tab, onChangeTab }: P
     <div className="flex flex-col h-96">
       <SessionTabs active={activeTab} onChange={handleTabChange} />
 
-      <div className="space-y-4 overflow-y-scroll custom-scrollbar pr-2 pb-6">
+      <div className="space-y-4 overflow-y-scroll custom-scrollbar pr-2 pb-6 flex-1">
         {sessions.map((s) => (
           <SessionCard key={s.id} session={s} onSelect={onSelect} />
         ))}
