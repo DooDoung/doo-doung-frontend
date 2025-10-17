@@ -1,0 +1,121 @@
+import { useRouter } from "next/router";
+
+import ReviewCard from "@/components/account/Review/ReviewCard";
+import { GlobalButton } from "@/components/globalComponents";
+
+import Meta from "./Meta";
+import { CourseItem } from "./types";
+
+interface CourseRightPanelProps {
+  activeItem: CourseItem | null;
+}
+
+export default function CourseRightPanel({
+  activeItem,
+}: CourseRightPanelProps) {
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.push("/course");
+  };
+
+  const handleBook = () => {
+    if (activeItem) {
+      router.push(`/booking`);
+    }
+  };
+
+  const handleWriteReview = () => {
+    if (activeItem) {
+      router.push(`/review`);
+    }
+  };
+
+  return (
+    <section className="relative flex w-3/5 flex-col overflow-hidden rounded-4xl bg-white p-6 shadow-xl ring-1 ring-slate-200/80 md:p-10">
+      <div className="mx-auto max-w-3xl flex-1">
+        {/* Title */}
+        <h1 className="font-chakra text-neutral-black text-2xl font-semibold tracking-tight md:text-3xl">
+          {activeItem?.title ?? " "}
+        </h1>
+
+        {/* Meta grid */}
+        <div className="text-neutral-black mt-6 grid grid-cols-2 gap-6">
+          <Meta
+            label="Prophet method"
+            value={activeItem?.prophetMethod ?? " "}
+          />
+          <Meta
+            label="Duration (min)"
+            value={activeItem?.durationMin?.toString() ?? " "}
+          />
+          <Meta
+            label="Description"
+            value={activeItem?.description ?? " "}
+            colSpan={2}
+          />
+          <Meta
+            label="Prices"
+            sub="(Baht)"
+            value={activeItem ? activeItem.priceTHB.toLocaleString() : " "}
+          />
+        </div>
+
+        <div className="mt-3 flex items-start justify-between">
+          <div className="font-chakra text-accent-pink text-xl font-medium">
+            Reviews
+          </div>
+          <GlobalButton
+            variant="secondary"
+            size="sm"
+            onClick={handleWriteReview}
+            className="font-chakra"
+          >
+            ✏️ Write a Review
+          </GlobalButton>
+        </div>
+
+        {/* Reviews list - scrollable section */}
+        <div
+          className="custom-scrollbar mt-4 flex-1 space-y-4 overflow-y-auto pb-4"
+          style={{ maxHeight: "40vh" }}
+        >
+          {(activeItem?.reviews ?? []).map((r) => (
+            <ReviewCard
+              key={r.id}
+              profileUrl={activeItem?.prophetProfileUrl ?? ""}
+              userName={r.profileName}
+              courseName={r.title}
+              comment={r.content}
+              score={r.rating}
+              date={new Date(r.dateISO).toLocaleDateString()}
+              time={new Date(r.dateISO).toLocaleTimeString()}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-4 flex items-center justify-end gap-4 pt-4">
+        <GlobalButton
+          variant="secondary"
+          size="default"
+          onClick={handleBack}
+          className="font-chakra"
+        >
+          Back
+        </GlobalButton>
+        <GlobalButton
+          variant="primary"
+          size="default"
+          onClick={handleBook}
+          className="font-chakra"
+        >
+          Book
+        </GlobalButton>
+      </div>
+
+      <div className="pointer-events-none absolute -top-16 -right-16 size-64 rounded-full bg-fuchsia-200/30 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-20 -left-20 size-72 rounded-full bg-indigo-200/30 blur-3xl" />
+    </section>
+  );
+}

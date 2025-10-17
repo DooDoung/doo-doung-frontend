@@ -2,6 +2,8 @@ import React from "react";
 import { PencilIcon } from "lucide-react";
 
 import StarRating from "@/components/account/StarRating";
+import { PencilIcon } from "lucide-react";
+import router from "next/router";
 
 function ProphetCourseCard({
   id,
@@ -24,9 +26,9 @@ function ProphetCourseCard({
 }) {
   return (
     <div
-      className={`relative flex h-40 w-[97%] rounded-3xl border bg-white shadow-md ${editability === "EDIT" ? "hover:bg-primary-250 cursor-pointer" : ""}`}
+      className={`relative flex h-40 w-[97%] rounded-3xl border font-chakra bg-white shadow-md ${editability === "EDIT" ? "hover:bg-primary-250 cursor-pointer" : ""}`}
       // click to go to course detail page
-      // onClick={}
+      onClick={() => { router.push(`/course/prophet/my-courses/details/${id}`); }}
     >
       <img
         src={imageUrl}
