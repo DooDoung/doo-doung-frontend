@@ -19,6 +19,7 @@ import { AppToast } from "@/lib/app-toast";
 import { MOCK_ACCOUNTS, BANKS } from "@/constants/transaction";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
 import { EditCourseProfileDialog } from "@/components/course/Prophet/EditCourseProfileDialog";
+import Image from "next/image";
 
 export default function CreateCoursePage() {
   const router = useRouter();
@@ -91,10 +92,13 @@ export default function CreateCoursePage() {
             </h3>
 
             <div className="h-[150px] w-[150px] flex-shrink-0 rounded-full border-2 bg-white">
-              <img
+              <Image
                 alt="Profile"
                 className="h-full w-full rounded-full object-cover"
+                width={150}
+                height={150}
                 src={user.profileUrl}
+                unoptimized={true}
               />
             </div>
 
@@ -113,7 +117,13 @@ export default function CreateCoursePage() {
             </div>
 
             <div className="font-chakra bg-secondary relative h-[300px] w-full rounded-lg border-2">
-              <img alt="Course Profile" src={formData.courseProfile} />
+              <Image
+                alt="Course Profile"
+                src={formData.courseProfile}
+                unoptimized={true}
+                className="rounded-lg object-cover"
+                fill
+              />
               <GlobalButton
                 variant="secondary"
                 className="absolute right-3 bottom-2"
