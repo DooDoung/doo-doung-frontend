@@ -1,18 +1,19 @@
 import * as React from "react";
-import toast from "react-hot-toast";
 import { Camera, Pencil } from "lucide-react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 import { EditProfilePictureDialog } from "@/components/account/EditProfilePictureDialog";
-import { GlobalInput } from "@/components/globalComponents";
+import { GlobalButton, GlobalInput } from "@/components/globalComponents";
+import { AppToast } from "@/lib/app-toast";
 import { ZodiacSign } from "@/types/user";
 
-const user = {
-  profileUrl:
-    "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg",
-  username: "JohnYakDoodoung",
-  zodiacSign: ZodiacSign.Aquarius,
-};
+interface AccountData {
+  id: string;
+  username: string;
+  profileUrl: string;
+  zodiacSign: ZodiacSign;
+}
 
 function EditUserProfile({
   role,
@@ -21,12 +22,87 @@ function EditUserProfile({
   role: string;
   editing: boolean;
 }) {
+  const {data: session} = useSession();
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [profileUrl, setProfileUrl] = React.useState(user.profileUrl);
+
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+  const [accountData, setAccountData] = React.useState<AccountData | null>(null);
+
+
+  const fetchAccountData = React.useCallback(async () => {
+    if (!session?.user?.id) {
+      setError("User not authenticated");
+      setLoading(false);
+      return;
+    }
+    try {
+      setLoading(true);
+      setError(null);
+
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      if (session.accessToken) {
+        headers['Authorization'] = `Bearer ${session.accessToken}`;
+      }
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/account/${session.user.id}`, {
+        method: "GET",
+        headers
+      });
+
+      if (!res.ok) {
+        setError("Failed to fetch account data");
+      }
+
+      const responseData = await res.json();
+      const data = responseData.data ?? [];
+      setAccountData(data);
+    } catch (error) {
+      const errorMessage = "Failed to load account data";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  }, [session?.user?.id, session?.accessToken]);
 
   const handleChangeProfile = () => {
     setOpenDialog(true);
   };
+
+  React.useEffect(() => {
+    fetchAccountData();
+  }, [fetchAccountData]);
+
+  React.useEffect(() => {
+    if (error) {
+      AppToast.error(error);
+    }
+  }, [error]);
+
+  if (loading) {
+    return (
+      <div className="bg-primary-500/60 flex w-full flex-col items-center justify-center rounded-3xl p-12 text-center sm:w-[30%]">
+        <div className="text-white">Loading account data...</div>
+      </div>
+    );
+  }
+
+  if (error || !accountData) {
+    return (
+      <div className="bg-primary-500/60 flex w-full flex-col items-center justify-center rounded-3xl p-12 text-center sm:w-[30%]">
+        <div className="text-neutral-white mb-4">{error || "No account data available"}</div>
+        <GlobalButton 
+          variant="secondary"
+          onClick={fetchAccountData}
+        >
+          Retry
+        </GlobalButton>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-primary-500/60 flex w-full flex-col items-center justify-start rounded-3xl p-12 text-center sm:w-[30%]">
@@ -38,15 +114,15 @@ function EditUserProfile({
       <div className="relative mb-6 h-[150px] w-[150px] rounded-full border-2 bg-white">
         <img
           alt="Profile"
-          src={user.profileUrl === "" ? "/user-profile.svg" : profileUrl}
+          src={accountData?.profileUrl || "/user-profile.svg"}
           className="h-full w-full rounded-full object-cover p-1"
         />
 
         {role == "customer" && (
           <div className="bg-secondary absolute top-2 right-0 flex h-[40px] w-[40px] items-center justify-center overflow-hidden rounded-full">
             <Image
-              src={`/images/zodiac-sign/${user.zodiacSign}.svg`}
-              alt={user.zodiacSign}
+              src={`/images/zodiac-sign/${accountData?.zodiacSign}.svg`}
+              alt={accountData?.zodiacSign || "zodiac-sign"}
               fill
               className="object-contain p-[6px]"
             />
@@ -65,8 +141,9 @@ function EditUserProfile({
         <EditProfilePictureDialog
           open={openDialog}
           onOpenChange={setOpenDialog}
-          currentImageUrl={profileUrl}
-          onSave={(url) => setProfileUrl(url)}
+          currentImageUrl={accountData?.profileUrl}
+          user={accountData as any}
+          onSave={(url) => setAccountData((prev) => prev ? { ...prev, profileUrl: url } : null)}
         />
       </div>
 
@@ -79,8 +156,9 @@ function EditUserProfile({
         type="text"
         className={`font-chakra mb-4 ${editing ? "" : "cursor-not-allowed"}`}
         fullWidth
-        value={user.username}
-        readOnly={!editing}
+        value={accountData?.username || ""}
+        onChange={() => {}} // Username is not editable
+        readOnly={true}
       />
     </div>
   );
