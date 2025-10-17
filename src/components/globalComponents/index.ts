@@ -24,6 +24,7 @@ export {
   SelectTrigger,
   SelectValue,
 } from "./Select";
+export { GlobalTextarea } from "./Textarea";
 
 // Re-export default
 export { default as Layout } from "./DefaultLayout";
