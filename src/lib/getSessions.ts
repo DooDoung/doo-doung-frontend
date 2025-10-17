@@ -28,8 +28,7 @@ function filterSessionsByTab(sessions: SessionItem[], tab: "all" | "upcoming" | 
  * Maps raw data from the API to our consistent SessionItem format.
  */
 function mapRawBookingToSession(b: any): SessionItem {
-  // FIX: Safely access the 'name' property if prophet/instructor is an object.
-  const prophetName = b.prophet?.name ?? b.instructor?.name ?? b.prophetName ?? b.prophet ?? b.instructor ?? "";
+  const prophetName = `${b.prophet?.name} ${b.prophet?.lastname || ""}`;
 
 return {
     id: String(b.id ?? b.bookingId ?? b._id ?? ""),
