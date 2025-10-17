@@ -31,6 +31,8 @@ interface GlobalButtonProps
    * Whether the button should take full width
    */
   fullWidth?: boolean;
+  /** visually active/clicked state */
+  isActive?: boolean;
 }
 
 /**
@@ -49,8 +51,15 @@ export function GlobalButton({
   children,
   disabled,
   className,
+  isActive = false,
   ...props
 }: GlobalButtonProps) {
+  const activeStyle: React.CSSProperties = {
+    borderRadius: "var(--radius-md, 25px)",
+    border: "var(--border-md, 2px) solid var(--accent-pink-violet, #DC7CA0)",
+    background: "#FDECF2",
+    boxShadow: "-2px -2px 4px 0 #B389EC inset, 5px 5px 10px 0 #DC7CA0 inset",
+  };
   const customVariants: Record<string, string> = {
     default: `
     enabled:bg-gradient-to-r enabled:from-accent-pink enabled:to-accent-violet 
@@ -138,6 +147,7 @@ export function GlobalButton({
           containerStyle[mappedVariant],
           "rounded-md-minus flex items-center justify-center",
         )}
+        style={isActive ? activeStyle : undefined}
       >
         {loading ? (
           <>
