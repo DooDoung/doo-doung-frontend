@@ -13,10 +13,23 @@ import EditUserProfile from "./EditAccount/EditUserProfile";
 function AccountLayout({
   user,
   editing,
+  onUserUpdate,
 }: {
-  user: AccountData;
+  user: AccountData | undefined;
   editing: boolean;
+  onUserUpdate?: (updatedUser: AccountData) => void;
 }) {
+  // Guard clause to handle undefined user
+  if (!user) {
+    return (
+      <GlassContainer2 className="p-0">
+        <div className="flex items-center justify-center p-8 w-full">
+          <p className="text-neutral-white font-chakra">Loading user data...</p>
+        </div>
+      </GlassContainer2>
+    );
+  }
+
   return (
     <GlassContainer2 className="p-0">
       {editing ? (
@@ -26,9 +39,9 @@ function AccountLayout({
       )}
       {editing ? (
         user.role === "CUSTOMER" ? (
-          <EditCustomerInfo />
+          <EditCustomerInfo user={user} onUserUpdate={onUserUpdate} />
         ) : (
-          <EditProphetInfo />
+          <EditProphetInfo user={user as ProphetAccount} onUserUpdate={onUserUpdate} />
         )
       ) : user.role === "CUSTOMER" ? (
         <CustomerInfo customer={user as CustomerAccount} />
