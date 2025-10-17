@@ -1,8 +1,9 @@
+import { get } from "http";
 import { SquarePen } from "lucide-react";
 import Image from "next/image";
-import { getBankImageUrl } from "@/utils/getBankImageUrl";
+
 import type { TransactionAccount } from "@/types/transaction";
-import { get } from "http";
+import { getBankImageUrl } from "@/utils/getBankImageUrl";
 
 interface AccountListItemProps {
   account: TransactionAccount;
