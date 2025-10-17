@@ -1,6 +1,7 @@
-import { useEffect, useRef,useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pencil } from "lucide-react";
-import { usePathname,useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 
 import { EditCourseProfileDialog } from "@/components/course/Prophet/EditCourseProfileDialog";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
@@ -102,10 +103,13 @@ export default function EditCoursePage() {
             </h3>
 
             <div className="h-[150px] w-[150px] flex-shrink-0 rounded-full border-2 bg-white">
-              <img
+              <Image
                 alt="Profile"
                 className="h-full w-full rounded-full object-cover"
+                width={150}
+                height={150}
                 src={user.profileUrl}
+                unoptimized={true}
               />
             </div>
 
@@ -124,7 +128,13 @@ export default function EditCoursePage() {
             </div>
 
             <div className="bg-secondary relative h-[300px] w-full rounded-lg border-2">
-              <img alt="Course Profile" src={formData.courseProfile} />
+              <Image
+                alt="Course Profile"
+                src={formData.courseProfile}
+                unoptimized={true}
+                className="rounded-lg object-cover"
+                fill
+              />
               <GlobalButton
                 variant="secondary"
                 className="absolute right-3 bottom-2"

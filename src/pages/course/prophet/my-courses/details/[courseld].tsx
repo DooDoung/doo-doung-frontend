@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { usePathname,useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 
 import BookingHistoryCard from "@/components/course/Prophet/BookingHistoryCard";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
@@ -22,7 +23,7 @@ export default function CourseDetailsPage() {
       "ดูดวงความรัก 3 คำถาม โดยใช้ไพ่โรต์ จากแม่หมอประสบการณ์ 300 ปี จบจากสถาบันเวทมนต์ Horward สาขาดูดวงคนไทย",
     price: "2000",
     TransactionAccount: MOCK_ACCOUNTS[0],
-    courseProfileURL:
+    courseProfile:
       "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg",
     isOpen: true,
   });
@@ -90,10 +91,13 @@ export default function CourseDetailsPage() {
             </h3>
 
             <div className="bg-neutral-white h-[150px] w-[150px] flex-shrink-0 rounded-full border-2">
-              <img
+              <Image
                 alt="Profile"
                 className="h-full w-full rounded-full object-cover"
+                width={150}
+                height={150}
                 src={user.profileUrl}
+                unoptimized={true}
               />
             </div>
 
@@ -112,7 +116,13 @@ export default function CourseDetailsPage() {
             </div>
 
             <div className="bg-secondary relative h-[300px] w-full rounded-lg border-2">
-              <img alt="Course Profile" src={formData.courseProfileURL} />
+              <Image
+                alt="Course Profile"
+                src={formData.courseProfile}
+                unoptimized={true}
+                className="rounded-lg object-cover"
+                fill
+              />
             </div>
           </div>
         </GlassContainer2>
