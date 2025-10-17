@@ -54,7 +54,7 @@ export default function MySessionPage() {
     <DefaultLayout>
       <div className="flex flex-col items-center justify-center w-full font-chakra">
         <GlassContainer2 className="p-0">
-              <EditUserProfile role="CUSTOMER" editing={false} />
+              <EditUserProfile role={session?.user?.role||"CUSTOMER"} editing={false} />
               {loading ? (
                 <div className="flex-1 flex items-center justify-center text-neutral-white h-105">
                   Loading...
