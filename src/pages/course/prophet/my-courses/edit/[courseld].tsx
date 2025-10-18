@@ -148,7 +148,7 @@ export default function EditCoursePage() {
         </GlassContainer2>
 
         {/* right box */}
-        <div className="bg-neutral-white shadow-all-around flex h-full flex-1 flex-col overflow-y-scroll rounded-3xl px-12 py-7">
+        <div className="bg-neutral-white shadow-all-around custom-scrollbar flex h-full flex-1 flex-col overflow-y-scroll rounded-3xl px-12 py-7">
           <div className="grid grid-cols-6 content-between gap-1">
             <h3 className="font-sanctuary text-neutral-black col-span-5 self-center text-5xl">
               Edit Course
