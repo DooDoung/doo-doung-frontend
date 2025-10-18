@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 import {
   DefaultLayout,
-  GlassContainer,
+  GlassContainer2,
   GlobalButton,
 } from "@/components/globalComponents";
 
@@ -119,16 +119,13 @@ const SessionHistory = ({ onBack }: { onBack: () => void }) => {
 const Dashboard = ({ onViewHistory }: { onViewHistory: () => void }) => {
   const router = useRouter();
   return (
-    <div className="relative h-full w-[70%]">
-      <GlobalButton
-        variant="primary"
-        className="absolute top-4 right-4"
-        size="default"
-        onClick={onViewHistory}
-      >
-        View All History
-      </GlobalButton>
-      <div className="absolute top-[27%] flex w-full -translate-y-1/2 justify-around px-8">
+    <div className="flex h-full w-[70%] flex-col p-4">
+      <div className="flex justify-end">
+        <GlobalButton variant="primary" size="default" onClick={onViewHistory}>
+          View All History
+        </GlobalButton>
+      </div>
+      <div className="flex w-full justify-around py-4">
         <div className="flex h-24 w-[28%] flex-col items-center justify-center rounded-lg border-2 border-[#F9B7BB] bg-white text-[#3E3753]">
           <p className="text-sm">All Processing</p>
           <p className="text-sm">Sessions</p>
@@ -144,7 +141,7 @@ const Dashboard = ({ onViewHistory }: { onViewHistory: () => void }) => {
           <p className="text-xl text-green-600">2800 Baht</p>
         </div>
       </div>
-      <div className="absolute bottom-8 left-1/2 h-auto w-[90%] -translate-x-1/2 transform rounded-lg border-2 border-[#F9B7BB] bg-white p-4 text-[#3E3753]">
+      <div className="flex-grow overflow-y-auto rounded-lg border-2 border-[#F9B7BB] bg-white p-4 text-[#3E3753]">
         <h3 className="text-base font-bold">Recent Active Sessions</h3>
         <table className="mt-2 w-full text-left text-xs">
           <thead>
@@ -238,25 +235,27 @@ export default function MySessionPage() {
         <h1 className="font-sanctuary text-5xl font-bold text-white">
           DooDoung
         </h1>
-        <GlassContainer className="mt-4 flex h-[80vh] w-[calc(80vh*1261/746)] flex-row">
-          <div className="flex h-full w-[30%] flex-col items-center rounded-l-3xl bg-[#F9B7BB]/60 py-8">
-            <h2 className="font-sanctuary text-2xl font-bold text-[#3E3753]">
-              PROPHET
-            </h2>
-            <div className="my-6 flex h-32 w-32 items-center justify-center rounded-full bg-gray-200">
-              <p className="text-[#3E3753]">Profile</p>
+        <GlassContainer2 className="mt-4 flex h-[80vh] w-[calc(80vh*1261/746)] flex-row p-0">
+          <div className="flex h-full w-full flex-row pt-0">
+            <div className="flex h-full w-[30%] flex-col items-center rounded-l-3xl border-r-0 border-white/50 bg-[#F9B7BB]/60 py-8">
+              <h2 className="font-sanctuary text-2xl font-bold text-[#3E3753]">
+                PROPHET
+              </h2>
+              <div className="my-6 flex h-32 w-32 items-center justify-center rounded-full bg-gray-200">
+                <p className="text-[#3E3753]">Profile</p>
+              </div>
+              <p className="text-sm text-[#3E3753]">USERNAME</p>
+              <div className="mt-2 w-2/3 rounded-full bg-white/80 px-4 py-2 text-center">
+                <p className="font-semibold text-[#3E3753]">ItsGuitar</p>
+              </div>
             </div>
-            <p className="text-sm text-[#3E3753]">USERNAME</p>
-            <div className="mt-2 w-2/3 rounded-full bg-white/80 px-4 py-2 text-center">
-              <p className="font-semibold text-[#3E3753]">ItsGuitar</p>
-            </div>
+            {showHistory ? (
+              <SessionHistory onBack={() => setShowHistory(false)} />
+            ) : (
+              <Dashboard onViewHistory={() => setShowHistory(true)} />
+            )}
           </div>
-          {showHistory ? (
-            <SessionHistory onBack={() => setShowHistory(false)} />
-          ) : (
-            <Dashboard onViewHistory={() => setShowHistory(true)} />
-          )}
-        </GlassContainer>
+        </GlassContainer2>
       </div>
     </DefaultLayout>
   );

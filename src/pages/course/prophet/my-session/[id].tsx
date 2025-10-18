@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 
 import {
   DefaultLayout,
-  GlassContainer,
+  GlassContainer2,
   GlobalButton,
 } from "@/components/globalComponents";
 
@@ -17,7 +17,7 @@ const SessionDetailPage = () => {
     method: "Astrology",
     sector: "Career & Finance",
     time: "8 October 2025, 03:30 PM - 04:30 PM",
-    customerName: "Sivikorn Nokham",
+    customerName: "Sivikom Nokham",
     customerUsername: "ItsGuitar_sleep",
     transactionId: "xxx-xxxx-xxx",
     amount: "199 Baht",
@@ -34,22 +34,22 @@ const SessionDetailPage = () => {
         <h1 className="font-sanctuary text-5xl font-bold text-white">
           DooDoung
         </h1>
-        <GlassContainer className="mt-4 flex h-[80vh] w-[calc(80vh*1261/746)] flex-row">
-          <div className="flex h-full w-[30%] flex-col items-center rounded-l-3xl bg-[#F9B7BB]/60 py-8">
-            <h2 className="font-sanctuary text-2xl font-bold text-[#3E3753]">
+        <GlassContainer2 className="mt-4 flex h-[80vh] w-[calc(80vh*1261/746)] flex-row p-0">
+          <div className="bg-primary-500/60 flex h-full w-[30%] flex-col items-center rounded-l-3xl border-r-0 border-white/50 py-8">
+            <h2 className="font-sanctuary text-neutral-black text-2xl font-bold">
               PROPHET
             </h2>
             <div className="my-6 flex h-32 w-32 items-center justify-center rounded-full bg-gray-200">
-              <p className="text-[#3E3753]">Profile</p>
+              <p className="text-neutral-black">Profile</p>
             </div>
-            <p className="text-sm text-[#3E3753]">USERNAME</p>
+            <p className="text-neutral-black text-sm">USERNAME</p>
             <div className="mt-2 w-2/3 rounded-full bg-white/80 px-4 py-2 text-center">
-              <p className="font-semibold text-[#3E3753]">
+              <p className="text-neutral-black font-semibold">
                 {sessionDetails.prophetName}
               </p>
             </div>
           </div>
-          <div className="relative w-[70%] p-8">
+          <div className="relative w-[70%] p-8 pt-16">
             <GlobalButton
               variant="primary"
               className="absolute top-4 right-4"
@@ -58,7 +58,7 @@ const SessionDetailPage = () => {
             >
               Back
             </GlobalButton>
-            <div className="mt-12 grid h-[calc(100%-100px)] grid-cols-2 grid-rows-2 gap-4 text-xs text-[#3E3753]">
+            <div className="text-neutral-black mt-12 grid h-[calc(100%-100px)] grid-cols-2 grid-rows-2 gap-4 text-xs">
               <div className="rounded-lg border-2 border-gray-300 bg-white p-4">
                 <h3 className="mb-2 font-bold">Session Information</h3>
                 <p>Prophet's Name: {sessionDetails.prophetName}</p>
@@ -89,11 +89,12 @@ const SessionDetailPage = () => {
               variant="primary"
               className="absolute right-4 bottom-4"
               size="default"
+              onClick={() => router.push("/course/prophet/my-session")}
             >
               Mark as Completed
             </GlobalButton>
           </div>
-        </GlassContainer>
+        </GlassContainer2>
       </div>
     </DefaultLayout>
   );
