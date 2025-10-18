@@ -14,7 +14,7 @@ interface GlobalButtonProps
   /**
    * The size of the button
    */
-  size?: "sm" | "default" | "lg" | "icon";
+  size?: "sm" | "default" | "lg" | "icon" | "xs";
   /**
    * Whether the button is loading
    */

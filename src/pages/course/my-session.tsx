@@ -1,9 +1,12 @@
-import { DefaultLayout } from "@/components/globalComponents";
+import { DefaultLayout, GlassContainer } from "@/components/globalComponents";
 
 export default function MySessionPage() {
   return (
     <DefaultLayout>
-      <p>This is My Session page</p>
+      <div className="mt-4 text-center">DooDoung</div>
+      <GlassContainer>
+        <p>This is My Session page</p>
+      </GlassContainer>
     </DefaultLayout>
   );
 }
