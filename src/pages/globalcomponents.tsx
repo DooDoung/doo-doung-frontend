@@ -12,12 +12,12 @@ import {
   DefaultLayout,
   GlobalButton,
   GlobalInput,
+  GlobalTextarea,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  GlobalTextarea,
 } from "@/components/globalComponents";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";

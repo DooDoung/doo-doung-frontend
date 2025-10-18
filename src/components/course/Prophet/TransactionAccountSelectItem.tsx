@@ -1,6 +1,7 @@
 import React from "react";
-import type { TransactionAccount } from "@/types/transaction";
 import Image from "next/image";
+
+import type { TransactionAccount } from "@/types/transaction";
 
 function TransactionAccountSelectItem({
   account,

@@ -11,6 +11,7 @@ import {
   SelectItem,
 } from "@/components/globalComponents";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { prophetFeat } from "@/constants/constant-ex";
 import { AccountData,ProphetAccount } from "@/interface/User";
 import { AppToast } from "@/lib/app-toast";
 import type { TransactionAccount } from "@/types/transaction";
@@ -20,8 +21,6 @@ import {
   validateSession,
   validateUserRole,
 } from "@/utils/validationUtils";
-
-import { prophetFeat } from "@/constants/constant-ex";
 
 import ProphetCard from "../ProphetCard";
 
