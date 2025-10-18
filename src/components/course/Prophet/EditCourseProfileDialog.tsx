@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { GlobalButton, GlobalInput } from "@/components/globalComponents";
 import {
   Dialog,
   DialogContent,
@@ -10,8 +11,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { AppToast } from "@/lib/app-toast";
-
-import { GlobalButton, GlobalInput } from "@/components/globalComponents";
 
 interface EditCourseProfileDialogProps {
   open: boolean;

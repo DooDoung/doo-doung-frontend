@@ -1,4 +1,5 @@
 import type { Session as SessionItem } from "@/components/course/SessionsList";
+
 import { AppToast } from "./app-toast";
 
 // --- Helper Functions ---
@@ -30,15 +31,22 @@ function filterSessionsByTab(sessions: SessionItem[], tab: "all" | "upcoming" | 
 function mapRawBookingToSession(b: any): SessionItem {
   const prophetName = `${b.prophet?.name} ${b.prophet?.lastname || ""}`;
 
-return {
-    id: String(b.id ?? b.bookingId ?? b._id ?? ""),
-    title: b.course.courseName,
-    prophet: prophetName,
-    date: String(b.createDateAt ?? b.createdAt ?? b.date ?? "").split("T")[0],
-    time: (b.startDateTime && b.endDateTime) ? `${String(b.startDateTime ?? "").split("T")[1].slice(0, -8)} - ${String(b.endDateTime ?? "").split("T")[1].slice(0, -8)}` : "",
-    price: b.price ? String(b.price) : b.amount ?? "",
-    image: b.imageUrl ?? b.image ?? b.thumbnail ?? "/images/course.svg",
-    status: b.status,
+  return {
+      id: String(b.id ?? b.bookingId ?? b._id ?? ""),
+      title: b.course.courseName,
+      prophet: prophetName,
+      date: String(b.createDateAt ?? b.createdAt ?? b.date ?? "").split("T")[0],
+      time: (b.startDateTime && b.endDateTime) ? `${String(b.startDateTime ?? "").split("T")[1].slice(0, -8)} - ${String(b.endDateTime ?? "").split("T")[1].slice(0, -8)}` : "",
+      price: b.price ? String(b.price) : b.amount ?? "",
+      image: b.imageUrl ?? b.image ?? b.thumbnail ?? "/images/course.svg",
+      status: b.status,
+      lineId: b.prophet?.lineId || "",
+      transactionId: b.payment.id || "",
+      paymentDate: String(b.payment.date??"").split("T")[0],
+      method: b.course.method.name || "",
+      sector: b.course.horoscopeSector || "",
+      duration: b.course.durationMin || "",
+      amount: b.payment.amount ? String(b.payment.amount) : "",
 };
 }
 

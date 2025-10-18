@@ -1,11 +1,11 @@
 import { ReactNode, use } from "react";
 import { Toaster } from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 import { cn } from "@/lib/utils";
 
 import { Footer } from "./Footer";
 import { Header } from "./Header";
-import { useSession } from "next-auth/react";
 
 interface DefaultLayoutProps {
   children: ReactNode;

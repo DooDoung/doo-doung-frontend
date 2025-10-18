@@ -1,7 +1,9 @@
-import Image from "next/image";
 import React from "react";
-import { Session } from "./SessionsList";
+import Image from "next/image";
+
 import { GlobalButton } from "../globalComponents";
+
+import { Session } from "./SessionsList";
 
 type Props = {
   session: Session;

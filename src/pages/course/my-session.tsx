@@ -1,12 +1,13 @@
+import { useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
+
+import EditUserProfile from "@/components/account/EditAccount/EditUserProfile";
+import SessionDetail from "@/components/course/SessionDetail";
+import SessionsList, { Session } from "@/components/course/SessionsList";
 import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents";
-import EditUserProfile from "@/components/account/EditAccount/EditUserProfile";
-import { useEffect, useMemo, useState } from "react";
-import SessionsList, { Session } from "@/components/course/SessionsList";
-import SessionDetail from "@/components/course/SessionDetail";
-import { useSession } from "next-auth/react";
-import { getSessions } from "@/lib/getSessions";
 import { AppToast } from "@/lib/app-toast";
+import { getSessions } from "@/lib/getSessions";
 
 export default function MySessionPage() {
   const { data: session } = useSession();

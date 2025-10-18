@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import SessionTabs from "./SessionTabs";
+
 import SessionCard from "./SessionCard";
+import SessionTabs from "./SessionTabs";
 
 export type Session = {
   id: string;
@@ -11,6 +12,13 @@ export type Session = {
   price: string;
   image?: string;
   status?: string;
+  lineId?: string;
+  transactionId?: string;
+  paymentDate?: string;
+  method?: string;
+  sector?: string;
+  duration?: string | number;
+  amount?: string | number;
 };
 
 type Props = {
