@@ -1,8 +1,10 @@
 import React from "react";
+import Link from "next/link";
 
 import StarRating from "@/components/account/StarRating";
 
 type CourseCardProps = {
+  id?: string | number;
   imageUrl: string;
   score: number;
   courseName: string;
@@ -15,6 +17,7 @@ type CourseCardProps = {
 };
 
 function CourseCard({
+  id,
   imageUrl,
   score,
   courseName,
@@ -25,8 +28,8 @@ function CourseCard({
   time,
   showProphetName = true,
 }: CourseCardProps) {
-  return (
-    <div className="flex w-full rounded-3xl border bg-white shadow-md">
+  const cardContent = (
+    <div className="my-2 flex w-full cursor-pointer rounded-3xl border bg-white shadow-md transition-shadow hover:shadow-lg">
       <img
         src={imageUrl}
         alt={courseName}
@@ -36,14 +39,14 @@ function CourseCard({
         <div>
           <div className="flex justify-start gap-2">
             {showProphetName && <div>{prophetName}</div>}
-            <StarRating 
-              score={score} 
-              className="h-6 w-6" 
+            <StarRating
+              score={score}
+              className="h-6 w-6"
               color={showProphetName ? "#F0E34B" : "#A0522D"}
             />
           </div>
-          <h3 className="text-lg font-semibold mt-1">{courseName}</h3>
-          <p className="text-sm mt-1">{description}</p>
+          <h3 className="mt-1 text-lg font-semibold">{courseName}</h3>
+          <p className="mt-1 text-sm">{description}</p>
         </div>
         <div className="flex flex-col items-end justify-center">
           <div className="self-end rounded-lg bg-[#a9607b] px-8 py-3 text-base font-medium text-white">
@@ -53,6 +56,12 @@ function CourseCard({
       </div>
     </div>
   );
+
+  if (id) {
+    return <Link href={`/course/${id}`}>{cardContent}</Link>;
+  }
+
+  return cardContent;
 }
 
 export default CourseCard;

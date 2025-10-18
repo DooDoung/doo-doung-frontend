@@ -111,7 +111,6 @@ const mockReview: Review[] = [
 
 export { mockReservation, mockReview };
 
-
 // Add this import or type definition at the top of the file
 // import { Course } from '../types/course'; // Uncomment and adjust path if Course is defined elsewhere
 
@@ -134,62 +133,72 @@ export const mockCourse: Course[] = [
     score: 5,
     courseName: "Tarot Reading for Beginners",
     prophetName: "Prophet Jane",
-    description: "Learn the basics of tarot reading in this introductory course covering the major and minor arcana.",
+    description:
+      "Learn the basics of tarot reading in this introductory course covering the major and minor arcana.",
     price: 500,
     date: "Next class: 20 SEP 2025",
     time: "14:00",
   },
   {
     id: "course-02",
-    imageUrl: "https://images.unsplash.com/photo-1596704921995-922fe7f035a2?w=500",
+    imageUrl:
+      "https://images.unsplash.com/photo-1533294455009-a77b7557d2d1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
     score: 4,
     courseName: "Advanced Astrology",
     prophetName: "Prophet Alex",
-    description: "A deep dive into astrological charts, planetary alignments, and how they affect your life.",
+    description:
+      "A deep dive into astrological charts, planetary alignments, and how they affect your life.",
     price: 850,
     date: "Next class: 25 SEP 2025",
     time: "18:00",
   },
   {
     id: "course-03",
-    imageUrl: "https://images.unsplash.com/photo-1512428238424-63c1a59235f2?w=500",
+    imageUrl:
+      "https://images.unsplash.com/photo-1582744709859-2d89c6920cfb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
     score: 5,
     courseName: "Palm Reading Essentials",
     prophetName: "Prophet Sam",
-    description: "Unlock the secrets hidden in the lines of your hands with this essential guide to palmistry.",
+    description:
+      "Unlock the secrets hidden in the lines of your hands with this essential guide to palmistry.",
     price: 400,
     date: "Next class: 28 SEP 2025",
     time: "10:00",
   },
   {
-  id: "course-01",
+    id: "course-01",
     imageUrl: "https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=500",
     score: 5,
     courseName: "Tarot Reading for Beginners",
     prophetName: "Prophet Jane",
-    description: "Learn the basics of tarot reading in this introductory course covering the major and minor arcana.",
+    description:
+      "Learn the basics of tarot reading in this introductory course covering the major and minor arcana.",
     price: 500,
     date: "Next class: 20 SEP 2025",
     time: "14:00",
   },
   {
     id: "course-02",
-    imageUrl: "https://images.unsplash.com/photo-1596704921995-922fe7f035a2?w=500",
+    imageUrl:
+      "https://images.unsplash.com/photo-1533294455009-a77b7557d2d1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
     score: 4,
     courseName: "Advanced Astrology",
     prophetName: "Prophet Alex",
-    description: "A deep dive into astrological charts, planetary alignments, and how they affect your life.",
+    description:
+      "A deep dive into astrological charts, planetary alignments, and how they affect your life.",
     price: 850,
     date: "Next class: 25 SEP 2025",
     time: "18:00",
   },
   {
     id: "course-03",
-    imageUrl: "https://images.unsplash.com/photo-1512428238424-63c1a59235f2?w=500",
+    imageUrl:
+      "https://images.unsplash.com/photo-1582744709859-2d89c6920cfb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
     score: 5,
     courseName: "Palm Reading Essentials",
     prophetName: "Prophet Sam",
-    description: "Unlock the secrets hidden in the lines of your hands with this essential guide to palmistry.",
+    description:
+      "Unlock the secrets hidden in the lines of your hands with this essential guide to palmistry.",
     price: 400,
     date: "Next class: 28 SEP 2025",
     time: "10:00",

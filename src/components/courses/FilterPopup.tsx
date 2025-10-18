@@ -92,208 +92,223 @@ const sliderStyles = `
 `;
 
 const FilterPopup = ({ isOpen, onClose, onApply }: FilterPopupProps) => {
-    const [sortBy, setSortBy] = useState("newest");
-    const [priceRange, setPriceRange] = useState<[number, number]>([100, 3000]);
-    const [horoscopeMethod, setHoroscopeMethod] = useState("");
-    const [horoscopeSector, setHoroscopeSector] = useState("");
+  const [sortBy, setSortBy] = useState("");
+  const [priceRange, setPriceRange] = useState<[number, number]>([100, 3000]);
+  const [horoscopeMethod, setHoroscopeMethod] = useState("");
+  const [horoscopeSector, setHoroscopeSector] = useState("");
 
-    const handlePriceChange = (index: number, value: number) => {
-        const newRange = [...priceRange] as [number, number];
-        
-        if (index === 0) {
-            // Min value shouldn't be greater than max value
-            newRange[0] = Math.min(value, priceRange[1] - 10);
-        } else {
-            // Max value shouldn't be less than min value
-            newRange[1] = Math.max(value, priceRange[0] + 10);
-        }
-        
-        setPriceRange(newRange);
-    };
+  const handlePriceChange = (index: number, value: number) => {
+    const newRange = [...priceRange] as [number, number];
 
-    const handleApply = () => {
-        if (onApply) {
-            onApply({
-                sortBy,
-                priceRange,
-                horoscopeMethod,
-                horoscopeSector,
-            });
-        }
-        onClose();
-    };
+    if (index === 0) {
+      // Min value shouldn't be greater than max value
+      newRange[0] = Math.min(value, priceRange[1] - 10);
+    } else {
+      // Max value shouldn't be less than min value
+      newRange[1] = Math.max(value, priceRange[0] + 10);
+    }
 
-    const handleCancel = () => {
-        // Reset to default values
-        setSortBy("newest");
-        setPriceRange([100, 3000]);
-        setHoroscopeMethod("");
-        setHoroscopeSector("");
-        onClose();
-    };
+    setPriceRange(newRange);
+  };
 
-    if (!isOpen) return null;
+  const handleApply = () => {
+    if (onApply) {
+      onApply({
+        sortBy,
+        priceRange,
+        horoscopeMethod,
+        horoscopeSector,
+      });
+    }
+    onClose();
+  };
 
-    return (
-        <>
-            <style dangerouslySetInnerHTML={{ __html: sliderStyles }} />
-            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 font-chakra">
-                <div className="bg-white rounded-3xl p-8 w-full max-w-4xl relative shadow-2xl">
+  const handleCancel = () => {
+    // Reset to default values
+    setSortBy("Newest Update");
+    setPriceRange([100, 3000]);
+    setHoroscopeMethod("");
+    setHoroscopeSector("");
+    onClose();
+  };
 
-                    {/* Sort by Section */}
-                    <div className="mb-8">
-                        <h3 className="text-xl font-semibold mb-4 text-gray-800">Sort by</h3>
-                        <div className="flex flex-wrap gap-4">
-                            {[
-                                { value: "newest", label: "Newest Update" },
-                                { value: "oldest", label: "Oldest Update" },
-                                { value: "popular", label: "Popular" },
-                                { value: "lowest", label: "Lowest Price" },
-                                { value: "highest", label: "Highest Price" }
-                            ].map((option) => (
-                                <label key={option.value} className="flex items-center gap-2 cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        name="sortBy"
-                                        value={option.value}
-                                        checked={sortBy === option.value}
-                                        onChange={(e) => setSortBy(e.target.value)}
-                                        className="w-4 h-4 text-pink-600 focus:ring-pink-500"
-                                    />
-                                    <span className="text-gray-700">{option.label}</span>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
+  if (!isOpen) return null;
 
-                    {/* Filter by Section */}
-                    <div className="mb-8">
-                        <h3 className="text-xl font-semibold mb-4 text-gray-800">Filter by</h3>
-                        
-                        {/* Price Range */}
-                        <div className="mb-6">
-                            <h4 className="text-lg font-medium mb-3 text-gray-700">Price Range</h4>
-                            <div className="flex items-center gap-4">
-                                {/* Min value label */}
-                                <span className="text-sm text-gray-500 font-medium">10฿</span>
-                                
-                                {/* Slider container */}
-                                <div className="flex-1 px-4">
-                                    <div className="relative py-8">
-                                        {/* Value labels above sliders */}
-                                        <div className="absolute -top-2 w-full">
-                                            <div 
-                                                className="absolute bg-primary-500 text-neutral-black px-3 py-1 rounded-full text-sm transform -translate-x-1/2"
-                                                style={{
-                                                    left: `${((priceRange[0] - 10) / (3000 - 10)) * 100}%`
-                                                }}
-                                            >
-                                                {priceRange[0]}฿
-                                            </div>
-                                            <div 
-                                                className="absolute bg-primary-500 text-neutral-black px-3 py-1 rounded-full text-sm transform -translate-x-1/2"
-                                                style={{
-                                                    left: `${((priceRange[1] - 10) / (3000 - 10)) * 100}%`
-                                                }}
-                                            >
-                                                {priceRange[1]}฿
-                                            </div>
-                                        </div>
-
-                                        {/* Background track */}
-                                        <div className="range-slider">
-                                            {/* Active range track */}
-                                            <div 
-                                                className="range-slider-track"
-                                                style={{
-                                                    left: `${((priceRange[0] - 10) / (3000 - 10)) * 100}%`,
-                                                    width: `${((priceRange[1] - priceRange[0]) / (3000 - 10)) * 100}%`
-                                                }}
-                                            />
-                                        </div>
-                                        
-                                        {/* Min range slider */}
-                                        <input
-                                            type="range"
-                                            min="10"
-                                            max="3000"
-                                            value={priceRange[0]}
-                                            onChange={(e) => handlePriceChange(0, parseInt(e.target.value))}
-                                            className="slider-thumb w-full"
-                                        />
-                                        
-                                        {/* Max range slider */}
-                                        <input
-                                            type="range"
-                                            min="10"
-                                            max="3000"
-                                            value={priceRange[1]}
-                                            onChange={(e) => handlePriceChange(1, parseInt(e.target.value))}
-                                            className="slider-thumb w-full"
-                                        />
-                                    </div>
-                                </div>
-                                
-                                {/* Max value label */}
-                                <span className="text-sm text-gray-500 font-medium">3000฿</span>
-                            </div>
-                        </div>
-
-                        {/* Dropdowns */}
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="flex items-center gap-3">
-                                <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
-                                    Horoscope Method
-                                </label>
-                                <GlobalInput
-                                    value={horoscopeMethod}
-                                    onChange={(e) => setHoroscopeMethod(e.target.value)}
-                                    placeholder="Enter Horoscope method"
-                                    className="w-48"
-                                />
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
-                                    Horoscope Sector
-                                </label>
-                                <Select value={horoscopeSector} onValueChange={setHoroscopeSector}>
-                                    <SelectTrigger className="w-48">
-                                        <SelectValue placeholder="Choose sector" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="love">Love</SelectItem>
-                                        <SelectItem value="work">Work</SelectItem>
-                                        <SelectItem value="study">Study</SelectItem>
-                                        <SelectItem value="money">Money</SelectItem>
-                                        <SelectItem value="luck">Luck</SelectItem>
-                                        <SelectItem value="family">Family</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-4 justify-center">
-                        <GlobalButton 
-                            variant="secondary"
-                            onClick={handleCancel}
-                            className="w-28"
-                        >
-                            Cancel
-                        </GlobalButton>
-                        <GlobalButton 
-                            variant="primary"
-                            onClick={handleApply}
-                            className="w-28"
-                        >
-                            Apply
-                        </GlobalButton>
-                    </div>
-                </div>
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: sliderStyles }} />
+      <div className="font-chakra fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+        <div className="relative w-full max-w-4xl rounded-3xl bg-white p-8 shadow-2xl">
+          {/* Sort by Section */}
+          <div className="mb-8">
+            <h3 className="mb-4 text-xl font-semibold text-gray-800">
+              Sort by
+            </h3>
+            <div className="flex flex-wrap gap-4">
+              {[
+                { value: "Lowest Price", label: "Lowest Price" },
+                { value: "Highest Price", label: "Highest Price" },
+                { value: "Oldest Update", label: "Oldest" },
+                { value: "Popular", label: "Popular" },
+                { value: "Newest Update", label: "Newest" },
+              ].map((option) => (
+                <label
+                  key={option.value}
+                  className="flex cursor-pointer items-center gap-2"
+                >
+                  <input
+                    type="radio"
+                    name="sortBy"
+                    value={option.value}
+                    checked={sortBy === option.value}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="h-4 w-4 text-pink-600 focus:ring-pink-500"
+                  />
+                  <span className="text-gray-700">{option.label}</span>
+                </label>
+              ))}
             </div>
-        </>
-    );
+          </div>
+
+          {/* Filter by Section */}
+          <div className="mb-8">
+            <h3 className="mb-4 text-xl font-semibold text-gray-800">
+              Filter by
+            </h3>
+
+            {/* Price Range */}
+            <div className="mb-6">
+              <h4 className="mb-3 text-lg font-medium text-gray-700">
+                Price Range
+              </h4>
+              <div className="flex items-center gap-4">
+                {/* Min value label */}
+                <span className="text-sm font-medium text-gray-500">10฿</span>
+
+                {/* Slider container */}
+                <div className="flex-1 px-4">
+                  <div className="relative py-8">
+                    {/* Value labels above sliders */}
+                    <div className="absolute -top-2 w-full">
+                      <div
+                        className="bg-primary-500 text-neutral-black absolute -translate-x-1/2 transform rounded-full px-3 py-1 text-sm"
+                        style={{
+                          left: `${((priceRange[0] - 10) / (3000 - 10)) * 100}%`,
+                        }}
+                      >
+                        {priceRange[0]}฿
+                      </div>
+                      <div
+                        className="bg-primary-500 text-neutral-black absolute -translate-x-1/2 transform rounded-full px-3 py-1 text-sm"
+                        style={{
+                          left: `${((priceRange[1] - 10) / (3000 - 10)) * 100}%`,
+                        }}
+                      >
+                        {priceRange[1]}฿
+                      </div>
+                    </div>
+
+                    {/* Background track */}
+                    <div className="range-slider">
+                      {/* Active range track */}
+                      <div
+                        className="range-slider-track"
+                        style={{
+                          left: `${((priceRange[0] - 10) / (3000 - 10)) * 100}%`,
+                          width: `${((priceRange[1] - priceRange[0]) / (3000 - 10)) * 100}%`,
+                        }}
+                      />
+                    </div>
+
+                    {/* Min range slider */}
+                    <input
+                      type="range"
+                      min="10"
+                      max="3000"
+                      value={priceRange[0]}
+                      onChange={(e) =>
+                        handlePriceChange(0, parseInt(e.target.value))
+                      }
+                      className="slider-thumb w-full"
+                    />
+
+                    {/* Max range slider */}
+                    <input
+                      type="range"
+                      min="10"
+                      max="3000"
+                      value={priceRange[1]}
+                      onChange={(e) =>
+                        handlePriceChange(1, parseInt(e.target.value))
+                      }
+                      className="slider-thumb w-full"
+                    />
+                  </div>
+                </div>
+
+                {/* Max value label */}
+                <span className="text-sm font-medium text-gray-500">3000฿</span>
+              </div>
+            </div>
+
+            {/* Dropdowns */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-center gap-3">
+                <label className="text-sm font-medium whitespace-nowrap text-gray-700">
+                  Horoscope Method
+                </label>
+                <GlobalInput
+                  value={horoscopeMethod}
+                  onChange={(e) => setHoroscopeMethod(e.target.value)}
+                  placeholder="Enter Horoscope method"
+                  className="w-48"
+                />
+              </div>
+              <div className="flex items-center gap-3">
+                <label className="text-sm font-medium whitespace-nowrap text-gray-700">
+                  Horoscope Sector
+                </label>
+                <Select
+                  value={horoscopeSector}
+                  onValueChange={setHoroscopeSector}
+                >
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder="Choose sector" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="LOVE">Love</SelectItem>
+                    <SelectItem value="WORK">Work</SelectItem>
+                    <SelectItem value="STUDY">Study</SelectItem>
+                    <SelectItem value="MONEY">Money</SelectItem>
+                    <SelectItem value="LUCK">Luck</SelectItem>
+                    <SelectItem value="FAMILY">Family</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-center gap-4">
+            <GlobalButton
+              variant="secondary"
+              onClick={handleCancel}
+              className="w-28"
+            >
+              Cancel
+            </GlobalButton>
+            <GlobalButton
+              variant="primary"
+              onClick={handleApply}
+              className="w-28"
+            >
+              Apply
+            </GlobalButton>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default FilterPopup;
