@@ -1,8 +1,8 @@
 import React from "react";
-
-import StarRating from "@/components/account/StarRating";
 import { PencilIcon } from "lucide-react";
 import router from "next/router";
+
+import StarRating from "@/components/account/StarRating";
 
 function ProphetCourseCard({
   id,

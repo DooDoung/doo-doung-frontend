@@ -1,12 +1,12 @@
 import router from "next/router";
 
 import ProphetCard from "@/components/account/ProphetCard";
+import ProphetCourseCard from "@/components/course/Prophet/ProphetCourseCard";
 import {
   DefaultLayout,
   GlassContainer2,
   GlobalButton,
 } from "@/components/globalComponents";
-import ProphetCourseCard from "@/components/course/Prophet/ProphetCourseCard";
 
 export default function CourseProphetPage() {
   const courses = mockCourse;
