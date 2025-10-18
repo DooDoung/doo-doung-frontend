@@ -1,5 +1,5 @@
+import { useEffect,useState } from "react";
 import { Funnel, Search } from "lucide-react";
-import { useState, useEffect } from "react";
 
 import CourseCard from "@/components/account/Course/CourseCard";
 import FilterPopup, { FilterState } from "@/components/courses/FilterPopup";

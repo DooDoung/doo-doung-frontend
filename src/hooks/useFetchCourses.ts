@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+
 import {
   CourseAPI,
-  CourseItem,
   CourseFilterParams,
+  CourseItem,
   PaginationInfo,
 } from "@/types/course";
 

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Pencil } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import { EditCourseProfileDialog } from "@/components/course/Prophet/EditCourseProfileDialog";
+import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
 import { DefaultLayout } from "@/components/globalComponents";
 import {
   GlobalButton,
@@ -15,11 +18,8 @@ import {
 } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
+import { BANKS,MOCK_ACCOUNTS } from "@/constants/transaction";
 import { AppToast } from "@/lib/app-toast";
-import { MOCK_ACCOUNTS, BANKS } from "@/constants/transaction";
-import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
-import { EditCourseProfileDialog } from "@/components/course/Prophet/EditCourseProfileDialog";
-import Image from "next/image";
 
 export default function CreateCoursePage() {
   const router = useRouter();
