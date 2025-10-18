@@ -128,7 +128,7 @@ export default function CourseDetailsPage() {
         </GlassContainer2>
 
         {/* right box */}
-        <div className="font-chakra bg-neutral-white shadow-all-around flex h-full flex-1 flex-col overflow-y-scroll rounded-3xl px-12 py-7">
+        <div className="font-chakra bg-neutral-white shadow-all-around custom-scrollbar flex h-full flex-1 flex-col overflow-y-scroll rounded-3xl px-12 py-7">
           <div className="grid h-full grid-cols-6 content-between gap-1">
             <h3 className="text-neutral-black col-span-5 self-center text-3xl">
               {formData.courseName}
