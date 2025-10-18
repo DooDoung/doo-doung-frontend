@@ -2,6 +2,18 @@ import type { Session as SessionItem } from "@/components/course/SessionsList";
 
 import { AppToast } from "./app-toast";
 
+// Default images per course sector
+const mockCourseImages: Record<string, string> = {
+  love: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvPGA1OrVL7SNCMOzNz4F6fjc-AgNASxraHg&s",
+  work: "https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=500",
+  study:
+    "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
+  money:
+    "https://images.unsplash.com/photo-1553729459-efe14ef6055d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
+  luck: "https://images.unsplash.com/photo-1582744709859-2d89c6920cfb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
+  family: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500",
+};
+
 // --- Helper Functions ---
 
 /**
@@ -38,7 +50,7 @@ function mapRawBookingToSession(b: any): SessionItem {
       date: String(b.createDateAt ?? b.createdAt ?? b.date ?? "").split("T")[0],
       time: (b.startDateTime && b.endDateTime) ? `${String(b.startDateTime ?? "").split("T")[1].slice(0, -8)} - ${String(b.endDateTime ?? "").split("T")[1].slice(0, -8)}` : "",
       price: b.price ? String(b.price) : b.amount ?? "",
-      image: b.imageUrl ?? b.image ?? b.thumbnail ?? "/images/course.svg",
+      image: b.imageUrl ?? b.image ?? b.thumbnail ?? mockCourseImages[(b.course?.horoscopeSector || b.sector || "").toLowerCase()] ?? "/images/course.svg",
       status: b.status,
       lineId: b.prophet?.lineId || "",
       transactionId: b.payment.id || "",
