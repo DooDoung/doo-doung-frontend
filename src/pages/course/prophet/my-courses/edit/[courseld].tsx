@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Pencil } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 
 import { EditCourseProfileDialog } from "@/components/course/Prophet/EditCourseProfileDialog";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
@@ -97,7 +97,7 @@ export default function EditCoursePage() {
       <div className="my-10 flex h-[80vh] w-[90vw]">
         {/* left box */}
         <GlassContainer2 className="m-0 w-[32%]">
-          <div className="flex h-full w-full flex-col items-center justify-between text-center">
+          <div className="flex h-full w-full flex-col items-center justify-between gap-3 text-center">
             <h3 className="font-sanctuary text-neutral-white text-5xl">
               PROPHET
             </h3>
@@ -148,9 +148,9 @@ export default function EditCoursePage() {
         </GlassContainer2>
 
         {/* right box */}
-        <div className="bg-neutral-white shadow-all-around flex h-full flex-1 flex-col rounded-3xl p-12">
-          <div className="grid h-full grid-cols-6 content-between gap-4">
-            <h3 className="font-sanctuary text-neutral-black col-span-5 mt-2 mb-4 text-5xl">
+        <div className="bg-neutral-white shadow-all-around flex h-full flex-1 flex-col overflow-y-scroll rounded-3xl px-12 py-7">
+          <div className="grid grid-cols-6 content-between gap-1">
+            <h3 className="font-sanctuary text-neutral-black col-span-5 self-center text-5xl">
               Edit Course
             </h3>
             <div className="content-center justify-self-center">
@@ -170,11 +170,11 @@ export default function EditCoursePage() {
 
           <form
             id="customerInfoForm"
-            className="font-chakra grid h-full grid-cols-6 content-between gap-4"
+            className="font-chakra grid h-full grid-cols-6 content-evenly gap-4"
             onSubmit={handleSubmit}
           >
             <div className="col-span-full">
-              <label className="text-neutral-black mb-1 flex items-center">
+              <label className="text-neutral-black flex items-center">
                 Course Name
                 <Pencil className="ml-2" size={18} />
               </label>
@@ -189,7 +189,7 @@ export default function EditCoursePage() {
             </div>
 
             <div className="col-span-3">
-              <label className="text-neutral-black mb-1 flex items-center">
+              <label className="text-neutral-black flex items-center">
                 Prophet Method
                 <Pencil className="ml-2" size={18} />
               </label>
@@ -203,7 +203,7 @@ export default function EditCoursePage() {
             </div>
 
             <div className="col-span-3">
-              <label className="text-neutral-black mb-1 flex items-center">
+              <label className="text-neutral-black flex items-center">
                 Duration
                 <Pencil className="ml-2" size={18} />
               </label>
@@ -223,7 +223,7 @@ export default function EditCoursePage() {
             </div>
 
             <div className="col-span-full">
-              <label className="text-neutral-black mb-1 flex items-center">
+              <label className="text-neutral-black flex items-center">
                 Description
                 <Pencil className="ml-2" size={18} />
               </label>
@@ -237,7 +237,7 @@ export default function EditCoursePage() {
             </div>
 
             <div className="col-span-2">
-              <label className="text-neutral-black mb-1 flex items-center">
+              <label className="text-neutral-black flex items-center">
                 Price
                 <Pencil className="ml-2" size={18} />
               </label>
@@ -251,7 +251,7 @@ export default function EditCoursePage() {
             </div>
 
             <div className="col-span-4">
-              <label className="text-neutral-black mb-1 flex items-center">
+              <label className="text-neutral-black flex items-center">
                 Transaction Account
               </label>
               <Select

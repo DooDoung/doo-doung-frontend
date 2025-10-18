@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 
 import BookingHistoryCard from "@/components/course/Prophet/BookingHistoryCard";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
@@ -85,7 +85,7 @@ export default function CourseDetailsPage() {
       <div className="my-10 flex h-[80vh] w-[90vw]">
         {/* left box */}
         <GlassContainer2 className="m-0 w-[32%]">
-          <div className="flex h-full w-full flex-col items-center justify-between text-center">
+          <div className="flex h-full w-full flex-col items-center justify-between gap-3 text-center">
             <h3 className="font-sanctuary text-neutral-white text-5xl">
               PROPHET
             </h3>
@@ -128,9 +128,9 @@ export default function CourseDetailsPage() {
         </GlassContainer2>
 
         {/* right box */}
-        <div className="font-chakra bg-neutral-white shadow-all-around flex h-full flex-1 flex-col rounded-3xl px-12 py-10">
-          <div className="grid h-full grid-cols-6 content-between gap-4">
-            <h3 className="text-neutral-black col-span-5 mt-2 mb-4 text-3xl">
+        <div className="font-chakra bg-neutral-white shadow-all-around flex h-full flex-1 flex-col overflow-y-scroll rounded-3xl px-12 py-7">
+          <div className="grid h-full grid-cols-6 content-between gap-1">
+            <h3 className="text-neutral-black col-span-5 self-center text-3xl">
               {formData.courseName}
             </h3>
             <div className="content-center justify-self-center">
@@ -145,35 +145,35 @@ export default function CourseDetailsPage() {
             </div>
 
             <div className="col-span-3">
-              <label className="from-accent-pink to-accent-violet mb-1 bg-gradient-to-r bg-clip-text text-transparent">
+              <label className="from-accent-pink to-accent-violet bg-gradient-to-r bg-clip-text text-transparent">
                 Prophet Method
               </label>
               <p className="text-neutral-black">{formData.prophetMethod}</p>
             </div>
 
             <div className="col-span-3">
-              <label className="from-accent-pink to-accent-violet mb-1 bg-gradient-to-r bg-clip-text text-transparent">
+              <label className="from-accent-pink to-accent-violet bg-gradient-to-r bg-clip-text text-transparent">
                 Duration [min]
               </label>
               <p className="text-neutral-black">{formData.duration}</p>
             </div>
 
             <div className="col-span-full">
-              <label className="from-accent-pink to-accent-violet mb-1 bg-gradient-to-r bg-clip-text text-transparent">
+              <label className="from-accent-pink to-accent-violet bg-gradient-to-r bg-clip-text text-transparent">
                 Description
               </label>
               <p className="text-neutral-black">{formData.description}</p>
             </div>
 
             <div className="col-span-2">
-              <label className="from-accent-pink to-accent-violet mb-1 bg-gradient-to-r bg-clip-text text-transparent">
+              <label className="from-accent-pink to-accent-violet bg-gradient-to-r bg-clip-text text-transparent">
                 Price
               </label>
               <p className="text-neutral-black">{formData.price}</p>
             </div>
 
             <div className="col-span-4">
-              <label className="from-accent-pink to-accent-violet mb-1 bg-gradient-to-r bg-clip-text text-transparent">
+              <label className="from-accent-pink to-accent-violet bg-gradient-to-r bg-clip-text text-transparent">
                 Transaction Account
               </label>
               <div className="text-neutral-black pr-[150px]">
@@ -185,10 +185,10 @@ export default function CourseDetailsPage() {
 
             {/* Booking History */}
             <div className="col-span-full">
-              <label className="from-accent-pink to-accent-violet mb-1 bg-gradient-to-r bg-clip-text text-transparent">
+              <label className="from-accent-pink to-accent-violet bg-gradient-to-r bg-clip-text text-transparent">
                 Booking history
               </label>
-              <div className="h-[200px] overflow-y-auto">
+              <div className="custom-scrollbar h-[200px] overflow-y-auto">
                 {/* booking history card */}
                 <div className="flex flex-col gap-4 pt-3">
                   {mockbookingHistoryData.map((item, index) => (
