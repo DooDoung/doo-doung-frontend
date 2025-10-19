@@ -20,4 +20,8 @@ export interface SessionTableBaseProps {
   totalWeeks?: number;
   goToPreviousWeek?: () => void;
   goToNextWeek?: () => void;
+    
+  /** customer mode */
+  selectedSlot?: { day: string; time: string } | null;
+  onSelectSlot?: (day: string, time: string) => void;
 }

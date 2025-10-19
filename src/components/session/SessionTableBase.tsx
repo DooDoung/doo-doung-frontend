@@ -30,6 +30,8 @@ export default function SessionTableBase({
   totalWeeks = 4,
   goToPreviousWeek = () => {},
   goToNextWeek = () => {},
+  selectedSlot = null,
+  onSelectSlot,
 }: SessionTableBaseProps) {
   const weekDays = useMemo(() => generateWeekDays(startMonday), [startMonday]);
   const timeSlots = useMemo(() => generateTimeSlots(), []);
@@ -96,7 +98,11 @@ export default function SessionTableBase({
       <div className="bg-neutral-white custom-scrollbar h-[calc(70vh-5rem)] overflow-y-auto px-4 py-4">
         <Table className="bg-neutral-white w-full">
           {/* caption and header can be removed if header is handled outside */}
-          <TableCaption>Prophet available time slot</TableCaption>
+          <TableCaption>
+            {variant === "customer"
+              ? "Available booking slots"
+              : "Prophet available time slot"}
+          </TableCaption>
           {/* <TableHeader> is now handled by the div grid above */}
           <TableBody className="relative">
             {timeSlots.map((time) => (
@@ -122,6 +128,8 @@ export default function SessionTableBase({
                     bookingSlot={bookingSlotsMap.get(`${day.dayName}-${time}`)}
                     renderBookingSlot={renderBookingSlot}
                     onClick={onToggleProphetAvail!}
+                    selectedSlot={selectedSlot}
+                    onSelectSlot={onSelectSlot}
                   />
                 ))}
                 <TableCell className="border-neutral-gray bg-neutral-white sticky right-0 w-[80px] border-l"></TableCell>
