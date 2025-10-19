@@ -25,9 +25,11 @@ function ProphetCourseCard({
 }) {
   return (
     <div
-      className={`relative flex h-40 w-[97%] rounded-3xl border font-chakra bg-white shadow-md ${editability === "EDIT" ? "hover:bg-primary-250 cursor-pointer" : ""}`}
+      className={`font-chakra relative flex h-40 w-[97%] rounded-3xl border bg-white shadow-md ${editability === "EDIT" ? "hover:bg-primary-250 cursor-pointer" : ""}`}
       // click to go to course detail page
-      onClick={() => { router.push(`/course/prophet/my-courses/details/${id}`); }}
+      onClick={() => {
+        router.push(`/course/prophet/my-courses/details/${id}`);
+      }}
     >
       <img
         src={imageUrl}
