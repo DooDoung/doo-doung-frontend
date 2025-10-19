@@ -22,18 +22,17 @@ function EditUserProfile({
   role: string;
   editing: boolean;
 }) {
-  const {data: session} = useSession();
+  const { data: session } = useSession();
   const [openDialog, setOpenDialog] = React.useState(false);
 
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
-  const [accountData, setAccountData] = React.useState<AccountData | null>(null);
-
+  const [accountData, setAccountData] = React.useState<AccountData | null>(
+    null,
+  );
 
   const fetchAccountData = React.useCallback(async () => {
     if (!session?.user?.id) {
-      setError("User not authenticated");
-      setLoading(false);
       return;
     }
     try {
@@ -41,17 +40,20 @@ function EditUserProfile({
       setError(null);
 
       const headers: HeadersInit = {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       };
 
       if (session.accessToken) {
-        headers['Authorization'] = `Bearer ${session.accessToken}`;
+        headers["Authorization"] = `Bearer ${session.accessToken}`;
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/account/${session.user.id}`, {
-        method: "GET",
-        headers
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/account/${session.user.id}`,
+        {
+          method: "GET",
+          headers,
+        },
+      );
 
       if (!res.ok) {
         setError("Failed to fetch account data");
@@ -66,7 +68,7 @@ function EditUserProfile({
     } finally {
       setLoading(false);
     }
-  }, [session?.user?.id, session?.accessToken]);
+  }, [session, session?.user?.id, session?.accessToken]);
 
   const handleChangeProfile = () => {
     setOpenDialog(true);
@@ -93,11 +95,10 @@ function EditUserProfile({
   if (error || !accountData) {
     return (
       <div className="bg-primary-500/60 flex w-full flex-col items-center justify-center rounded-3xl p-12 text-center sm:w-[30%]">
-        <div className="text-neutral-white mb-4">{error || "No account data available"}</div>
-        <GlobalButton 
-          variant="secondary"
-          onClick={fetchAccountData}
-        >
+        <div className="text-neutral-white mb-4">
+          {error || "No account data available"}
+        </div>
+        <GlobalButton variant="secondary" onClick={fetchAccountData}>
           Retry
         </GlobalButton>
       </div>
@@ -143,7 +144,11 @@ function EditUserProfile({
           onOpenChange={setOpenDialog}
           currentImageUrl={accountData?.profileUrl}
           user={accountData as any}
-          onSave={(url) => setAccountData((prev) => prev ? { ...prev, profileUrl: url } : null)}
+          onSave={(url) =>
+            setAccountData((prev) =>
+              prev ? { ...prev, profileUrl: url } : null,
+            )
+          }
         />
       </div>
 
