@@ -30,8 +30,8 @@ export default function SessionTableBase({
   totalWeeks = 4,
   goToPreviousWeek = () => {},
   goToNextWeek = () => {},
-  selectedSlot = null,
-  onSelectSlot,
+  selectedSlots = null,
+  onSelectSlots,
 }: SessionTableBaseProps) {
   const weekDays = useMemo(() => generateWeekDays(startMonday), [startMonday]);
   const timeSlots = useMemo(() => generateTimeSlots(), []);
@@ -128,8 +128,8 @@ export default function SessionTableBase({
                     bookingSlot={bookingSlotsMap.get(`${day.dayName}-${time}`)}
                     renderBookingSlot={renderBookingSlot}
                     onClick={onToggleProphetAvail!}
-                    selectedSlot={selectedSlot}
-                    onSelectSlot={onSelectSlot}
+                    selectedSlots={selectedSlots}
+                    onSelectSlots={onSelectSlots}
                   />
                 ))}
                 <TableCell className="border-neutral-gray bg-neutral-white sticky right-0 w-[80px] border-l"></TableCell>

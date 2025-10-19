@@ -4,6 +4,7 @@ import { useState } from "react";
 import router from "next/router";
 
 import { AppToast } from "@/lib/app-toast";
+import { generateTimeSlots } from "@/lib/session-availible-table";
 
 import { GlobalButton } from "../globalComponents";
 
@@ -16,6 +17,7 @@ export default function SessionTableBooking() {
     bookingSlots,
     goToPreviousWeek,
     goToNextWeek,
+    durationMinutes = 60,
   } = MockBooking;
 
   const today = new Date();
@@ -23,14 +25,48 @@ export default function SessionTableBooking() {
   const dayOfWeek = today.getDay();
   const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
   currentMonday.setDate(today.getDate() + daysToMonday + currentWeek * 7);
-  const [selectedSlot, setSelectedSlot] = useState<{ day: string; time: string} | null>(null);
+  const [selectedSlots, setSelectedSlots] = useState<Set<string>>(new Set());
 
   const handleSelectSlot = (day: string, time: string) => {
-    if (selectedSlot?.day === day && selectedSlot?.time === time) {
-      setSelectedSlot(null);
-    } else {
-        setSelectedSlot({ day, time });
-    }
+    const timeOrder = generateTimeSlots();
+    const MAX_SLOTS = durationMinutes / 15;
+
+    setSelectedSlots((prev) => {
+        const newSet = new Set(prev);
+        
+        const key = `${day}-${time}`;
+        if (newSet.has(key)) {
+            newSet.delete(key);
+            return newSet;
+        }
+
+        const selectedDays = [...newSet].map((k) => k.split("-")[0]);
+        const uniqueDays = [...new Set(selectedDays)];
+
+        if (uniqueDays.length > 1 || (uniqueDays[0] !== day)) {
+            AppToast.info("You can only select one day.");
+            return new Set([key]);
+        }
+
+        const selectedTimes = [...newSet].map((k) => k.split("-")[1]);
+        const currentIndex = timeOrder.indexOf(time);
+        const isAdjacent = selectedTimes.some(
+            (t) => Math.abs(timeOrder.indexOf(t) - currentIndex) === 1,
+        );
+
+        if (!isAdjacent) {
+            AppToast.error("Slots must be adjacent.");
+            return prev;
+        }
+
+        if (newSet.size >= MAX_SLOTS) {
+            AppToast.error(`You can select up to ${MAX_SLOTS} slots only.`);
+            return prev;
+        }
+
+        newSet.add(key);
+        return newSet;
+    });   
   };
 
   return (
@@ -47,8 +83,11 @@ export default function SessionTableBooking() {
         goToNextWeek={goToNextWeek}
 
         /** Customer mode */
-        selectedSlot={selectedSlot}
-        onSelectSlot={handleSelectSlot}
+        selectedSlots={Array.from(selectedSlots).map((s) => {
+            const [day, time] = s.split("-");
+            return { day, time };
+        })}
+        onSelectSlots={handleSelectSlot}
       />
 
       <div className="flex items-center justify-between space-x-4">
@@ -62,10 +101,18 @@ export default function SessionTableBooking() {
         </GlobalButton>
 
         <GlobalButton
-            disabled={!selectedSlot}
+            disabled={!selectedSlots || selectedSlots.size === 0}
             onClick={() => {
-                if(selectedSlot) {
-                    AppToast.success(`You have selected ${selectedSlot.day} at ${selectedSlot.time}`);
+                if(selectedSlots.size > 0) {
+                    AppToast.success(
+                        `Selected slot(s): ` +
+                        Array.from(selectedSlots).map((s) => {
+                            const [day, time] = s.split("-");
+                            return { day, time };
+                        })
+                            .map((s) => `${s.day} at ${s.time}`)
+                            .join(", ")
+                    );
                     router.push("/account");
                 }
             }}
@@ -106,6 +153,7 @@ const MockBooking = {
     { id: "2", day: "TUE", time: "14:00", variant: "FREE" },
     { id: "3", day: "WED", time: "14:00", variant: "TAKEN" },
   ],
+  durationMinutes: 60,
   goToPreviousWeek: () => console.log("Go to previous week"),
   goToNextWeek: () => console.log("Go to next week"),
 

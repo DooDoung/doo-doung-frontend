@@ -22,6 +22,6 @@ export interface SessionTableBaseProps {
   goToNextWeek?: () => void;
     
   /** customer mode */
-  selectedSlot?: { day: string; time: string } | null;
-  onSelectSlot?: (day: string, time: string) => void;
+  selectedSlots?: Array<{ day: string; time: string }> | null;
+  onSelectSlots?: (day: string, time: string) => void;
 }

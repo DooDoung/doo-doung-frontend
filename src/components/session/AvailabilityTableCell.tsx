@@ -17,8 +17,8 @@ interface AvailabilityTableCellProps {
   onClick: (dayDate: Date, time: string) => void;
 
   /** customer mode */
-  selectedSlot?: { day: string; time: string } | null;
-  onSelectSlot?: (day: string, time: string) => void;
+  selectedSlots?: [{ day: string; time: string }] | null;
+  onSelectSlots?: (day: string, time: string) => void;
 }
 
 const AvailabilityTableCell = React.memo(
@@ -31,12 +31,13 @@ const AvailabilityTableCell = React.memo(
     renderBookingSlot,
     variant,
     onClick,
-    selectedSlot,
-    onSelectSlot,
+    selectedSlots,
+    onSelectSlots,
   }: AvailabilityTableCellProps) => {
     const isTaken = bookingSlot?.variant === "TAKEN";
-    const isSelected = 
-      selectedSlot?.day === day.dayName && selectedSlot?.time === time
+    const isSelected = Array.isArray(selectedSlots)
+      ? selectedSlots.some((s) => s.day === day.dayName && s.time === time)
+      : false;
 
     const cellClasses = clsx(
       "relative h-12 border-l border-b border-t border-neutral-gray p-1 text-center",
@@ -63,19 +64,10 @@ const AvailabilityTableCell = React.memo(
     const handleClick = () => {
       if (variant === "prophet" && isEdit) {
         onClick(day.date, time);
-      } else if (variant === "customer" && !isTaken && onSelectSlot) {
-        onSelectSlot(day.dayName, time);
+      } else if (variant === "customer" && !isTaken && onSelectSlots) {
+        onSelectSlots(day.dayName, time);
       }
     };
-
-    // console.log("Render cell", {
-    //   dayName: day.dayName,
-    //   time: time,
-    //   selectedDay: selectedSlots?.day,
-    //   selectedTime: selectedSlots?.time,
-    //   isSelected,
-    // });
-
 
     return (
       <TableCell
