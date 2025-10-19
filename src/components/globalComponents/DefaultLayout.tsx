@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode, use } from "react";
 import { Toaster } from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 import { cn } from "@/lib/utils";
 
@@ -60,8 +61,16 @@ export function DefaultLayout({
   footerProps,
   contentClassName,
 }: DefaultLayoutProps) {
-  // TODO : change with next auth
-  const role = "customer";
+  const { data: session } = useSession();
+  // Normalize session role to the HeaderProps union ("customer" | "prophet") or undefined
+  const role = (() => {
+    const r = session?.user?.role;
+    if (typeof r !== "string") return undefined;
+    const lower = r.toLowerCase();
+    if (lower === "prophet") return "prophet";
+    if (lower === "customer") return "customer";
+    return undefined;
+  })() as "customer" | "prophet" | undefined;
   return (
     <div
       className={cn(
