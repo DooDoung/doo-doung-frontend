@@ -90,7 +90,7 @@ export default function SessionTableBooking() {
         onSelectSlots={handleSelectSlot}
       />
 
-      <div className="mt-3 flex items-center justify-between space-x-4">
+      <div className="mt-3  flex items-center justify-between space-x-4">
         <GlobalButton
             className="w-36"
             variant="secondary"
