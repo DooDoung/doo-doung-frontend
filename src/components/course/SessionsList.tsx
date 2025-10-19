@@ -44,7 +44,7 @@ export default function SessionsList({ sessions, onSelect, tab, onChangeTab }: P
   }
 
   return (
-    <div className="flex flex-col h-96">
+    <div className="flex flex-col relative h-full">
       <SessionTabs active={activeTab} onChange={handleTabChange} />
 
       <div className="space-y-4 overflow-y-scroll custom-scrollbar pr-2 pb-6 flex-1">
