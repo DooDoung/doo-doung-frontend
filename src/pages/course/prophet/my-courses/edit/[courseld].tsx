@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import { Pencil } from "lucide-react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import axios from "axios";
 
 import { EditCourseProfileDialog } from "@/components/course/Prophet/EditCourseProfileDialog";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
