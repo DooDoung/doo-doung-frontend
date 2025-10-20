@@ -1,24 +1,21 @@
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { DefaultLayout } from "@/components/globalComponents";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
-import { CourseCard, TimeSlotConfirmed, BackToHomeActions } from "@/components/booking";
-import { AppToast } from "@/lib/app-toast";
+import { CourseCard, BookingActions } from "@/components/booking";
 
-export default function BookingSuccessPage() {
+export default function BookingPage() {
   const router = useRouter();
 
-  useEffect(() => {
-    // Show success toast when page loads
-    AppToast.success("Confirmed Booking!");
-  }, []);
-
-  const handleBackToHome = () => {
-    router.push('/');
+  const handleCheckAvailableTime = () => {
+    router.push('/booking/booking-slot/[bookingld]');
   };
 
-  // Mock data - ในอนาคตจะมาจาก API หรือ props
+  const handleBack = () => {
+    router.back();
+  };
+
+  // Mock data 
   const courseData = {
     courseImageSrc: "/images/course.svg",
     courseImageAlt: "Course image",
@@ -28,13 +25,7 @@ export default function BookingSuccessPage() {
     description: "Current course description description",
     price: "1,750",
     prophetName: "แม่หมอออม",
-    prophetImageSrc: "/images/course.svg",
-    prophetLineId: "aom12356"
-  };
-
-  const timeSlotData = {
-    selectedDate: "10 October 2025",
-    selectedTime: "00:15-00:45 AM"
+    prophetImageSrc: "/images/course.svg"
   };
 
   return (
@@ -46,18 +37,14 @@ export default function BookingSuccessPage() {
               Booking
             </h1>
 
-            <div className="flex h-[50vh] sm:h-[55vh] lg:h-[50vh] w-full flex-col items-center overflow-y-auto px-2 sm:px-4">
+            <div className="flex h-[45vh] sm:h-[50vh] lg:h-[45vh] w-full flex-col items-center overflow-y-auto px-2 sm:px-4">
               <CourseCard {...courseData} />
-              
-              <div className="w-full max-w-4xl mt-4">
-                <TimeSlotConfirmed 
-                  selectedDate={timeSlotData.selectedDate}
-                  selectedTime={timeSlotData.selectedTime}
-                />
-              </div>
             </div>
 
-            <BackToHomeActions onBackToHome={handleBackToHome} />
+            <BookingActions 
+              onBack={handleBack} 
+              onCheckAvailableTime={handleCheckAvailableTime} 
+            />
           </div>
         </GlassContainer2>
       </div>

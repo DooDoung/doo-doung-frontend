@@ -11,6 +11,7 @@ interface CourseCardProps {
   price: string;
   prophetName: string;
   prophetImageSrc: string;
+  prophetLineId?: string;
 }
 
 export default function CourseCard({
@@ -22,7 +23,8 @@ export default function CourseCard({
   description,
   price,
   prophetName,
-  prophetImageSrc
+  prophetImageSrc,
+  prophetLineId
 }: CourseCardProps) {
   return (
     <div className="bg-neutral-white/90 backdrop-blur-sm rounded-3xl w-full max-w-4xl flex flex-col lg:flex-row items-start">
@@ -35,6 +37,7 @@ export default function CourseCard({
         price={price}
         prophetName={prophetName}
         prophetImageSrc={prophetImageSrc}
+        prophetLineId={prophetLineId}
       />
     </div>
   );

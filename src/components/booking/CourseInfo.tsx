@@ -9,6 +9,7 @@ interface CourseInfoProps {
   price: string;
   prophetName: string;
   prophetImageSrc: string;
+  prophetLineId?: string;
 }
 
 export default function CourseInfo({
@@ -18,7 +19,8 @@ export default function CourseInfo({
   description,
   price,
   prophetName,
-  prophetImageSrc
+  prophetImageSrc,
+  prophetLineId
 }: CourseInfoProps) {
   return (
     <div className="flex-1 space-y-4 min-w-0 h-full bg-neutral-white/90 p-4 sm:p-6 rounded-2xl">
@@ -34,6 +36,7 @@ export default function CourseInfo({
           <CourseDetail label="Duration (min)" value={duration} />
           <CourseDetail label="Description" value={description} />
           <CourseDetail label="Prices (Baht)" value={price} />
+          {prophetLineId && <CourseDetail label="Prophet Line ID" value={prophetLineId} />}
         </div>
         <ProphetProfile imageSrc={prophetImageSrc} name={prophetName} />
       </div>

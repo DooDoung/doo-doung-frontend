@@ -4,3 +4,7 @@ export { default as CourseInfo } from './CourseInfo';
 export { default as CourseDetail } from './CourseDetail';
 export { default as ProphetProfile } from './ProphetProfile';
 export { default as BookingActions } from './BookingActions';
+export { default as ConfirmBookingActions } from './ConfirmBookingActions';
+export { default as TimeSlotWithPurchase } from './TimeSlotWithPurchase';
+export { default as TimeSlotConfirmed } from './TimeSlotConfirmed';
+export { default as BackToHomeActions } from './BackToHomeActions';
