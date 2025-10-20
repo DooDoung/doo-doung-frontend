@@ -12,6 +12,7 @@ import {
   DefaultLayout,
   GlobalButton,
   GlobalInput,
+  GlobalTextarea,
   Select,
   SelectContent,
   SelectItem,
@@ -320,6 +321,35 @@ export default function GlobalComponentShowcase() {
                       disabled={true}
                     />
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Global Checkbox Component Section */}
+          <section>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Settings className="h-5 w-5" />
+                  Global Textarea Component
+                </CardTitle>
+                <CardDescription>
+                  Enhanced Textarea component with custom styling, states,
+                  maxLength, counter and sizing options
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex flex-col gap-6">
+                  <div className="flex items-center gap-3">
+                    <GlobalTextarea className="h-40 w-100" maxLength={300} />
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <h4 className="text-sm font-semibold">Example Usage</h4>
+                  <pre className="bg-muted overflow-x-auto rounded-lg p-4 text-sm">
+                    {`<GlobalTextarea className="h-40 w-100" maxLength={300} />`}
+                  </pre>
                 </div>
               </CardContent>
             </Card>

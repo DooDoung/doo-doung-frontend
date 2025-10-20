@@ -16,10 +16,6 @@ export default function AccountDetailsPage() {
 
   useEffect(() => {
     const fetchAccountData = async () => {
-      if (!accountId || typeof accountId !== "string") {
-        return;
-      }
-
       try {
         setLoading(true);
         setError(null);

@@ -29,7 +29,16 @@ export default function AccountPage() {
             "Content-Type": "application/json",
           },
         });
-        setUser(response.data.data);
+
+        // Transform lineId to line before setting user data
+        const userData = response.data.data;
+        if (userData && userData.lineId) {
+          userData.line = userData.lineId;
+          delete userData.lineId;
+        }
+        setUser(userData);
+        console.log("Fetched account data:", response.data);
+        
       } catch (error: any) {
         console.error("Error fetching account data:", error);
         setError(error.message || "Failed to fetch account data");

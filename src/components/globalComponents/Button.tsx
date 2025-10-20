@@ -14,7 +14,7 @@ interface GlobalButtonProps
   /**
    * The size of the button
    */
-  size?: "sm" | "default" | "lg" | "icon";
+  size?: "sm" | "default" | "lg" | "icon" | "xs";
   /**
    * Whether the button is loading
    */
@@ -31,6 +31,8 @@ interface GlobalButtonProps
    * Whether the button should take full width
    */
   fullWidth?: boolean;
+  /** visually active/clicked state */
+  isActive?: boolean;
 }
 
 /**
@@ -49,8 +51,15 @@ export function GlobalButton({
   children,
   disabled,
   className,
+  isActive = false,
   ...props
 }: GlobalButtonProps) {
+  const activeStyle: React.CSSProperties = {
+    borderRadius: "var(--radius-md, 25px)",
+    border: "var(--border-md, 2px) solid var(--accent-pink-violet, #DC7CA0)",
+    background: "#FDECF2",
+    boxShadow: "-2px -2px 4px 0 #B389EC inset, 5px 5px 10px 0 #DC7CA0 inset",
+  };
   const customVariants: Record<string, string> = {
     default: `
     enabled:bg-gradient-to-r enabled:from-accent-pink enabled:to-accent-violet 
@@ -112,6 +121,17 @@ export function GlobalButton({
     ghost: ``,
   };
 
+  const iconStyle: Record<string, string> = {
+    default: ``,
+    secondary: `
+    group-hover:text-neutral-black
+    group-active:text-accent-pink
+    text-accent-pink
+
+  `,
+    ghost: ``,
+  };
+
   const sizeClasses: Record<string, string> = {
     sm: "h-10 text-sm", // Increased from h-9 px-3
     default: "h-11 text-base", // Increased from h-10 px-4
@@ -138,6 +158,7 @@ export function GlobalButton({
           containerStyle[mappedVariant],
           "rounded-md-minus flex items-center justify-center",
         )}
+        style={isActive ? activeStyle : undefined}
       >
         {loading ? (
           <>
@@ -159,7 +180,11 @@ export function GlobalButton({
                 "flex items-center justify-center",
               )}
             >
-              {icon && <span className="mr-2">{icon}</span>}
+              {icon && (
+                <span className={cn(iconStyle[mappedVariant], "mr-2")}>
+                  {icon}
+                </span>
+              )}
               {children}
             </span>
           </>

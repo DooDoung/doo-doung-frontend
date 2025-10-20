@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+
 
 import {
   Dialog,
@@ -9,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { AccountData } from "@/interface/User";
 import { AppToast } from "@/lib/app-toast";
 
 import { GlobalButton, GlobalInput } from "../globalComponents";
@@ -18,6 +21,7 @@ interface EditProfilePictureDialogProps {
   onOpenChange: (open: boolean) => void;
   onSave: (url: string) => void;
   currentImageUrl?: string;
+  user?: AccountData;
 }
 
 export function EditProfilePictureDialog({
@@ -25,39 +29,72 @@ export function EditProfilePictureDialog({
   onOpenChange,
   onSave,
   currentImageUrl = "",
+  user,
 }: EditProfilePictureDialogProps) {
+  const { data: session } = useSession();
   const [imageUrl, setImageUrl] = useState(currentImageUrl);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (open) {
-      const fetchProfile = async () => {
-        const res = await fetch(
-          "http://localhost:8000/account/dev_prophet_001",
-        );
-        if (!res.ok) throw new Error("Failed to fetch profile");
-        const json = await res.json();
-        setImageUrl(json.data.profileUrl);
-      };
-
-      fetchProfile();
+    if (open && user?.profileUrl) {
+      setImageUrl(user.profileUrl);
     }
-  }, [open, currentImageUrl]);
+  }, [open, user?.profileUrl]);
 
   const handleSave = async () => {
-    if (imageUrl.trim()) {
-      const res = await fetch(`http://localhost:8000/account/`, {
+    if (!imageUrl.trim()) {
+      AppToast.warning("Please enter a valid image URL");
+      return;
+    }
+
+    if (!session?.user?.id || !session?.accessToken) {
+      AppToast.error("Session expired. Please log in again.");
+      return;
+    }
+
+    if (!user) {
+      AppToast.error("User data not available. Please refresh the page.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+      // Try different endpoint patterns
+      const endpoint = `${baseUrl}/account/`;
+      
+      const response = await fetch(endpoint, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.accessToken}`,
+        },
         body: JSON.stringify({
           profileUrl: imageUrl,
-          id: "dev_prophet_001",
-          role: "PROPHET",
+          id: session.user.id,
+          role: user?.role || "CUSTOMER",
         }),
       });
-      onSave(imageUrl);
-      onOpenChange(false);
+      
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("Success response:", responseData);
+        onSave(imageUrl);
+        onOpenChange(false);
+        AppToast.success("Profile picture updated successfully!");
+      } else {
+        const errorData = await response.text();
+        console.error("Failed to update profile picture:", errorData);
+        console.error("Response headers:", response.headers);
+        AppToast.error(`Failed to update profile picture. Status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Error updating profile picture:", error);
+      AppToast.error("Unable to connect to server. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-    AppToast.success("Profile picture updated successfully!");
   };
 
   return (
@@ -97,8 +134,12 @@ export function EditProfilePictureDialog({
               >
                 Cancel
               </GlobalButton>
-              <GlobalButton onClick={handleSave} variant="secondary">
-                Save
+              <GlobalButton 
+                onClick={handleSave} 
+                variant="secondary"
+                disabled={isLoading}
+              >
+                {isLoading ? "Saving..." : "Save"}
               </GlobalButton>
             </div>
           </DialogFooter>
