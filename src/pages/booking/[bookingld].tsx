@@ -1,9 +1,54 @@
+import { useRouter } from "next/router";
+
+import { BookingActions,CourseCard } from "@/components/booking";
 import { DefaultLayout } from "@/components/globalComponents";
+import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 
 export default function BookingPage() {
+  const router = useRouter();
+
+  const handleCheckAvailableTime = () => {
+    router.push('/booking/booking-slot/[bookingld]');
+  };
+
+  const handleBack = () => {
+    router.back();
+  };
+
+  const courseData = {
+    courseImageSrc: "/images/course.svg",
+    courseImageAlt: "Course image",
+    title: "คอร์สดูดวงความรัก 3 คำถาม โดย แม่หมอออม",
+    method: "Current method",
+    duration: "30",
+    description: "Current course description description",
+    price: "1,750",
+    prophetName: "แม่หมอออม",
+    prophetImageSrc: "/images/course.svg"
+  };
+
   return (
-    <DefaultLayout contentClassName="flex flex-col justify-center items-center">
-      <p>This is Booking page</p>
+    <DefaultLayout>
+      <div className="flex justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
+        <GlassContainer2>
+          <div className="w-full flex flex-col items-center p-4 sm:p-6 lg:p-8">
+            <h1 className="text-white text-3xl sm:text-4xl lg:text-5xl font-light mb-6 sm:mb-8 font-sanctuary">
+              Booking
+            </h1>
+
+            <div className="flex h-[45vh] sm:h-[50vh] lg:h-[45vh] w-full flex-col items-center overflow-y-auto px-2 sm:px-4">
+              <CourseCard {...courseData} />
+            </div>
+
+            <div className="mt-6 sm:mt-8">
+              <BookingActions 
+                onBack={handleBack} 
+                onCheckAvailableTime={handleCheckAvailableTime} 
+              />
+            </div>
+          </div>
+        </GlassContainer2>
+      </div>
     </DefaultLayout>
   );
 }
