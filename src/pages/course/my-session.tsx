@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import EditUserProfile from "@/components/account/EditAccount/EditUserProfile";
 import SessionDetail from "@/components/course/SessionDetail";
 import SessionsList, { Session } from "@/components/course/SessionsList";
-import { DefaultLayout, GlobalButton, Breadcrumb } from "@/components/globalComponents";
+import { Breadcrumb,DefaultLayout, GlobalButton } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents";
 import { AppToast } from "@/lib/app-toast";
 import { getSessions } from "@/lib/getSessions";

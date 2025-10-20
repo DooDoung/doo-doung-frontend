@@ -3,7 +3,7 @@ import { Funnel, Search } from "lucide-react";
 
 import CourseCard from "@/components/account/Course/CourseCard";
 import FilterPopup, { FilterState } from "@/components/courses/FilterPopup";
-import { DefaultLayout, GlobalInput, Breadcrumb } from "@/components/globalComponents";
+import { Breadcrumb,DefaultLayout, GlobalInput } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { useFetchCourses } from "@/hooks/useFetchCourses";
 import { CourseFilterParams } from "@/types/course";

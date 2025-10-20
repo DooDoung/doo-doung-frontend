@@ -7,6 +7,7 @@ export {
 } from "./DefaultLayout";
 
 // Global UI Components
+export { default as Breadcrumb } from "./Breadcrumb";
 export { GlobalButton } from "./Button";
 export { Checkbox } from "./Checkbox";
 export { Footer } from "./Footer";
@@ -25,7 +26,6 @@ export {
   SelectValue,
 } from "./Select";
 export { GlobalTextarea } from "./Textarea";
-export { default as Breadcrumb } from "./Breadcrumb";
 
 // Re-export default
 export { default as Layout } from "./DefaultLayout";

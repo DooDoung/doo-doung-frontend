@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 
 import { BookingActions, CourseCard } from "@/components/booking";
-import { DefaultLayout, Breadcrumb } from "@/components/globalComponents";
+import { Breadcrumb,DefaultLayout } from "@/components/globalComponents";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 
 export default function BookingPage() {
