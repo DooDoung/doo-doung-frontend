@@ -90,6 +90,7 @@ const SessionHistory = ({
               <th className="p-2 font-semibold whitespace-nowrap">Username</th>
               <th className="p-2 font-semibold whitespace-nowrap">Date</th>
               <th className="p-2 font-semibold whitespace-nowrap">Price</th>
+              <th className="p-2 font-semibold whitespace-nowrap">Status</th>
               <th className="p-2 font-semibold whitespace-nowrap">Action</th>
             </tr>
           </thead>
@@ -190,6 +191,7 @@ const Dashboard = ({
               <th className="p-1 font-semibold">Username</th>
               <th className="p-1 font-semibold">Date</th>
               <th className="p-1 font-semibold">Price</th>
+              <th className="p-1 font-semibold">Status</th>
               <th className="p-1 font-semibold">Action</th>
             </tr>
           </thead>
@@ -201,6 +203,7 @@ const Dashboard = ({
                   {new Date(session.startDateTime).toLocaleString()}
                 </td>
                 <td className="p-1">{session.amount} Baht</td>
+                <td className="p-1">{session.status.toLowerCase()}</td>
                 <td className="p-1">
                   <GlobalButton
                     variant="secondary"
@@ -253,14 +256,11 @@ export default function MySessionPage() {
           setLoading(true);
           const backendUrl =
             process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
-          const response = await fetch(
-            `${backendUrl}/session/prophet/${prophetId}`,
-            {
-              headers: session.accessToken
-                ? { Authorization: `Bearer ${session.accessToken}` }
-                : undefined,
-            },
-          );
+          const response = await fetch(`${backendUrl}/session/prophet`, {
+            headers: session.accessToken
+              ? { Authorization: `Bearer ${session.accessToken}` }
+              : undefined,
+          });
           if (!response.ok) {
             throw new Error("Failed to fetch sessions");
           }

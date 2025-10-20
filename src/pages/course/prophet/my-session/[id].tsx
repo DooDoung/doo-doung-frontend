@@ -7,6 +7,7 @@ import {
   GlassContainer2,
   GlobalButton,
 } from "@/components/globalComponents";
+import { AppToast } from "@/lib/app-toast";
 
 interface Session {
   sessionId: string;
@@ -30,9 +31,9 @@ interface Session {
   updatedAt: string;
   transactionId?: string; // Added for mock
   payoutStatus?: string; // Added for mock, might not be in API
-  payoutAccountName?: string; // Added for mock
-  payoutBank?: string; // Added for mock
-  payoutAccountNumber?: string; // Added for mock
+  txAccountName?: string; // Added for mock
+  txBank?: string; // Added for mock
+  txAccountNumber?: string; // Added for mock
 }
 
 const SessionDetailPage = () => {
@@ -41,57 +42,53 @@ const SessionDetailPage = () => {
   const { data: session } = useSession();
   const [sessionDetails, setSessionDetails] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const accessToken = session?.accessToken;
   const backendUrl =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+
+  const completeSessionHandler = async () => {
+    try {
+      console.log(accessToken);
+      const response = await fetch(`${backendUrl}/booking/${id}/complete`, {
+        method: "POST",
+        headers: accessToken
+          ? { Authorization: `Bearer ${accessToken}` }
+          : undefined,
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`Failed to complete session: ${data.message}`);
+      }
+      AppToast.success("Session completed successfully");
+      window.location.reload();
+    } catch (error) {
+      AppToast.error(
+        `Failed to complete session: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  };
 
   useEffect(() => {
     const fetchSessionDetails = async () => {
       if (session?.user?.id && id) {
         const sessionId = Array.isArray(id) ? id[0] : id;
-        const prophetId = session.user.prophetId ?? session.user.id;
         console.warn("Debug: Navigated to session detail id:", sessionId);
         try {
           setLoading(true);
-          const response = await fetch(
-            `${backendUrl}/session/prophet/${prophetId}`,
-            {
-              headers: session.accessToken
-                ? { Authorization: `Bearer ${session.accessToken}` }
-                : undefined,
-            },
-          );
+          const response = await fetch(`${backendUrl}/session/prophet/${id}`, {
+            headers: session.accessToken
+              ? { Authorization: `Bearer ${session.accessToken}` }
+              : undefined,
+          });
           if (!response.ok) {
             throw new Error("Failed to fetch session list for prophet");
           }
           const data = await response.json();
-          const list: Session[] = (
-            Array.isArray(data)
-              ? data
-              : Array.isArray(data?.sessions)
-                ? data.sessions
-                : Array.isArray(data?.data)
-                  ? data.data
-                  : []
-          ).map((s: any) => ({
-            ...s,
-            id: s.sessionId,
-            horoscopeMethodName: s.horoscopeMethod,
-            createdAt: s.transactionCreatedAt,
-          }));
-          const foundSession = list.find((s) => s.id === sessionId);
-          if (foundSession) {
-            // Mocking payout info as it's not in the API response
-            setSessionDetails({
-              ...foundSession,
-              payoutStatus: "COMPLETED",
-              payoutAccountName: "สิวิกรมณ์ โนคำ",
-              payoutBank: "Kasikorn Thai Bank",
-              payoutAccountNumber: "***-*-*****-*",
-              transactionId: "xxx-xxxx-xxx", // Mocking transactionId
-            });
-          } else {
-            setSessionDetails(null);
-          }
+
+          setSessionDetails({
+            ...data.data,
+            transactionId: "xxx-xxxx-xxx", // Mocking transactionId
+          });
         } catch (error) {
           console.error("Failed to fetch session details:", error);
         } finally {
@@ -184,16 +181,16 @@ const SessionDetailPage = () => {
               </div>
               <div className="rounded-lg border-2 border-gray-300 bg-white p-4">
                 <h3 className="mb-2 font-bold">Payout Information</h3>
-                <p>Account Name: {sessionDetails.payoutAccountName}</p>
-                <p>Bank: {sessionDetails.payoutBank}</p>
-                <p>Account Number: {sessionDetails.payoutAccountNumber}</p>
+                <p>Account Name: {sessionDetails.txAccountName}</p>
+                <p>Bank: {sessionDetails.txBank}</p>
+                <p>Account Number: {sessionDetails.txAccountNumber}</p>
               </div>
             </div>
             <GlobalButton
               variant="primary"
               className="absolute right-4 bottom-4"
               size="default"
-              onClick={() => router.push("/course/prophet/my-session")}
+              onClick={completeSessionHandler}
             >
               Mark as Completed
             </GlobalButton>
