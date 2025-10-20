@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { Funnel, Search } from "lucide-react";
 
 import CourseCard from "@/components/account/Course/CourseCard";
