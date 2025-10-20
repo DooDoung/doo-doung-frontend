@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 
+import { ConfirmBookingActions,CourseCard, TimeSlotWithPurchase } from "@/components/booking";
 import { DefaultLayout } from "@/components/globalComponents";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
-import { CourseCard, TimeSlotWithPurchase, ConfirmBookingActions } from "@/components/booking";
 
 export default function ConfirmSlotPage() {
   const router = useRouter();
@@ -15,7 +15,6 @@ export default function ConfirmSlotPage() {
     router.back();
   };
 
-  // Mock data - ในอนาคตจะมาจาก API หรือ props
   const courseData = {
     courseImageSrc: "/images/course.svg",
     courseImageAlt: "Course image",

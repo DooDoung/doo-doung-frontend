@@ -1,16 +1,15 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
+import { BackToHomeActions,CourseCard, TimeSlotConfirmed } from "@/components/booking";
 import { DefaultLayout } from "@/components/globalComponents";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
-import { CourseCard, TimeSlotConfirmed, BackToHomeActions } from "@/components/booking";
 import { AppToast } from "@/lib/app-toast";
 
 export default function BookingSuccessPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Show success toast when page loads
     AppToast.success("Confirmed Booking!");
   }, []);
 
@@ -18,7 +17,6 @@ export default function BookingSuccessPage() {
     router.push('/');
   };
 
-  // Mock data - ในอนาคตจะมาจาก API หรือ props
   const courseData = {
     courseImageSrc: "/images/course.svg",
     courseImageAlt: "Course image",

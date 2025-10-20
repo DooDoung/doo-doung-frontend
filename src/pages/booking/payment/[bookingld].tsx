@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
+import { CourseCard, TimeSlotWithPurchase } from "@/components/booking";
 import { DefaultLayout } from "@/components/globalComponents";
 import GlobalButton from "@/components/globalComponents/Button";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
-import { CourseCard, TimeSlotWithPurchase } from "@/components/booking";
 
 export default function BookingPaymentPage() {
   const router = useRouter();
@@ -42,7 +42,6 @@ export default function BookingPaymentPage() {
     router.back();
   };
 
-  // Mock data - ในอนาคตจะมาจาก API หรือ props
   const courseData = {
     courseImageSrc: "/images/course.svg",
     courseImageAlt: "Course image",
@@ -61,7 +60,6 @@ export default function BookingPaymentPage() {
   };
 
   const handlePurchaseClick = () => {
-    // เปิด QR Code modal
     setShowQRCode(true);
   };
 
@@ -95,7 +93,6 @@ export default function BookingPaymentPage() {
                 <h2 className="text-lg sm:text-xl font-semibold font-chakra">QR CODE FOR PAYMENT</h2>
               </div>
 
-              {/* QR Code */}
               <div className="rounded-2xl p-4 sm:p-6 mb-4 sm:mb-6 flex justify-center">
                 <div className="w-50 h-50 sm:w-48 sm:h-48 bg-neutral-white border-2 border-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
                   <img
@@ -106,7 +103,6 @@ export default function BookingPaymentPage() {
                 </div>
               </div>
 
-              {/* Timer */}
               <div className="text-center mb-4 sm:mb-6">
                 <div className="text-2xl sm:text-3xl font-bold text-neutral-black font-mono">
                   {formatTime(timeLeft)}

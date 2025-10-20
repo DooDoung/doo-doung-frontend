@@ -24,8 +24,8 @@ export { default as CourseDetailPage } from "./course/[courseld]";
 export { default as CoursesMySessionPage } from "./course/my-session";
 
 // Booking Pages
-export { default as BookingPage } from "./booking/main/[bookingld]";
 export { default as BookingSuccessPage } from "./booking/booking-success/[bookingld]";
+export { default as BookingPage } from "./booking/main/[bookingld]";
 export { default as BookingPaymentPage } from "./booking/payment/[bookingld]";
 
 // Review Pages

@@ -1,10 +1,10 @@
-export { default as CourseCard } from './CourseCard';
-export { default as CourseImage } from './CourseImage';
-export { default as CourseInfo } from './CourseInfo';
-export { default as CourseDetail } from './CourseDetail';
-export { default as ProphetProfile } from './ProphetProfile';
+export { default as BackToHomeActions } from './BackToHomeActions';
 export { default as BookingActions } from './BookingActions';
 export { default as ConfirmBookingActions } from './ConfirmBookingActions';
-export { default as TimeSlotWithPurchase } from './TimeSlotWithPurchase';
+export { default as CourseCard } from './CourseCard';
+export { default as CourseDetail } from './CourseDetail';
+export { default as CourseImage } from './CourseImage';
+export { default as CourseInfo } from './CourseInfo';
+export { default as ProphetProfile } from './ProphetProfile';
 export { default as TimeSlotConfirmed } from './TimeSlotConfirmed';
-export { default as BackToHomeActions } from './BackToHomeActions';
+export { default as TimeSlotWithPurchase } from './TimeSlotWithPurchase';
