@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { withAuth } from "next-auth/middleware";
 
 // Add this flag to disable auth for testing
-const DISABLE_AUTH_FOR_TESTING = process.env.NEXT_PUBLIC_DISABLE_AUTH === "true";
+const DISABLE_AUTH_FOR_TESTING =
+  process.env.NEXT_PUBLIC_DISABLE_AUTH === "true";
 
 const AllowNoAuthPath = [
   "/login",
@@ -23,6 +24,8 @@ const AllowCustomerPath = [
   "/account/edit-account",
   "/course/my-session",
   "/booking/[bookingld]",
+  "/booking/booking-slot/[bookingld]",
+  "/booking/confirm-slot/[bookingld]",
   "/booking/payment/[bookingld]",
   "/booking/booking-success/[bookingld]",
   "/review",
@@ -58,7 +61,9 @@ export default withAuth(
 
     const { pathname } = req.nextUrl;
     const token = req.nextauth.token;
-    const role: RoleType | null = (typeof token?.role === 'string' ? token.role.toLowerCase() : null) as RoleType | null;
+    const role: RoleType | null = (
+      typeof token?.role === "string" ? token.role.toLowerCase() : null
+    ) as RoleType | null;
     // Check if user has access to the current path
     if (hasAccess(pathname, role)) {
       return NextResponse.next();
@@ -79,7 +84,7 @@ export default withAuth(
         }
 
         const { pathname } = req.nextUrl;
-        
+
         // Allow access to public paths without authentication
         if (AllowNoAuthPath.some((pattern) => matchPath(pathname, pattern))) {
           return true;
@@ -89,7 +94,7 @@ export default withAuth(
         return !!token;
       },
     },
-  }
+  },
 );
 
 // ==================== SUPPORT FUNCTION ====================
