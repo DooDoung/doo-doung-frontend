@@ -1,4 +1,5 @@
 import router from "next/router";
+import { useSession } from "next-auth/react";
 
 import ProphetCard from "@/components/account/ProphetCard";
 import ProphetCourseCard from "@/components/course/Prophet/ProphetCourseCard";
@@ -7,14 +8,20 @@ import {
   GlassContainer2,
   GlobalButton,
 } from "@/components/globalComponents";
+import { useFetchProphetCourses } from "@/hooks/useFetchProphetCourses";
 
 export default function CourseProphetPage() {
-  const courses = mockCourse;
+  const { data: session } = useSession();
+  const prophetId = (session?.user as any)?.id;
+  const { courses, loading, error } = useFetchProphetCourses(prophetId);
+
   const availabilityCalendar = {
+    name: "Availability Calendar",
     imageUrl: "/images/prophet-feature/calendar.svg",
     goTo: "/account/prophet/availability",
   };
   const mySession = {
+    name: "My Sessions",
     imageUrl: "/images/prophet-feature/discussion.svg",
     goTo: "/course/prophet/my-session",
   };
@@ -33,15 +40,28 @@ export default function CourseProphetPage() {
           </p>
 
           {/* Added 'flex' class here to activate the flexbox layout */}
-          <div className="custom-scrollbar flex h-1/2 flex-col gap-6 overflow-y-scroll">
-            {/* <custom-scrollbar /> */}
-            {courses.map((course) => (
-              <ProphetCourseCard
-                key={course.id}
-                editability={"VIEW"}
-                {...course}
-              />
-            ))}
+          <div className="custom-scrollbar flex h-2/3 flex-col gap-6 overflow-y-scroll">
+            {loading ? (
+              <p className="text-white">Loading courses...</p>
+            ) : error ? (
+              <p className="text-red-400">Error: {error}</p>
+            ) : courses.length === 0 ? (
+              <p className="text-white">No courses yet</p>
+            ) : (
+              courses.map((course) => (
+                <ProphetCourseCard
+                  key={course.id}
+                  id={course.id}
+                  imageUrl={course.imageUrl}
+                  score={course.score}
+                  status={course.status}
+                  courseName={course.courseName}
+                  prophetName={course.prophetName}
+                  price={course.price}
+                  editability="VIEW"
+                />
+              ))
+            )}
           </div>
 
           <GlobalButton
@@ -66,7 +86,7 @@ export default function CourseProphetPage() {
                 My Sessions
               </p>
 
-              <ProphetCard feat={mySession} transaction={null} />
+              <ProphetCard feat={mySession} transaction={undefined} />
             </div>
 
             {/* Availability Calendar */}
@@ -75,7 +95,10 @@ export default function CourseProphetPage() {
                 Availability Calendar
               </p>
 
-              <ProphetCard feat={availabilityCalendar} transaction={null} />
+              <ProphetCard
+                feat={availabilityCalendar}
+                transaction={undefined}
+              />
             </div>
           </div>
         </div>
@@ -83,63 +106,3 @@ export default function CourseProphetPage() {
     </DefaultLayout>
   );
 }
-
-const mockCourse: {
-  id: string;
-  imageUrl: string;
-  score: number;
-  status: "OPEN" | "CLOSE";
-  courseName: string;
-  prophetName: string;
-  price: number;
-}[] = [
-  {
-    id: "course-01",
-    imageUrl: "https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=500",
-    score: 5,
-    status: "OPEN",
-    courseName: "Tarot Reading for Beginners",
-    prophetName: "Prophet Jane",
-    price: 500,
-  },
-  {
-    id: "course-02",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500",
-    score: 4,
-    status: "OPEN",
-    courseName: "Advanced Astrology",
-    prophetName: "Prophet John",
-    price: 750,
-  },
-  {
-    id: "course-03",
-    imageUrl:
-      "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=500",
-    score: 5,
-    status: "CLOSE",
-    courseName: "Numerology Insights",
-    prophetName: "Prophet Alice",
-    price: 6000,
-  },
-  {
-    id: "course-04",
-    imageUrl:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500",
-    score: 3,
-    status: "OPEN",
-    courseName: "Palm Reading Basics",
-    prophetName: "Prophet Bob",
-    price: 400,
-  },
-  {
-    id: "course-05",
-    imageUrl:
-      "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=500",
-    score: 4,
-    status: "CLOSE",
-    courseName: "Dream Interpretation",
-    prophetName: "Prophet Eve",
-    price: 550,
-  },
-];
