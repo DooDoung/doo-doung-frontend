@@ -26,10 +26,10 @@ export default function SessionTableBooking() {
   const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
   currentMonday.setDate(today.getDate() + daysToMonday + currentWeek * 7);
   const [selectedSlots, setSelectedSlots] = useState<Set<string>>(new Set());
+  const MAX_SLOTS = durationMinutes / 15;
 
   const handleSelectSlot = (day: string, time: string) => {
     const timeOrder = generateTimeSlots();
-    const MAX_SLOTS = durationMinutes / 15;
 
     setSelectedSlots((prev) => {
         const newSet = new Set(prev);
@@ -101,7 +101,7 @@ export default function SessionTableBooking() {
         </GlobalButton>
 
         <GlobalButton
-            disabled={!selectedSlots || selectedSlots.size === 0}
+            disabled={selectedSlots.size < MAX_SLOTS}
             onClick={() => {
                 if(selectedSlots.size > 0) {
                     AppToast.success(
@@ -128,7 +128,9 @@ export default function SessionTableBooking() {
 }
 
 const MockBooking = {
+  //
   currentWeek: 0,
+  // from Prophet's available slots
   availableSlots: [
     { day: "MON", time: "09:00" },
     { day: "MON", time: "09:15" },
@@ -148,16 +150,21 @@ const MockBooking = {
     { day: "FRI", time: "11:15" },
     { day: "FRI", time: "11:30" },
   ],
+  // from Prophet's existing bookings
   bookingSlots: [
     { id: "1", day: "MON", time: "09:00", variant: "TAKEN" },
     { id: "2", day: "TUE", time: "14:00", variant: "FREE" },
     { id: "3", day: "WED", time: "14:00", variant: "TAKEN" },
   ],
+  // from Couserse duration
   durationMinutes: 60,
+  // navigation handlers
   goToPreviousWeek: () => console.log("Go to previous week"),
   goToNextWeek: () => console.log("Go to next week"),
 
+  // new booking from customer to send to backend
   selectedSlot: null,
+  
   onSelectSlot: (day: string, time: string) => {
       console.log(`Selected slot: ${day} at ${time}`);
   }
