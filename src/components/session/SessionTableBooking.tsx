@@ -10,7 +10,11 @@ import { GlobalButton } from "../globalComponents";
 
 import SessionTableBase from "./SessionTableBase";
 
-export default function SessionTableBooking() {
+export default function SessionTableBooking({
+  onSelectedChange,
+}: {
+  onSelectedChange?: (slots: { day: string; time: string }[]) => void;
+}) {
   const {
     currentWeek,
     availableSlots,
@@ -32,45 +36,51 @@ export default function SessionTableBooking() {
     const timeOrder = generateTimeSlots();
 
     setSelectedSlots((prev) => {
-        const newSet = new Set(prev);
-        
-        const key = `${day}-${time}`;
-        if (newSet.has(key)) {
-            newSet.delete(key);
-            return newSet;
-        }
+      const newSet = new Set(prev);
 
-        const selectedDays = [...newSet].map((k) => k.split("-")[0]);
-        const uniqueDays = [...new Set(selectedDays)];
-
-        if (uniqueDays.length > 1 || (uniqueDays[0] !== day)) {
-            AppToast.info("You can only select one day.");
-            return new Set([key]);
-        }
-
-        const selectedTimes = [...newSet].map((k) => k.split("-")[1]);
-        const currentIndex = timeOrder.indexOf(time);
-        const isAdjacent = selectedTimes.some(
-            (t) => Math.abs(timeOrder.indexOf(t) - currentIndex) === 1,
-        );
-
-        if (!isAdjacent) {
-            AppToast.error("Slots must be adjacent.");
-            return prev;
-        }
-
-        if (newSet.size >= MAX_SLOTS) {
-            AppToast.error(`You can select up to ${MAX_SLOTS} slots only.`);
-            return prev;
-        }
-
-        newSet.add(key);
+      const key = `${day}-${time}`;
+      if (newSet.has(key)) {
+        newSet.delete(key);
         return newSet;
-    });   
+      }
+
+      const selectedDays = [...newSet].map((k) => k.split("-")[0]);
+      const uniqueDays = [...new Set(selectedDays)];
+
+      if (uniqueDays.length > 1 || uniqueDays[0] !== day) {
+        AppToast.info("You can only select one day.");
+        return new Set([key]);
+      }
+
+      const selectedTimes = [...newSet].map((k) => k.split("-")[1]);
+      const currentIndex = timeOrder.indexOf(time);
+      const isAdjacent = selectedTimes.some(
+        (t) => Math.abs(timeOrder.indexOf(t) - currentIndex) === 1,
+      );
+
+      if (!isAdjacent) {
+        AppToast.error("Slots must be adjacent.");
+        return prev;
+      }
+
+      if (newSet.size >= MAX_SLOTS) {
+        AppToast.error(`You can select up to ${MAX_SLOTS} slots only.`);
+        return prev;
+      }
+
+      const slotsArray = Array.from(newSet).map((s) => {
+        const [day, time] = s.split("-");
+        return { day, time };
+      });
+
+      newSet.add(key);
+      onSelectedChange?.(slotsArray);
+      return newSet;
+    });
   };
 
   return (
-    <div className="space-y-4 flex flex-col w-full items-center">
+    <div className="flex w-full flex-col items-center space-y-4">
       <SessionTableBase
         variant="customer"
         availableSlots={availableSlots}
@@ -81,48 +91,48 @@ export default function SessionTableBooking() {
         currentWeek={currentWeek}
         goToPreviousWeek={goToPreviousWeek}
         goToNextWeek={goToNextWeek}
-
         /** Customer mode */
         selectedSlots={Array.from(selectedSlots).map((s) => {
-            const [day, time] = s.split("-");
-            return { day, time };
+          const [day, time] = s.split("-");
+          return { day, time };
         })}
         onSelectSlots={handleSelectSlot}
       />
 
-      <div className="mt-3  flex items-center justify-between space-x-4">
+      <div className="mt-3 flex items-center justify-between space-x-4">
         <GlobalButton
-            className="w-36"
-            variant="secondary"
-            size="lg"
-            onClick={() => (window.location.href = "/account")}
-            >
-            Back
+          className="w-36"
+          variant="secondary"
+          size="lg"
+          onClick={() => (window.location.href = "/account")}
+        >
+          Back
         </GlobalButton>
 
         <GlobalButton
-            disabled={selectedSlots.size < MAX_SLOTS}
-            onClick={() => {
-                if(selectedSlots.size > 0) {
-                    AppToast.success(
-                        `Selected slot(s): ` +
-                        Array.from(selectedSlots).map((s) => {
-                            const [day, time] = s.split("-");
-                            return { day, time };
-                        })
-                            .map((s) => `${s.day} at ${s.time}`)
-                            .join(", ")
-                    );
-                    router.push("/account");
-                }
-            }}
-            className="w-44"
-            size="lg"
-            variant={"primary"}      >
-            Select Slot
+          disabled={selectedSlots.size < MAX_SLOTS}
+          onClick={() => {
+            if (selectedSlots.size > 0) {
+              AppToast.success(
+                `Selected slot(s): ` +
+                  Array.from(selectedSlots)
+                    .map((s) => {
+                      const [day, time] = s.split("-");
+                      return { day, time };
+                    })
+                    .map((s) => `${s.day} at ${s.time}`)
+                    .join(", "),
+              );
+              router.push("/account");
+            }
+          }}
+          className="w-44"
+          size="lg"
+          variant={"primary"}
+        >
+          Select Slot
         </GlobalButton>
       </div>
-
     </div>
   );
 }
@@ -164,9 +174,4 @@ const MockBooking = {
 
   // new booking from customer to send to backend
   selectedSlot: null,
-  
-  onSelectSlot: (day: string, time: string) => {
-      console.log(`Selected slot: ${day} at ${time}`);
-  }
 };
-
