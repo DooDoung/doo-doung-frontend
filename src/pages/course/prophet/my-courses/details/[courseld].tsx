@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 import BookingHistoryCard from "@/components/course/Prophet/BookingHistoryCard";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
@@ -10,29 +12,112 @@ import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { MOCK_ACCOUNTS } from "@/constants/transaction";
+import { AppToast } from "@/lib/app-toast";
+
+const backendUrl =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+
+// Helper functions for localStorage
+const getLocalStorageKey = (field: string) => `course_${field}`;
+
+const loadFromLocalStorage = (field: string): string => {
+  try {
+    return localStorage.getItem(getLocalStorageKey(field)) || "";
+  } catch {
+    return "";
+  }
+};
+
+const saveToLocalStorage = (field: string, value: string) => {
+  try {
+    localStorage.setItem(getLocalStorageKey(field), value);
+  } catch {
+    // Silently fail if localStorage is not available
+  }
+};
 
 export default function CourseDetailsPage() {
   const router = useRouter();
   const pathname = usePathname() || "";
   const courseId = pathname.split("/").pop();
+  const { data: session } = useSession();
+
   const [formData, setFormData] = useState({
-    courseName: "คอร์สดูดวงความรัก 3 คำถาม",
-    prophetMethod: "Tarot card",
-    duration: "15",
-    description:
-      "ดูดวงความรัก 3 คำถาม โดยใช้ไพ่โรต์ จากแม่หมอประสบการณ์ 300 ปี จบจากสถาบันเวทมนต์ Horward สาขาดูดวงคนไทย",
-    price: "2000",
+    courseName: "",
+    prophetMethod: "",
+    duration: "",
+    description: "",
+    price: "",
     TransactionAccount: MOCK_ACCOUNTS[0],
-    courseProfile:
-      "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg",
+    courseProfile: "",
     isOpen: true,
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const user = {
     profileUrl:
       "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg",
     username: "JohnYakDoodoung",
   };
+
+  // Fetch course details
+  useEffect(() => {
+    const fetchCourseDetails = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const accessToken = session?.accessToken;
+
+        if (!accessToken) {
+          setError("Unauthorized: No access token found");
+          setLoading(false);
+          return;
+        }
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+
+        const response = await axios.get(
+          `${backendUrl}/course/${courseId}`,
+          config,
+        );
+
+        const courseData = response.data.data || response.data;
+        setFormData({
+          courseName: courseData.courseName || "",
+          prophetMethod:
+            courseData.methodName && courseData.methodName.trim() !== ""
+              ? courseData.methodName
+              : loadFromLocalStorage("prophetMethod"),
+          duration: courseData.durationMin?.toString() || "",
+          description:
+            courseData.description && courseData.description.trim() !== ""
+              ? courseData.description
+              : loadFromLocalStorage("description"),
+          price: courseData.price?.toString() || "",
+          TransactionAccount: MOCK_ACCOUNTS[0],
+          courseProfile: courseData.courseProfile || "",
+          isOpen: courseData.isActive || true,
+        });
+      } catch (err) {
+        const errorMessage = axios.isAxiosError(err)
+          ? err.response?.data?.message || err.message
+          : "Failed to fetch course details";
+        setError(errorMessage);
+        AppToast.error(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (courseId && session) {
+      fetchCourseDetails();
+    }
+  }, [courseId, session]);
 
   const mockbookingHistoryData: {
     customerProfileUrl: string;

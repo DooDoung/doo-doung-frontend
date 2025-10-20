@@ -1,9 +1,9 @@
 import { useState } from "react";
+import axios from "axios";
 import { Pencil } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import axios from "axios";
 
 import { EditCourseProfileDialog } from "@/components/course/Prophet/EditCourseProfileDialog";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
@@ -25,6 +25,25 @@ import { AppToast } from "@/lib/app-toast";
 
 const backendUrl =
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+
+// Helper functions for localStorage
+const getLocalStorageKey = (field: string) => `course_${field}`;
+
+const loadFromLocalStorage = (field: string): string => {
+  try {
+    return localStorage.getItem(getLocalStorageKey(field)) || "";
+  } catch {
+    return "";
+  }
+};
+
+const saveToLocalStorage = (field: string, value: string) => {
+  try {
+    localStorage.setItem(getLocalStorageKey(field), value);
+  } catch {
+    // Silently fail if localStorage is not available
+  }
+};
 
 export default function CreateCoursePage() {
   const router = useRouter();
@@ -51,6 +70,10 @@ export default function CreateCoursePage() {
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    // Save to localStorage for persistence
+    if (field === "prophetMethod" || field === "description") {
+      saveToLocalStorage(field, value);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
