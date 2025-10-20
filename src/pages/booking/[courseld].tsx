@@ -1,6 +1,6 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
 import { BookingActions, CourseCard } from "@/components/booking";
@@ -22,7 +22,7 @@ interface CourseData {
 
 export default function BookingPage() {
   const router = useRouter();
-  const { bookingld } = router.query; // dynamic param from filename [bookingld].tsx
+  const { courseld } = router.query; // dynamic param from filename [bookingld].tsx
   const { data: session } = useSession();
   const token = (session as any)?.accessToken;
 
@@ -32,7 +32,7 @@ export default function BookingPage() {
 
   useEffect(() => {
     const fetchCourse = async () => {
-      if (!bookingld) return;
+      if (!courseld) return;
       setLoading(true);
       setError(null);
 
@@ -40,7 +40,7 @@ export default function BookingPage() {
         process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
       try {
-        const res = await axios.get(`${backendUrl}/courses/${bookingld}`, {
+        const res = await axios.get(`${backendUrl}/course/${courseld}`, {
           headers: token
             ? {
                 Authorization: `Bearer ${token}`,
@@ -81,12 +81,12 @@ export default function BookingPage() {
     };
 
     fetchCourse();
-  }, [bookingld, token]);
+  }, [courseld, token]);
 
   const handleCheckAvailableTime = () => {
-    if (!bookingld) return;
+    if (!courseld) return;
 
-    router.push(`/booking/booking-slot/${bookingld}`);
+    router.push(`/booking/booking-slot/${courseld}`);
   };
 
   const handleBack = () => {

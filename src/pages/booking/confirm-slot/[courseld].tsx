@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-import { BackToHomeActions,CourseCard, TimeSlotConfirmed } from "@/components/booking";
+import { ConfirmBookingActions,CourseCard, TimeSlotWithPurchase } from "@/components/booking";
 import { DefaultLayout } from "@/components/globalComponents";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
-import { AppToast } from "@/lib/app-toast";
 
 interface CourseData {
   courseImageSrc: string;
@@ -19,9 +18,9 @@ interface CourseData {
   prophetImageSrc: string;
 }
 
-export default function BookingSuccessPage() {
+export default function ConfirmSlotPage() {
   const router = useRouter();
-  const { bookingld } = router.query; // dynamic param from filename [bookingld].tsx
+  const { courseld } = router.query; // dynamic param from filename [bookingld].tsx
   const { data: session } = useSession();
   const token = (session as any)?.accessToken;
 
@@ -29,14 +28,17 @@ export default function BookingSuccessPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const handlePurchase = () => {
+    router.push('/booking/payment/[bookingld]');
+  };
 
-  const handleBackToHome = () => {
-    router.push('/');
+  const handleBack = () => {
+    router.back();
   };
 
   useEffect(() => {
     const fetchCourse = async () => {
-      if (!bookingld) return;
+      if (!courseld) return;
       setLoading(true);
       setError(null);
 
@@ -44,7 +46,7 @@ export default function BookingSuccessPage() {
         process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
       try {
-        const res = await fetch(`${backendUrl}/course/${bookingld}`, {
+        const res = await fetch(`${backendUrl}/course/${courseld}`, {
           headers: token
             ? {
                 Authorization: `Bearer ${token}`,
@@ -71,7 +73,6 @@ export default function BookingSuccessPage() {
           prophetImageSrc: "/images/course.svg", // Add default image or get from backend
         };
         setCourseData(transformedData);
-        AppToast.success("Confirmed Booking!");
       } catch (err: any) {
         setError(err.message || "Failed to fetch course data");
       } finally {
@@ -79,7 +80,7 @@ export default function BookingSuccessPage() {
       }
     };
     fetchCourse();
-  }, [bookingld, token]);
+  }, [courseld, token]);
 
   if (loading) {
     return (
@@ -99,6 +100,7 @@ export default function BookingSuccessPage() {
     );
   }
 
+  // from previous page or fetch from backend
   const timeSlotData = {
     selectedDate: "10 October 2025",
     selectedTime: "00:15-00:45 AM"
@@ -117,14 +119,17 @@ export default function BookingSuccessPage() {
               <CourseCard {...courseData} />
               
               <div className="w-full max-w-4xl mt-4">
-                <TimeSlotConfirmed 
+                <TimeSlotWithPurchase 
                   selectedDate={timeSlotData.selectedDate}
                   selectedTime={timeSlotData.selectedTime}
+                  onPurchase={handlePurchase}
                 />
               </div>
             </div>
 
-            <BackToHomeActions onBackToHome={handleBackToHome} />
+            <ConfirmBookingActions 
+              onBack={handleBack} 
+            />
           </div>
         </GlassContainer2>
       </div>

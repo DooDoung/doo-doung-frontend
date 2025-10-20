@@ -1,13 +1,34 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 import { CourseCard, TimeSlotWithPurchase } from "@/components/booking";
 import { DefaultLayout } from "@/components/globalComponents";
 import GlobalButton from "@/components/globalComponents/Button";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 
+interface CourseData {
+  courseImageSrc: string;
+  courseImageAlt: string;
+  title: string;
+  method: string;
+  duration: string;
+  description: string;
+  price: string;
+  prophetName: string;
+  prophetImageSrc: string;
+}
+
 export default function BookingPaymentPage() {
   const router = useRouter();
+  const { bookingld } = router.query; // dynamic param from filename [bookingld].tsx
+  const { data: session } = useSession();
+  const token = (session as any)?.accessToken;
+
+  const [courseData, setCourseData] = useState<CourseData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [showQRCode, setShowQRCode] = useState(true);
   const [timeLeft, setTimeLeft] = useState(300);
   const handlePaymentSuccess = useCallback(() => {
@@ -42,17 +63,69 @@ export default function BookingPaymentPage() {
     router.back();
   };
 
-  const courseData = {
-    courseImageSrc: "/images/course.svg",
-    courseImageAlt: "Course image",
-    title: "คอร์สดูดวงความรัก 3 คำถาม โดย แม่หมอออม",
-    method: "Current method",
-    duration: "30",
-    description: "Current course description description",
-    price: "1,750",
-    prophetName: "แม่หมอออม",
-    prophetImageSrc: "/images/course.svg"
-  };
+  useEffect(() => {
+    const fetchCourse = async () => {
+      if (!bookingld) return;
+      setLoading(true);
+      setError(null);
+
+      const backendUrl =
+        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+
+      try {
+        const res = await fetch(`${backendUrl}/course/${bookingld}`, {
+          headers: token
+            ? {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              }
+            : { "Content-Type": "application/json" },
+        });
+
+        const resualt = await res.json();
+        const fetched =
+          resualt?.data?.courseData ?? resualt?.data?.data ?? resualt.data;
+        if (!fetched) {
+          throw new Error("Course data not found");
+        }
+        const transformedData: CourseData = {
+          courseImageSrc: "/images/course.svg", // Add default image or get from backend
+          courseImageAlt: fetched.courseName,
+          title: fetched.courseName,
+          method: fetched.horoscopeMethodId, // You might want to map this to actual method names
+          duration: fetched.durationMin,
+          description: `${fetched.courseName} course by ${fetched.prophetName}. Duration: ${fetched.durationMin} minutes.`, // Add if you have description in backend
+          price: fetched.price, // Format price as needed
+          prophetName: fetched.name,
+          prophetImageSrc: "/images/course.svg", // Add default image or get from backend
+        };
+        setCourseData(transformedData);
+      } catch (err: any) {
+        setError(err.message || "Failed to fetch course data");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCourse();
+  }, [bookingld, token]);
+
+  if (loading) {
+    return (
+      <DefaultLayout>
+        <div className="flex min-h-screen items-center justify-center">
+          <p className="text-white">Loading...</p>
+        </div>
+      </DefaultLayout>
+    );
+  }
+
+  if (error || !courseData) {
+    return (
+      <DefaultLayout contentClassName="flex justify-center items-center">
+        <p className="text-white">Error: {error ?? "Course not found"}</p>
+      </DefaultLayout>
+    );
+  }
 
   const timeSlotData = {
     selectedDate: "10 October 2025",

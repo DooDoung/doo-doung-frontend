@@ -12,16 +12,26 @@ import SessionTableBase from "./SessionTableBase";
 
 export default function SessionTableBooking({
   onSelectedChange,
+  currentWeek = 0,
+  availableSlots,
+  bookingSlots,
+  durationMinutes = 15,
+  courseld
 }: {
   onSelectedChange?: (slots: { day: string; time: string }[]) => void;
+  currentWeek: number;
+  availableSlots: { day: string; time: string }[];
+  bookingSlots: { id: string; day: string; time: string; variant: string }[]; 
+  durationMinutes: number;
+  courseld?: string;
 }) {
   const {
-    currentWeek,
-    availableSlots,
-    bookingSlots,
+    // currentWeek,
+    // availableSlots,
+    // bookingSlots,
     goToPreviousWeek,
     goToNextWeek,
-    durationMinutes = 60,
+    // durationMinutes = 60,
   } = MockBooking;
 
   const today = new Date();
@@ -72,6 +82,7 @@ export default function SessionTableBooking({
         const [day, time] = s.split("-");
         return { day, time };
       });
+      localStorage.setItem("bookingSlot", JSON.stringify(slotsArray));
 
       newSet.add(key);
       onSelectedChange?.(slotsArray);
@@ -123,7 +134,7 @@ export default function SessionTableBooking({
                     .map((s) => `${s.day} at ${s.time}`)
                     .join(", "),
               );
-              router.push("/booking/confirm-slot/[bookingld]");
+              router.push(`/booking/confirm-slot/${courseld}`);
             }
           }}
           className="w-44"
