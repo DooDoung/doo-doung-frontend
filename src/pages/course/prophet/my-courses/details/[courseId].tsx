@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { useRouter, useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
 import { useRouter as useNextRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 import BookingHistoryCard from "@/components/course/Prophet/BookingHistoryCard";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
@@ -12,8 +12,8 @@ import { GlobalButton, GlobalInput } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { AppToast } from "@/lib/app-toast";
 import { MOCK_ACCOUNTS } from "@/constants/transaction";
+import { AppToast } from "@/lib/app-toast";
 
 export default function CourseDetailsPage() {
   const router = useRouter();
@@ -38,7 +38,7 @@ export default function CourseDetailsPage() {
 
   const fetchFormData = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/courses/${courseId}`);
+      const response = await axios.get(`${backendUrl}/course/${courseId}`);
       setFormData(response.data.data);
     } catch (error) {
       AppToast.error("Error fetching course data");
@@ -124,7 +124,7 @@ export default function CourseDetailsPage() {
     setIsOpen(!isOpen);
     setFormData({ ...formData, isActive: !isOpen });
     const response = await axios.patch(
-      `${backendUrl}/prophet/courses/${courseId}/toggle-status`,
+      `${backendUrl}/prophet/course/${courseId}/toggle-status`,
       {},
       {
         headers: {
