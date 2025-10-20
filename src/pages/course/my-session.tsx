@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import EditUserProfile from "@/components/account/EditAccount/EditUserProfile";
 import SessionDetail from "@/components/course/SessionDetail";
 import SessionsList, { Session } from "@/components/course/SessionsList";
-import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
+import { DefaultLayout, GlobalButton, Breadcrumb } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents";
 import { AppToast } from "@/lib/app-toast";
 import { getSessions } from "@/lib/getSessions";
@@ -55,6 +55,9 @@ export default function MySessionPage() {
   return (
     <DefaultLayout>
       <div className="flex flex-col items-center justify-center w-full font-chakra">
+        <div className="w-full max-w-4xl px-4">
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "My Sessions" }]} />
+        </div>
         <GlassContainer2 className="p-0">
               <EditUserProfile role={session?.user?.role||"CUSTOMER"} editing={false} />
               {loading ? (

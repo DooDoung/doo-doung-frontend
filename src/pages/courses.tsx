@@ -3,7 +3,7 @@ import { Funnel, Search } from "lucide-react";
 
 import CourseCard from "@/components/account/Course/CourseCard";
 import FilterPopup, { FilterState } from "@/components/courses/FilterPopup";
-import { DefaultLayout, GlobalInput } from "@/components/globalComponents";
+import { DefaultLayout, GlobalInput, Breadcrumb } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { useFetchCourses } from "@/hooks/useFetchCourses";
 import { CourseFilterParams } from "@/types/course";
@@ -129,6 +129,11 @@ export default function CoursesPage() {
               <SearchBar value={searchQuery} onChange={setSearchQuery} />
               <FilterButton onClick={() => setIsFilterOpen(true)} />
             </div>
+
+              {/* Breadcrumb */}
+              <div className="mb-4">
+                <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Courses" }]} />
+              </div>
 
             {/* Course Cards */}
             <div className="custom-scrollbar max-h-[70vh] space-y-4 overflow-y-auto p-2 pb-20">

@@ -25,6 +25,7 @@ export {
   SelectValue,
 } from "./Select";
 export { GlobalTextarea } from "./Textarea";
+export { default as Breadcrumb } from "./Breadcrumb";
 
 // Re-export default
 export { default as Layout } from "./DefaultLayout";
