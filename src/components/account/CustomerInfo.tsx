@@ -99,7 +99,7 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
           <GlobalInput
             type="text"
             className="w-full cursor-not-allowed"
-            value={customer.firstName}
+            value={customer.name}
             readOnly
           />
         </div>
