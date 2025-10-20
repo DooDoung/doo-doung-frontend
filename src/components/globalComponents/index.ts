@@ -11,6 +11,7 @@ export { GlobalButton } from "./Button";
 export { Checkbox } from "./Checkbox";
 export { Footer } from "./Footer";
 export { GlassContainer } from "./GlassContainer";
+export { GlassContainer2 } from "./GlassContainer2";
 export { Header } from "./Header";
 export { GlobalInput } from "./Input";
 export {
@@ -23,6 +24,7 @@ export {
   SelectTrigger,
   SelectValue,
 } from "./Select";
+export { GlobalTextarea } from "./Textarea";
 
 // Re-export default
 export { default as Layout } from "./DefaultLayout";

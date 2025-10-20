@@ -16,10 +16,6 @@ export default function AccountDetailsPage() {
 
   useEffect(() => {
     const fetchAccountData = async () => {
-      if (!accountId || typeof accountId !== "string") {
-        return;
-      }
-
       try {
         setLoading(true);
         setError(null);
@@ -35,7 +31,6 @@ export default function AccountDetailsPage() {
 
         const result = response.data;
         setAccountData(result.data);
-        console.log("Fetched account data:", result);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {

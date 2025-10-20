@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { headers } from "next/headers";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
@@ -13,6 +14,7 @@ import {
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { mockReservation } from "@/constants/mock-account";
 import type { CustomerAccount } from "@/interface/User";
+import { AppToast } from "@/lib/app-toast";
 
 import { Switch } from "../ui/switch";
 
@@ -37,16 +39,42 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
         });
         const result = response.data.data;
         setReview(result.reviews);
-        console.log("Review data:", result.reviews);
-      } catch (error) {
-        console.error("Error fetching review:", error);
+        //console.log("Review data:", result.reviews);
+      } catch (error: any) {
+        AppToast.error(`Error fetching review: ${error.message}`);
       } finally {
         setLoading(false);
       }
     };
 
+    const fetchPublicStatus = async () => {
+      try {
+        const response = await axios.get(
+          `${backendUrl}/customer/public-status/${accountId}`,
+        );
+        setIsPublic(response.data.data.isPublic);
+      } catch (error: any) {
+        AppToast.error(`Error fetching public status: ${error.message}`);
+      }
+    };
+
     fetchReview();
-  }, [accountId]);
+    fetchPublicStatus();
+  }, [accountId, isPublic, session?.accessToken]);
+
+  const togglePublicStatus = async () => {
+    try {
+      const response = await axios.patch(
+        `${backendUrl}/customer/toggle-public`,
+        {},
+        { headers: { Authorization: `Bearer ${session?.accessToken}` } },
+      );
+      AppToast.success("Public status updated!");
+      setIsPublic(!isPublic);
+    } catch (error: any) {
+      AppToast.error(`Error updating public status: ${error.message}`);
+    }
+  };
 
   return (
     <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">
@@ -56,7 +84,7 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
           className="self-end"
           size="lg"
           checked={isPublic}
-          onCheckedChange={(checked) => setIsPublic(checked)}
+          onCheckedChange={() => togglePublicStatus()}
         />
       </div>
       <form
