@@ -72,7 +72,7 @@ export const useFetchProphetCourses = (
         : {};
 
       const response = await axios.get(
-        `${backendUrl}/course/byprophet/${prophetId}`,
+        `${backendUrl}/course/prophet/${prophetId}`,
         config,
       );
 
