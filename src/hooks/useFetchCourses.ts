@@ -58,7 +58,7 @@ interface UseFetchCoursesReturn {
   refetch: (params?: CourseFilterParams) => Promise<void>;
 }
 
-export const useFetchCourses = (
+export const  useFetchCourses = (
   initialParams?: CourseFilterParams,
 ): UseFetchCoursesReturn => {
   const [courses, setCourses] = useState<CourseItem[]>([]);
@@ -96,7 +96,7 @@ export const useFetchCourses = (
         queryParams.append("search", params.search);
       }
 
-      const url = `${backendUrl}/course${queryParams.toString() ? "?" + queryParams.toString() : ""}`;
+      const url = `${backendUrl}/courses${queryParams.toString() ? "?" + queryParams.toString() : ""}`;
 
       const response = await axios.get(url);
 
