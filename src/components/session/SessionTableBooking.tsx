@@ -123,7 +123,7 @@ export default function SessionTableBooking({
                     .map((s) => `${s.day} at ${s.time}`)
                     .join(", "),
               );
-              router.push("/account");
+              router.push("/booking/confirm-slot/[bookingld]");
             }
           }}
           className="w-44"

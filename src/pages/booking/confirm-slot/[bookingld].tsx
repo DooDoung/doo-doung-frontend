@@ -1,20 +1,18 @@
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 
-import { BackToHomeActions,CourseCard, TimeSlotConfirmed } from "@/components/booking";
+import { ConfirmBookingActions,CourseCard, TimeSlotWithPurchase } from "@/components/booking";
 import { DefaultLayout } from "@/components/globalComponents";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
-import { AppToast } from "@/lib/app-toast";
 
-export default function BookingSuccessPage() {
+export default function ConfirmSlotPage() {
   const router = useRouter();
 
-  useEffect(() => {
-    AppToast.success("Confirmed Booking!");
-  }, []);
+  const handlePurchase = () => {
+    router.push('/booking/payment/[bookingld]');
+  };
 
-  const handleBackToHome = () => {
-    router.push('/');
+  const handleBack = () => {
+    router.back();
   };
 
   const courseData = {
@@ -26,8 +24,7 @@ export default function BookingSuccessPage() {
     description: "Current course description description",
     price: "1,750",
     prophetName: "แม่หมอออม",
-    prophetImageSrc: "/images/course.svg",
-    prophetLineId: "aom12356"
+    prophetImageSrc: "/images/course.svg"
   };
 
   const timeSlotData = {
@@ -48,14 +45,17 @@ export default function BookingSuccessPage() {
               <CourseCard {...courseData} />
               
               <div className="w-full max-w-4xl mt-4">
-                <TimeSlotConfirmed 
+                <TimeSlotWithPurchase 
                   selectedDate={timeSlotData.selectedDate}
                   selectedTime={timeSlotData.selectedTime}
+                  onPurchase={handlePurchase}
                 />
               </div>
             </div>
 
-            <BackToHomeActions onBackToHome={handleBackToHome} />
+            <ConfirmBookingActions 
+              onBack={handleBack} 
+            />
           </div>
         </GlassContainer2>
       </div>
