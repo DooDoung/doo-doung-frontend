@@ -82,7 +82,12 @@ export default function SessionTableBooking({
         const [day, time] = s.split("-");
         return { day, time };
       });
-      localStorage.setItem("bookingSlot", JSON.stringify(slotsArray));
+
+      const convertSlotsArray = slotsArray.map((slot: any) =>
+        formatSlotToTimeData(slot, durationMinutes)
+      );
+      
+      localStorage.setItem("bookingSlot", JSON.stringify(convertSlotsArray));
 
       newSet.add(key);
       onSelectedChange?.(slotsArray);
@@ -186,3 +191,37 @@ const MockBooking = {
   // new booking from customer to send to backend
   selectedSlot: null,
 };
+
+function formatSlotToTimeData(slot: { day: string; time: string }, durationMinutes: number) {
+  
+  const today = new Date();
+  const dateStr = today.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }); 
+
+  const [hour, minute] = slot.time.split(":").map(Number);
+  const start = new Date();
+  start.setHours(hour, minute, 0, 0);
+
+  const end = new Date(start);
+  end.setMinutes(start.getMinutes() + durationMinutes);
+
+  const formatTime = (d: Date) => {
+    const h = d.getHours();
+    const m = String(d.getMinutes()).padStart(2, "0");
+    const suffix = h >= 12 ? "PM" : "AM";
+    const hour12 = ((h + 11) % 12) + 1; 
+    return `${String(hour12).padStart(2, "0")}:${m} ${suffix}`;
+  };
+
+  const selectedTime = `${formatTime(start)} - ${formatTime(end)}`;
+
+  const timeSlotData = {
+    selectedDate: dateStr,
+    selectedTime,
+  };
+
+  return timeSlotData;
+}
