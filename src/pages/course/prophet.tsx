@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import router from "next/router";
+import { useSession } from "next-auth/react";
 
 import ProphetCard from "@/components/account/ProphetCard";
 import ProphetCourseCard from "@/components/course/Prophet/ProphetCourseCard";
@@ -9,7 +11,35 @@ import {
 } from "@/components/globalComponents";
 
 export default function CourseProphetPage() {
-  const courses = mockCourse;
+  const { data: session } = useSession();
+  const accountId = session?.user?.id;
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    async function fetchCourses() {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/course?prophetId=${accountId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include", // Include cookies for authentication
+          }
+        );
+        if (!res.ok) {
+          throw new Error(`Failed to fetch courses (${res.status})`);
+        }
+        const result = await res.json();
+        setCourses(result.data ?? []);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    }
+    fetchCourses();
+  }, [accountId]);
+
   const availabilityCalendar = {
     imageUrl: "/images/prophet-feature/calendar.svg",
     goTo: "/account/prophet/availability",
@@ -17,6 +47,13 @@ export default function CourseProphetPage() {
   const mySession = {
     imageUrl: "/images/prophet-feature/discussion.svg",
     goTo: "/course/prophet/my-session",
+  };
+
+  const getRandomImage = (idx : number) =>
+    mockCourseProfile[idx % mockCourseProfile.length].imageUrl;
+  const getRandomScore = (idx : number) => {
+    const scores = [5, 5, 4, 5, 3, 4, 5, 2, 4];
+    return scores[idx % scores.length];
   };
 
   return (
@@ -35,11 +72,17 @@ export default function CourseProphetPage() {
           {/* Added 'flex' class here to activate the flexbox layout */}
           <div className="custom-scrollbar flex h-1/2 flex-col gap-6 overflow-y-scroll">
             {/* <custom-scrollbar /> */}
-            {courses.map((course) => (
+            {courses.map((course, idx) => (
               <ProphetCourseCard
                 key={course.id}
+                id={course.id}
+                imageUrl={getRandomImage(idx)}
+                score={getRandomScore(idx)}
+                status={course.isActive ? "OPEN" : "CLOSE"}
+                courseName={course.courseName}
+                prophetName={`${course.name} ${course.lastname}`}
+                price={`${course.price} `}
                 editability={"VIEW"}
-                {...course}
               />
             ))}
           </div>
@@ -84,62 +127,12 @@ export default function CourseProphetPage() {
   );
 }
 
-const mockCourse: {
-  id: string;
+const mockCourseProfile: {
   imageUrl: string;
-  score: number;
-  status: "OPEN" | "CLOSE";
-  courseName: string;
-  prophetName: string;
-  price: number;
 }[] = [
-  {
-    id: "course-01",
-    imageUrl: "https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=500",
-    score: 5,
-    status: "OPEN",
-    courseName: "Tarot Reading for Beginners",
-    prophetName: "Prophet Jane",
-    price: 500,
-  },
-  {
-    id: "course-02",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500",
-    score: 4,
-    status: "OPEN",
-    courseName: "Advanced Astrology",
-    prophetName: "Prophet John",
-    price: 750,
-  },
-  {
-    id: "course-03",
-    imageUrl:
-      "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=500",
-    score: 5,
-    status: "CLOSE",
-    courseName: "Numerology Insights",
-    prophetName: "Prophet Alice",
-    price: 6000,
-  },
-  {
-    id: "course-04",
-    imageUrl:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500",
-    score: 3,
-    status: "OPEN",
-    courseName: "Palm Reading Basics",
-    prophetName: "Prophet Bob",
-    price: 400,
-  },
-  {
-    id: "course-05",
-    imageUrl:
-      "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=500",
-    score: 4,
-    status: "CLOSE",
-    courseName: "Dream Interpretation",
-    prophetName: "Prophet Eve",
-    price: 550,
-  },
+  { imageUrl: "https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=500",},
+  { imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500",},
+  { imageUrl: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=500",},
+  { imageUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500",},
+  { imageUrl: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=500",},
 ];
