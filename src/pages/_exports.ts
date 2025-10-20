@@ -14,7 +14,7 @@ export { default as ProphetReportPage } from "./account/prophet/report";
 export { default as CourseProphetPage } from "./course/prophet";
 export { default as MyCoursesPage } from "./course/prophet/my-courses";
 export { default as CreateCoursePage } from "./course/prophet/my-courses/create";
-export { default as CourseDetailsPage } from "./course/prophet/my-courses/details/[courseld]";
+export { default as CourseDetailsPage } from "./course/prophet/my-courses/details/[courseId]";
 export { default as EditCoursePage } from "./course/prophet/my-courses/edit/[courseld]";
 export { default as CourseMySessionPage } from "./course/prophet/my-session";
 
