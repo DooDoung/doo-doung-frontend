@@ -45,17 +45,17 @@ interface UseFetchProphetCoursesReturn {
 }
 
 export const useFetchProphetCourses = (
-  accountId?: string,
+  prophetId?: string,
 ): UseFetchProphetCoursesReturn => {
   const { data: session } = useSession();
   const [courses, setCourses] = useState<ProphetCourse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const accessToken = (session?.user as any)?.accessToken;
+  const accessToken = session?.accessToken;
 
   const fetchCourses = async () => {
     try {
-      if (!accountId) {
+      if (!prophetId) {
         setLoading(false);
         return;
       }
@@ -72,7 +72,7 @@ export const useFetchProphetCourses = (
         : {};
 
       const response = await axios.get(
-        `${backendUrl}/courses/prophet/${accountId}`,
+        `${backendUrl}/course/prophet/${prophetId}`,
         config,
       );
 
@@ -109,7 +109,7 @@ export const useFetchProphetCourses = (
 
   useEffect(() => {
     fetchCourses();
-  }, [accountId, accessToken]);
+  }, [prophetId, accessToken]);
 
   return {
     courses,
