@@ -10,6 +10,8 @@ import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { MOCK_ACCOUNTS } from "@/constants/transaction";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 export default function CourseDetailsPage() {
   const router = useRouter();
@@ -77,6 +79,24 @@ export default function CourseDetailsPage() {
     },
   ];
 
+  const backendUrl =
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+  const [isOpen, setIsOpen] = useState(formData.isOpen);
+  const { data: session } = useSession();
+  const handleToggleOpen = async () => {
+    setIsOpen(!isOpen);
+    setFormData({ ...formData, isOpen: !isOpen });
+    const response = await axios.patch(
+      `${backendUrl}/prophet/courses/${courseId}/toggle-status`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      },
+    );
+  };
+
   return (
     <DefaultLayout contentClassName="flex flex-col justify-center items-center">
       <div className="mt-5">
@@ -141,6 +161,7 @@ export default function CourseDetailsPage() {
                 className="self-end"
                 size="lg"
                 checked={formData.isOpen}
+                onClick={handleToggleOpen}
               />
             </div>
 
