@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 
 import { dayNames, weekdayNames } from "@/lib/session-availible-table";
 
 async function generateAvailableSlots(
   weekIndex: number,
+  accessToken: string | undefined,
 ): Promise<Array<{ day: string; time: string }>> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/prophet/availability`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
   );
 
   if (!response.ok) {
@@ -47,25 +54,32 @@ async function generateAvailableSlots(
 }
 
 export function useProphetAvailability() {
+  const { data: session } = useSession();
   const [currentWeek, setCurrentWeek] = useState(0);
   const [isEdit, setIsEdit] = useState(false);
   const [weeklyAvailability, setWeeklyAvailability] = useState<
     Record<number, Array<{ day: string; time: string }>>
   >({});
+  const accessToken = (session?.user as any)?.accessToken;
 
   useEffect(() => {
+    if (!accessToken) return;
+
     const fetchAvailData = async () => {
       const availabilityTemp: Record<
         number,
         Array<{ day: string; time: string }>
       > = {};
       for (let week = 0; week < 4; week++) {
-        availabilityTemp[week] = await generateAvailableSlots(week);
+        availabilityTemp[week] = await generateAvailableSlots(
+          week,
+          accessToken,
+        );
       }
       setWeeklyAvailability(availabilityTemp);
     };
     fetchAvailData();
-  }, []);
+  }, [accessToken]);
 
   const ToggleProphetAvail = async (day: Date, time: string) => {
     // Only allow toggle when in edit mode
@@ -103,6 +117,8 @@ export function useProphetAvailability() {
     const slotDateString = slotDate.toISOString().split("T")[0];
 
     // Check if slot currently exists
+    console.log(weeklyAvailability);
+
     const currentAvailability = weeklyAvailability[currentWeek];
     const existingSlot = currentAvailability.find(
       (slot) => slot.day === dayName && slot.time === time,
@@ -120,6 +136,7 @@ export function useProphetAvailability() {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
             items: [
@@ -223,6 +240,7 @@ export function useProphetAvailability() {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify({
               items: itemsToUpdate,

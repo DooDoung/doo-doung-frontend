@@ -8,7 +8,7 @@ function ProphetCard({
   transaction,
 }: {
   feat: ProphetFeat;
-  transaction: TransactionAccount;
+  transaction?: TransactionAccount;
 }) {
   const router = useRouter();
   return (
@@ -31,14 +31,14 @@ function ProphetCard({
           ) : (
             <div className="flex w-full px-2">
               <img
-                src={getBankImageUrl(transaction.bank)}
-                alt={transaction.bank}
+                src={getBankImageUrl(transaction?.bank ?? "")}
+                alt={transaction?.bank}
                 className="mr-3 mb-2 h-full self-start rounded-full object-cover"
               />
               <div className="flex flex-col">
-                <p className="text-neutral-black">{transaction.accountName}</p>
+                <p className="text-neutral-black">{transaction?.accountName}</p>
                 <p className="text-neutral-black text-sm">
-                  {transaction.accountNumber}
+                  {transaction?.accountNumber}
                 </p>
                 <p className="text-primary mt-2 text-xs">
                   Click to view other accounts!
