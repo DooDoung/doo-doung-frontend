@@ -18,7 +18,7 @@ import {
 } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
-import { BANKS,MOCK_ACCOUNTS } from "@/constants/transaction";
+import { BANKS, MOCK_ACCOUNTS } from "@/constants/transaction";
 import { AppToast } from "@/lib/app-toast";
 
 export default function CreateCoursePage() {
@@ -137,7 +137,7 @@ export default function CreateCoursePage() {
         </GlassContainer2>
 
         {/* right box */}
-        <div className="bg-neutral-white shadow-all-around flex h-full flex-1 flex-col rounded-3xl p-12">
+        <div className="bg-neutral-white shadow-all-around custom-scrollbar flex h-full flex-1 flex-col overflow-y-scroll rounded-3xl p-12">
           <h3 className="font-sanctuary text-neutral-black mb-4 text-5xl">
             Create Course
           </h3>
