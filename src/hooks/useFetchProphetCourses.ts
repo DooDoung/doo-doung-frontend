@@ -51,7 +51,7 @@ export const useFetchProphetCourses = (
   const [courses, setCourses] = useState<ProphetCourse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const accessToken = (session?.user as any)?.accessToken;
+  const accessToken = session?.accessToken;
 
   const fetchCourses = async () => {
     try {
@@ -72,7 +72,7 @@ export const useFetchProphetCourses = (
         : {};
 
       const response = await axios.get(
-        `${backendUrl}/course/byprophet/${prophetId}`,
+        `${backendUrl}/course/prophet/${prophetId}`,
         config,
       );
 

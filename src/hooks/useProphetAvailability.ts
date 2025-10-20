@@ -60,7 +60,7 @@ export function useProphetAvailability() {
   const [weeklyAvailability, setWeeklyAvailability] = useState<
     Record<number, Array<{ day: string; time: string }>>
   >({});
-  const accessToken = (session?.user as any)?.accessToken;
+  const accessToken = session?.accessToken;
 
   useEffect(() => {
     if (!accessToken) return;

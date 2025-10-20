@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import { Pencil } from "lucide-react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import { EditCourseProfileDialog } from "@/components/course/Prophet/EditCourseProfileDialog";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
@@ -22,11 +24,37 @@ import { Switch } from "@/components/ui/switch";
 import { MOCK_ACCOUNTS } from "@/constants/transaction";
 import { AppToast } from "@/lib/app-toast";
 
+const backendUrl =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+
+// Helper functions for localStorage
+const getLocalStorageKey = (field: string) => `course_${field}`;
+
+const loadFromLocalStorage = (field: string): string => {
+  try {
+    return localStorage.getItem(getLocalStorageKey(field)) || "";
+  } catch {
+    return "";
+  }
+};
+
+const saveToLocalStorage = (field: string, value: string) => {
+  try {
+    localStorage.setItem(getLocalStorageKey(field), value);
+  } catch {
+    // Silently fail if localStorage is not available
+  }
+};
+
 export default function EditCoursePage() {
   const router = useRouter();
   const pathname = usePathname() || "";
   const courseId = pathname.split("/").pop();
+  const { data: session } = useSession();
   const [openDialog, setOpenDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // auto focus course name field
   const inputRef = useRef<HTMLInputElement>(null);
@@ -35,16 +63,75 @@ export default function EditCoursePage() {
   }, []);
 
   const [formData, setFormData] = useState({
-    courseName: "คอร์สดูดวงความรัก 3 คำถาม",
-    prophetMethod: "Tarot card",
-    duration: "15",
-    description:
-      "ดูดวงความรัก 3 คำถาม โดยใช้ไพ่โรต์ จากแม่หมอประสบการณ์ 300 ปี จบจากสถาบันเวทมนต์ Horward สาขาดูดวงคนไทย",
-    price: "2000",
-    transactionAccount: undefined,
+    courseName: "",
+    prophetMethod: "",
+    horoscopeSector: "",
+    duration: "",
+    description: "",
+    price: "",
+    transactionAccount: "" as string | undefined,
     courseProfile: "",
     isOpen: true,
   });
+
+  // Fetch course details
+  useEffect(() => {
+    const fetchCourseDetails = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const accessToken = session?.accessToken;
+
+        if (!accessToken) {
+          setError("Unauthorized: No access token found");
+          setLoading(false);
+          return;
+        }
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+
+        const response = await axios.get(
+          `${backendUrl}/course/${courseId}`,
+          config,
+        );
+
+        const courseData = response.data.data || response.data;
+        setFormData({
+          courseName: courseData.courseName || "",
+          prophetMethod:
+            courseData.methodName && courseData.methodName.trim() !== ""
+              ? courseData.methodName
+              : loadFromLocalStorage("prophetMethod"),
+          horoscopeSector: courseData.horoscopeSector || "",
+          duration: courseData.durationMin?.toString() || "",
+          description:
+            courseData.description && courseData.description.trim() !== ""
+              ? courseData.description
+              : loadFromLocalStorage("description"),
+          price: courseData.price?.toString() || "",
+          transactionAccount: MOCK_ACCOUNTS[0]?.id,
+          courseProfile: courseData.courseProfile || "",
+          isOpen: courseData.isActive || true,
+        });
+      } catch (err) {
+        const errorMessage = axios.isAxiosError(err)
+          ? err.response?.data?.message || err.message
+          : "Failed to fetch course details";
+        setError(errorMessage);
+        AppToast.error(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (courseId && session) {
+      fetchCourseDetails();
+    }
+  }, [courseId, session]);
 
   const user = {
     profileUrl:
@@ -54,9 +141,16 @@ export default function EditCoursePage() {
 
   const handleChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    // Save to localStorage for persistence
+    if (
+      (field === "prophetMethod" || field === "description") &&
+      typeof value === "string"
+    ) {
+      saveToLocalStorage(field, value);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const {
       courseName,
@@ -66,15 +160,16 @@ export default function EditCoursePage() {
       price,
       transactionAccount,
       courseProfile,
+      horoscopeSector,
     } = formData;
 
     if (
       !courseName.trim() ||
       !prophetMethod.trim() ||
+      !horoscopeSector.trim() ||
       !duration.trim() ||
       !description.trim() ||
-      !price.trim() ||
-      !courseProfile.trim()
+      !price.trim()
     ) {
       AppToast.error("Every field must be completed.");
       return;
@@ -85,8 +180,39 @@ export default function EditCoursePage() {
       return;
     }
 
-    AppToast.success("Course edited!");
-    router.push(`/course/prophet/my-courses/details/${courseId}`);
+    try {
+      setIsLoading(true);
+      const accessToken = session?.accessToken;
+      const config = accessToken
+        ? {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        : {};
+
+      const payload = {
+        courseName,
+        methodName: prophetMethod,
+        horoscopeSector,
+        durationMin: parseInt(duration),
+        description,
+        price: parseFloat(price),
+        courseProfile,
+        isActive: formData.isOpen,
+      };
+
+      await axios.patch(`${backendUrl}/course/${courseId}`, payload, config);
+      AppToast.success("Course updated successfully!");
+      router.push(`/course/prophet/my-courses/details/${courseId}`);
+    } catch (error) {
+      const errorMessage = axios.isAxiosError(error)
+        ? error.response?.data?.message || error.message
+        : "Failed to update course";
+      AppToast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -204,6 +330,31 @@ export default function EditCoursePage() {
 
             <div className="col-span-3">
               <label className="text-neutral-black flex items-center">
+                Horoscope Sector
+                <Pencil className="ml-2" size={18} />
+              </label>
+              <Select
+                value={formData.horoscopeSector}
+                onValueChange={(value) =>
+                  handleChange("horoscopeSector", value)
+                }
+              >
+                <SelectTrigger className="min-h-10 w-full">
+                  <SelectValue placeholder="Select sector" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="LOVE">Love</SelectItem>
+                  <SelectItem value="WORK">Work</SelectItem>
+                  <SelectItem value="STUDY">Study</SelectItem>
+                  <SelectItem value="MONEY">Money</SelectItem>
+                  <SelectItem value="LUCK">Luck</SelectItem>
+                  <SelectItem value="FAMILY">Family</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="col-span-3">
+              <label className="text-neutral-black flex items-center">
                 Duration
                 <Pencil className="ml-2" size={18} />
               </label>
@@ -288,8 +439,9 @@ export default function EditCoursePage() {
                 variant="primary"
                 type="submit"
                 className="min-h-12"
+                disabled={isLoading}
               >
-                <p className="m-8">Save</p>
+                <p className="m-8">{isLoading ? "Saving..." : "Save"}</p>
               </GlobalButton>
             </div>
           </form>
