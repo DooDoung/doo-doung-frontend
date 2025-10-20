@@ -61,7 +61,7 @@ export default function BookingPage() {
           title: fetched.courseName,
           method: fetched.horoscopeMethodId, // You might want to map this to actual method names
           duration: fetched.durationMin,
-          description: "", // Add if you have description in backend
+          description: `${fetched.courseName} course by ${fetched.prophetName}. Duration: ${fetched.durationMin} minutes.`, // Add if you have description in backend
           price: fetched.price, // Format price as needed
           prophetName: fetched.name,
           prophetImageSrc: "/images/course.svg", // Add default image or get from backend
@@ -85,6 +85,7 @@ export default function BookingPage() {
 
   const handleCheckAvailableTime = () => {
     if (!bookingld) return;
+
     router.push(`/booking/booking-slot/${bookingld}`);
   };
 
