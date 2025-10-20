@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 import { dayNames, weekdayNames } from "@/lib/session-availible-table";
 
