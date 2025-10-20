@@ -45,7 +45,7 @@ interface UseFetchProphetCoursesReturn {
 }
 
 export const useFetchProphetCourses = (
-  accountId?: string,
+  prophetId?: string,
 ): UseFetchProphetCoursesReturn => {
   const { data: session } = useSession();
   const [courses, setCourses] = useState<ProphetCourse[]>([]);
@@ -55,7 +55,7 @@ export const useFetchProphetCourses = (
 
   const fetchCourses = async () => {
     try {
-      if (!accountId) {
+      if (!prophetId) {
         setLoading(false);
         return;
       }
@@ -72,7 +72,7 @@ export const useFetchProphetCourses = (
         : {};
 
       const response = await axios.get(
-        `${backendUrl}/courses/prophet/${accountId}`,
+        `${backendUrl}/course/byprophet/${prophetId}`,
         config,
       );
 
@@ -109,7 +109,7 @@ export const useFetchProphetCourses = (
 
   useEffect(() => {
     fetchCourses();
-  }, [accountId, accessToken]);
+  }, [prophetId, accessToken]);
 
   return {
     courses,
