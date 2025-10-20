@@ -146,7 +146,7 @@ const SessionDetailPage = () => {
             <div className="text-neutral-black mt-12 grid h-[calc(100%-100px)] grid-cols-2 grid-rows-2 gap-4 text-xs">
               <div className="rounded-lg border-2 border-gray-300 bg-white p-4">
                 <h3 className="mb-2 font-bold">Session Information</h3>
-                <p>Prophet's Name: {session?.user?.name}</p>
+                <p>Prophet's Name: {sessionDetails.prophetId}</p>
                 <p>Method: {sessionDetails.horoscopeMethodName}</p>
                 <p>Sector: {sessionDetails.courseName}</p>
                 <p>
