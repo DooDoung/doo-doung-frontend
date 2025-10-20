@@ -13,7 +13,6 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { data: session, status } = useSession();
-  console.log("Session data:", session);
   const token = session?.accessToken;
 
   useEffect(() => {
@@ -30,6 +29,7 @@ export default function AccountPage() {
             "Content-Type": "application/json",
           },
         });
+
         // Transform lineId to line before setting user data
         const userData = response.data.data;
         if (userData && userData.lineId) {
@@ -38,6 +38,7 @@ export default function AccountPage() {
         }
         setUser(userData);
         console.log("Fetched account data:", response.data);
+        
       } catch (error: any) {
         console.error("Error fetching account data:", error);
         setError(error.message || "Failed to fetch account data");
