@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
-import { DefaultLayout, GlassContainer2, GlobalButton } from "@/components/globalComponents";
+import {
+  DefaultLayout,
+  GlassContainer2,
+  GlobalButton,
+} from "@/components/globalComponents";
 
 interface Session {
   id: string;
@@ -18,6 +22,7 @@ interface Session {
   prophetProfileUrl?: string; // custom profile image URL
   courseName: string;
   horoscopeMethodName: string;
+  horoscopeSector: string;
   amount: number;
   reviewScore: number;
   reviewDescription: string;
@@ -247,7 +252,7 @@ export default function MySessionPage() {
             throw new Error("Failed to fetch sessions");
           }
           const data = await response.json();
-          const normalized: Session[] = Array.isArray(data)
+          const rawSessions = Array.isArray(data)
             ? data
             : Array.isArray(data?.sessions)
               ? data.sessions
@@ -255,28 +260,43 @@ export default function MySessionPage() {
                 ? data.data
                 : [];
 
+          const normalized: Session[] = rawSessions.map((s: any) => ({
+            ...s,
+            id: s.sessionId,
+            horoscopeMethodName: s.horoscopeMethod,
+            createdAt: s.transactionCreatedAt,
+          }));
+
           // Normalize status values from API (case-insensitive + synonyms)
           const mapStatus = (raw: unknown): Session["status"] => {
             const v = String(raw ?? "").toLowerCase();
-            if ([
-              "scheduled",
-              "processing",
-              "upcoming",
-              "pending",
-              "open",
-              "booked",
-            ].includes(v))
+            if (
+              [
+                "scheduled",
+                "processing",
+                "upcoming",
+                "pending",
+                "open",
+                "booked",
+              ].includes(v)
+            )
               return "scheduled";
-            if (["completed", "complete", "done", "finished", "success"].includes(v))
+            if (
+              ["completed", "complete", "done", "finished", "success"].includes(
+                v,
+              )
+            )
               return "completed";
-            if (["cancelled", "canceled", "cancel", "failed", "void"].includes(v))
+            if (
+              ["cancelled", "canceled", "cancel", "failed", "void"].includes(v)
+            )
               return "cancelled";
             return "scheduled"; // default to active for unknown statuses
           };
 
-          const normalizedSessions: Session[] = (normalized as Array<
-            Partial<Session> & Record<string, unknown>
-          >).map((s) => ({
+          const normalizedSessions: Session[] = (
+            normalized as Array<Partial<Session> & Record<string, unknown>>
+          ).map((s) => ({
             ...(s as Session),
             status: mapStatus(s.status as unknown),
           }));
@@ -315,7 +335,10 @@ export default function MySessionPage() {
 
   return (
     <DefaultLayout includeHeader={false}>
-      <div ref={containerRef} className="flex flex-col items-center justify-center">
+      <div
+        ref={containerRef}
+        className="flex flex-col items-center justify-center"
+      >
         <h1 className="font-sanctuary text-5xl font-bold text-white">
           DooDoung
         </h1>
@@ -347,9 +370,15 @@ export default function MySessionPage() {
               </div>
             </div>
             {showHistory ? (
-              <SessionHistory onBack={() => setShowHistory(false)} sessions={sessions} />
+              <SessionHistory
+                onBack={() => setShowHistory(false)}
+                sessions={sessions}
+              />
             ) : (
-              <Dashboard onViewHistory={() => setShowHistory(true)} sessions={sessions} />
+              <Dashboard
+                onViewHistory={() => setShowHistory(true)}
+                sessions={sessions}
+              />
             )}
           </div>
         </GlassContainer2>

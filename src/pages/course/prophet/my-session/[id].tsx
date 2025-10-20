@@ -9,21 +9,24 @@ import {
 } from "@/components/globalComponents";
 
 interface Session {
-  id: string;
-  customerId: string;
+  sessionId: string;
   courseId: string;
-  prophetId: string;
+  prophetUsername: string;
+  prophetName: string;
+  prophetProfileUrl: string;
   status: "scheduled" | "completed" | "cancelled";
   startDateTime: string;
   endDateTime: string;
   customerName: string;
+  customerUsername: string;
   customerProfileUrl: string;
   courseName: string;
-  horoscopeMethodName: string;
+  horoscopeMethod: string;
+  horoscopeSector: string;
   amount: number;
   reviewScore: number;
   reviewDescription: string;
-  createdAt: string;
+  transactionCreatedAt: string;
   updatedAt: string;
   transactionId?: string; // Added for mock
   payoutStatus?: string; // Added for mock, might not be in API
@@ -61,13 +64,20 @@ const SessionDetailPage = () => {
             throw new Error("Failed to fetch session list for prophet");
           }
           const data = await response.json();
-          const list: Session[] = Array.isArray(data)
-            ? data
-            : Array.isArray(data?.sessions)
-              ? data.sessions
-              : Array.isArray(data?.data)
-                ? data.data
-                : [];
+          const list: Session[] = (
+            Array.isArray(data)
+              ? data
+              : Array.isArray(data?.sessions)
+                ? data.sessions
+                : Array.isArray(data?.data)
+                  ? data.data
+                  : []
+          ).map((s: any) => ({
+            ...s,
+            id: s.sessionId,
+            horoscopeMethodName: s.horoscopeMethod,
+            createdAt: s.transactionCreatedAt,
+          }));
           const foundSession = list.find((s) => s.id === sessionId);
           if (foundSession) {
             // Mocking payout info as it's not in the API response
@@ -130,7 +140,7 @@ const SessionDetailPage = () => {
             <p className="text-neutral-black text-sm">USERNAME</p>
             <div className="mt-2 w-2/3 rounded-full bg-white/80 px-4 py-2 text-center">
               <p className="text-neutral-black font-semibold">
-                {session?.user?.name}
+                {sessionDetails.prophetUsername}
               </p>
             </div>
           </div>
@@ -146,8 +156,8 @@ const SessionDetailPage = () => {
             <div className="text-neutral-black mt-12 grid h-[calc(100%-100px)] grid-cols-2 grid-rows-2 gap-4 text-xs">
               <div className="rounded-lg border-2 border-gray-300 bg-white p-4">
                 <h3 className="mb-2 font-bold">Session Information</h3>
-                <p>Prophet's Name: {sessionDetails.prophetId}</p>
-                <p>Method: {sessionDetails.horoscopeMethodName}</p>
+                <p>Prophet's Name: {sessionDetails.prophetName}</p>
+                <p>Method: {sessionDetails.horoscopeMethod}</p>
                 <p>Sector: {sessionDetails.courseName}</p>
                 <p>
                   Time:{" "}
@@ -166,7 +176,10 @@ const SessionDetailPage = () => {
                 <p>Amount: {sessionDetails.amount} Baht</p>
                 <p>Payout Status: {sessionDetails.payoutStatus}</p>
                 <p>
-                  Created: {new Date(sessionDetails.createdAt).toLocaleString()}
+                  Created:{" "}
+                  {new Date(
+                    sessionDetails.transactionCreatedAt,
+                  ).toLocaleString()}
                 </p>
               </div>
               <div className="rounded-lg border-2 border-gray-300 bg-white p-4">
