@@ -47,6 +47,11 @@ const SessionHistory = ({
     return true;
   });
 
+  const totalIncome =
+    filter === "completed"
+      ? filteredSessions.reduce((acc, session) => acc + session.amount, 0)
+      : 0;
+
   return (
     <div className="relative h-full w-[70%] p-8">
       <GlobalButton
@@ -115,6 +120,14 @@ const SessionHistory = ({
           </tbody>
         </table>
       </div>
+      {filter === "completed" && (
+        <div className="mt-4 text-right">
+          <p className="text-lg font-bold text-[#3E3753]">
+            Total Income:{" "}
+            <span className="text-green-600">{totalIncome} Baht</span>
+          </p>
+        </div>
+      )}
     </div>
   );
 };
@@ -133,7 +146,7 @@ const Dashboard = ({
   const completedSessions = sessions.filter(
     (session) => session.status === "completed",
   );
-  const totalIncome = completedSessions.reduce(
+  const totalIncome = sessions.reduce(
     (acc, session) => acc + session.amount,
     0,
   );
@@ -260,12 +273,14 @@ export default function MySessionPage() {
                 ? data.data
                 : [];
 
-          const normalized: Session[] = rawSessions.map((s: any) => ({
-            ...s,
-            id: s.sessionId,
-            horoscopeMethodName: s.horoscopeMethod,
-            createdAt: s.transactionCreatedAt,
-          }));
+          const normalized: Session[] = rawSessions.map(
+            (s: Record<string, unknown>) => ({
+              ...s,
+              id: s.sessionId,
+              horoscopeMethodName: s.horoscopeMethod,
+              createdAt: s.transactionCreatedAt,
+            }),
+          );
 
           // Normalize status values from API (case-insensitive + synonyms)
           const mapStatus = (raw: unknown): Session["status"] => {
