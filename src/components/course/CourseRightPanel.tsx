@@ -21,7 +21,7 @@ export default function CourseRightPanel({
 
   const handleBook = () => {
     if (activeItem) {
-      router.push(`/booking`);
+      router.push(`/booking/${activeItem?.id ?? " "}`);
     }
   };
 
@@ -83,7 +83,7 @@ export default function CourseRightPanel({
           {(activeItem?.reviews ?? []).map((r) => (
             <ReviewCard
               key={r.id}
-              profileUrl={activeItem?.prophetProfileUrl ?? ""}
+              profileUrl={activeItem?.courseProfileUrl ?? ""}
               userName={r.profileName}
               courseName={r.title}
               comment={r.content}
