@@ -36,28 +36,28 @@ export default function CourseRightPanel({
       <div className="mx-auto max-w-3xl flex-1">
         {/* Title */}
         <h1 className="font-chakra text-neutral-black text-2xl font-semibold tracking-tight md:text-3xl">
-          {activeItem?.title ?? " "}
+          {activeItem?.courseName ?? " "}
         </h1>
 
         {/* Meta grid */}
         <div className="text-neutral-black mt-6 grid grid-cols-2 gap-6">
           <Meta
             label="Prophet method"
-            value={activeItem?.prophetMethod ?? " "}
+            value={activeItem?.horoscopeSector ?? " "}
           />
           <Meta
             label="Duration (min)"
-            value={activeItem?.durationMin?.toString() ?? " "}
+            value={activeItem?.durationMin.toString() ?? "15"}
           />
           <Meta
             label="Description"
-            value={activeItem?.description ?? " "}
+            value={"course by" + activeItem?.name + activeItem?.lastname}
             colSpan={2}
           />
           <Meta
             label="Prices"
             sub="(Baht)"
-            value={activeItem ? activeItem.priceTHB.toLocaleString() : " "}
+            value={activeItem ? activeItem.price.toLocaleString() : " "}
           />
         </div>
 

@@ -39,7 +39,7 @@ export default function CourseLeftPanel({
           type="text"
           size="lg"
           className="mb-3 w-[150%] cursor-not-allowed"
-          value={activeItem?.prophetName ?? "Loading..."}
+          value={activeItem?.name ?? "Loading..."}
           readOnly
         />
       </div>
