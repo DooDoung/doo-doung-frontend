@@ -13,7 +13,6 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { data: session, status } = useSession();
-  console.log("Session data:", session);
   const token = session?.accessToken;
 
   useEffect(() => {
@@ -30,16 +29,8 @@ export default function AccountPage() {
             "Content-Type": "application/json",
           },
         });
-        // Transform lineId to line before setting user data
-        const userData = response.data.data;
-        if (userData && userData.lineId) {
-          userData.line = userData.lineId;
-          delete userData.lineId;
-        }
-        setUser(userData);
-        console.log("Fetched account data:", response.data);
+        setUser(response.data.data);
       } catch (error: any) {
-        console.error("Error fetching account data:", error);
         setError(error.message || "Failed to fetch account data");
       } finally {
         setLoading(false);
@@ -51,7 +42,7 @@ export default function AccountPage() {
     <DefaultLayout contentClassName="flex justify-center items-center">
       {loading && <p>Loading account data...</p>}
       {error && <p>Error: {error}</p>}
-      {user && <AccountLayout user={user} editing={false} />}
+      {!error && user && <AccountLayout user={user} editing={false} />}
     </DefaultLayout>
   );
 }

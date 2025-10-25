@@ -14,7 +14,7 @@ export { default as ProphetReportPage } from "./account/prophet/report";
 export { default as CourseProphetPage } from "./course/prophet";
 export { default as MyCoursesPage } from "./course/prophet/my-courses";
 export { default as CreateCoursePage } from "./course/prophet/my-courses/create";
-export { default as CourseDetailsPage } from "./course/prophet/my-courses/details/[courseld]";
+export { default as CourseDetailsPage } from "./course/prophet/my-courses/details/[courseId]";
 export { default as EditCoursePage } from "./course/prophet/my-courses/edit/[courseld]";
 export { default as CourseMySessionPage } from "./course/prophet/my-session";
 
@@ -24,8 +24,8 @@ export { default as CourseDetailPage } from "./course/[courseld]";
 export { default as CoursesMySessionPage } from "./course/my-session";
 
 // Booking Pages
-export { default as BookingPage } from "./booking/[bookingld]";
 export { default as BookingSuccessPage } from "./booking/booking-success/[bookingld]";
+export { default as BookingPage } from "./booking/main/[bookingld]";
 export { default as BookingPaymentPage } from "./booking/payment/[bookingld]";
 
 // Review Pages
