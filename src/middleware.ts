@@ -24,6 +24,8 @@ const AllowCustomerPath = [
   "/account/edit-account",
   "/course/my-session",
   "/booking/[bookingld]",
+  "/booking/booking-slot/[bookingld]",
+  "/booking/confirm-slot/[bookingld]",
   "/booking/payment/[bookingld]",
   "/booking/booking-success/[bookingld]",
   "/review",
