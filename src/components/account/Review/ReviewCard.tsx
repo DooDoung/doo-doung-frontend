@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 import StarRating from "@/components/account/StarRating";
 import { AccountData } from "@/interface/User";
@@ -13,7 +14,7 @@ function ReviewCard({
   return (
     <div className="text-neutral-black w-full rounded-md border bg-white p-4 shadow-md">
       <div className="flex gap-4">
-        <img
+        <Image
           src={`${account?.profileUrl || ""}`}
           alt="Profile"
           className="h-24 w-24 flex-shrink-0 rounded-full border-1 border-black/20 object-cover"

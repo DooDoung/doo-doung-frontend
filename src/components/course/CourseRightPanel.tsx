@@ -83,13 +83,28 @@ export default function CourseRightPanel({
           {(activeItem?.reviews ?? []).map((r) => (
             <ReviewCard
               key={r.id}
-              profileUrl={activeItem?.courseProfileUrl ?? ""}
-              userName={r.profileName}
-              courseName={r.title}
-              comment={r.content}
-              score={r.rating}
-              date={new Date(r.dateISO).toLocaleDateString()}
-              time={new Date(r.dateISO).toLocaleTimeString()}
+              review={{
+                profileUrl: activeItem?.courseProfileUrl ?? "",
+                userName: r.profileName,
+                courseName: activeItem?.courseName ?? "",
+                description: r.content,
+                score: r.rating,
+                date: new Date(r.dateISO).toLocaleDateString(),
+                time: new Date(r.dateISO).toLocaleTimeString(),
+              }}
+              account={{
+                profileUrl: activeItem?.courseProfileUrl ?? "",
+                username: r.profileName,
+                role: "CUSTOMER" as const,
+                gender: "",
+                zodiacSign: "",
+                name: r.profileName,
+                lastName: "",
+                birthDate: "",
+                birthTime: "",
+                email: "",
+                phoneNumber: "",
+              }}
             />
           ))}
         </div>

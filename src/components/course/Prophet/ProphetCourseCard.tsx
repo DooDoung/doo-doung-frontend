@@ -1,8 +1,10 @@
 import React from "react";
-import { PencilIcon } from "lucide-react";
+import Image from "next/image";
 import router from "next/router";
 
 import StarRating from "@/components/account/StarRating";
+
+import { PencilIcon } from "lucide-react";
 
 function ProphetCourseCard({
   id,
@@ -35,7 +37,7 @@ function ProphetCourseCard({
         }
       }}
     >
-      <img
+      <Image
         src={imageUrl}
         alt={courseName}
         className="mr-4 w-64 rounded-3xl object-cover"
