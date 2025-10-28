@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { headers } from "next/headers";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
@@ -28,8 +27,7 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
   const accountId = session?.user?.id;
   const [review, setReview] = useState([]);
   const [loading, setLoading] = useState(true);
-  const backendUrl =
-    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+  const backendUrl =process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchReview = async () => {
@@ -60,7 +58,7 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
 
     fetchReview();
     fetchPublicStatus();
-  }, [accountId, isPublic, session?.accessToken]);
+  }, [accountId, isPublic, session?.accessToken, backendUrl]);
 
   const togglePublicStatus = async () => {
     try {
@@ -75,6 +73,14 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
       AppToast.error(`Error updating public status: ${error.message}`);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="bg-primary-500/60 flex w-full flex-col items-center justify-center rounded-3xl p-12 text-center sm:w-[30%]">
+        <div className="text-white">Loading account data...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="custom-scrollbar flex h-full w-full flex-col p-4 sm:w-[70%] sm:overflow-y-auto">

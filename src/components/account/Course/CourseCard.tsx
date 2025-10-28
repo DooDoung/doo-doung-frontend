@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 import StarRating from "@/components/account/StarRating";
@@ -24,13 +25,11 @@ function CourseCard({
   prophetName,
   description,
   price,
-  date,
-  time,
   showProphetName = true,
 }: CourseCardProps) {
   const cardContent = (
     <div className="my-2 flex w-full cursor-pointer rounded-3xl border bg-white shadow-md transition-shadow hover:shadow-lg">
-      <img
+      <Image
         src={imageUrl}
         alt={courseName}
         className="mr-6 w-40 rounded-3xl object-cover"
