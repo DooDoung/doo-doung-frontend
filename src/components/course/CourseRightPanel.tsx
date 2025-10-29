@@ -51,7 +51,7 @@ export default function CourseRightPanel({
           />
           <Meta
             label="Description"
-            value={"course by" + activeItem?.name + activeItem?.lastname}
+            value={activeItem?.description ?? "-"}
             colSpan={2}
           />
           <Meta
