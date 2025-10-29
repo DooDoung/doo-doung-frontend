@@ -227,7 +227,7 @@ export default function CourseDetailsPage() {
                   <label className="from-accent-pink to-accent-violet bg-gradient-to-r bg-clip-text text-transparent">
                     Description
                   </label>
-                  <p className="text-neutral-black"> - </p>
+                  <p className="text-neutral-black"> {formData.description} </p>
                 </div>
 
                 <div className="col-span-2">
