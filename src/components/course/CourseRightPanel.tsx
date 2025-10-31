@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import ReviewCard from "@/components/account/Review/ReviewCard";
+import PublicReviewCard from "@/components/public-review/PublicReviewCard";
 import { GlobalButton } from "@/components/globalComponents";
 
 import Meta from "./Meta";
@@ -8,10 +8,12 @@ import { CourseItem } from "./types";
 
 interface CourseRightPanelProps {
   activeItem: CourseItem | null;
+  reviews: Review[];
 }
 
 export default function CourseRightPanel({
   activeItem,
+  reviews,
 }: CourseRightPanelProps) {
   const router = useRouter();
 
@@ -33,7 +35,7 @@ export default function CourseRightPanel({
 
   return (
     <section className="relative flex w-3/5 flex-col overflow-hidden rounded-4xl bg-white p-6 shadow-xl ring-1 ring-slate-200/80 md:p-10">
-      <div className="mx-auto max-w-3xl flex-1">
+      <div className="max-w-3xl flex-1">
         {/* Title */}
         <h1 className="font-chakra text-neutral-black text-2xl font-semibold tracking-tight md:text-3xl">
           {activeItem?.courseName ?? " "}
@@ -42,7 +44,7 @@ export default function CourseRightPanel({
         {/* Meta grid */}
         <div className="text-neutral-black mt-6 grid grid-cols-2 gap-6">
           <Meta
-            label="Prophet method"
+            label="Horoscope Sector"
             value={activeItem?.horoscopeSector ?? " "}
           />
           <Meta
@@ -80,18 +82,15 @@ export default function CourseRightPanel({
           className="custom-scrollbar mt-4 flex-1 space-y-4 overflow-y-auto pb-4"
           style={{ maxHeight: "40vh" }}
         >
-          {(activeItem?.reviews ?? []).map((r) => (
-            <ReviewCard
-              key={r.id}
-              profileUrl={activeItem?.courseProfileUrl ?? ""}
-              userName={r.profileName}
-              courseName={r.title}
-              comment={r.content}
-              score={r.rating}
-              date={new Date(r.dateISO).toLocaleDateString()}
-              time={new Date(r.dateISO).toLocaleTimeString()}
-            />
-          ))}
+          {Array.isArray(reviews) && reviews.length > 0 ? (
+            reviews.map((review, index) => (
+              <PublicReviewCard key={index} review={review} />
+            ))
+          ) : (
+            <p className="text-neutral-black/60 py-8 text-center">
+              No reviews yet
+            </p>
+          )}
         </div>
       </div>
 
