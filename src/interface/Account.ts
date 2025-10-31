@@ -10,13 +10,15 @@ interface Reservation {
 }
 
 interface Review {
-  profileUrl: string;
+  id?: string;
+  profileUrl?: string;
   userName: string;
   courseName: string;
   description: string;
   score: number;
   date: string;
   time: string;
+  updatedAt: string;
 }
 
 interface ProphetFeat {
