@@ -179,7 +179,7 @@ export default function CourseDetailsPage() {
 
                 <div className="col-span-3">
                   <label className="from-accent-pink to-accent-violet bg-gradient-to-r bg-clip-text text-transparent">
-                    Prophet Method
+                    Horoscope Sector
                   </label>
                   <p className="text-neutral-black">
                     {formData.horoscopeSector}
