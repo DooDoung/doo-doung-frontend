@@ -10,10 +10,10 @@ import TransactionAccountSelectItem from "@/components/course/Prophet/Transactio
 import { DefaultLayout } from "@/components/globalComponents";
 import { GlobalButton, GlobalInput } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
+import PublicReviewCard from "@/components/public-review/PublicReviewCard";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { AppToast } from "@/lib/app-toast";
-import PublicReviewCard from "@/components/public-review/PublicReviewCard";
 
 export default function CourseDetailsPage() {
   const router = useRouter();
