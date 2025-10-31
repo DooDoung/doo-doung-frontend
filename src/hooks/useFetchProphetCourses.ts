@@ -27,7 +27,7 @@ export interface ProphetCourse {
   rating: number;
   horoscopeSector: string;
   durationMin: number;
-  horoscopeMethodId: number;
+  horoscopeMethod: string;
   methodSlug: string;
   methodName: string;
   createdAt: string;
