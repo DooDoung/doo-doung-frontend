@@ -8,6 +8,7 @@ import {
   GlassContainer2,
   GlobalButton,
 } from "@/components/globalComponents";
+import { AppToast } from "@/lib/app-toast";
 
 interface Session {
   id: string;
@@ -327,8 +328,8 @@ export default function MySessionPage() {
           console.warn("Session status distribution:", statusCounts);
 
           setSessions(normalizedSessions);
-        } catch (error) {
-          console.error("Failed to fetch sessions:", error);
+        } catch (error: any) {
+          AppToast.error(`Failed to fetch sessions: ${error.message}`);
         } finally {
           setLoading(false);
         }

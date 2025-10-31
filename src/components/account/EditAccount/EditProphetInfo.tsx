@@ -155,10 +155,8 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
   // Process user data when user prop changes
   React.useEffect(() => {
     if (user && !hasUserMadeChanges) {
-      console.log("Raw prophet data received:", user);
       const processedData = processProphetData(user);
       setUserInfo(processedData);
-      console.log("Prophet data processed and set:", processedData);
     }
   }, [user, hasUserMadeChanges]);
 
@@ -187,10 +185,6 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
   const handleSave = async () => {
     try {
       setIsLoading(true);
-      
-      // Debug log to check user data
-      console.log("User data for validation:", user);
-      console.log("User role:", user?.role);
       
       // Validation
       if (!validateSession(session) || !user) {
@@ -221,7 +215,6 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
       // Handle success - transform data to ProphetAccount format
       if (onUserUpdate && user) {
         onUserUpdate(userInfo as unknown as ProphetAccount);
-        console.log("Updated prophet data:", userInfo);
       }
       
       setHasUserMadeChanges(false);

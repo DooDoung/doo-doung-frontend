@@ -20,10 +20,13 @@ export const mockCourseData = (): CourseItem[] => {
 
   return Array.from({ length: 5 }).map((_, i) => ({
     id: `course-${i + 1}`,
-    title:
+    courseName:
       i === 0 ? "คอร์สดูดวงความรัก 3 คำถาม" : `คอร์สดูดวงหัวข้อพิเศษ #${i + 1}`,
     prophetName: ["AOMYAKDOO", "ORION", "MIRA", "JUNO", "LYRA"][i],
     prophetMethod: i === 0 ? "Current method" : "Tarot & Oracle",
+    horoscopeSector: ["Love", "Career", "Health", "Finance", "Family"][i],
+    name: ["แม่หมอออม", "ออริออน", "มีรา", "จูโน่", "ไลร่า"][i],
+    lastname: ["ยักษ์ดู", "สตาร์", "วิชั่น", "ออราเคิล", "ทาโรต์"][i],
     durationMin: i === 0 ? 30 : 45,
     description:
       i === 0
