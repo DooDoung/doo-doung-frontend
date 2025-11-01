@@ -64,7 +64,6 @@ function ProphetPublicInfo({ user }: { user: AccountData }) {
       }
     };
     fetchCouses();
-    console.log(courses);
   });
 
   return (
