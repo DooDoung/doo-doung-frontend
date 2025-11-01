@@ -23,7 +23,7 @@ function AccountLayout({
   if (!user) {
     return (
       <GlassContainer2 className="p-0">
-        <div className="flex items-center justify-center p-8 w-full">
+        <div className="flex w-full items-center justify-center p-8">
           <p className="text-neutral-white font-chakra">Loading user data...</p>
         </div>
       </GlassContainer2>
@@ -41,7 +41,10 @@ function AccountLayout({
         user.role === "CUSTOMER" ? (
           <EditCustomerInfo user={user} onUserUpdate={onUserUpdate} />
         ) : (
-          <EditProphetInfo user={user as ProphetAccount} onUserUpdate={onUserUpdate} />
+          <EditProphetInfo
+            user={user as ProphetAccount}
+            onUserUpdate={onUserUpdate}
+          />
         )
       ) : user.role === "CUSTOMER" ? (
         <CustomerInfo customer={user as CustomerAccount} />
