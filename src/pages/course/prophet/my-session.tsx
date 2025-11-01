@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -8,6 +9,9 @@ import {
   GlassContainer2,
   GlobalButton,
 } from "@/components/globalComponents";
+
+const backendUrl =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
 interface Session {
   id: string;
@@ -228,8 +232,12 @@ const Dashboard = ({
 export default function MySessionPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [showHistory, setShowHistory] = useState(false);
-  const { data: session } = useSession();
-  const user = session?.user;
+  const { data: session, status } = useSession();
+  const token = session?.accessToken;
+  const [user, setUser] = useState<{
+    profileUrl: string;
+    username: string;
+  } | null>(null);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -244,6 +252,32 @@ export default function MySessionPage() {
         });
     }
   }, []);
+
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchAccount = async () => {
+      if (status === "loading" || !token) {
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${backendUrl}/account/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const userData = response.data.data;
+        setUser({
+          profileUrl: userData.profileUrl || "",
+          username: userData.username || "",
+        });
+      } catch (error) {
+        console.error("Failed to fetch account data:", error);
+      }
+    };
+    fetchAccount();
+  }, [token, status]);
 
   useEffect(() => {
     const fetchSessions = async () => {
@@ -364,9 +398,9 @@ export default function MySessionPage() {
                 PROPHET
               </h2>
               <div className="relative my-6 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-                {user?.prophetProfileUrl ? (
+                {user?.profileUrl ? (
                   <Image
-                    src={user.prophetProfileUrl}
+                    src={user.profileUrl}
                     alt="Profile"
                     fill
                     sizes="128px"
@@ -374,13 +408,13 @@ export default function MySessionPage() {
                     priority
                   />
                 ) : (
-                  <p className="text-[#3E3753]">Profile</p>
+                  <p className="text-[#3E3753]">Loading...</p>
                 )}
               </div>
               <p className="text-sm text-[#3E3753]">USERNAME</p>
               <div className="mt-2 w-2/3 rounded-full bg-white/80 px-4 py-2 text-center">
                 <p className="font-semibold text-[#3E3753]">
-                  {session?.user?.prophetId ?? session?.user?.id}
+                  {user?.username || "Loading..."}
                 </p>
               </div>
             </div>
