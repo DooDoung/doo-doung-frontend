@@ -16,7 +16,9 @@ export default function SessionTableBooking({
   availableSlots,
   bookingSlots,
   durationMinutes = 15,
-  courseld
+  courseld,
+  goToNextWeek,
+  goToPreviousWeek,
 }: {
   onSelectedChange?: (slots: { day: string; time: string }[]) => void;
   currentWeek: number;
@@ -24,16 +26,9 @@ export default function SessionTableBooking({
   bookingSlots: { id: string; day: string; time: string; variant: string }[]; 
   durationMinutes: number;
   courseld?: string;
+  goToNextWeek: () => void;
+  goToPreviousWeek: () => void;
 }) {
-  const {
-    // currentWeek,
-    // availableSlots,
-    // bookingSlots,
-    goToPreviousWeek,
-    goToNextWeek,
-    // durationMinutes = 60,
-  } = MockBooking;
-
   const today = new Date();
   const currentMonday = new Date(today);
   const dayOfWeek = today.getDay();
@@ -83,11 +78,9 @@ export default function SessionTableBooking({
         return { day, time };
       });
 
-      const convertSlotsArray = slotsArray.map((slot: any) =>
-        formatSlotToTimeData(slot, durationMinutes)
-      );
+      const convertSlotsArray = formatSlotToTimeData(slotsArray, durationMinutes, currentMonday);
       
-      localStorage.setItem("bookingSlot", JSON.stringify(convertSlotsArray));
+      sessionStorage.setItem("selectedSlots", JSON.stringify(convertSlotsArray));
 
       newSet.add(key);
       onSelectedChange?.(slotsArray);
@@ -153,75 +146,79 @@ export default function SessionTableBooking({
   );
 }
 
-const MockBooking = {
-  //
-  currentWeek: 0,
-  // from Prophet's available slots
-  availableSlots: [
-    { day: "MON", time: "09:00" },
-    { day: "MON", time: "09:15" },
-    { day: "MON", time: "09:30" },
-    { day: "MON", time: "09:45" },
-    { day: "MON", time: "10:00" },
-    { day: "TUE", time: "10:15" },
-    { day: "TUE", time: "10:30" },
-    { day: "TUE", time: "10:45" },
-    { day: "TUE", time: "11:00" },
-    { day: "TUE", time: "11:15" },
-    { day: "WED", time: "14:00" },
-    { day: "WED", time: "14:15" },
-    { day: "WED", time: "14:30" },
-    { day: "WED", time: "14:45" },
-    { day: "FRI", time: "11:00" },
-    { day: "FRI", time: "11:15" },
-    { day: "FRI", time: "11:30" },
-  ],
-  // from Prophet's existing bookings
-  bookingSlots: [
-    { id: "1", day: "MON", time: "09:00", variant: "TAKEN" },
-    { id: "2", day: "TUE", time: "14:00", variant: "FREE" },
-    { id: "3", day: "WED", time: "14:00", variant: "TAKEN" },
-  ],
-  // from Couserse duration
-  durationMinutes: 60,
-  // navigation handlers
-  goToPreviousWeek: () => console.log("Go to previous week"),
-  goToNextWeek: () => console.log("Go to next week"),
+// const MockBooking = {
+//   //
+//   currentWeek: 0,
+//   // from Prophet's available slots
+//   availableSlots: [
+//     { day: "MON", time: "09:00" },
+//     { day: "MON", time: "09:15" },
+//     { day: "MON", time: "09:30" },
+//     { day: "MON", time: "09:45" },
+//     { day: "MON", time: "10:00" },
+//     { day: "TUE", time: "10:15" },
+//     { day: "TUE", time: "10:30" },
+//     { day: "TUE", time: "10:45" },
+//     { day: "TUE", time: "11:00" },
+//     { day: "TUE", time: "11:15" },
+//     { day: "WED", time: "14:00" },
+//     { day: "WED", time: "14:15" },
+//     { day: "WED", time: "14:30" },
+//     { day: "WED", time: "14:45" },
+//     { day: "FRI", time: "11:00" },
+//     { day: "FRI", time: "11:15" },
+//     { day: "FRI", time: "11:30" },
+//   ],
+//   // from Prophet's existing bookings
+//   bookingSlots: [
+//     { id: "1", day: "MON", time: "09:00", variant: "TAKEN" },
+//     { id: "2", day: "TUE", time: "14:00", variant: "FREE" },
+//     { id: "3", day: "WED", time: "14:00", variant: "TAKEN" },
+//   ],
+//   // from Couserse duration
+//   durationMinutes: 60,
+//   // navigation handlers
+//   goToPreviousWeek: () => console.log("Go to previous week"),
+//   goToNextWeek: () => console.log("Go to next week"),
 
-  // new booking from customer to send to backend
-  selectedSlot: null,
-};
+//   // new booking from customer to send to backend
+//   selectedSlot: null,
+// };
 
-function formatSlotToTimeData(slot: { day: string; time: string }, durationMinutes: number) {
-  
-  const today = new Date();
-  const dateStr = today.toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  }); 
 
-  const [hour, minute] = slot.time.split(":").map(Number);
-  const start = new Date();
-  start.setHours(hour, minute, 0, 0);
+const DAY = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+const fmtLocalISO = (d: Date) =>
+  new Date(d.getTime() - d.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " ");
+const fmt = (d: Date) => fmtLocalISO(d);
 
-  const end = new Date(start);
-  end.setMinutes(start.getMinutes() + durationMinutes);
+function formatSlotToTimeData(
+  slots: { day: string; time: string }[],
+  durationMin: number,
+  currentMonday: Date,
+) {
+  // same day
+  const day = slots[0].day;
+  const startTime = slots[0].time;
+  const endTime = slots[slots.length - 1].time;
 
-  const formatTime = (d: Date) => {
-    const h = d.getHours();
-    const m = String(d.getMinutes()).padStart(2, "0");
-    const suffix = h >= 12 ? "PM" : "AM";
-    const hour12 = ((h + 11) % 12) + 1; 
-    return `${String(hour12).padStart(2, "0")}:${m} ${suffix}`;
+  const startDate = new Date(currentMonday);
+  startDate.setDate(currentMonday.getDate() + DAY.indexOf(day));
+
+  // starting time
+  const [startH, startM] = startTime.split(":").map(Number);
+  startDate.setHours(startH, startM, 0, 0);
+
+  // ending time = starting time + duration
+  const endDate = new Date(startDate);
+  const [endH, endM] = endTime.split(":").map(Number);
+  endDate.setHours(endH, endM, 0, 0);
+  endDate.setMinutes(endDate.getMinutes() + durationMin);
+
+  return {
+    start_datetime: fmt(startDate),
+    end_datetime: fmt(endDate),
   };
-
-  const selectedTime = `${formatTime(start)} - ${formatTime(end)}`;
-
-  const timeSlotData = {
-    selectedDate: dateStr,
-    selectedTime,
-  };
-
-  return timeSlotData;
 }

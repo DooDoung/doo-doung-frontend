@@ -19,6 +19,14 @@ interface CourseData {
   prophetImageSrc: string;
 }
 
+interface BookedData {
+  courseId: string;
+  prophetId: string;
+  startDateTime: string;
+  endDateTime: string;
+  status: string;
+}
+
 export default function BookingPaymentPage() {
   const router = useRouter();
   const { bookingld } = router.query; // dynamic param from filename [bookingld].tsx
@@ -26,6 +34,7 @@ export default function BookingPaymentPage() {
   const token = (session as any)?.accessToken;
 
   const [courseData, setCourseData] = useState<CourseData | null>(null);
+  const [bookedData, setBookedData] = useState<BookedData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,8 +42,8 @@ export default function BookingPaymentPage() {
   const [timeLeft, setTimeLeft] = useState(300);
   const handlePaymentSuccess = useCallback(() => {
     setShowQRCode(false);
-    router.push('/booking/booking-success/[bookingld]');
-  }, [router]);
+    router.push(`/booking/booking-success/${bookingld}`);
+  }, [router, bookingld]);
 
   useEffect(() => {
     if (timeLeft === 295) { 
@@ -62,10 +71,49 @@ export default function BookingPaymentPage() {
     setShowQRCode(false);
     router.back();
   };
+  
+  useEffect(() => {
+    const fetchBooking = async () => {
+      if (!bookingld) return;
+      setLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/booking/detail/${bookingld}`, {
+          headers: token
+            ? {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              }
+            : { "Content-Type": "application/json" },
+        });
+        const resualt = await res.json();
+        const fetched = resualt?.data;
+        if (!fetched) {
+          throw new Error("Course data not found");
+        }
+        const transformedData: BookedData = {
+          courseId: fetched.course?.id ?? "",
+          prophetId: fetched.prophet?.id ?? "",
+          startDateTime: fetched.startDateTime,
+          endDateTime: fetched.endDateTime,
+          status: fetched.status,
+        };
+
+        setBookedData(transformedData);
+      }
+      catch (err: any) {
+        setError(err.message || "Failed to fetch booking data");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBooking();
+  }, [bookingld, token]);
 
   useEffect(() => {
     const fetchCourse = async () => {
-      if (!bookingld) return;
+      if (!bookedData?.courseId) return;
       setLoading(true);
       setError(null);
 
@@ -73,7 +121,7 @@ export default function BookingPaymentPage() {
         process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
       try {
-        const res = await fetch(`${backendUrl}/course/${bookingld}`, {
+        const res = await fetch(`${backendUrl}/course/${bookedData?.courseId}`, {
           headers: token
             ? {
                 Authorization: `Bearer ${token}`,
@@ -107,7 +155,7 @@ export default function BookingPaymentPage() {
       }
     };
     fetchCourse();
-  }, [bookingld, token]);
+  }, [bookedData?.courseId, token]);
 
   if (loading) {
     return (

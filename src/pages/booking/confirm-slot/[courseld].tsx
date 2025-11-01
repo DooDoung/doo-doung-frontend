@@ -7,6 +7,7 @@ import { DefaultLayout } from "@/components/globalComponents";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
 
 interface CourseData {
+  prophetId: string;
   courseImageSrc: string;
   courseImageAlt: string;
   title: string;
@@ -28,8 +29,36 @@ export default function ConfirmSlotPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const handlePurchase = () => {
-    router.push('/booking/payment/[bookingld]');
+  const [selectedSlots, setSelectedSlots] = useState<{start_datetime: string; end_datetime: string}>();
+
+
+
+  const handlePurchase = async () => {
+    if (!selectedSlots || !courseData) return;
+    try {
+      const payload = {
+        courseId: courseld,
+        accountId: session?.user?.id,
+        prophetId: courseData.prophetId,
+        startDateTime: selectedSlots.start_datetime,
+        endDateTime: selectedSlots.end_datetime,
+      };
+
+      const result = await createBooking(token, payload);
+
+      console.log("Booking created:", result);
+      
+      const bookingId = result?.booking?.id || result?.data?.booking?.id;
+
+      if (!bookingId) {
+        throw new Error("Booking ID not found in response");
+      }
+
+      router.push(`/booking/payment/${bookingId}`);
+    } catch (err: any) {
+      console.error(err);
+      alert("❌ Failed to create booking: " + err.message);
+    }
   };
 
   const handleBack = () => {
@@ -62,6 +91,7 @@ export default function ConfirmSlotPage() {
           throw new Error("Course data not found");
         }
         const transformedData: CourseData = {
+          prophetId: fetched.prophetId,
           courseImageSrc: "/images/course.svg", // Add default image or get from backend
           courseImageAlt: fetched.courseName,
           title: fetched.courseName,
@@ -82,6 +112,13 @@ export default function ConfirmSlotPage() {
     fetchCourse();
   }, [courseld, token]);
 
+  useEffect(() => {
+    const stored = sessionStorage.getItem("selectedSlots");
+    if (stored) {
+      setSelectedSlots(JSON.parse(stored));
+    }
+  }, []);
+
   if (loading) {
     return (
       <DefaultLayout>
@@ -101,10 +138,7 @@ export default function ConfirmSlotPage() {
   }
 
   // from previous page or fetch from backend
-  const timeSlotData = {
-    selectedDate: "10 October 2025",
-    selectedTime: "00:15-00:45 AM"
-  };
+  const timeSlotData = toDisplaySlot(selectedSlots);
 
   return (
     <DefaultLayout>
@@ -135,4 +169,52 @@ export default function ConfirmSlotPage() {
       </div>
     </DefaultLayout>
   );
+}
+
+function toDisplaySlot({
+  start_datetime,
+  end_datetime,
+}: {
+  start_datetime: string;
+  end_datetime: string;
+}) {
+  const start = new Date(start_datetime);
+  const end = new Date(end_datetime);
+
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  };
+  const selectedDate = start.toLocaleDateString("en-GB", dateOptions);
+
+  const formatTime = (d: Date) => {
+    const h = d.getHours();
+    const m = String(d.getMinutes()).padStart(2, "0");
+    const suffix = h >= 12 ? "PM" : "AM";
+    const hour12 = ((h + 11) % 12) + 1;
+    return `${String(hour12).padStart(2, "0")}:${m} ${suffix}`;
+  };
+
+  const selectedTime = `${formatTime(start)}-${formatTime(end)}`;
+
+  return { selectedDate, selectedTime };
+}
+
+async function createBooking(token: string, payload: any) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/booking`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const msg = await res.text();
+    throw new Error(`Booking failed (${res.status}): ${msg}`);
+  }
+
+  return await res.json();
 }
