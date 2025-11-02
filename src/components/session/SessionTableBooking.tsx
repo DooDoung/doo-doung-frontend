@@ -146,46 +146,6 @@ export default function SessionTableBooking({
   );
 }
 
-// const MockBooking = {
-//   //
-//   currentWeek: 0,
-//   // from Prophet's available slots
-//   availableSlots: [
-//     { day: "MON", time: "09:00" },
-//     { day: "MON", time: "09:15" },
-//     { day: "MON", time: "09:30" },
-//     { day: "MON", time: "09:45" },
-//     { day: "MON", time: "10:00" },
-//     { day: "TUE", time: "10:15" },
-//     { day: "TUE", time: "10:30" },
-//     { day: "TUE", time: "10:45" },
-//     { day: "TUE", time: "11:00" },
-//     { day: "TUE", time: "11:15" },
-//     { day: "WED", time: "14:00" },
-//     { day: "WED", time: "14:15" },
-//     { day: "WED", time: "14:30" },
-//     { day: "WED", time: "14:45" },
-//     { day: "FRI", time: "11:00" },
-//     { day: "FRI", time: "11:15" },
-//     { day: "FRI", time: "11:30" },
-//   ],
-//   // from Prophet's existing bookings
-//   bookingSlots: [
-//     { id: "1", day: "MON", time: "09:00", variant: "TAKEN" },
-//     { id: "2", day: "TUE", time: "14:00", variant: "FREE" },
-//     { id: "3", day: "WED", time: "14:00", variant: "TAKEN" },
-//   ],
-//   // from Couserse duration
-//   durationMinutes: 60,
-//   // navigation handlers
-//   goToPreviousWeek: () => console.log("Go to previous week"),
-//   goToNextWeek: () => console.log("Go to next week"),
-
-//   // new booking from customer to send to backend
-//   selectedSlot: null,
-// };
-
-
 const DAY = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 const fmtLocalISO = (d: Date) =>
   new Date(d.getTime() - d.getTimezoneOffset() * 60000)
