@@ -57,4 +57,4 @@ jobs:
           image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}'
       
       - name: 'Show output URL'
-        run: echo "Cloud Run DEV Service URL: ${{ steps.deploy.outputs.url }}"
+        run: 'echo "Cloud Run DEV Service URL: ${{ steps.deploy.outputs.url }}"'
