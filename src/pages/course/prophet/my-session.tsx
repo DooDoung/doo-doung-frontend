@@ -9,7 +9,6 @@ import {
   GlobalButton,
 } from "@/components/globalComponents";
 import { AppToast } from "@/lib/app-toast";
-import { set } from "zod";
 
 interface Session {
   id: string;
