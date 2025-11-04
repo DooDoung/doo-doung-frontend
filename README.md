@@ -101,6 +101,7 @@ export default async function Page() {
 ### 1. Setup Environment File
 
 .env example
+
 ```bash
 NEXTAUTH_SECRET=some-randome-ssl-key
 NEXTAUTH_URL=http://localhost:3000
@@ -138,3 +139,9 @@ docker-compose logs -f
 # Rebuild after changes
 docker-compose up --build
 ```
+
+How to trigger ci/cd
+
+1. Push
+2. Merge PR
+   Branch: dev/main
