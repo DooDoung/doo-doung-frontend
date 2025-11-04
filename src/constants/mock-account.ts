@@ -1,3 +1,5 @@
+import { CustomerAccount, ProphetAccount } from "@/interface/User";
+
 const mockReservation: Reservation[] = [
   {
     imageUrl: "/images/course.svg",
@@ -57,7 +59,7 @@ const mockReview: Review[] = [
       "https://images.pexels.com/photos/1158420/pexels-photo-1158420.jpeg",
     userName: "JohnYakDoodoung",
     courseName: "Course Name1",
-    comment:
+    description:
       "แม่หมอออม ดูแม่นมาก ๆ ค่ะ อย่างกับเห็นอนาคต แม่หมอบอกว่าผู้ชายคนนี้จะเจ้าชู้ 2 วันถัดมา จับได้ว่าฮีนอกใจจริง ตอนนี้เสียใจมาก ๆ ค่ะ แต่อยากมารีวิวความแม่นของแม่หมอออมก่อน ยังไงถ้าเพื่อน ๆ สงสัยหรือมีคำถามเรื่องความรัก อย่าลืมไปดูดวงกับแม่หมอออมได้นะคะ แม่นจริงคุณน้า",
     score: 5,
     date: "10 oct 2025",
@@ -68,7 +70,7 @@ const mockReview: Review[] = [
       "https://images.pexels.com/photos/4623531/pexels-photo-4623531.jpeg",
     userName: "JohnYakDoodoung",
     courseName: "Course Name2",
-    comment:
+    description:
       "แม่หมอออม ดูแม่นมาก ๆ ค่ะ อย่างกับเห็นอนาคต แม่หมอบอกว่าผู้ชายคนนี้จะเจ้าชู้ 2 วันถัดมา จับได้ว่าฮีนอกใจจริง ตอนนี้เสียใจมาก ๆ ค่ะ แต่อยากมารีวิวความแม่นของแม่หมอออมก่อน ยังไงถ้าเพื่อน ๆ สงสัยหรือมีคำถามเรื่องความรัก อย่าลืมไปดูดวงกับแม่หมอออมได้นะคะ แม่นจริงคุณน้า",
     score: 4,
     date: "11 oct 2025",
@@ -79,7 +81,7 @@ const mockReview: Review[] = [
       "https://images.pexels.com/photos/4623531/pexels-photo-4623531.jpeg",
     userName: "JohnYakDoodoung",
     courseName: "Course Name3",
-    comment:
+    description:
       "งอนแม่หมอ บอกว่าหนูต้องทำใจไว้บ้างได้ไง อุตส่าห์อ่านไปตั้ง 1 คืนก่อนสอบนะ ทุกทีอ่าน 2 นาที นอย ๆๆๆๆ",
     score: 5,
     date: "12 oct 2025",
@@ -90,7 +92,7 @@ const mockReview: Review[] = [
       "https://images.pexels.com/photos/1158420/pexels-photo-1158420.jpeg",
     userName: "JohnYakDoodoung",
     courseName: "Course Name4",
-    comment:
+    description:
       "งอนแม่หมอ บอกว่าหนูต้องทำใจไว้บ้างได้ไง อุตส่าห์อ่านไปตั้ง 1 คืนก่อนสอบนะ ทุกทีอ่าน 2 นาที นอย ๆๆๆๆ",
     score: 5,
     date: "13 oct 2025",
@@ -101,7 +103,7 @@ const mockReview: Review[] = [
       "https://images.pexels.com/photos/1158420/pexels-photo-1158420.jpeg",
     userName: "JohnYakDoodoung",
     courseName: "Course Name5",
-    comment:
+    description:
       "งอนแม่หมอ บอกว่าหนูต้องทำใจไว้บ้างได้ไง อุตส่าห์อ่านไปตั้ง 1 คืนก่อนสอบนะ ทุกทีอ่าน 2 นาที นอย ๆๆๆๆ",
     score: 4,
     date: "14 oct 2025",
@@ -205,5 +207,30 @@ export const mockCourse: Course[] = [
   },
 ];
 
-// Corrected export statement
-// (Removed duplicate export for mockCourse)
+export const mockProphetData: ProphetAccount = {
+  username: "john.doe",
+  profileUrl: "https://example.com/profile.jpg",
+  gender: "male",
+  zodiacSign: "Aries",
+  role: "PROPHET",
+  name: "John",
+  lastName: "Doe",
+  email: "john.doe@example.com",
+  phoneNumber: "1234567890",
+  lineId: "1234567890",
+  txAccounts: [],
+};
+
+export const mockCustomerData: CustomerAccount = {
+  username: "john.doe",
+  profileUrl: "https://example.com/profile.jpg",
+  gender: "male",
+  zodiacSign: "Aries",
+  role: "CUSTOMER",
+  name: "John",
+  lastName: "Doe",
+  birthDate: "1990-01-01",
+  birthTime: "12:00:00",
+  email: "john.doe@example.com",
+  phoneNumber: "1234567890",
+};

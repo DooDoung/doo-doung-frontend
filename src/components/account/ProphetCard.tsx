@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { getBankImageUrl } from "@/utils/getBankImageUrl";
@@ -23,16 +24,16 @@ function ProphetCard({
       <div className="group from-accent-pink to-accent-violet flex w-full rounded-4xl bg-gradient-to-r p-[4px] shadow-md transition-all duration-300 hover:cursor-pointer">
         <div className="bg-neutral-white group-hover:from-accent-pink/20 group-hover:to-accent-violet/20 flex h-24 w-full justify-center rounded-4xl p-2 transition-all duration-300 group-hover:bg-gradient-to-r">
           {feat.name != "Transaction Account" ? (
-            <img
+            <Image
               src={feat.imageUrl}
               alt={feat.name}
               className="h-full object-cover"
             />
           ) : (
             <div className="flex w-full px-2">
-              <img
+              <Image
                 src={getBankImageUrl(transaction?.bank ?? "")}
-                alt={transaction?.bank}
+                alt={transaction?.bank || ""}
                 className="mr-3 mb-2 h-full self-start rounded-full object-cover"
               />
               <div className="flex flex-col">

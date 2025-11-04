@@ -22,7 +22,7 @@ function OtherProfile({
 
       {/* Profile + zodiac badge */}
       <div className="relative h-[150px] w-[150px] flex-shrink-0 rounded-full border-2 bg-white">
-        <img
+        <Image
           alt="Profile"
           src={user.profileUrl === "" ? "/user-profile.svg" : user.profileUrl}
           className="h-full w-full rounded-full object-cover p-1"

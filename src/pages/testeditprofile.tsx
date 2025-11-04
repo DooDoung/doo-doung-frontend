@@ -7,7 +7,6 @@ export default function TestEditProfilePage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleSavePicture = (newUrl: string) => {
-    console.log("New image URL to save:", newUrl);
     // TODO: ใส่ logic การเรียก API เพื่ออัปเดต URL รูปภาพที่นี่
   };
   return (
