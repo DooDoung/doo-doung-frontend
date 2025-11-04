@@ -139,3 +139,8 @@ docker-compose logs -f
 # Rebuild after changes
 docker-compose up --build
 ```
+
+How to deplpy
+1. Push your branch
+2. Open PR and merge
+3. Check if deploy completely
