@@ -1,12 +1,12 @@
-name: 'Build and Deploy to Cloud Run (DEV)'
+name: 'Build Check (DEV)'
 
 on:
   push:
     branches:
-      - 'dev'  # Deploy only on pushes or merges into dev
+      - 'dev'
   pull_request:
     branches:
-      - 'dev'  # Check build when a PR targets dev
+      - 'dev'
 
 env:
   PROJECT_ID: 'centering-valve-453419-t2'
@@ -17,7 +17,7 @@ env:
   SERVICE_ACCOUNT: 'github-actions-deployer@centering-valve-453419-t2.iam.gserviceaccount.com'
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     permissions:
@@ -28,44 +28,17 @@ jobs:
       - name: 'Checkout repository'
         uses: actions/checkout@v4
 
-      # Authenticate to Google Cloud using Workload Identity Federation
-      - id: auth
-        name: 'Authenticate to Google Cloud'
+      - name: 'Authenticate to Google Cloud'
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: '${{ env.WORKLOAD_IDENTITY_PROVIDER }}'
           service_account: '${{ env.SERVICE_ACCOUNT }}'
 
-      # Configure Docker to use gcloud as a credential helper
       - name: 'Configure Docker Authentication'
         run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
-      # Build the container image (always)
-      - name: 'Build Docker Image'
+      - name: 'Build Docker Image (Check Only)'
         run: |
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
           echo "Building Docker image: $DOCKER_TAG"
           docker build -t "$DOCKER_TAG" .
-
-      # Push the image only on push (not PR)
-      - name: 'Push Docker Image to Artifact Registry'
-        if: github.event_name == 'push'
-        run: |
-          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
-          echo "Pushing Docker image: $DOCKER_TAG"
-          docker push "$DOCKER_TAG"
-
-      # Deploy to Cloud Run only on push (not PR)
-      - id: deploy
-        if: github.event_name == 'push'
-        name: 'Deploy to Cloud Run'
-        uses: google-github-actions/deploy-cloudrun@v2
-        with:
-          service: '${{ env.SERVICE }}'
-          region: '${{ env.REGION }}'
-          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}'
-
-      # Output the deployed service URL
-      - name: 'Show output URL'
-        if: github.event_name == 'push'
-        run: 'echo "Cloud Run DEV Service URL: ${{ steps.deploy.outputs.url }}"'
