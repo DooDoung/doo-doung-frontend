@@ -139,9 +139,3 @@ docker-compose logs -f
 # Rebuild after changes
 docker-compose up --build
 ```
-
-How to trigger ci/cd
-
-1. Push
-2. Merge PR
-   Branch: dev/main
