@@ -55,7 +55,7 @@ export default function CreateReportPage() {
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="w-full space-y-6">
+            <form onSubmit={handleSubmit} className="w-[80%] space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Topic Input */}
                 <div>
