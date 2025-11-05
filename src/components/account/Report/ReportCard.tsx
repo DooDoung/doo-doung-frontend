@@ -19,7 +19,7 @@ export default function ReportCard({
       className="flex items-center gap-4 rounded-2xl bg-neutral-white backdrop-blur-sm shadow-md hover:shadow-lg transition-shadow w-[90%]"
     >
       {/* Book/Card Image */}
-      <div className="relative h-32 w-48 flex-shrink-0 rounded-lg overflow-hidden">
+      <div className="relative h-32 w-48 flex-shrink-0 rounded-2xl overflow-hidden">
         <Image
           src={imageUrl}
           alt={title}
@@ -29,11 +29,11 @@ export default function ReportCard({
       </div>
 
       {/* Content */}
-      <div className="flex-1 min-w-0">
-        <h3 className="font-chakra text-base font-semibold text-gray-800 mb-1 line-clamp-1">
+      <div className="flex-1 min-w-0 pl-2">
+        <h3 className="font-chakra text-base font-semibold text-neutral-black mb-1 line-clamp-1">
           {title}
         </h3>
-        <p className="font-chakra text-sm text-gray-600 line-clamp-2">
+        <p className="font-chakra text-sm text-neutral-black line-clamp-2">
           {description}
         </p>
       </div>
