@@ -191,3 +191,6 @@
 .privacy-policy-scroll::-webkit-scrollbar-thumb:hover {
   background: #f8a8ad;
 }
+::selection {
+  background-color: rgb(220, 124, 160, 0.5);
+}
