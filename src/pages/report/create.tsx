@@ -10,7 +10,10 @@ import {
   SelectValue,
 } from "@/components/globalComponents/Select";
 
+import { AppToast } from "@/lib/app-toast";
+
 const reportTopicOptions = [
+  { value: "course", label: "Course Issue" },
   { value: "prophet", label: "Prophet Issue" },
   { value: "website", label: "Website Issue" },
   { value: "payment", label: "Payment Issue" },
@@ -25,8 +28,14 @@ export default function CreateReportPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Handle form submission
     console.log({ topic, reportTopic, description });
+    if (!topic || !reportTopic || !description) {
+      AppToast.error("Every field must be completed.");
+      return;
+    }
+    // Show success toast
+    // TODO: Handle form submission
+    AppToast.success("Report Submitted!");
     // Navigate back after submission
     router.push("/report");
   };
@@ -114,7 +123,7 @@ export default function CreateReportPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-4 justify-center pt-4">
+              <div className="flex gap-4 justify-center">
                 <GlobalButton
                   variant="secondary"
                   onClick={handleCancel}
