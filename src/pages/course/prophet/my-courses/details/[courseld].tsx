@@ -10,11 +10,37 @@ import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { MOCK_ACCOUNTS } from "@/constants/transaction";
+import { useSession } from "next-auth/react";
+import { se } from "date-fns/locale";
 
 export default function CourseDetailsPage() {
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+  const {data: session, status} = useSession();
+  const token = session?.accessToken
   const router = useRouter();
   const pathname = usePathname() || "";
   const courseId = pathname.split("/").pop();
+  const fetchData = async () => {
+    if (!session) return;
+    try {
+      const response = await fetch(`${backendUrl}/courses/${courseId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`Failed to fetch course details: ${errText}`);
+      }
+    }
+    catch (error) {
+      console.error("Error fetching course details:", error);
+    }
+  }
   const [formData, setFormData] = useState({
     courseName: "คอร์สดูดวงความรัก 3 คำถาม",
     prophetMethod: "Tarot card",

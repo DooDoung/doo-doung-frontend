@@ -102,6 +102,9 @@ importers:
       '@types/axios':
         specifier: ^0.14.4
         version: 0.14.4
+      '@types/estree':
+        specifier: ^1.0.8
+        version: 1.0.8
       '@types/node':
         specifier: ^20
         version: 20.19.9
@@ -144,9 +147,6 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.14
         version: 0.6.14(prettier@3.6.2)
-      tailwindcss:
-        specifier: ^4
-        version: 4.1.11
       tw-animate-css:
         specifier: ^1.3.6
         version: 1.3.6
