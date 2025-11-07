@@ -20,6 +20,7 @@ function UserProfile({ user }: { user: AccountData }) {
         <Image
           alt="Profile"
           src={user.profileUrl === "" ? "/user-profile.svg" : user.profileUrl}
+          fill
           className="h-full w-full rounded-full object-cover p-1"
         />
 
