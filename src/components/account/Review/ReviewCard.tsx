@@ -17,6 +17,7 @@ function ReviewCard({
         <Image
           src={`${account?.profileUrl || ""}`}
           alt="Profile"
+          fill
           className="h-24 w-24 flex-shrink-0 rounded-full border-1 border-black/20 object-cover"
         />
         <div className="mr-4 flex w-full flex-col space-y-2 py-2">
