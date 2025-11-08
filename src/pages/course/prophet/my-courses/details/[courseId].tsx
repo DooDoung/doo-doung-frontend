@@ -244,7 +244,7 @@ export default function CourseDetailsPage() {
                     type="button"
                     variant="secondary"
                     className="min-h-12"
-                    onClick={() => router.push(`/course/prophet/my-course`)}
+                    onClick={() => router.push(`/course/prophet/my-courses`)}
                   >
                     <p className="m-8">Back</p>
                   </GlobalButton>
