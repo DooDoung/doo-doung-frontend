@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { se } from "date-fns/locale";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import BookingHistoryCard from "@/components/course/Prophet/BookingHistoryCard";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
@@ -10,8 +12,6 @@ import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { MOCK_ACCOUNTS } from "@/constants/transaction";
-import { useSession } from "next-auth/react";
-import { se } from "date-fns/locale";
 
 export default function CourseDetailsPage() {
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";

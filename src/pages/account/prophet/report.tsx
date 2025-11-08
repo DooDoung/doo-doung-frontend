@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 import ReportItem from "@/components/account/Report/ReportItem";
 import WarningBanner from "@/components/account/Report/WarningBanner";
 import UserProfile from "@/components/account/UserProfile";
 import { DefaultLayout } from "@/components/globalComponents";
 import { type Report, WARNING_THRESHOLD } from "@/constants/reportConstants";
-import { useSession } from "next-auth/react";
 
 export default function ProphetReportPage() {
   const [reports, setReports] = useState<Report[]>([]);
