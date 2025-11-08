@@ -5,7 +5,9 @@ import ReportItem from "@/components/account/Report/ReportItem";
 import WarningBanner from "@/components/account/Report/WarningBanner";
 import UserProfile from "@/components/account/UserProfile";
 import { DefaultLayout } from "@/components/globalComponents";
+import { mockProphetData } from "@/constants/mock-account";
 import { type Report, WARNING_THRESHOLD } from "@/constants/reportConstants";
+import { ProphetAccount } from "@/interface/User";
 
 export default function ProphetReportPage() {
   const [reports, setReports] = useState<Report[]>([]);
@@ -68,7 +70,6 @@ export default function ProphetReportPage() {
   }, [token]);
 
   const hasExceededThreshold = reports.length > WARNING_THRESHOLD;
-
   return (
     <DefaultLayout>
       <div className="mx-auto my-5 flex h-[73%] w-[87%] justify-start rounded-3xl bg-black/20 backdrop-blur-xl">

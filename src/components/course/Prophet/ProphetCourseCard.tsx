@@ -1,8 +1,10 @@
 import React from "react";
-import { PencilIcon } from "lucide-react";
+import Image from "next/image";
 import router from "next/router";
 
 import StarRating from "@/components/account/StarRating";
+
+import { PencilIcon } from "lucide-react";
 
 function ProphetCourseCard({
   id,
@@ -28,12 +30,18 @@ function ProphetCourseCard({
       className={`font-chakra relative flex h-40 w-[97%] rounded-3xl border bg-white shadow-md ${editability === "EDIT" ? "hover:bg-primary-250 cursor-pointer" : ""}`}
       // click to go to course detail page
       onClick={() => {
-        router.push(`/course/prophet/my-courses/details/${id}`);
+        if (editability === "EDIT") {
+          router.push(`/course/prophet/my-courses/details/${id}`);
+        } else {
+          router.push(`/course/${id}`);
+        }
       }}
     >
-      <img
+      <Image
         src={imageUrl}
         alt={courseName}
+        width={80}
+        height={50}
         className="mr-4 w-64 rounded-3xl object-cover"
       />
       <div className="text-neutral-black flex w-full py-4 pr-4">

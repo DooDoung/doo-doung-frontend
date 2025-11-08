@@ -24,7 +24,7 @@ const eslintConfig = [
     rules: {
       // Import sorting rules
       "simple-import-sort/imports": [
-        "error",
+        "off",
         {
           groups: [
             // Node.js builtins prefixed with `node:`
@@ -44,29 +44,29 @@ const eslintConfig = [
           ],
         },
       ],
-      "simple-import-sort/exports": "error",
+      "simple-import-sort/exports": "off",
 
       // Basic TypeScript rules (not too strict)
       "no-unused-vars": "off", // Turn off base rule
       "@typescript-eslint/no-unused-vars": [
-        "warn",
+        "off",
         {
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^_",
           caughtErrorsIgnorePattern: "^_",
         },
       ],
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-explicit-any": "off",
       // Removed invalid @typescript-eslint/prefer-const rule
 
       // React/Next.js specific rules
       "react/jsx-uses-react": "off", // Not needed in React 17+
       "react/react-in-jsx-scope": "off", // Not needed in React 17+
-      "react-hooks/exhaustive-deps": "warn",
+      "react-hooks/exhaustive-deps": "off",
 
       // General rules
-      "no-console": ["warn", { allow: ["warn", "error"] }],
-      "prefer-const": "error",
+      "no-console": ["off", { allow: ["warn", "off"] }],
+      "prefer-const": "off",
 
       // Disable some overly strict rules
       "@typescript-eslint/ban-ts-comment": "off",

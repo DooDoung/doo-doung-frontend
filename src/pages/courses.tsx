@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Funnel, Search } from "lucide-react";
 
 import CourseCard from "@/components/account/Course/CourseCard";
@@ -83,11 +83,13 @@ export default function CoursesPage() {
   const { courses, loading, error, refetch } = useFetchCourses(filterParams);
 
   // Filter courses by search query (client-side filtering on course/prophet names)
+  // Also exclude inactive courses
   const filteredCourses = courses.filter((course) => {
     const searchLower = searchQuery.toLowerCase();
     return (
-      course.courseName.toLowerCase().includes(searchLower) ||
-      course.prophetName.toLowerCase().includes(searchLower)
+      course.isActive &&
+      (course.courseName.toLowerCase().includes(searchLower) ||
+        course.prophetName.toLowerCase().includes(searchLower))
     );
   });
 

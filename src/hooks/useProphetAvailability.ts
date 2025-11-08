@@ -60,7 +60,7 @@ export function useProphetAvailability() {
   const [weeklyAvailability, setWeeklyAvailability] = useState<
     Record<number, Array<{ day: string; time: string }>>
   >({});
-  const accessToken = (session?.user as any)?.accessToken;
+  const accessToken = session?.accessToken;
 
   useEffect(() => {
     if (!accessToken) return;
@@ -116,8 +116,6 @@ export function useProphetAvailability() {
     slotDate.setDate(weekMonday.getDate() + dayIndex);
     const slotDateString = slotDate.toISOString().split("T")[0];
 
-    // Check if slot currently exists
-    console.log(weeklyAvailability);
 
     const currentAvailability = weeklyAvailability[currentWeek];
     const existingSlot = currentAvailability.find(
@@ -125,8 +123,6 @@ export function useProphetAvailability() {
     );
 
     const updateType = existingSlot ? "delete" : "add";
-
-    console.log(day.toISOString());
 
     try {
       // Use calculated slotDateString for API

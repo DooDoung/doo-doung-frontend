@@ -8,7 +8,7 @@ export interface BaseAccountData {
 
 export interface CustomerAccount extends BaseAccountData {
   role: "CUSTOMER";
-  firstName: string;
+  name: string;
   lastName: string;
   birthDate: string;
   birthTime: string;
@@ -18,11 +18,11 @@ export interface CustomerAccount extends BaseAccountData {
 
 export interface ProphetAccount extends BaseAccountData {
   role: "PROPHET";
-  firstName: string;
+  name: string;
   lastName: string;
   email: string;
   phoneNumber: string;
-  line: string;
+  lineId: string;
   txAccounts: TransactionAccount[];
 }
 
