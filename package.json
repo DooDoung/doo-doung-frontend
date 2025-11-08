@@ -46,7 +46,6 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/eslintrc": "^3",
-    "@playwright/test": "^1.56.1",
     "@tailwindcss/postcss": "^4",
     "@types/axios": "^0.14.4",
     "@types/estree": "^1.0.8",
