@@ -99,6 +99,8 @@ export default function BookingPaymentPage() {
                   <Image
                     src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://promptpay.io/0891234567/1750.00"
                     alt="QR Code for Payment"
+                    width={200}
+                    height={200}
                     className="w-full h-full object-cover"
                   />
                 </div>
