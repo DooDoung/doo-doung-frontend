@@ -63,7 +63,7 @@ const SessionHistory = ({
       >
         Back
       </GlobalButton>
-      <h2 className="text-center text-2xl font-bold text-neutral-white">
+      <h2 className="text-center text-2xl font-bold text-[#3E3753]">
         Session History
       </h2>
       <div className="mt-4 flex justify-center space-x-4">
@@ -102,10 +102,9 @@ const SessionHistory = ({
                   {session.customerName}
                 </td>
                 <td className="p-2 whitespace-nowrap">
-                  {new Date(session.startDateTime.replace("Z", "")).toLocaleString()}
+                  {new Date(session.startDateTime).toLocaleString()}
                 </td>
                 <td className="p-2 whitespace-nowrap">{session.amount} Baht</td>
-                <td className="p-2">{session.status.toLowerCase()}</td>
                 <td className="p-2 whitespace-nowrap">
                   <GlobalButton
                     variant="secondary"
@@ -149,7 +148,7 @@ const Dashboard = ({
   const completedSessions = sessions.filter(
     (session) => session.status === "completed",
   );
-  const totalIncome = completedSessions.reduce(
+  const totalIncome = sessions.reduce(
     (acc, session) => acc + session.amount,
     0,
   );
@@ -202,7 +201,7 @@ const Dashboard = ({
               <tr key={session.id} className="border-b border-gray-200">
                 <td className="p-1">{session.customerName}</td>
                 <td className="p-1">
-                  {new Date(session.startDateTime.replace("Z", "")).toLocaleString()}
+                  {new Date(session.startDateTime).toLocaleString()}
                 </td>
                 <td className="p-1">{session.amount} Baht</td>
                 <td className="p-1">{session.status.toLowerCase()}</td>

@@ -47,33 +47,24 @@ const SessionDetailPage = () => {
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
   const completeSessionHandler = async () => {
-    const dateNow = Date.now();
-    const sessionEndTime = new Date(sessionDetails?.endDateTime || "").getTime();
-    if (dateNow < sessionEndTime) {
-      AppToast.error("Cannot complete session before it ends.");
-      return;
-    } else {
-      console.log("Completing session...");
-      
-      try {
-        console.log(accessToken);
-        const response = await fetch(`${backendUrl}/booking/${id}/complete`, {
-          method: "POST",
-          headers: accessToken
-            ? { Authorization: `Bearer ${accessToken}` }
-            : undefined,
-        });
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(`Failed to complete session: ${data.message}`);
-        }
-        AppToast.success("Session completed successfully");
-        window.location.reload();
-      } catch (error) {
-        AppToast.error(
-          `${error instanceof Error ? error.message : String(error)}`,
-        );
+    try {
+      console.log(accessToken);
+      const response = await fetch(`${backendUrl}/booking/${id}/complete`, {
+        method: "POST",
+        headers: accessToken
+          ? { Authorization: `Bearer ${accessToken}` }
+          : undefined,
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`Failed to complete session: ${data.message}`);
       }
+      AppToast.success("Session completed successfully");
+      window.location.reload();
+    } catch (error) {
+      AppToast.error(
+        `Failed to complete session: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   };
 
@@ -162,10 +153,9 @@ const SessionDetailPage = () => {
             <div className="text-neutral-black mt-12 grid h-[calc(100%-100px)] grid-cols-2 grid-rows-2 gap-4 text-xs">
               <div className="rounded-lg border-2 border-gray-300 bg-white p-4">
                 <h3 className="mb-2 font-bold">Session Information</h3>
-                <p>Course name: {sessionDetails.courseName}</p>
                 <p>Prophet's Name: {sessionDetails.prophetName}</p>
                 <p>Method: {sessionDetails.horoscopeMethod}</p>
-                <p>Sector: {sessionDetails.horoscopeSector}</p>
+                <p>Sector: {sessionDetails.courseName}</p>
                 <p>
                   Time:{" "}
                   {new Date(sessionDetails.startDateTime).toLocaleString()} -{" "}

@@ -21,7 +21,7 @@ function CourseSection({ courses }: { courses: Course[] }) {
       <h2 className="mb-4 text-2xl font-semibold text-white uppercase">
         Available Courses
       </h2>
-
+      
       {/* Added 'flex' class here to activate the flexbox layout */}
       <div className="mt-4 flex flex-col gap-6">
         {courses.map((course) => (
