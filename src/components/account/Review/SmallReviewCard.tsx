@@ -1,5 +1,4 @@
 import React from "react";
-import { AccountData } from "@/interface/User";
 import Image from "next/image";
 import StarRating from "../StarRating";
 

@@ -134,7 +134,6 @@ export default function ReviewPage() {
             <div className="my-5 flex-auto">
               {selectedCourse ? (
                 <div className="flex h-full flex-col">
-                  {/* todo */}
                   <div className="flex flex-row justify-between px-8">
                     <div className="text-neutral-white items-center text-xl">
                       Filter by
