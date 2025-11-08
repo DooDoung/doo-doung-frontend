@@ -28,8 +28,8 @@ export default function MySessionPage() {
         if (!mounted) return;
         setAllSessions(res);
       })
-      .catch((e) => {
-        AppToast.error("Failed to load sessions.");
+      .catch((e: any) => {
+        AppToast.error(`Failed to load sessions. ${e.message}`);
       })
       .finally(() => {
         if (mounted) setLoading(false);

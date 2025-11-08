@@ -17,7 +17,7 @@ interface AvailabilityTableCellProps {
   onClick: (dayDate: Date, time: string) => void;
 
   /** customer mode */
-  selectedSlots?: [{ day: string; time: string }] | null;
+  selectedSlots?: { day: string; time: string }[] | null;
   onSelectSlots?: (day: string, time: string) => void;
 }
 
@@ -51,15 +51,12 @@ const AvailabilityTableCell = React.memo(
         // Customer variant styles
         "bg-primary-500 cursor-pointer hover:bg-primary-600":
           variant === "customer" && isAvailable && !isTaken && !isSelected,
-        "bg-primary": 
-          variant === "customer" && isSelected,
-        "bg-secondary pointer-events-none": 
-          variant === "customer" && isTaken,
+        "bg-primary": variant === "customer" && isSelected,
+        "bg-secondary pointer-events-none": variant === "customer" && isTaken,
         "bg-neutral-white pointer-events-none":
           variant === "customer" && !isAvailable && !isTaken,
       },
     );
-
 
     const handleClick = () => {
       if (variant === "prophet" && isEdit) {
@@ -70,10 +67,7 @@ const AvailabilityTableCell = React.memo(
     };
 
     return (
-      <TableCell
-        className={cellClasses}
-        onClick={handleClick}
-      >
+      <TableCell className={cellClasses} onClick={handleClick}>
         {variant === "customer" &&
           bookingSlot &&
           renderBookingSlot &&

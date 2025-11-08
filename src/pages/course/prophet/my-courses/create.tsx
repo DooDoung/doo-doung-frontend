@@ -20,7 +20,7 @@ import {
 } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
-import { BANKS, MOCK_ACCOUNTS } from "@/constants/transaction";
+import { MOCK_ACCOUNTS } from "@/constants/transaction";
 import { AppToast } from "@/lib/app-toast";
 
 const backendUrl =
@@ -116,7 +116,6 @@ export default function CreateCoursePage() {
 
     try {
       setIsLoading(true);
-      console.log(session);
 
       const accessToken = session?.accessToken;
 

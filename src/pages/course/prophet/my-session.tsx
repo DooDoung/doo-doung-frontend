@@ -8,6 +8,7 @@ import {
   GlassContainer2,
   GlobalButton,
 } from "@/components/globalComponents";
+import { AppToast } from "@/lib/app-toast";
 
 interface Session {
   id: string;
@@ -62,7 +63,7 @@ const SessionHistory = ({
       >
         Back
       </GlobalButton>
-      <h2 className="text-center text-2xl font-bold text-[#3E3753]">
+      <h2 className="text-center text-2xl font-bold text-neutral-white">
         Session History
       </h2>
       <div className="mt-4 flex justify-center space-x-4">
@@ -101,9 +102,10 @@ const SessionHistory = ({
                   {session.customerName}
                 </td>
                 <td className="p-2 whitespace-nowrap">
-                  {new Date(session.startDateTime).toLocaleString()}
+                  {new Date(session.startDateTime.replace("Z", "")).toLocaleString()}
                 </td>
                 <td className="p-2 whitespace-nowrap">{session.amount} Baht</td>
+                <td className="p-2">{session.status.toLowerCase()}</td>
                 <td className="p-2 whitespace-nowrap">
                   <GlobalButton
                     variant="secondary"
@@ -147,7 +149,7 @@ const Dashboard = ({
   const completedSessions = sessions.filter(
     (session) => session.status === "completed",
   );
-  const totalIncome = sessions.reduce(
+  const totalIncome = completedSessions.reduce(
     (acc, session) => acc + session.amount,
     0,
   );
@@ -200,7 +202,7 @@ const Dashboard = ({
               <tr key={session.id} className="border-b border-gray-200">
                 <td className="p-1">{session.customerName}</td>
                 <td className="p-1">
-                  {new Date(session.startDateTime).toLocaleString()}
+                  {new Date(session.startDateTime.replace("Z", "")).toLocaleString()}
                 </td>
                 <td className="p-1">{session.amount} Baht</td>
                 <td className="p-1">{session.status.toLowerCase()}</td>
@@ -327,8 +329,8 @@ export default function MySessionPage() {
           console.warn("Session status distribution:", statusCounts);
 
           setSessions(normalizedSessions);
-        } catch (error) {
-          console.error("Failed to fetch sessions:", error);
+        } catch (error: any) {
+          AppToast.error(`Failed to fetch sessions: ${error.message}`);
         } finally {
           setLoading(false);
         }

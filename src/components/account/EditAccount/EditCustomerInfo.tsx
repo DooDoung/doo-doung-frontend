@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -18,11 +18,13 @@ import { updateUserAccount } from "@/utils/apiUtils";
 import {
   prepareAPIData,
   processUserData,
-  type UserInfo} from "@/utils/userDataUtils";
+  type UserInfo,
+} from "@/utils/userDataUtils";
 import {
   validateRequiredFields,
   validateSession,
-  validateUserRole} from "@/utils/validationUtils";
+  validateUserRole,
+} from "@/utils/validationUtils";
 
 import { Switch } from "../../ui/switch";
 
@@ -34,7 +36,8 @@ interface EditCustomerInfoProps {
 function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
   const { data: session } = useSession();
   const router = useRouter();
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+  const backendUrl =
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
   // States
   const [isPublic, setIsPublic] = useState(false);
@@ -57,8 +60,8 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
       const processedData = processUserData(user);
       setUserInfo(processedData);
       setIsPublic(user.isPublic || false);
-      
-      console.log("User data processed and set:", processedData);
+
+      // TODO
     }
   }, [user, user?.zodiacSign, user?.gender, hasUserMadeChanges]);
 
@@ -66,13 +69,13 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
   useEffect(() => {
     const fetchPublicStatus = async () => {
       if (!session?.user?.id || !session?.accessToken) return;
-      
+
       try {
         const res = await fetch(
           `${backendUrl}/customer/public-status/${session.user.id}`,
           {
-            headers: { Authorization: `Bearer ${session.accessToken}` }
-          }
+            headers: { Authorization: `Bearer ${session.accessToken}` },
+          },
         );
         if (!res.ok) AppToast.error("Failed to fetch public status");
         const response = await res.json();
@@ -90,16 +93,20 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
 
   // Event handlers
   const handleChange = (field: keyof UserInfo, value: string) => {
-    setUserInfo(prev => ({ ...prev, [field]: value }));
+    setUserInfo((prev) => ({ ...prev, [field]: value }));
     setHasUserMadeChanges(true);
   };
 
   const handleSave = async () => {
     try {
       setIsLoading(true);
-      
+
       // Validation
-      if (!validateSession(session) || !validateUserRole(user) || !validateRequiredFields(userInfo)) {
+      if (
+        !validateSession(session) ||
+        !validateUserRole(user) ||
+        !validateRequiredFields(userInfo)
+      ) {
         return;
       }
 
@@ -107,8 +114,11 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
       const requestData = prepareAPIData(userInfo, user);
 
       // API call
-      const result = await updateUserAccount(requestData, session?.accessToken || "");
-      
+      const result = await updateUserAccount(
+        requestData,
+        session?.accessToken || "",
+      );
+
       if (!result.success) {
         return;
       }
@@ -118,7 +128,7 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
         onUserUpdate(userInfo);
         console.log("User updated:", result.data);
       }
-      
+
       setHasUserMadeChanges(false);
       router.push("/account");
     } finally {
@@ -249,7 +259,9 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
           </label>
           <Select
             value={computedZodiac}
-            onValueChange={(val) => handleChange("zodiac", val.charAt(0).toUpperCase() + val.slice(1))}
+            onValueChange={(val) =>
+              handleChange("zodiac", val.charAt(0).toUpperCase() + val.slice(1))
+            }
           >
             <SelectTrigger className="w-full bg-white">
               <SelectValue placeholder="Select" />
@@ -297,11 +309,7 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
 
         {/* Save Profile Button */}
         <div className="mb-2 flex justify-center md:col-span-2">
-          <GlobalButton 
-            variant="secondary" 
-            type="submit"
-            disabled={isLoading}
-          >
+          <GlobalButton variant="secondary" type="submit" disabled={isLoading}>
             {isLoading ? "SAVING..." : "SAVE PROFILE"}
           </GlobalButton>
         </div>

@@ -1,7 +1,7 @@
 import React from "react";
+import Image from "next/image";
 
 import StarRating from "@/components/account/StarRating";
-
 function BookingHistoryCard({
   customerProfileUrl,
   customerName,
@@ -28,7 +28,7 @@ function BookingHistoryCard({
     <div className="font-chakra relative flex w-full items-start gap-4 rounded-2xl border border-[#E9E4E1] bg-white px-6 py-4 shadow-md">
       {/* Profile circle */}
       <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-sm">
-        <img
+        <Image
           alt="Profile"
           className="bg-secondary h-full w-full rounded-full object-cover"
           src={customerProfileUrl}

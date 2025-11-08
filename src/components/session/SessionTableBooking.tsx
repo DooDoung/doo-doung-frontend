@@ -162,9 +162,9 @@ const MockBooking = {
   ],
   // from Prophet's existing bookings
   bookingSlots: [
-    { id: "1", day: "MON", time: "09:00", variant: "TAKEN" },
-    { id: "2", day: "TUE", time: "14:00", variant: "FREE" },
-    { id: "3", day: "WED", time: "14:00", variant: "TAKEN" },
+    { id: "1", day: "MON", time: "09:00", variant: "TAKEN" as const },
+    { id: "2", day: "TUE", time: "14:00", variant: "FREE" as const },
+    { id: "3", day: "WED", time: "14:00", variant: "TAKEN" as const },
   ],
   // from Couserse duration
   durationMinutes: 60,

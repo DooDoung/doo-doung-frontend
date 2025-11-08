@@ -4,6 +4,7 @@ import axios from "axios";
 import { Lock } from "lucide-react";
 
 import { CustomerAccount } from "@/interface/User";
+import { AppToast } from "@/lib/app-toast";
 
 import ReviewSection from "./Review/ReviewSection";
 
@@ -30,16 +31,15 @@ function CustomerPublicInfo({
         );
         const result = response.data.data;
         setReview(result.reviews);
-        console.log("Review data:", result.reviews);
-      } catch (error) {
-        console.error("Error fetching review:", error);
+      } catch (error: any) {
+        AppToast.error(error.message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchReview();
-  }, [accountId]);
+  }, [accountId, backendUrl]);
 
   return (
     <>

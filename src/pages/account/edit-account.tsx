@@ -17,7 +17,6 @@ export default function EditAccountPage() {
 
   const handleUserUpdate = (updatedUser: AccountData) => {
     setUser(updatedUser);
-    console.log("User updated in edit-account page:", updatedUser);
   };
 
   useEffect(() => {

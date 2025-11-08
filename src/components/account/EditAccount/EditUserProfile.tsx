@@ -113,7 +113,7 @@ function EditUserProfile({
 
       {/* Profile + zodiac badge */}
       <div className="relative mb-6 h-[150px] w-[150px] rounded-full border-2 bg-white">
-        <img
+        <Image
           alt="Profile"
           src={accountData?.profileUrl || "/user-profile.svg"}
           className="h-full w-full rounded-full object-cover p-1"

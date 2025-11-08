@@ -95,3 +95,47 @@ export default async function Page() {
   return <div>Welcome {session?.user.username}</div>;
 }
 ```
+
+# Docker Deployment Guide
+
+### 1. Setup Environment File
+
+.env example
+
+```bash
+NEXTAUTH_SECRET=some-randome-ssl-key
+NEXTAUTH_URL=http://localhost:3000
+
+# Backend API Configuration
+# For Docker on Mac/Windows, use: http://host.docker.internal:8000
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+BACKEND_URL=http://localhost:8000
+
+# Development Feature Flags
+# Switch between true/false for testing
+NEXT_PUBLIC_USE_MOCK_AUTH=false  # Use mock auth instead of fetching backend
+NEXT_PUBLIC_DISABLE_AUTH=false   # Disable auth middleware for fast testing
+
+```
+
+### 2. Run with Docker Compose
+
+```bash
+docker-compose up --build
+
+# Or run in background
+docker-compose up -d --build
+```
+
+## Common Commands
+
+```bash
+# Stop
+docker-compose down
+
+# View logs
+docker-compose logs -f
+
+# Rebuild after changes
+docker-compose up --build
+```

@@ -43,7 +43,7 @@ export default function LoginPage() {
         router.push("/");
       }
     } catch (err: any) {
-      AppToast.error("An error occurred during login");
+      AppToast.error(`An error occurred during login ${err.message}`);
     } finally {
       setLoading(false);
     }
