@@ -26,14 +26,6 @@ interface GlobalInputProps
    */
   hintText?: string;
   hasHintText?: boolean;
-  /**
-   * Render as textarea instead of input
-   */
-  asTextarea?: boolean;
-  /**
-   * Number of rows for textarea
-   */
-  rows?: number;
 }
 
 /**
@@ -42,10 +34,7 @@ interface GlobalInputProps
  * A reusable input component built on top of shadcn/ui Input
  * with custom styling for default, typing, valid, and invalid states.
  */
-export const GlobalInput = React.forwardRef<
-  HTMLInputElement | HTMLTextAreaElement,
-  GlobalInputProps
->(
+export const GlobalInput = React.forwardRef<HTMLInputElement, GlobalInputProps>(
   (
     {
       size = "default",
@@ -55,8 +44,6 @@ export const GlobalInput = React.forwardRef<
       hintText,
       className,
       hasHintText = false,
-      asTextarea = false,
-      rows = 4,
       ...props
     },
     ref,
@@ -75,11 +62,6 @@ export const GlobalInput = React.forwardRef<
       disabled:cursor-not-allowed disabled:opacity-50
       focus:ring-0
     `;
-    
-    const textareaClasses = `
-      min-h-[80px] px-3 py-2 resize-none
-    `;
-    
     const stateClasses = {
       default: `
         hover:shadow-[2px_2px_4px_0px_rgba(0,0,0,0.25)]
@@ -97,7 +79,7 @@ export const GlobalInput = React.forwardRef<
 
     const combinedClasses = cn(
       baseClasses,
-      asTextarea ? textareaClasses : sizeClasses[size],
+      sizeClasses[size],
       fullWidth && "w-full",
       {
         [stateClasses.invalid]: isInvalid,
@@ -109,16 +91,7 @@ export const GlobalInput = React.forwardRef<
 
     return (
       <div className={cn(fullWidth && "w-full")}>
-        {asTextarea ? (
-          <textarea
-            ref={ref as React.Ref<HTMLTextAreaElement>}
-            rows={rows}
-            className={combinedClasses}
-            {...(props as React.ComponentPropsWithoutRef<"textarea">)}
-          />
-        ) : (
-          <Input ref={ref as React.Ref<HTMLInputElement>} className={combinedClasses} {...props} />
-        )}
+        <Input ref={ref} className={combinedClasses} {...props} />
         {hasHintText && (
           <p
             className={cn("mt-2 h-5 text-sm", {

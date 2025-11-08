@@ -1,89 +1,9 @@
-import { useRouter } from "next/router";
-
-import ReportCard, { ReportCardProps } from "@/components/account/Report/ReportCard";
-import { DefaultLayout, GlassContainer2, GlobalButton } from "@/components/globalComponents";
-
-// Mock report data
-const mockReports: ReportCardProps[] = [
-  {
-    id: "1",
-    imageUrl: "/images/course.svg",
-    title: "แจ้งขอปัญหาจากหมอดู",
-    description:
-      "หมอดู ไม่ตรงเวลานัดหมาย ทำให้เสียเวลารอคอยนาน ไม่มีการชดเชยในสิ่งที่เกิดขึ้นหรือปรับปรุงการบริการเลยค่ะ อยากให้มีการดูแลเรื่องนี้มากขึ้น",
-    issueType: "Prophet Issue",
-  },
-  {
-    id: "2",
-    imageUrl: "/images/course.svg",
-    title: "กดชำระให้จ่ายเงินแล้ว แต่ไม่เห็นประวัติการจอง",
-    description:
-      "ทดสอบ Chatgpt งานทำมาขายในอนาคตที่พี่กำหนดไว้จาก 5 ขั้นข้อ ในประวัติการจองมีแจ้งแค่โบนัสพิเศษเท่านั้น ไม่มีรายละเอียดเกี่ยวกับขั้นตอนการเงิน😭😭",
-    issueType: "Website Issue",
-  },
-  {
-    id: "3",
-    imageUrl: "/images/course.svg",
-    title: "กดชำระให้จ่ายเงินแล้ว แต่ไม่เห็นประวัติการจอง",
-    description:
-      "ทดสอบ Chatgpt งานทำมาขายในอนาคตที่พี่กำหนดไว้จาก 5 ขั้นข้อ ในประวัติการจองมีแจ้งแค่โบนัสพิเศษเท่านั้น ไม่มีรายละเอียดเกี่ยวกับขั้นตอนการเงิน😭😭",
-    issueType: "Website Issue",
-  },
-];
+import { DefaultLayout } from "@/components/globalComponents";
 
 export default function ReportPage() {
-  const router = useRouter();
-
-  const handleCreateNewReport = () => {
-    // Navigate to create report page
-    router.push("/report/create");
-  };
-
-  const handleBack = () => {
-    router.back();
-  };
-
   return (
     <DefaultLayout>
-      <div className="flex w-full h-screen items-center justify-center">
-        <GlassContainer2>
-          <div className="flex flex-col items-center p-6 sm:p-8 w-full">
-            {/* Header */}
-            <div className="font-sanctuary text-4xl font-light text-white mb-8">
-              My Report
-            </div>
-
-            {/* Report List */}
-            <div className="w-[90%] space-y-4 pt-40 mb-8 h-[60vh] overflow-y-scroll custom-scrollbar flex-col justify-center items-center flex">
-              {mockReports.map((report) => (
-                <ReportCard
-                  key={report.id}
-                  {...report}
-                />
-              ))}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap justify-center">
-              <GlobalButton 
-                variant="secondary" 
-                onClick={handleBack}
-                size="lg"
-                className="w-30"
-                >
-                Back
-              </GlobalButton>
-              <GlobalButton
-                variant="primary"
-                onClick={handleCreateNewReport}
-                size="lg"
-              >
-                Create New Report
-              </GlobalButton>
-            </div>
-          </div>
-        </GlassContainer2>
-      </div>
+      <p>This is Report page</p>
     </DefaultLayout>
   );
 }
