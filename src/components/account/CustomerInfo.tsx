@@ -11,6 +11,7 @@ import {
   SelectItem,
 } from "@/components/globalComponents";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { mockReservation } from "@/constants/mock-account";
 import type { CustomerAccount } from "@/interface/User";
 import { AppToast } from "@/lib/app-toast";
 
@@ -94,7 +95,7 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
       </div>
       <form
         id="customerInfoForm"
-        className="font-chakra my-4 grid grid-cols-1 gap-4 md:grid-cols-2"
+        className="font-chakra mt-4 grid grid-cols-1 gap-4 md:grid-cols-2"
       >
         {/* First Name */}
         <div>
@@ -207,15 +208,7 @@ function CustomerInfo({ customer }: { customer: CustomerAccount }) {
       </form>
 
       {/* Reservation Section */}
-      <GlobalButton
-        variant="primary"
-        fullWidth
-        onClick={() => {
-          router.push("/course/my-session");
-        }}
-      >
-        View Reservations
-      </GlobalButton>
+      <ReservationSection myReservation={mockReservation} />
 
       {/* User's Course Reviewed Section */}
       <ReviewSection reviews={review} account={customer} />
