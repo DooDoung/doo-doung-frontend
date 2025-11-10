@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import CourseLeftPanel from "@/components/course/CourseLeftPanel";
 import CourseRightPanel from "@/components/course/CourseRightPanel";
 import { mockCourseData } from "@/components/course/mockData";
-import { CourseItem } from "@/components/course/types";
+import { CourseItem, Review } from "@/components/course/types";
 import { DefaultLayout } from "@/components/globalComponents";
 import { AppToast } from "@/lib/app-toast";
 
@@ -35,9 +35,6 @@ export default function ProphetCoursePage() {
 
         const response = await axios.get(`${backendUrl}/course/${courseId}`);
         const courseData = response.data.data || response.data;
-
-        // const courseData = response.data.data || response.data;
-        // console.log(courseData);
 
         // Transform API data to match CourseItem structure
         const transformedData: CourseItem[] = [courseData];
