@@ -28,7 +28,7 @@ export const mockCourseData = (): CourseItem[] => {
     name: ["แม่หมอออม", "ออริออน", "มีรา", "จูโน่", "ไลร่า"][i],
     lastname: ["ยักษ์ดู", "สตาร์", "วิชั่น", "ออราเคิล", "ทาโรต์"][i],
     durationMin: i === 0 ? 30 : 45,
-    description:
+    courseDescription:
       i === 0
         ? "Current course description description"
         : "Personalized reading session with follow-up summary.",
