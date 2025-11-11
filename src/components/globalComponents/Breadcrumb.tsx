@@ -91,7 +91,7 @@ export function Breadcrumb({ className }: BreadcrumbProps) {
         // For booking pages
         breadcrumbs.push({
           label: "Booking",
-          // Current page, no href
+            href: `/booking/${query["booking-id"]}`,
         });
       } else if (segment === "course" && pathSegments.includes("prophet")) {
         // Handle prophet course pages
