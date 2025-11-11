@@ -133,28 +133,32 @@ export function Breadcrumb({ className }: BreadcrumbProps) {
     return null;
   }
 
+  // --- 🎨 STYLE DEFINITIONS ---
+  
   const itemBaseStyle =
-    "flex items-center rounded-full px-4 py-1.5 text-sm font-medium backdrop-blur-sm transition-colors shadow-sm";
+    "flex items-center rounded-full px-4 py-1.5 text-sm font-medium transition-colors";
   
-  const linkStyle = `${itemBaseStyle} bg-white/40 text-gray-900 hover:bg-white/60`;
+  const linkStyle = `${itemBaseStyle} bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm`;
   
-  const currentStyle = `${itemBaseStyle} bg-white/90 text-gray-900`;
+  const currentStyle = `${itemBaseStyle} bg-white/40 text-white font-semibold`;
   // --- END STYLE DEFINITIONS ---
 
   return (
-    <div className={`${className}`}>
-      <div className="container mx-auto px-4 py-3">
-        <nav className="text-sm" aria-label="Breadcrumb">
-          <ol className="flex items-center space-x-2">
+    // Sticky positioning wrapper
+    <div className={`fixed top-0 z-40 select-none ${className}`}>
+      <div className="w-screen flex justify-center">
+          <div className="px-6 py-3">
+            <nav className="text-sm" aria-label="Breadcrumb">
+              <ol className="flex items-center space-x-2">
             {breadcrumbs.map((item, idx) => {
               const isLast = idx === breadcrumbs.length - 1;
               const isFirst = idx === 0;
 
               return (
-                <li key={idx} className="flex items-center">
+                <li key={idx} className={`flex items-center`}>
                   {item.href && !isLast ? (
                     <Link href={item.href} className={linkStyle}>
-                      {isFirst && <Home className="mr-1.5 h-4 w-4" />}
+                      {isFirst && <Home className="mr-1.5 h-4 w-4 text-white" />}
                       <span>{item.label}</span>
                     </Link>
                   ) : (
@@ -165,7 +169,7 @@ export function Breadcrumb({ className }: BreadcrumbProps) {
                           : linkStyle 
                       }`}
                     >
-                      {isFirst && <Home className="mr-1.5 h-4 w-4 text-gray-800" />}
+                      {isFirst && <Home className="mr-1.5 h-4 w-4 text-white" />}
                       <span className="flex items-center">
                         {item.label}
                       </span>
@@ -173,16 +177,18 @@ export function Breadcrumb({ className }: BreadcrumbProps) {
                   )}
 
                   {!isLast && (
-                    <span className="mx-2 text-gray-300/80" aria-hidden>
+                    // เปลี่ยนสีตัวคั่นให้เข้ากับ glass theme
+                    <span className="mx-2 text-white/60" aria-hidden>
                       <ChevronRight size={16} />
                     </span>
                   )}
                 </li>
               );
             })}
-          </ol>
-        </nav>
+              </ol>
+            </nav>
+          </div>
+        </div>
       </div>
-    </div>
   );
 }
