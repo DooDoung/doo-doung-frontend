@@ -65,80 +65,195 @@ export function Breadcrumb({ className }: BreadcrumbProps) {
     details: "Details",
   };
 
-  // Function สำหรับสร้าง breadcrumb item จาก current route
-  const createBreadcrumbFromRoute = (pathname: string, query: any): BreadcrumbItem => {
+  // Define logical flows for different sections
+  const defineFlowBreadcrumbs = (pathname: string, query: any): BreadcrumbItem[] => {
     const segments = pathname.split("/").filter(Boolean);
     
-    // Handle home page
+    // Home page
     if (pathname === "/") {
-      return { label: "Home", href: "/", isHome: true };
+      return [{ label: "Home", href: "/", isHome: true }];
     }
     
-    // Handle specific routes with more meaningful labels
-    if (pathname === "/courses") return { label: "All Courses", href: "/courses" };
-    
-    if (pathname === "/course/[courseld]" && query.courseld) {
-      return { label: "Course Details", href: `/course/${query.courseld}` };
+    // ======= BOOKING FLOW =======
+    if (pathname.startsWith("/booking")) {
+      if (pathname === "/booking/[bookingld]" && query.bookingld) {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Booking Details", href: `/booking/${query.bookingld}` }
+        ];
+      }
+      if (pathname === "/booking/booking-slot/[bookingld]" && query.bookingld) {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Booking Details", href: `/booking/${query.bookingld}` },
+          { label: "Select Time Slot", href: `/booking/booking-slot/${query.bookingld}` }
+        ];
+      }
+      if (pathname === "/booking/confirm-slot/[bookingld]" && query.bookingld) {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Booking Details", href: `/booking/${query.bookingld}` },
+          { label: "Select Time Slot", href: `/booking/booking-slot/${query.bookingld}` },
+          { label: "Confirm Time Slot", href: `/booking/confirm-slot/${query.bookingld}` }
+        ];
+      }
+      if (pathname === "/booking/payment/[bookingld]" && query.bookingld) {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Booking Details", href: `/booking/${query.bookingld}` },
+          { label: "Payment", href: `/booking/payment/${query.bookingld}` }
+        ];
+      }
+      if (pathname === "/booking/booking-success/[bookingld]" && query.bookingld) {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Booking Success", href: `/booking/booking-success/${query.bookingld}` }
+        ];
+      }
     }
     
-    // Handle booking routes with meaningful names
-    if (pathname === "/booking/[bookingld]" && query.bookingld) {
-      return { label: "Booking Details", href: `/booking/${query.bookingld}` };
+    // ======= COURSE FLOW =======
+    if (pathname.startsWith("/course")) {
+      if (pathname === "/courses") {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "All Courses", href: "/courses" }
+        ];
+      }
+      if (pathname === "/course/[courseld]" && query.courseld) {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "All Courses", href: "/courses" },
+          { label: "Course Details", href: `/course/${query.courseld}` }
+        ];
+      }
+      
+      // Prophet course management flow
+      if (pathname === "/course/prophet") {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Prophet Courses", href: "/course/prophet" }
+        ];
+      }
+      if (pathname === "/course/prophet/my-courses") {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Prophet Courses", href: "/course/prophet" },
+          { label: "My Courses", href: "/course/prophet/my-courses" }
+        ];
+      }
+      if (pathname === "/course/prophet/my-courses/create") {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Prophet Courses", href: "/course/prophet" },
+          { label: "My Courses", href: "/course/prophet/my-courses" },
+          { label: "Create Course", href: "/course/prophet/my-courses/create" }
+        ];
+      }
+      if (pathname === "/course/prophet/my-courses/edit/[courseld]" && query.courseld) {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Prophet Courses", href: "/course/prophet" },
+          { label: "My Courses", href: "/course/prophet/my-courses" },
+          { label: "Edit Course", href: `/course/prophet/my-courses/edit/${query.courseld}` }
+        ];
+      }
+      if (pathname === "/course/prophet/my-courses/details/[courseId]" && query.courseId) {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Prophet Courses", href: "/course/prophet" },
+          { label: "My Courses", href: "/course/prophet/my-courses" },
+          { label: "Course Details", href: `/course/prophet/my-courses/details/${query.courseId}` }
+        ];
+      }
+      if (pathname === "/course/prophet/my-session") {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Prophet Courses", href: "/course/prophet" },
+          { label: "My Sessions", href: "/course/prophet/my-session" }
+        ];
+      }
     }
     
-    if (pathname === "/booking/booking-slot/[bookingld]" && query.bookingld) {
-      return { label: "Select Time Slot", href: `/booking/booking-slot/${query.bookingld}` };
+    // ======= REPORT FLOW =======
+    if (pathname.startsWith("/report")) {
+      if (pathname === "/report") {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Reports", href: "/report" }
+        ];
+      }
+      if (pathname === "/report/create") {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Reports", href: "/report" },
+          { label: "Create Report", href: "/report/create" }
+        ];
+      }
     }
     
-    if (pathname === "/booking/confirm-slot/[bookingld]" && query.bookingld) {
-      return { label: "Confirm Time Slot", href: `/booking/confirm-slot/${query.bookingld}` };
+    // ======= ACCOUNT FLOW =======
+    if (pathname.startsWith("/account")) {
+      if (pathname === "/account") {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "My Account", href: "/account" }
+        ];
+      }
+      if (pathname === "/account/[account-id]" && query["account-id"]) {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "Profile", href: `/account/${query["account-id"]}` }
+        ];
+      }
+      if (pathname === "/account/edit-account") {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "My Account", href: "/account" },
+          { label: "Edit Account", href: "/account/edit-account" }
+        ];
+      }
+      
+      // Prophet account flows
+      if (pathname === "/account/prophet/availability") {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "My Account", href: "/account" },
+          { label: "Availability", href: "/account/prophet/availability" }
+        ];
+      }
+      if (pathname === "/account/prophet/transaction-account") {
+        return [
+          { label: "Home", href: "/", isHome: true },
+          { label: "My Account", href: "/account" },
+          { label: "Bank Account", href: "/account/prophet/transaction-account" }
+        ];
+      }
     }
     
-    if (pathname === "/booking/payment/[bookingld]" && query.bookingld) {
-      return { label: "Payment", href: `/booking/payment/${query.bookingld}` };
+    // ======= REVIEW FLOW =======
+    if (pathname === "/review") {
+      return [
+        { label: "Home", href: "/", isHome: true },
+        { label: "Reviews", href: "/review" }
+      ];
     }
     
-    if (pathname === "/booking/booking-success/[bookingld]" && query.bookingld) {
-      return { label: "Booking Success", href: `/booking/booking-success/${query.bookingld}` };
-    }
-    
-    if (pathname === "/account/[account-id]" && query["account-id"]) {
-      return { label: "Profile", href: `/account/${query["account-id"]}` };
-    }
-    
-    if (pathname === "/course/prophet") {
-      return { label: "Prophet Courses", href: "/course/prophet" };
-    }
-    
-    // Handle other common routes
-    if (pathname === "/report") return { label: "Reports", href: "/report" };
-    if (pathname === "/review") return { label: "Reviews", href: "/review" };
-    if (pathname === "/account") return { label: "My Account", href: "/account" };
-    
-    // Handle course prophet routes
-    if (pathname === "/course/prophet/my-courses") {
-      return { label: "My Courses", href: "/course/prophet/my-courses" };
-    }
-    if (pathname === "/course/prophet/my-session") {
-      return { label: "My Sessions", href: "/course/prophet/my-session" };
-    }
-    if (pathname === "/course/prophet/my-courses/create") {
-      return { label: "Create Course", href: "/course/prophet/my-courses/create" };
-    }
-    
-    // Handle dynamic course routes
-    if (pathname === "/course/prophet/my-courses/edit/[courseld]" && query.courseld) {
-      return { label: "Edit Course", href: `/course/prophet/my-courses/edit/${query.courseld}` };
-    }
-    if (pathname === "/course/prophet/my-courses/details/[courseId]" && query.courseId) {
-      return { label: "Course Details", href: `/course/prophet/my-courses/details/${query.courseId}` };
-    }
-    
-    // Fallback: use the last segment or provide a meaningful default
+    // ======= FALLBACK =======
+    // For unknown routes, just show current page
     const lastSegment = segments[segments.length - 1];
     const label = pathLabels[lastSegment] || lastSegment || "Current Page";
     
-    return { label, href: pathname };
+    return [
+      { label: "Home", href: "/", isHome: true },
+      { label, href: pathname }
+    ];
+  };
+
+  // Function สำหรับสร้าง breadcrumb item จาก current route
+  const createBreadcrumbFromRoute = (pathname: string, query: any): BreadcrumbItem => {
+    const flowBreadcrumbs = defineFlowBreadcrumbs(pathname, query);
+    return flowBreadcrumbs[flowBreadcrumbs.length - 1]; // Return the last item as current page
   };
 
   useEffect(() => {
@@ -212,32 +327,12 @@ export function Breadcrumb({ className }: BreadcrumbProps) {
 
     const currentPage = createBreadcrumbFromRoute(pathname, query);
     
-    setHistoryStack((prevStack) => {
-      if (isDirectNavigation || lastPathname === "/") {
-        setIsDirectNavigation(false);
-        return [
-          { label: "Home", href: "/", isHome: true },
-          currentPage
-        ];
-      }
-      
-      const existingIndex = prevStack.findIndex(item => item.href === currentPage.href);
-      
-      if (existingIndex !== -1) {
-        return prevStack.slice(0, existingIndex + 1);
-      } else {
-        const newStack = [...prevStack, currentPage];
-        
-        if (newStack.length > 10) {
-          return [newStack[0], ...newStack.slice(-9)]; // Keep home + last 9
-        }
-        
-        return newStack;
-      }
-    });
+    // ใช้ defineFlowBreadcrumbs แทนการ track history แบบเก่า
+    const flowBreadcrumbs = defineFlowBreadcrumbs(pathname, query);
     
+    setHistoryStack(flowBreadcrumbs);
     setLastPathname(pathname);
-  }, [pathname, query, isDirectNavigation, lastPathname]);
+  }, [pathname, query]);
 
   const breadcrumbs = historyStack;
 
