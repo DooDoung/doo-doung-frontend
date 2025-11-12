@@ -15,8 +15,13 @@ export async function loginAsProphet(page: Page) {
   // Click login button
   await page.click('button[type="submit"]');
 
-  // Wait for navigation to complete
-  await page.waitForURL("**/", { timeout: 20000 });
+  // Wait for successful login - check for URL change away from /login
+  await page.waitForURL((url) => !url.pathname.includes("/login"), {
+    timeout: 20000,
+  });
+
+  // Wait for page to be ready
+  await page.waitForLoadState("networkidle");
 }
 
 /**
@@ -39,7 +44,9 @@ export function getTimeSlotCell(page: Page, day: string, time: string) {
  */
 export async function waitForCalendarLoad(page: Page) {
   await page.waitForSelector("table", { state: "visible" });
-  await page.waitForTimeout(1000); // Give time for data to populate
+  // Wait for time slots to be rendered
+  await page.waitForSelector("tbody tr", { state: "visible" });
+  await page.waitForTimeout(1500); // Give time for data to populate
 }
 
 /**
