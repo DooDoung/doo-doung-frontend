@@ -26,6 +26,8 @@ function ReservationCard({
       <Image
         src={imageUrl}
         alt={courseName}
+        width={100}
+        height={100}
         className="mr-4 h-full w-30 rounded-3xl object-cover"
       />
       <div className="text-neutral-black flex w-full flex-col py-4 pr-4">

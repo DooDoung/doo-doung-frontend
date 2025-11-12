@@ -155,7 +155,8 @@ export default function CreateCoursePage() {
 
       const payload = {
         courseName,
-        horoscopeMethodId: parseInt(prophetMethod) || 1,
+        courseDescription: description || "",
+        horoscopeMethod: prophetMethod || "",
         horoscopeSector: horoscopeSector.toUpperCase(),
         durationMin: parseInt(duration),
         price: parseFloat(price),
@@ -174,7 +175,6 @@ export default function CreateCoursePage() {
         ? error.response?.data?.message || error.message
         : "Failed to create course";
       AppToast.error(errorMessage);
-      console.error("Create course error:", error);
     } finally {
       setIsLoading(false);
     }

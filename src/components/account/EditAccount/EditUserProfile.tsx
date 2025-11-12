@@ -116,6 +116,7 @@ function EditUserProfile({
         <Image
           alt="Profile"
           src={accountData?.profileUrl || "/user-profile.svg"}
+          fill
           className="h-full w-full rounded-full object-cover p-1"
         />
 

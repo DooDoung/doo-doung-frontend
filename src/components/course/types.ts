@@ -17,7 +17,7 @@ export type CourseItem = {
   name: string;
   lastname: string;
   durationMin: number;
-  description: string;
+  courseDescription: string;
   price: number;
   prophetProfileUrl: string; // mock Prophet Profile URL
   courseProfileUrl: string; // mock Course Profile URL

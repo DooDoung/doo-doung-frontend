@@ -32,6 +32,8 @@ function CourseCard({
       <Image
         src={imageUrl}
         alt={courseName}
+        width={100}
+        height={100}
         className="mr-6 w-40 rounded-3xl object-cover"
       />
       <div className="text-neutral-black flex w-full justify-between gap-20 py-6 pr-6">
