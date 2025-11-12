@@ -31,49 +31,49 @@ export default function ResetPasswordPage() {
     e.preventDefault();
 
     if (!email) {
-      AppToast.error("Email are required.");
+      AppToast.error("Email is required.");
       return;
     }
 
     if (isEmailInvalid) {
-      AppToast.error("Email not found");
+      AppToast.error("Invalid email format.");
       return;
     }
 
     setLoading(true);
 
     try {
-      /// send token to email
       if (cooldown > 0) {
-        AppToast.info("Reset already requested. Please check your email");
-        return;
-      } else {
-        /*** 
-         Send email by Sendgrid
-        ***/
-        const res = await fetch(
-          "http://localhost:8000/auth/reset-password/request",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: email,
-            }),
-          },
-        );
-
-        if (!res.ok) {
-          throw new Error("Failed to reset password");
-          return;
-        }
-
-        setCooldown(45);
-        AppToast.success("A reset password has been sent to your email.");
+        AppToast.info("Reset already requested. Please check your email.");
         return;
       }
+
+      const res = await fetch(
+        "http://localhost:8000/auth/reset-password/request",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        },
+      );
+
+      console.log("Response status:", res.status);
+      const data = await res.json().catch(() => ({}));
+      console.log("Response data:", data);
+
+      if (res.status === 404) {
+        AppToast.error("Email not found, please register.");
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Failed to reset password");
+      }
+
+      setCooldown(45);
+      AppToast.success("A reset password link has been sent to your email.");
     } catch (err: any) {
+      console.error("Reset password error:", err);
       AppToast.error(err.message);
     } finally {
       setLoading(false);
