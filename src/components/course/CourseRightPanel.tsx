@@ -4,7 +4,7 @@ import { GlobalButton } from "@/components/globalComponents";
 import PublicReviewCard from "@/components/public-review/PublicReviewCard";
 
 import Meta from "./Meta";
-import { CourseItem, Review } from "./types";
+import { CourseItem } from "./types";
 
 interface CourseRightPanelProps {
   activeItem: CourseItem | null;

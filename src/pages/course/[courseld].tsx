@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import CourseLeftPanel from "@/components/course/CourseLeftPanel";
 import CourseRightPanel from "@/components/course/CourseRightPanel";
 import { mockCourseData } from "@/components/course/mockData";
-import { CourseItem, Review } from "@/components/course/types";
+import { CourseItem } from "@/components/course/types";
 import { DefaultLayout } from "@/components/globalComponents";
 import { AppToast } from "@/lib/app-toast";
 
@@ -24,7 +24,6 @@ export default function ProphetCoursePage() {
   const [active, setActive] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [reviews, setReviews] = useState<Review[]>([]);
 
   // Fetch course data from API
   useEffect(() => {
@@ -52,30 +51,8 @@ export default function ProphetCoursePage() {
       }
     };
 
-    const fetchReviews = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await axios.get(
-          `${backendUrl}/review/course/${courseId}`,
-        );
-        setReviews(response.data.data.reviews);
-        console.log(response.data.data);
-      } catch (err) {
-        const errorMessage = axios.isAxiosError(err)
-          ? err.response?.data?.message || err.message
-          : "Failed to fetch reviews";
-        setError(errorMessage);
-        AppToast.error(errorMessage);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (courseId && courseId !== "[courseld]") {
       fetchCourseData();
-      fetchReviews();
     }
   }, [courseId]);
 
@@ -121,7 +98,7 @@ export default function ProphetCoursePage() {
           active={active}
           setActive={setActive}
         />
-        <CourseRightPanel activeItem={activeItem} reviews={reviews} />
+        <CourseRightPanel activeItem={activeItem} />
       </div>
     </DefaultLayout>
   );
