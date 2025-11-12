@@ -40,6 +40,8 @@ function ProphetCourseCard({
       <Image
         src={imageUrl}
         alt={courseName}
+        width={80}
+        height={50}
         className="mr-4 w-64 rounded-3xl object-cover"
       />
       <div className="text-neutral-black flex w-full py-4 pr-4">

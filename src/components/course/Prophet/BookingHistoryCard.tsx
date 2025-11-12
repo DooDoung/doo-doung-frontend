@@ -31,6 +31,8 @@ function BookingHistoryCard({
         <Image
           alt="Profile"
           className="bg-secondary h-full w-full rounded-full object-cover"
+          width={100}
+          height={100}
           src={customerProfileUrl}
         />
       </div>

@@ -27,6 +27,8 @@ function ProphetCard({
             <Image
               src={feat.imageUrl}
               alt={feat.name}
+              width={80}
+              height={50}
               className="h-full object-cover"
             />
           ) : (

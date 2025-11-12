@@ -109,8 +109,9 @@ export default function EditCoursePage() {
           horoscopeSector: courseData.horoscopeSector || "",
           duration: courseData.durationMin?.toString() || "",
           description:
-            courseData.description && courseData.description.trim() !== ""
-              ? courseData.description
+            courseData.courseDescription &&
+            courseData.courseDescription.trim() !== ""
+              ? courseData.courseDescription
               : loadFromLocalStorage("description"),
           price: courseData.price?.toString() || "",
           transactionAccount: MOCK_ACCOUNTS[0]?.id,
@@ -196,7 +197,7 @@ export default function EditCoursePage() {
         methodName: prophetMethod,
         horoscopeSector,
         durationMin: parseInt(duration),
-        description,
+        courseDescription: description,
         price: parseFloat(price),
         courseProfile,
         isActive: formData.isOpen,
