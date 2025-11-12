@@ -1,7 +1,13 @@
 import { useRouter } from "next/router";
 
-import ReportCard, { ReportCardProps } from "@/components/account/Report/ReportCard";
-import { DefaultLayout, GlassContainer2, GlobalButton } from "@/components/globalComponents";
+import ReportCard, {
+  ReportCardProps,
+} from "@/components/account/Report/ReportCard";
+import {
+  DefaultLayout,
+  GlassContainer2,
+  GlobalButton,
+} from "@/components/globalComponents";
 
 // Mock report data
 const mockReports: ReportCardProps[] = [
@@ -45,32 +51,29 @@ export default function ReportPage() {
 
   return (
     <DefaultLayout>
-      <div className="flex w-full h-screen items-center justify-center">
+      <div className="flex h-screen w-full items-center justify-center">
         <GlassContainer2>
-          <div className="flex flex-col items-center p-6 sm:p-8 w-full">
+          <div className="flex w-full flex-col items-center p-6 sm:p-8">
             {/* Header */}
-            <div className="font-sanctuary text-4xl font-light text-white mb-8">
+            <div className="font-sanctuary mb-8 text-4xl font-light text-white">
               My Report
             </div>
 
             {/* Report List */}
-            <div className="w-[90%] space-y-4 pt-40 mb-8 h-[60vh] overflow-y-scroll custom-scrollbar flex-col justify-center items-center flex">
+            <div className="custom-scrollbar mb-8 flex h-[60vh] w-[90%] flex-col items-center justify-center space-y-4 overflow-y-scroll pt-4">
               {mockReports.map((report) => (
-                <ReportCard
-                  key={report.id}
-                  {...report}
-                />
+                <ReportCard key={report.id} {...report} />
               ))}
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap justify-center">
-              <GlobalButton 
-                variant="secondary" 
+            <div className="flex flex-wrap justify-center gap-4">
+              <GlobalButton
+                variant="secondary"
                 onClick={handleBack}
                 size="lg"
                 className="w-30"
-                >
+              >
                 Back
               </GlobalButton>
               <GlobalButton
