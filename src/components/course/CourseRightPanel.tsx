@@ -4,11 +4,26 @@ import { GlobalButton } from "@/components/globalComponents";
 import PublicReviewCard from "@/components/public-review/PublicReviewCard";
 
 import Meta from "./Meta";
-import { CourseItem } from "./types";
+import { CourseItem, Review } from "./types";
 
 interface CourseRightPanelProps {
   activeItem: CourseItem | null;
   reviews: Review[];
+}
+
+// Transform Review from types.ts format to Account.ts Review format
+function transformReview(review: Review, courseName: string): any {
+  return {
+    id: review.id,
+    profileUrl: review.profileBadge,
+    userName: review.profileName,
+    courseName: courseName,
+    description: review.content,
+    score: review.rating,
+    date: new Date(review.dateISO).toLocaleDateString(),
+    time: new Date(review.dateISO).toLocaleTimeString(),
+    updatedAt: review.dateISO,
+  };
 }
 
 export default function CourseRightPanel({
@@ -84,7 +99,10 @@ export default function CourseRightPanel({
         >
           {Array.isArray(reviews) && reviews.length > 0 ? (
             reviews.map((review, index) => (
-              <PublicReviewCard key={index} review={review} />
+              <PublicReviewCard 
+                key={index} 
+                review={transformReview(review, activeItem?.courseName || "")} 
+              />
             ))
           ) : (
             <p className="text-neutral-black/60 py-8 text-center">
