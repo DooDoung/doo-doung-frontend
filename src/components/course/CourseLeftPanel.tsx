@@ -67,7 +67,7 @@ export default function CourseLeftPanel({
         <div className="flex aspect-[1.3/1] w-full items-center justify-center overflow-hidden rounded-xl bg-slate-100">
           {activeItem && (
             <Image
-              src={activeItem.courseProfileUrl || "/images/course.svg"}
+              src={getCourseImage(activeItem)}
               alt="Course Profile"
               width={600}
               height={460}
