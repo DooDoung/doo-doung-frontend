@@ -53,7 +53,7 @@ jobs:
             BACKEND_URL=http://localhost:8000
             NEXTAUTH_URL=https://doo-doung-227513314381.asia-southeast1.run.app
           secrets: |
-            NEXTAUTH_SECRET=projects/centering-valve-453419-t2/secrets/nextauth-secret/versions/latest
+            NEXTAUTH_SECRET=nextauth-secret:latest
 
       - name: 'Show output URL'
         run: 'echo "Cloud Run MAIN Service URL: ${{ steps.deploy.outputs.url }}"'
