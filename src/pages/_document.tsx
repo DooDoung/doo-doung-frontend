@@ -4,7 +4,6 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        DooDoung
         <meta
           name="description"
           content="Your trusted platform for discovering and reviewing educational courses"

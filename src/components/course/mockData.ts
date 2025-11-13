@@ -28,13 +28,13 @@ export const mockCourseData = (): CourseItem[] => {
     name: ["แม่หมอออม", "ออริออน", "มีรา", "จูโน่", "ไลร่า"][i],
     lastname: ["ยักษ์ดู", "สตาร์", "วิชั่น", "ออราเคิล", "ทาโรต์"][i],
     durationMin: i === 0 ? 30 : 45,
-    description:
-      i === 0
-        ? "Current course description description"
-        : "Personalized reading session with follow-up summary.",
     price: [1750, 1290, 1490, 990, 1890][i],
     prophetProfileUrl: prophetImgs[i], // mock Prophet Profile URL
     courseProfileUrl: courseImgs[i], // mock Course Profile URL
+    courseDescription:
+      i === 0
+        ? "Current course description description"
+        : "Personalized reading session with follow-up summary.",
     reviews: [
       {
         id: `r-${i}-1`,

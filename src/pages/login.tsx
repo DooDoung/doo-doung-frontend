@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 
@@ -98,12 +99,12 @@ export default function LoginPage() {
               </div>
 
               <div className="font-chakra text-neutral-white flex justify-between text-base">
-                <a href="/reset-password" className="">
+                <Link href="/reset-password" className="">
                   Forgot Password?
-                </a>
-                <a href="/register" className="">
+                </Link>
+                <Link href="/register" className="">
                   Sign Up
-                </a>
+                </Link>
               </div>
             </form>
           </div>
