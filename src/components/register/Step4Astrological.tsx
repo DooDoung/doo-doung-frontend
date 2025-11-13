@@ -54,6 +54,19 @@ export default function Step4Astrological({
   const [errors, setErrors] = useState<Step4Errors>({});
   const labelStyle = "block text-sm font-medium text-white mb-1";
 
+  // Calculate date ranges for user-friendly picker
+  const today = new Date();
+  const thirteenYearsAgo = new Date(
+    today.getFullYear() - 13,
+    today.getMonth(),
+    today.getDate(),
+  );
+  const hundredYearsAgo = new Date(
+    today.getFullYear() - 100,
+    today.getMonth(),
+    today.getDate(),
+  );
+
   const handleZodiacChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -68,7 +81,17 @@ export default function Step4Astrological({
 
     if (!result.success) {
       setErrors(result.error.flatten().fieldErrors);
-      AppToast.error("Every field must be completed.");
+
+      // Check for age validation error
+      const ageError = result.error.issues.find(
+        (issue) => issue.message === "You must be at least 13 years old.",
+      );
+
+      if (ageError) {
+        AppToast.error("You must be at least 13 years old to register.");
+      } else {
+        AppToast.error("Every field must be completed.");
+      }
       return;
     }
 
@@ -89,7 +112,7 @@ export default function Step4Astrological({
           ... The stars in your birth date whisper your story ...
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div>
+          <div className="pb-4">
             <label className={labelStyle}>Date of Birth</label>
             <Popover>
               <PopoverTrigger asChild>
@@ -119,6 +142,12 @@ export default function Step4Astrological({
                   onSelect={(date) =>
                     setFormData((prev) => ({ ...prev, birthDate: date }))
                   }
+                  defaultMonth={formData.birthDate || thirteenYearsAgo}
+                  fromDate={hundredYearsAgo}
+                  toDate={thirteenYearsAgo}
+                  captionLayout="dropdown"
+                  fromYear={today.getFullYear() - 100}
+                  toYear={today.getFullYear() - 13}
                 />
               </PopoverContent>
             </Popover>
@@ -126,7 +155,7 @@ export default function Step4Astrological({
               <p className="text-error mt-1 text-sm">{errors.birthDate[0]}</p>
             )}
           </div>
-          <div>
+          <div className="pb-4">
             <label className={labelStyle}>Time of Birth</label>
             <GlobalInput
               type="time"
@@ -138,7 +167,7 @@ export default function Step4Astrological({
             />
           </div>
         </div>
-        <div>
+        <div className="pb-4">
           <label className={labelStyle}>Zodiac Sign</label>
           <Select
             onValueChange={handleZodiacChange}

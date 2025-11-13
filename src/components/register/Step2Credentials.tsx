@@ -60,7 +60,7 @@ export default function Step2Credentials({
           text-shadow: 0 0 5px #ff8a80;
         }
       `}</style>
-      <div>
+      <div className="pb-4">
         <label htmlFor="username" className={labelStyle}>
           Username
         </label>
@@ -75,7 +75,7 @@ export default function Step2Credentials({
           hintText={errors.username?.[0]}
         />
       </div>
-      <div>
+      <div className="pb-4">
         <label htmlFor="password" className={labelStyle}>
           Password
         </label>
@@ -90,7 +90,7 @@ export default function Step2Credentials({
           hintText={errors.password?.[0]}
         />
       </div>
-      <div>
+      <div className="pb-4">
         <label htmlFor="confirmPassword" className={labelStyle}>
           Confirm Password
         </label>
@@ -106,10 +106,20 @@ export default function Step2Credentials({
         />
       </div>
       <div className="flex justify-center gap-4">
-        <Button variant="secondary" className="w-40" onClick={prevStep}>
+        <Button
+          type="button"
+          variant="secondary"
+          className="w-40"
+          onClick={prevStep}
+        >
           Back
         </Button>
-        <Button variant="primary" className="w-40" onClick={handleNext}>
+        <Button
+          type="button"
+          variant="primary"
+          className="w-40"
+          onClick={handleNext}
+        >
           Next
         </Button>
       </div>

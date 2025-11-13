@@ -75,11 +75,11 @@ export const GlobalInput = React.forwardRef<
       disabled:cursor-not-allowed disabled:opacity-50
       focus:ring-0
     `;
-    
+
     const textareaClasses = `
       min-h-[80px] px-3 py-2 resize-none
     `;
-    
+
     const stateClasses = {
       default: `
         hover:shadow-[2px_2px_4px_0px_rgba(0,0,0,0.25)]
@@ -117,7 +117,11 @@ export const GlobalInput = React.forwardRef<
             {...(props as React.ComponentPropsWithoutRef<"textarea">)}
           />
         ) : (
-          <Input ref={ref as React.Ref<HTMLInputElement>} className={combinedClasses} {...props} />
+          <Input
+            ref={ref as React.Ref<HTMLInputElement>}
+            className={combinedClasses}
+            {...props}
+          />
         )}
         {hasHintText && (
           <p
