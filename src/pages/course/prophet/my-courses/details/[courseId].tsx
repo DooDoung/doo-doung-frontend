@@ -10,6 +10,7 @@ import TransactionAccountSelectItem from "@/components/course/Prophet/Transactio
 import { DefaultLayout } from "@/components/globalComponents";
 import { GlobalButton, GlobalInput } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
+import PublicReviewCard from "@/components/public-review/PublicReviewCard";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { AppToast } from "@/lib/app-toast";
@@ -33,6 +34,7 @@ export default function CourseDetailsPage() {
     price: "",
     courseProfile: "",
     isActive: true,
+    courseDescription: "",
   });
 
   const fetchFormData = async () => {
@@ -63,55 +65,24 @@ export default function CourseDetailsPage() {
       AppToast.error("Error fetching account data");
     }
   };
-
-  const mockbookingHistoryData: {
-    customerProfileUrl: string;
-    customerName: string;
-    status: "COMPLETED" | "SCHEDULED" | "FAILED";
-    bookingDate: string;
-    bookingTime: string;
-    score: number;
-    review: string;
-  }[] = [
-    {
-      customerProfileUrl:
-        "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg",
-      customerName: "Prem",
-      status: "COMPLETED",
-      bookingDate: "12/3/2003",
-      bookingTime: "13:00-13:30",
-      score: 4,
-      review:
-        "ดีๆ ครับ ดีๆ เอา ดีๆ ดู ดีๆ พิมพ์อะไรดี คนจริงไม่ใช้ ลอเรม คนจริงพิมพ์เอา เป็นไงล่ะ",
-    },
-    {
-      customerProfileUrl:
-        "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg",
-      customerName: "Bam",
-      status: "SCHEDULED",
-      bookingDate: "14/3/2003",
-      bookingTime: "10:00-10:30",
-      score: 5,
-      review:
-        "ดีๆ ครับ ดีๆ เอา ดีๆ ดู ดีๆ พิมพ์อะไรดี คนจริงไม่ใช้ ลอเรม คนจริงพิมพ์เอา เป็นไงล่ะ💖",
-    },
-    {
-      customerProfileUrl:
-        "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg",
-      customerName: "Earth",
-      status: "FAILED",
-      bookingDate: "15/3/2003",
-      bookingTime: "11:00-11:30",
-      score: 0,
-      review: "ยกเลิกนัดเพราะติดงานครับ",
-    },
-  ];
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(
+        `${backendUrl}/review/course/${courseId}`,
+      );
+      setReviews(response.data.data.reviews);
+    } catch (error) {
+      AppToast.error("Error fetching reviews");
+    }
+  };
 
   useEffect(() => {
     const init = async () => {
       if (courseId && session?.accessToken) {
         await fetchFormData();
         await fetchAccountData();
+        await fetchReviews();
         setLoading(false);
       }
     };
@@ -209,7 +180,7 @@ export default function CourseDetailsPage() {
 
                 <div className="col-span-3">
                   <label className="from-accent-pink to-accent-violet bg-gradient-to-r bg-clip-text text-transparent">
-                    Prophet Method
+                    Horoscope Sector
                   </label>
                   <p className="text-neutral-black">
                     {formData.horoscopeSector}
@@ -227,7 +198,9 @@ export default function CourseDetailsPage() {
                   <label className="from-accent-pink to-accent-violet bg-gradient-to-r bg-clip-text text-transparent">
                     Description
                   </label>
-                  <p className="text-neutral-black"> - </p>
+                  <p className="text-neutral-black">
+                    {formData.courseDescription}{" "}
+                  </p>
                 </div>
 
                 <div className="col-span-2">
@@ -248,27 +221,21 @@ export default function CourseDetailsPage() {
                   </div>
                 </div>
 
-                {/* Booking History */}
+                {/* Review History */}
                 <div className="col-span-full">
                   <label className="from-accent-pink to-accent-violet bg-gradient-to-r bg-clip-text text-transparent">
-                    Booking history
+                    Review history
                   </label>
                   <div className="custom-scrollbar h-[200px] overflow-y-auto">
-                    {/* booking history card */}
-                    <div className="flex flex-col gap-4 pt-3">
-                      {mockbookingHistoryData.map((item, index) => (
-                        <BookingHistoryCard
-                          key={index}
-                          customerProfileUrl={item.customerProfileUrl}
-                          customerName={item.customerName}
-                          status={item.status}
-                          bookingDate={item.bookingDate}
-                          bookingTime={item.bookingTime}
-                          score={item.score}
-                          review={item.review}
-                        />
-                      ))}
-                    </div>
+                    {Array.isArray(reviews) && reviews.length > 0 ? (
+                      reviews.map((review, index) => (
+                        <PublicReviewCard key={index} review={review} />
+                      ))
+                    ) : (
+                      <p className="text-neutral-black/60 py-8 text-center">
+                        No reviews yet
+                      </p>
+                    )}
                   </div>
                 </div>
 
