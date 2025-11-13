@@ -10,6 +10,25 @@ import {
 } from "@/components/globalComponents";
 import { AppToast } from "@/lib/app-toast";
 
+const validatePassword = (password: string): string | null => {
+  if (password.length < 8) {
+    return "Password must be at least 8 characters long.";
+  }
+  if (!/[A-Z]/.test(password)) {
+    return "Password must include at least one uppercase letter.";
+  }
+  if (!/[a-z]/.test(password)) {
+    return "Password must include at least one lowercase letter.";
+  }
+  if (!/[0-9]/.test(password)) {
+    return "Password must include at least one number.";
+  }
+  if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) {
+    return "Password must include at least one special character (e.g. ! @ # $ % ^ & *).";
+  }
+  return null;
+};
+
 export default function ResetPasswordTokenPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -25,17 +44,26 @@ export default function ResetPasswordTokenPage() {
       AppToast.error("Password and Confirm Password are required.");
       return;
     }
-    if (!token) {
-      AppToast.error("Invalid or missing token");
-      return;
-    }
+
+    // Show "passwords must match" error BEFORE doing other validation
     if (password !== confirmPassword) {
       AppToast.error("Password and Confirm Password must match.");
       return;
     }
 
-    setLoading(true);
+    // Then validate password rules
+    const validationError = validatePassword(password);
+    if (validationError) {
+      AppToast.error(validationError);
+      return;
+    }
 
+    if (!token) {
+      AppToast.error("Invalid or missing token");
+      return;
+    }
+
+    setLoading(true);
     try {
       const res = await fetch(
         "http://localhost:8000/auth/reset-password/confirm",
@@ -50,14 +78,11 @@ export default function ResetPasswordTokenPage() {
       );
 
       if (!res.ok) {
-        // try to parse backend error message
         let backendMessage = "Failed to reset password";
         try {
           const data = await res.json();
           if (data?.message) backendMessage = data.message;
-        } catch {
-          // ignore JSON parse error
-        }
+        } catch {}
         throw new Error(backendMessage);
       }
 
