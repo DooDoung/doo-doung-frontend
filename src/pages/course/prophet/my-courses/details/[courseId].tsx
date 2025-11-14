@@ -66,14 +66,27 @@ export default function CourseDetailsPage() {
     }
   };
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [reviewsError, setReviewsError] = useState<string | null>(null);
+
   const fetchReviews = async () => {
     try {
+      setReviewsLoading(true);
+      setReviewsError(null);
+
       const response = await axios.get(
         `${backendUrl}/review/course/${courseId}`,
       );
       setReviews(response.data.data.reviews);
-    } catch (error) {
-      AppToast.error("Error fetching reviews");
+      console.log(response.data.data);
+    } catch (err) {
+      const errorMessage = axios.isAxiosError(err)
+        ? err.response?.data?.message || err.message
+        : "Failed to fetch reviews";
+      setReviewsError(errorMessage);
+      AppToast.error(errorMessage);
+    } finally {
+      setReviewsLoading(false);
     }
   };
 
