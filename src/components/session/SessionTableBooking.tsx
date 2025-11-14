@@ -37,6 +37,10 @@ export default function SessionTableBooking({
   const [selectedSlots, setSelectedSlots] = useState<Set<string>>(new Set());
   const MAX_SLOTS = durationMinutes / 15;
 
+  const dayIndex: Record<string, number> = {
+        Mon: 0,Tue: 1,Wed: 2,Thu: 3,Fri: 4,Sat: 5,Sun: 6,
+      };
+
   const handleSelectSlot = (day: string, time: string) => {
     if (isPastSlot(day, time, currentMonday)) {
       AppToast.error("You cannot select a past time slot and must book at least 15 minutes in advance.");
@@ -84,10 +88,6 @@ export default function SessionTableBooking({
         const [day, time] = s.split("-");
         return { day, time };
       });
-
-      const dayIndex: Record<string, number> = {
-        Mon: 0,Tue: 1,Wed: 2,Thu: 3,Fri: 4,Sat: 5,Sun: 6,
-      };
 
       const sortedSlots = slotsArray.sort((a, b) => {
         if (a.day !== b.day) {
