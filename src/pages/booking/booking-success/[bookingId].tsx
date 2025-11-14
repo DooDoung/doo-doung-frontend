@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { BackToHomeActions,CourseCard, TimeSlotConfirmed } from "@/components/booking";
 import { DefaultLayout } from "@/components/globalComponents";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
+import { toDisplaySlot } from "@/hooks/useCustomerBookSlot";
 import { AppToast } from "@/lib/app-toast";
 
 interface CourseData {
@@ -29,7 +30,7 @@ interface BookedData {
 
 export default function BookingSuccessPage() {
   const router = useRouter();
-  const { bookingld } = router.query; // dynamic param from filename [bookingld].tsx
+  const { bookingId } = router.query; // dynamic param from filename [bookingId].tsx
   const { data: session } = useSession();
   const token = (session as any)?.accessToken;
 
@@ -45,14 +46,14 @@ export default function BookingSuccessPage() {
 
   useEffect(() => {
       const fetchBooking = async () => {
-        if (!bookingld) return;
+        if (!bookingId) return;
         setLoading(true);
         setError(null);
 
         const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
   
         try {
-          const res = await fetch(`${backendUrl}/booking/detail/${bookingld}`, {
+          const res = await fetch(`${backendUrl}/booking/detail/${bookingId}`, {
             headers: token
               ? {
                   Authorization: `Bearer ${token}`,
@@ -83,7 +84,7 @@ export default function BookingSuccessPage() {
         }
       };
       fetchBooking();
-    }, [bookingld, token]);
+    }, [bookingId, token]);
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -142,19 +143,35 @@ export default function BookingSuccessPage() {
     );
   }
 
-  if (error || !courseData) {
+    if (error) {
     return (
       <DefaultLayout contentClassName="flex justify-center items-center">
-        <p className="text-white">Error: {error ?? "Course not found"}</p>
+        <p className="text-white">Error: {error}</p>
       </DefaultLayout>
     );
   }
 
-  const timeSlotData = {
-    selectedDate: "10 October 2025",
-    selectedTime: "00:15-00:45 AM"
-  };
+  if (!courseData) {
+    return (
+      <DefaultLayout contentClassName="flex justify-center items-center">
+        <p className="text-white">Course not found</p>
+      </DefaultLayout>
+    );
+  }
 
+  if (!bookedData) {
+    return (
+      <DefaultLayout contentClassName="flex justify-center items-center">
+        <p className="text-white">Failed to load booked sessions</p>
+      </DefaultLayout>
+    );
+  }
+
+  const timeSlotData = toDisplaySlot({
+    start_datetime: bookedData?.startDateTime, 
+    end_datetime: bookedData?.endDateTime}
+  );
+  
   return (
     <DefaultLayout>
       <div className="flex justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">

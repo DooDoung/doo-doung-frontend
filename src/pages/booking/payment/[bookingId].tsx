@@ -6,6 +6,7 @@ import { CourseCard, TimeSlotWithPurchase } from "@/components/booking";
 import { DefaultLayout } from "@/components/globalComponents";
 import GlobalButton from "@/components/globalComponents/Button";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
+import { toDisplaySlot } from "@/hooks/useCustomerBookSlot";
 
 interface CourseData {
   courseImageSrc: string;
@@ -29,7 +30,7 @@ interface BookedData {
 
 export default function BookingPaymentPage() {
   const router = useRouter();
-  const { bookingld } = router.query; // dynamic param from filename [bookingld].tsx
+  const { bookingId } = router.query; // dynamic param from filename [bookingId].tsx
   const { data: session } = useSession();
   const token = (session as any)?.accessToken;
 
@@ -42,8 +43,8 @@ export default function BookingPaymentPage() {
   const [timeLeft, setTimeLeft] = useState(300);
   const handlePaymentSuccess = useCallback(() => {
     setShowQRCode(false);
-    router.push(`/booking/booking-success/${bookingld}`);
-  }, [router, bookingld]);
+    router.push(`/booking/booking-success/${bookingId}`);
+  }, [router, bookingId]);
 
   useEffect(() => {
     if (timeLeft === 295) { 
@@ -74,12 +75,12 @@ export default function BookingPaymentPage() {
   
   useEffect(() => {
     const fetchBooking = async () => {
-      if (!bookingld) return;
+      if (!bookingId) return;
       setLoading(true);
       setError(null);
 
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/booking/detail/${bookingld}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/booking/detail/${bookingId}`, {
           headers: token
             ? {
                 Authorization: `Bearer ${token}`,
@@ -109,7 +110,7 @@ export default function BookingPaymentPage() {
       }
     };
     fetchBooking();
-  }, [bookingld, token]);
+  }, [bookingId, token]);
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -167,18 +168,34 @@ export default function BookingPaymentPage() {
     );
   }
 
-  if (error || !courseData) {
-    return (
-      <DefaultLayout contentClassName="flex justify-center items-center">
-        <p className="text-white">Error: {error ?? "Course not found"}</p>
-      </DefaultLayout>
-    );
-  }
+  if (error) {
+  return (
+    <DefaultLayout contentClassName="flex justify-center items-center">
+      <p className="text-white">Error: {error}</p>
+    </DefaultLayout>
+  );
+}
 
-  const timeSlotData = {
-    selectedDate: "10 October 2025",
-    selectedTime: "00:15-00:45 AM"
-  };
+if (!courseData) {
+  return (
+    <DefaultLayout contentClassName="flex justify-center items-center">
+      <p className="text-white">Course not found</p>
+    </DefaultLayout>
+  );
+}
+
+if (!bookedData) {
+  return (
+    <DefaultLayout contentClassName="flex justify-center items-center">
+      <p className="text-white">Failed to load booked sessions</p>
+    </DefaultLayout>
+  );
+}
+
+  const timeSlotData = toDisplaySlot({
+    start_datetime: bookedData?.startDateTime, 
+    end_datetime: bookedData?.endDateTime}
+  );
 
   const handlePurchaseClick = () => {
     setShowQRCode(true);

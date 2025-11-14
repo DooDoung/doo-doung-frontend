@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { ConfirmBookingActions,CourseCard, TimeSlotWithPurchase } from "@/components/booking";
 import { DefaultLayout } from "@/components/globalComponents";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
+import { toDisplaySlot } from "@/hooks/useCustomerBookSlot";
 
 interface CourseData {
   prophetId: string;
@@ -21,7 +22,7 @@ interface CourseData {
 
 export default function ConfirmSlotPage() {
   const router = useRouter();
-  const { courseld } = router.query; // dynamic param from filename [bookingld].tsx
+  const { courseId } = router.query; // dynamic param from filename [bookingld].tsx
   const { data: session } = useSession();
   const token = (session as any)?.accessToken;
 
@@ -37,7 +38,7 @@ export default function ConfirmSlotPage() {
     if (!selectedSlots || !courseData) return;
     try {
       const payload = {
-        courseId: courseld,
+        courseId: courseId,
         accountId: session?.user?.id,
         prophetId: courseData.prophetId,
         startDateTime: selectedSlots.start_datetime,
@@ -67,7 +68,7 @@ export default function ConfirmSlotPage() {
 
   useEffect(() => {
     const fetchCourse = async () => {
-      if (!courseld) return;
+      if (!courseId) return;
       setLoading(true);
       setError(null);
 
@@ -75,7 +76,7 @@ export default function ConfirmSlotPage() {
         process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
       try {
-        const res = await fetch(`${backendUrl}/course/${courseld}`, {
+        const res = await fetch(`${backendUrl}/course/${courseId}`, {
           headers: token
             ? {
                 Authorization: `Bearer ${token}`,
@@ -110,7 +111,7 @@ export default function ConfirmSlotPage() {
       }
     };
     fetchCourse();
-  }, [courseld, token]);
+  }, [courseId, token]);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("selectedSlots");
@@ -129,7 +130,7 @@ export default function ConfirmSlotPage() {
     );
   }
 
-  if (error || !courseData) {
+  if (error || !courseData || !selectedSlots) {
     return (
       <DefaultLayout contentClassName="flex justify-center items-center">
         <p className="text-white">Error: {error ?? "Course not found"}</p>
@@ -169,36 +170,6 @@ export default function ConfirmSlotPage() {
       </div>
     </DefaultLayout>
   );
-}
-
-function toDisplaySlot({
-  start_datetime,
-  end_datetime,
-}: {
-  start_datetime: string;
-  end_datetime: string;
-}) {
-  const start = new Date(start_datetime);
-  const end = new Date(end_datetime);
-
-  const dateOptions: Intl.DateTimeFormatOptions = {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  };
-  const selectedDate = start.toLocaleDateString("en-GB", dateOptions);
-
-  const formatTime = (d: Date) => {
-    const h = d.getHours();
-    const m = String(d.getMinutes()).padStart(2, "0");
-    const suffix = h >= 12 ? "PM" : "AM";
-    const hour12 = ((h + 11) % 12) + 1;
-    return `${String(hour12).padStart(2, "0")}:${m} ${suffix}`;
-  };
-
-  const selectedTime = `${formatTime(start)}-${formatTime(end)}`;
-
-  return { selectedDate, selectedTime };
 }
 
 async function createBooking(token: string, payload: any) {

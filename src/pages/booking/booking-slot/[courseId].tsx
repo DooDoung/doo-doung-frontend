@@ -22,7 +22,7 @@ interface CourseData {
 
 export default function BookingSlotPage() {
   const router = useRouter();
-  const { courseld } = router.query; // dynamic param from filename [courseld].tsx
+  const { courseId } = router.query; // dynamic param from filename [courseId].tsx
   const { data: session } = useSession();
   const token = (session as any)?.accessToken;
 
@@ -35,7 +35,7 @@ export default function BookingSlotPage() {
   };
 
   const fetchCourse = async () => {
-    if (!courseld) return;
+    if (!courseId) return;
     setLoading(true);
     setError(null);
 
@@ -43,7 +43,7 @@ export default function BookingSlotPage() {
       process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
     try {
-      const res = await fetch(`${backendUrl}/course/${courseld}`, {
+      const res = await fetch(`${backendUrl}/course/${courseId}`, {
         headers: token
           ? {
               Authorization: `Bearer ${token}`,
@@ -79,17 +79,16 @@ export default function BookingSlotPage() {
   };
   
   useEffect(() => {
-    if (!courseld) return;
+    if (!courseId) return;
     fetchCourse();
-  }, [courseld, token]);
+  }, [courseId, token]);
   
   const { currentWeek,
     availableSlots,
     bookingSlots,
     goToPreviousWeek,
     goToNextWeek,
-  } = useCustomerBookSlot(courseld as string,  courseData?.prophetld, token);
-
+  } = useCustomerBookSlot(courseId as string,  courseData?.prophetld, token);
 
   if (loading) {
     return (
@@ -124,7 +123,7 @@ export default function BookingSlotPage() {
                 bookingSlots={bookingSlots}
                 durationMinutes={parseInt(courseData.duration)} 
                 currentWeek={currentWeek}
-                courseld={courseld}
+                courseId={Array.isArray(courseId) ? courseId[0] : courseId}
                 goToNextWeek={goToNextWeek}
                 goToPreviousWeek={goToPreviousWeek}
               />

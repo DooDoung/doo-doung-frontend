@@ -22,7 +22,7 @@ interface CourseData {
 
 export default function BookingPage() {
   const router = useRouter();
-  const { courseld } = router.query; // dynamic param from filename [bookingld].tsx
+  const { courseId } = router.query; // dynamic param from filename [bookingld].tsx
   const { data: session } = useSession();
   const token = (session as any)?.accessToken;
 
@@ -32,7 +32,7 @@ export default function BookingPage() {
 
   useEffect(() => {
     const fetchCourse = async () => {
-      if (!courseld) return;
+      if (!courseId) return;
       setLoading(true);
       setError(null);
 
@@ -40,7 +40,7 @@ export default function BookingPage() {
         process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
       try {
-        const res = await axios.get(`${backendUrl}/course/${courseld}`, {
+        const res = await axios.get(`${backendUrl}/course/${courseId}`, {
           headers: token
             ? {
                 Authorization: `Bearer ${token}`,
@@ -81,12 +81,12 @@ export default function BookingPage() {
     };
 
     fetchCourse();
-  }, [courseld, token]);
+  }, [courseId, token]);
 
   const handleCheckAvailableTime = () => {
-    if (!courseld) return;
+    if (!courseId) return;
 
-    router.push(`/booking/booking-slot/${courseld}`);
+    router.push(`/booking/booking-slot/${courseId}`);
   };
 
   const handleBack = () => {

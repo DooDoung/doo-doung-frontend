@@ -91,6 +91,36 @@ async function getBookingSlots(
     return slots;
 }
 
+export function toDisplaySlot({
+  start_datetime,
+  end_datetime,
+}: {
+  start_datetime: string;
+  end_datetime: string;
+}) {
+  const start = new Date(start_datetime);
+  const end = new Date(end_datetime);
+
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  };
+  const selectedDate = start.toLocaleDateString("en-GB", dateOptions);
+
+  const formatTime = (d: Date) => {
+    const h = d.getHours();
+    const m = String(d.getMinutes()).padStart(2, "0");
+    const suffix = h >= 12 ? "PM" : "AM";
+    const hour12 = ((h + 11) % 12) + 1;
+    return `${String(hour12).padStart(2, "0")}:${m} ${suffix}`;
+  };
+
+  const selectedTime = `${formatTime(start)}-${formatTime(end)}`;
+
+  return { selectedDate, selectedTime };
+}
+
 export function useCustomerBookSlot(
     courseId: string | undefined, 
     prophetId: string | undefined,
