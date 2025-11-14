@@ -33,7 +33,7 @@ export default function CourseRightPanel({
   const router = useRouter();
 
   const handleBack = () => {
-    router.push("/course");
+    router.push("/courses");
   };
 
   const handleBook = () => {
@@ -99,9 +99,9 @@ export default function CourseRightPanel({
         >
           {Array.isArray(reviews) && reviews.length > 0 ? (
             reviews.map((review, index) => (
-              <PublicReviewCard 
-                key={index} 
-                review={transformReview(review, activeItem?.courseName || "")} 
+              <PublicReviewCard
+                key={index}
+                review={transformReview(review, activeItem?.courseName || "")}
               />
             ))
           ) : (

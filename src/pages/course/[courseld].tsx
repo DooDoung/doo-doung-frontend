@@ -98,9 +98,9 @@ export default function ProphetCoursePage() {
           active={active}
           setActive={setActive}
         />
-        <CourseRightPanel 
-          activeItem={activeItem} 
-          reviews={activeItem?.reviews || []} 
+        <CourseRightPanel
+          activeItem={activeItem}
+          reviews={activeItem?.reviews || []}
         />
       </div>
     </DefaultLayout>
