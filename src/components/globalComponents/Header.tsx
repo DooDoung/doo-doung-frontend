@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 const customerLinks = [
   { href: "/", label: "Home", icon: <Home size={24} /> },
-  { href: "/course/my-session", label: "Courses", icon: <Search size={24} /> },
+  { href: "/courses", label: "Courses", icon: <Search size={24} /> },
   { href: "/booking", label: "Booking", icon: <ShoppingCart size={24} /> },
   { href: "/account", label: "Account", icon: <User size={24} /> },
   { href: "/review", label: "Review", icon: <Star size={24} /> },

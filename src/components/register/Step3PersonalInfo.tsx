@@ -91,7 +91,7 @@ export default function Step3PersonalInfo({
         }
       `}</style>
       <div className="grid grid-cols-2 gap-4">
-        <div>
+        <div className="pb-4">
           <label htmlFor="firstName" className={labelStyle}>
             First Name
           </label>
@@ -102,10 +102,11 @@ export default function Step3PersonalInfo({
             value={formData.firstName}
             onChange={handleChange}
             isInvalid={!!errors.firstName}
+            hasHintText={true}
             hintText={errors.firstName?.[0]}
           />
         </div>
-        <div>
+        <div className="pb-4">
           <label htmlFor="lastName" className={labelStyle}>
             Last Name
           </label>
@@ -116,12 +117,13 @@ export default function Step3PersonalInfo({
             value={formData.lastName}
             onChange={handleChange}
             isInvalid={!!errors.lastName}
+            hasHintText={true}
             hintText={errors.lastName?.[0]}
           />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <div>
+        <div className="pb-4">
           <label htmlFor="gender" className={labelStyle}>
             Gender
           </label>
@@ -140,7 +142,7 @@ export default function Step3PersonalInfo({
             <p className="text-error mt-2 h-5 text-sm">{errors.gender[0]}</p>
           )}
         </div>
-        <div>
+        <div className="pb-4">
           <label htmlFor="email" className={labelStyle}>
             Email
           </label>
@@ -151,12 +153,13 @@ export default function Step3PersonalInfo({
             value={formData.email}
             onChange={handleChange}
             isInvalid={!!errors.email}
+            hasHintText={true}
             hintText={errors.email?.[0]}
           />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <div>
+        <div className="pb-4">
           <label htmlFor="phoneNumber" className={labelStyle}>
             Phone Number
           </label>
@@ -167,11 +170,12 @@ export default function Step3PersonalInfo({
             value={formData.phoneNumber}
             onChange={handleChange}
             isInvalid={!!errors.phoneNumber}
+            hasHintText={true}
             hintText={errors.phoneNumber?.[0]}
           />
         </div>
         {isProphet && (
-          <div>
+          <div className="pb-4">
             <label htmlFor="lineId" className={labelStyle}>
               LINE ID
             </label>
@@ -182,6 +186,7 @@ export default function Step3PersonalInfo({
               value={formData.lineId || ""}
               onChange={handleChange}
               isInvalid={!!errors.lineId}
+              hasHintText={true}
               hintText={errors.lineId?.[0]}
             />
           </div>

@@ -27,18 +27,18 @@ function ProphetCard({
             <Image
               src={feat.imageUrl}
               alt={feat.name}
-              className="h-full object-contain"
-              width={200}
-              height={200}
+              width={80}
+              height={50}
+              className="h-full object-cover"
             />
           ) : (
             <div className="flex w-full px-2">
               <Image
                 src={getBankImageUrl(transaction?.bank ?? "")}
                 alt={transaction?.bank || ""}
-                className="mr-3 mb-2 h-full self-start rounded-full object-contain"
+                width={80}
                 height={50}
-                width={50}
+                className="mr-3 mb-2 h-full self-start rounded-full object-cover"
               />
               <div className="flex flex-col">
                 <p className="text-neutral-black">{transaction?.accountName}</p>

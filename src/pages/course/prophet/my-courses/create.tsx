@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Pencil } from "lucide-react";
 import Image from "next/image";
@@ -47,7 +47,8 @@ const saveToLocalStorage = (field: string, value: string) => {
 
 export default function CreateCoursePage() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const token = session?.accessToken;
 
   const [formData, setFormData] = useState({
     courseName: "",
@@ -61,12 +62,8 @@ export default function CreateCoursePage() {
   });
   const [openDialog, setOpenDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const user = {
-    profileUrl:
-      "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg",
-    username: "JohnYakDoodoung",
-  };
+  const [user, setUser] = useState<{ profileUrl: string; username: string } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -75,6 +72,35 @@ export default function CreateCoursePage() {
       saveToLocalStorage(field, value);
     }
   };
+
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchAccount = async () => {
+      if (status === "loading" || !token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${backendUrl}/account/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const userData = response.data.data;
+        setUser({
+          profileUrl: userData.profileUrl || "",
+          username: userData.username || "",
+        });
+      } catch (error) {
+        console.error("Failed to fetch account data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAccount();
+  }, [token, status]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,7 +155,8 @@ export default function CreateCoursePage() {
 
       const payload = {
         courseName,
-        horoscopeMethodId: parseInt(prophetMethod) || 1,
+        courseDescription: description || "",
+        horoscopeMethod: prophetMethod || "",
         horoscopeSector: horoscopeSector.toUpperCase(),
         durationMin: parseInt(duration),
         price: parseFloat(price),
@@ -148,7 +175,6 @@ export default function CreateCoursePage() {
         ? error.response?.data?.message || error.message
         : "Failed to create course";
       AppToast.error(errorMessage);
-      console.error("Create course error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -174,7 +200,7 @@ export default function CreateCoursePage() {
                 className="h-full w-full rounded-full object-cover"
                 width={150}
                 height={150}
-                src={user.profileUrl}
+                src={user?.profileUrl || "/user-profile.svg"}
                 unoptimized={true}
               />
             </div>
@@ -189,7 +215,7 @@ export default function CreateCoursePage() {
                 fullWidth
                 readOnly
                 disabled
-                value={user.username}
+                value={user?.username || "Loading..."}
               />
             </div>
 

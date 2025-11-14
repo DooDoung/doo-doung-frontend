@@ -1,5 +1,6 @@
 import * as React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 
@@ -20,9 +21,8 @@ function UserProfile({ user }: { user: AccountData }) {
         <Image
           alt="Profile"
           src={user.profileUrl === "" ? "/user-profile.svg" : user.profileUrl}
-          className="h-full w-full rounded-full object-contain p-1"
-          height={20}
-          width={20}
+          fill
+          className="h-full w-full rounded-full object-cover p-1"
         />
 
         {user.role == "CUSTOMER" && (
@@ -61,13 +61,13 @@ function UserProfile({ user }: { user: AccountData }) {
       </GlobalButton>
 
       {/* Reset password*/}
-      <a
+      <Link
         href="/reset-password/token"
         className="font-chakra text-neutral-black hover:underline"
       >
         {" "}
         reset password
-      </a>
+      </Link>
     </div>
   );
 }
