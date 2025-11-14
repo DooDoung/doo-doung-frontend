@@ -20,7 +20,9 @@ function UserProfile({ user }: { user: AccountData }) {
         <Image
           alt="Profile"
           src={user.profileUrl === "" ? "/user-profile.svg" : user.profileUrl}
-          className="h-full w-full rounded-full object-cover p-1"
+          className="h-full w-full rounded-full object-contain p-1"
+          height={20}
+          width={20}
         />
 
         {user.role == "CUSTOMER" && (
@@ -28,7 +30,8 @@ function UserProfile({ user }: { user: AccountData }) {
             <Image
               src={`/images/zodiac-sign/${user.zodiacSign}.svg`}
               alt={user.zodiacSign}
-              fill
+              height={100}
+              width={100}
               className="object-contain p-[6px]"
             />
           </div>
