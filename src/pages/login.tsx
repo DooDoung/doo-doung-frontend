@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 import {
   AuthLayout,
@@ -15,6 +15,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { data: session } = useSession();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +41,9 @@ export default function LoginPage() {
 
       if (result?.ok) {
         AppToast.success("Login successful");
-        router.push("/");
+        if(session?.user.role === "ADMIN")
+          router.push("/admin/report");
+        else router.push("/");
       }
     } catch (err: any) {
       AppToast.error(`An error occurred during login ${err.message}`);
