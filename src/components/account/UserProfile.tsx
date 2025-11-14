@@ -1,5 +1,6 @@
 import * as React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 
@@ -59,13 +60,13 @@ function UserProfile({ user }: { user: AccountData }) {
       </GlobalButton>
 
       {/* Reset password*/}
-      <a
+      <Link
         href="/reset-password/token"
         className="font-chakra text-neutral-black hover:underline"
       >
         {" "}
         reset password
-      </a>
+      </Link>
     </div>
   );
 }
