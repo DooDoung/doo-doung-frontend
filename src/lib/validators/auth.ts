@@ -43,9 +43,36 @@ export const customerSchema = baseSchema.extend({
   birthDate: z
     .union([z.date(), z.undefined()])
     .refine((val) => val !== undefined, { message: "Please pick a birth date" })
-    .refine((val) => !val || val >= new Date("1970-01-01T00:00:00.000Z"), {
-      message: "Birth year must be 1970 or later.",
-    }),
+    .refine(
+      (val) => {
+        if (!val) return false;
+        const today = new Date();
+        const hundredYearsAgo = new Date(
+          today.getFullYear() - 100,
+          today.getMonth(),
+          today.getDate(),
+        );
+        return val >= hundredYearsAgo;
+      },
+      {
+        message: "Birth date cannot be more than 100 years ago.",
+      },
+    )
+    .refine(
+      (val) => {
+        if (!val) return false;
+        const today = new Date();
+        const thirteenYearsAgo = new Date(
+          today.getFullYear() - 13,
+          today.getMonth(),
+          today.getDate(),
+        );
+        return val <= thirteenYearsAgo;
+      },
+      {
+        message: "You must be at least 13 years old.",
+      },
+    ),
   birthTime: z.string().min(1, "Birth time is required"),
   zodiacSign: z
     .union([z.nativeEnum(ZodiacSign), z.literal("")])

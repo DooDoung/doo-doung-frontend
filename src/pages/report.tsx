@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import ReportCard, {
   ReportCardProps,
 } from "@/components/account/Report/ReportCard";
@@ -9,45 +10,55 @@ import {
   GlobalButton,
 } from "@/components/globalComponents";
 
-// Mock report data
-const mockReports: ReportCardProps[] = [
-  {
-    id: "1",
-    imageUrl: "/images/course.svg",
-    title: "แจ้งขอปัญหาจากหมอดู",
-    description:
-      "หมอดู ไม่ตรงเวลานัดหมาย ทำให้เสียเวลารอคอยนาน ไม่มีการชดเชยในสิ่งที่เกิดขึ้นหรือปรับปรุงการบริการเลยค่ะ อยากให้มีการดูแลเรื่องนี้มากขึ้น",
-    issueType: "Prophet Issue",
-  },
-  {
-    id: "2",
-    imageUrl: "/images/course.svg",
-    title: "กดชำระให้จ่ายเงินแล้ว แต่ไม่เห็นประวัติการจอง",
-    description:
-      "ทดสอบ Chatgpt งานทำมาขายในอนาคตที่พี่กำหนดไว้จาก 5 ขั้นข้อ ในประวัติการจองมีแจ้งแค่โบนัสพิเศษเท่านั้น ไม่มีรายละเอียดเกี่ยวกับขั้นตอนการเงิน😭😭",
-    issueType: "Website Issue",
-  },
-  {
-    id: "3",
-    imageUrl: "/images/course.svg",
-    title: "กดชำระให้จ่ายเงินแล้ว แต่ไม่เห็นประวัติการจอง",
-    description:
-      "ทดสอบ Chatgpt งานทำมาขายในอนาคตที่พี่กำหนดไว้จาก 5 ขั้นข้อ ในประวัติการจองมีแจ้งแค่โบนัสพิเศษเท่านั้น ไม่มีรายละเอียดเกี่ยวกับขั้นตอนการเงิน😭😭",
-    issueType: "Website Issue",
-  },
-];
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000";
 
 export default function ReportPage() {
   const router = useRouter();
+  const session = useSession();
+  const token = session.data?.accessToken;
+  const userId = session.data?.user.id;
 
-  const handleCreateNewReport = () => {
-    // Navigate to create report page
-    router.push("/report/create");
+  const [reports, setReports] = useState<ReportCardProps[]>([]);
+
+  const fetchReports = async () => {
+    try {
+      if (!token || !userId) return;
+
+      const res = await fetch(`${API_BASE_URL}/report/account/${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) throw new Error(`Error: ${res.status}`);
+
+      const data = await res.json();
+
+      const formattedReports: ReportCardProps[] = data.data.reports.map(
+        (report: any) => ({
+          id: report.id,
+          imageUrl: "/images/course.svg",
+          title: report.topic,
+          description: report.description,
+          issueType: report.reportType,
+        }),
+      );
+
+      setReports(formattedReports);
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+    }
   };
 
-  const handleBack = () => {
-    router.back();
-  };
+  useEffect(() => {
+    fetchReports();
+  }, [userId, token]);
+
+  const handleCreateNewReport = () => router.push("/report/create");
+  const handleBack = () => router.push("/");
 
   return (
     <DefaultLayout>
@@ -55,15 +66,19 @@ export default function ReportPage() {
         <GlassContainer2>
           <div className="flex w-full flex-col items-center p-6 sm:p-8">
             {/* Header */}
-            <div className="font-sanctuary mb-8 text-4xl font-light text-white">
-              My Report
-            </div>
+            <h1 className="font-sanctuary mb-8 text-4xl font-light text-white">
+              My Reports
+            </h1>
 
             {/* Report List */}
-            <div className="custom-scrollbar mb-8 flex h-[60vh] w-[90%] flex-col items-center justify-center space-y-4 overflow-y-scroll pt-4">
-              {mockReports.map((report) => (
-                <ReportCard key={report.id} {...report} />
-              ))}
+            <div className="custom-scrollbar mb-8 flex h-[60vh] w-[90%] flex-col items-center space-y-4 overflow-y-scroll pt-4">
+              {reports.length > 0 ? (
+                reports.map((report) => (
+                  <ReportCard key={report.id} {...report} />
+                ))
+              ) : (
+                <p className="text-white">No reports found.</p>
+              )}
             </div>
 
             {/* Action Buttons */}
@@ -80,6 +95,7 @@ export default function ReportPage() {
                 variant="primary"
                 onClick={handleCreateNewReport}
                 size="lg"
+                className="px-6"
               >
                 Create New Report
               </GlobalButton>
