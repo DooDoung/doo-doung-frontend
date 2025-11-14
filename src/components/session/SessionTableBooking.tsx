@@ -146,6 +146,14 @@ export default function SessionTableBooking({
                 const [day, time] = s.split("-");
                 return { day, time };
               });
+              const sortedSlots = slotsArray.sort((a, b) => {
+                if (a.day !== b.day) {
+                  return dayIndex[a.day] - dayIndex[b.day];
+                }
+                return a.time.localeCompare(b.time);
+              });
+              const convertSlotsArray = formatSlotToTimeData(sortedSlots, durationMinutes, currentMonday);
+              localStorage.setItem("selectedSlots", JSON.stringify(convertSlotsArray));
               
               AppToast.success(
                 `Selected slot(s): ` +
