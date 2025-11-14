@@ -12,18 +12,23 @@ import SessionTableBase from "./SessionTableBase";
 
 export default function SessionTableBooking({
   onSelectedChange,
+  currentWeek = 0,
+  availableSlots,
+  bookingSlots,
+  durationMinutes = 15,
+  courseId,
+  goToNextWeek,
+  goToPreviousWeek,
 }: {
   onSelectedChange?: (slots: { day: string; time: string }[]) => void;
+  currentWeek: number;
+  availableSlots: { day: string; time: string }[];
+  bookingSlots: { id: string; day: string; time: string; variant: string }[]; 
+  durationMinutes: number;
+  courseId?: string;
+  goToNextWeek: () => void;
+  goToPreviousWeek: () => void;
 }) {
-  const {
-    currentWeek,
-    availableSlots,
-    bookingSlots,
-    goToPreviousWeek,
-    goToNextWeek,
-    durationMinutes = 60,
-  } = MockBooking;
-
   const today = new Date();
   const currentMonday = new Date(today);
   const dayOfWeek = today.getDay();
@@ -32,7 +37,16 @@ export default function SessionTableBooking({
   const [selectedSlots, setSelectedSlots] = useState<Set<string>>(new Set());
   const MAX_SLOTS = durationMinutes / 15;
 
+  const dayIndex: Record<string, number> = {
+        Mon: 0,Tue: 1,Wed: 2,Thu: 3,Fri: 4,Sat: 5,Sun: 6,
+      };
+
   const handleSelectSlot = (day: string, time: string) => {
+    if (isPastSlot(day, time, currentMonday)) {
+      AppToast.error("You cannot select a past time slot and must book at least 15 minutes in advance.");
+      return;
+    }
+
     const timeOrder = generateTimeSlots();
 
     setSelectedSlots((prev) => {
@@ -67,13 +81,25 @@ export default function SessionTableBooking({
         AppToast.error(`You can select up to ${MAX_SLOTS} slots only.`);
         return prev;
       }
+      
+      newSet.add(key);
 
       const slotsArray = Array.from(newSet).map((s) => {
         const [day, time] = s.split("-");
         return { day, time };
       });
 
-      newSet.add(key);
+      const sortedSlots = slotsArray.sort((a, b) => {
+        if (a.day !== b.day) {
+          return dayIndex[a.day] - dayIndex[b.day];
+        }
+        return a.time.localeCompare(b.time);
+      });
+
+      const convertSlotsArray = formatSlotToTimeData(sortedSlots, durationMinutes, currentMonday);
+      
+      localStorage.setItem("selectedSlots", JSON.stringify(convertSlotsArray));
+
       onSelectedChange?.(slotsArray);
       return newSet;
     });
@@ -84,7 +110,10 @@ export default function SessionTableBooking({
       <SessionTableBase
         variant="customer"
         availableSlots={availableSlots}
-        bookingSlots={bookingSlots}
+        bookingSlots={bookingSlots.map(slot => ({
+          ...slot,
+          variant: slot.variant === "FREE" ? "FREE" : "TAKEN",
+        }))}
         startMonday={currentMonday}
         onToggleProphetAvail={undefined}
         isEdit={true}
@@ -113,6 +142,19 @@ export default function SessionTableBooking({
           disabled={selectedSlots.size < MAX_SLOTS}
           onClick={() => {
             if (selectedSlots.size > 0) {
+              const slotsArray = Array.from(selectedSlots).map((s) => {
+                const [day, time] = s.split("-");
+                return { day, time };
+              });
+              const sortedSlots = slotsArray.sort((a, b) => {
+                if (a.day !== b.day) {
+                  return dayIndex[a.day] - dayIndex[b.day];
+                }
+                return a.time.localeCompare(b.time);
+              });
+              const convertSlotsArray = formatSlotToTimeData(sortedSlots, durationMinutes, currentMonday);
+              localStorage.setItem("selectedSlots", JSON.stringify(convertSlotsArray));
+              
               AppToast.success(
                 `Selected slot(s): ` +
                   Array.from(selectedSlots)
@@ -123,7 +165,7 @@ export default function SessionTableBooking({
                     .map((s) => `${s.day} at ${s.time}`)
                     .join(", "),
               );
-              router.push("/booking/confirm-slot/[bookingld]");
+              router.push(`/booking/confirm-slot/${courseId}`);
             }
           }}
           className="w-44"
@@ -137,41 +179,57 @@ export default function SessionTableBooking({
   );
 }
 
-const MockBooking = {
-  //
-  currentWeek: 0,
-  // from Prophet's available slots
-  availableSlots: [
-    { day: "MON", time: "09:00" },
-    { day: "MON", time: "09:15" },
-    { day: "MON", time: "09:30" },
-    { day: "MON", time: "09:45" },
-    { day: "MON", time: "10:00" },
-    { day: "TUE", time: "10:15" },
-    { day: "TUE", time: "10:30" },
-    { day: "TUE", time: "10:45" },
-    { day: "TUE", time: "11:00" },
-    { day: "TUE", time: "11:15" },
-    { day: "WED", time: "14:00" },
-    { day: "WED", time: "14:15" },
-    { day: "WED", time: "14:30" },
-    { day: "WED", time: "14:45" },
-    { day: "FRI", time: "11:00" },
-    { day: "FRI", time: "11:15" },
-    { day: "FRI", time: "11:30" },
-  ],
-  // from Prophet's existing bookings
-  bookingSlots: [
-    { id: "1", day: "MON", time: "09:00", variant: "TAKEN" as const },
-    { id: "2", day: "TUE", time: "14:00", variant: "FREE" as const },
-    { id: "3", day: "WED", time: "14:00", variant: "TAKEN" as const },
-  ],
-  // from Couserse duration
-  durationMinutes: 60,
-  // navigation handlers
-  goToPreviousWeek: () => console.log("Go to previous week"),
-  goToNextWeek: () => console.log("Go to next week"),
+const DAY = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
-  // new booking from customer to send to backend
-  selectedSlot: null,
+function formatSlotToTimeData(
+  slots: { day: string; time: string }[],
+  durationMin: number,
+  currentMonday: Date,
+) {
+  // same day
+  const day = slots[0].day;
+  const startTime = slots[0].time;
+
+  const baseDate = new Date(currentMonday);
+  baseDate.setDate(currentMonday.getDate() + DAY.indexOf(day));
+
+  const y = baseDate.getFullYear();
+  const m = baseDate.getMonth();
+  const d = baseDate.getDate();
+
+  const [startH, startM] = startTime.split(":").map(Number);
+
+  const startDate = new Date(y, m, d, startH, startM, 0, 0);
+  const endDate = new Date(startDate);
+  endDate.setMinutes(endDate.getMinutes() + durationMin);
+
+  return {
+    start_datetime: fmtLocal(startDate),
+    end_datetime: fmtLocal(endDate),
+  };
+}
+
+function fmtLocal(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+    d.getDate()
+  ).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(
+    d.getMinutes()
+  ).padStart(2, "0")}:00`;
+}
+
+function isPastSlot(
+  day: string, 
+  time: string, 
+  currentMonday: Date
+) {
+  const slotDate = new Date(currentMonday);
+  slotDate.setDate(slotDate.getDate() + DAY.indexOf(day));
+
+  const [hour, minute] = time.split(":").map(Number);
+  slotDate.setHours(hour, minute, 0, 0);
+  
+  const now = new Date();
+  const cutoff = new Date(now.getTime() + 15 * 60 * 1000);
+
+  return slotDate <= cutoff;
 };
