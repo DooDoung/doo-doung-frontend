@@ -73,7 +73,7 @@ export default function ProphetCoursePage() {
       }
     };
 
-    if (courseId && courseId !== "[courseld]") {
+    if (courseId && courseId !== "[courseId]") {
       fetchCourseData();
       fetchReviews();
     }
