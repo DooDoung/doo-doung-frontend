@@ -1,10 +1,5 @@
 import React from "react";
-import Image from "next/image";
-import router from "next/router";
-
-import StarRating from "@/components/account/StarRating";
-
-import { Circle, PencilIcon } from "lucide-react";
+import { GlobalButton } from "../globalComponents";
 
 function ReportCard({
   id,
@@ -45,7 +40,9 @@ function ReportCard({
           <p className="text-xl font-bold">{topic}</p>
           <p className="text-base">{description}</p>
       </div>
-      <div>
+      <div className="flex flex-col w-1/4 h-full">
+        <GlobalButton
+          variant="secondary"
       </div>
     </div>
   );
