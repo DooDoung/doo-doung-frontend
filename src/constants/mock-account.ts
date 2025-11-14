@@ -64,6 +64,7 @@ const mockReview: Review[] = [
     score: 5,
     date: "10 oct 2025",
     time: "10:00 AM",
+    updatedAt: "10 oct 2025",
   },
   {
     profileUrl:
@@ -75,6 +76,7 @@ const mockReview: Review[] = [
     score: 4,
     date: "11 oct 2025",
     time: "11:00 AM",
+    updatedAt: "10 oct 2025",
   },
   {
     profileUrl:
@@ -86,6 +88,7 @@ const mockReview: Review[] = [
     score: 5,
     date: "12 oct 2025",
     time: "12:00 PM",
+    updatedAt: "10 oct 2025",
   },
   {
     profileUrl:
@@ -97,6 +100,7 @@ const mockReview: Review[] = [
     score: 5,
     date: "13 oct 2025",
     time: "1:00 PM",
+    updatedAt: "10 oct 2025",
   },
   {
     profileUrl:
@@ -108,6 +112,7 @@ const mockReview: Review[] = [
     score: 4,
     date: "14 oct 2025",
     time: "2:00 PM",
+    updatedAt: "10 oct 2025",
   },
 ];
 

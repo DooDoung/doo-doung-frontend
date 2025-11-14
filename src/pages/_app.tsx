@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
 import { Chakra_Petch, Geist, Geist_Mono } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
+import { Breadcrumb } from "../components/globalComponents/Breadcrumb";
 
 import "../style/globals.css";
 
@@ -29,6 +30,7 @@ export default function App({
       <div
         className={`${chakra.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Breadcrumb />
         <Component {...pageProps} />
       </div>
     </SessionProvider>

@@ -169,7 +169,7 @@ const SessionDetailPage = () => {
                 <p>
                   Time:{" "}
                   {new Date(sessionDetails.startDateTime).toLocaleString()} -{" "}
-                  {new Date(sessionDetails.endDateTime).toLocaleTimeString()}
+                  {new Date(sessionDetails.endDateTime).toLocaleString()}
                 </p>
               </div>
               <div className="rounded-lg border-2 border-gray-300 bg-white p-4">

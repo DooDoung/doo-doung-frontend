@@ -27,9 +27,11 @@ export { default as CourseDetailPage } from "@/pages/course/[courseld]";
 export { default as CoursesMySessionPage } from "@/pages/course/my-session";
 
 // Booking Pages
-export { default as BookingSuccessPage } from "@/pages/booking/booking-success/[bookingld]";
-export { default as BookingPage } from "@/pages/booking/[bookingld]";
-export { default as BookingPaymentPage } from "@/pages/booking/payment/[bookingld]";
+export { default as BookingSuccessPage } from "@/pages/booking/booking-success/[bookingId]";
+export { default as BookingPage } from "@/pages/booking/[courseId]";
+export { default as BookingPaymentPage } from "@/pages/booking/payment/[bookingId]";
+export { default as BookingSlotPage } from "@/pages/booking/booking-slot/[courseId]";
+export { default as ConfirmSlotPagePage } from "@/pages/booking/confirm-slot/[courseId]";
 
 // Review Pages
 export { default as ReviewPage } from "@/pages/review";

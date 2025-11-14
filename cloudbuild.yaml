@@ -1,0 +1,12 @@
+steps:
+-name: 'grc.io/cloud-builders/docker'
+args: ['build', '-t', 'gcr.io/doo-doung/doo-doung', 'asia-southeast1-docker.pkg.dev/centering-valve-453419-t2/quickstart-docker-repo-asia/doo-doung-frontend-image:tag1', '.']
+
+# push the image to the registry
+-name: 'grc.io/cloud-builders/docker'
+args: ['push', 'asia-southeast1-docker.pkg.dev/centering-valve-453419-t2/quickstart-docker-repo-asia/doo-doung-frontend-image:tag1']
+
+# deploy the image to the cluster
+-name: 'grc.io/cloudsdktool/kubectl'
+entrypoint: gcloud
+args: ['apply', '-f', 'deploy/kubernetes/doo-doung-frontend-deployment.yaml']

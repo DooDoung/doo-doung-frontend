@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 import ReportItem from "@/components/account/Report/ReportItem";
 import WarningBanner from "@/components/account/Report/WarningBanner";
@@ -11,49 +12,70 @@ import { ProphetAccount } from "@/interface/User";
 export default function ProphetReportPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<any>(null); // store account data
+  const { data: session, status } = useSession();
+  const token = session?.accessToken;
 
-  const fetchReportById = async (id: string) => {
-    const res = await fetch(`http://localhost:8000/report/${id}`);
+  const fetchAccount = async (token: string) => {
+    const res = await fetch("http://localhost:8000/account", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     const json = await res.json();
-    if (!res.ok) throw new Error("Failed to fetch report");
-    return json.data as Report;
+    console.log("👤 Account response:", json);
+
+    if (!res.ok) throw new Error("Failed to fetch account data");
+    return json.data; // ✅ assuming account data is inside json.data
+  };
+
+  // ✅ Fetch Prophet Reports
+  const fetchReports = async (token: string) => {
+    const res = await fetch("http://localhost:8000/report", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const json = await res.json();
+    console.log("📦 Reports response:", json);
+
+    if (!res.ok) throw new Error("Failed to fetch reports");
+    // ✅ now reports are in json.data
+    return Array.isArray(json.data?.reports) ? json.data.reports : [];
   };
 
   useEffect(() => {
+    if (!token) return; // wait until session is ready
     setIsLoading(true);
 
-    const fetchReports = async () => {
-      const mockIds = [
-        "11328be415f34f0a",
-        "56e41cb48a29444b",
-        "d1f102a78785433c",
-        "aca2f4765ac6443d",
-        "87b9ed110f1f4c55",
-        "92385d22fc0640bd",
-      ];
-      const fetchedReports: Report[] = [];
+    (async () => {
+      try {
+        const [accountData, reportData] = await Promise.all([
+          fetchAccount(token),
+          fetchReports(token),
+        ]);
 
-      for (const id of mockIds) {
-        const report = await fetchReportById(id);
-        fetchedReports.push(report);
+        setUser(accountData);
+        setReports(reportData);
+      } catch (error) {
+        console.error("❌ Fetch error:", error);
+        setUser(null);
+        setReports([]);
+      } finally {
+        setIsLoading(false);
       }
-
-      setReports(fetchedReports);
-      setIsLoading(false);
-    };
-
-    const timer = setTimeout(() => {
-      fetchReports();
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
+    })();
+  }, [token]);
 
   const hasExceededThreshold = reports.length > WARNING_THRESHOLD;
   return (
     <DefaultLayout>
       <div className="mx-auto my-5 flex h-[73%] w-[87%] justify-start rounded-3xl bg-black/20 backdrop-blur-xl">
-        <UserProfile user={mockProphetData} />
+        {/* ✅ Pass actual user data to UserProfile, not 'role' */}
+        {user && <UserProfile user={user} />}
+
         <main className="flex-1 p-8">
           {isLoading ? (
             <div className="p-10 text-center text-lg">Loading reports...</div>

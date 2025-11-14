@@ -36,6 +36,8 @@ function ProphetCard({
               <Image
                 src={getBankImageUrl(transaction?.bank ?? "")}
                 alt={transaction?.bank || ""}
+                width={80}
+                height={50}
                 className="mr-3 mb-2 h-full self-start rounded-full object-cover"
               />
               <div className="flex flex-col">

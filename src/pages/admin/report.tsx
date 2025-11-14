@@ -3,8 +3,6 @@ import Pagination from "@/components/report/pagination";
 import ReportCard, { ReportType, StatusType } from "@/components/report/reportCard";
 import { AppToast } from "@/lib/app-toast";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { Router } from "next/router";
 import { useEffect, useState } from "react";
 
 interface ReportProps {
@@ -41,7 +39,6 @@ export default function AdminReportPage() {
   const [reportStatus, setReportStatus] = useState<StatusType | "ALL">("ALL");
   const [reports, setReports] = useState<ReportProps[]>([]);
   const [loading, setLoading] = useState(false);
-  const router = useRouter(); 
   const ITEMS_PER_PAGE = 15;
   const [currentPage, setCurrentPage] = useState(1);
   const paginatedReports = reports.slice(
@@ -154,15 +151,6 @@ export default function AdminReportPage() {
             setCurrentPage={setCurrentPage} 
             goNext={goNext} 
           />
-
-          <GlobalButton
-            variant="secondary"
-            size="lg"
-            className="w-32 text-2xl"
-            onClick={() => router.back()}
-          >
-            Back
-          </GlobalButton>
         </div>
       </GlassContainer2>
     </DefaultLayout>
