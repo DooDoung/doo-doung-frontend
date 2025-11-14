@@ -58,7 +58,7 @@ export default function ReportPage() {
   }, [userId, token]);
 
   const handleCreateNewReport = () => router.push("/report/create");
-  const handleBack = () => router.back();
+  const handleBack = () => router.push("/");
 
   return (
     <DefaultLayout>
