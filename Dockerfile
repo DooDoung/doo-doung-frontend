@@ -20,6 +20,11 @@ COPY . .
 # Disable telemetry during build
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Add NEXT_PUBLIC build-time variables
+ARG NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+
+# Build Next.js with injected NEXT_PUBLIC.* envs
 RUN corepack enable pnpm && pnpm run build
 
 # Production image, copy all the files and run next
