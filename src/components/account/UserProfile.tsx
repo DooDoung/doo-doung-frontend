@@ -1,11 +1,11 @@
 import * as React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 
 import { GlobalButton, GlobalInput } from "@/components/globalComponents";
 import { AccountData } from "@/interface/User";
-import { ZodiacSign } from "@/types/user";
 
 function UserProfile({ user }: { user: AccountData }) {
   const router = useRouter();
@@ -18,9 +18,10 @@ function UserProfile({ user }: { user: AccountData }) {
 
       {/* Profile + zodiac badge */}
       <div className="relative mb-6 h-[150px] w-[150px] flex-shrink-0 rounded-full border-2 bg-white">
-        <img
+        <Image
           alt="Profile"
           src={user.profileUrl === "" ? "/user-profile.svg" : user.profileUrl}
+          fill
           className="h-full w-full rounded-full object-cover p-1"
         />
 
@@ -59,13 +60,13 @@ function UserProfile({ user }: { user: AccountData }) {
       </GlobalButton>
 
       {/* Reset password*/}
-      <a
+      <Link
         href="/reset-password/token"
         className="font-chakra text-neutral-black hover:underline"
       >
         {" "}
         reset password
-      </a>
+      </Link>
     </div>
   );
 }

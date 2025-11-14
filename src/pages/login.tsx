@@ -1,6 +1,8 @@
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
+import { getSession } from "next-auth/react";
 
 import {
   AuthLayout,
@@ -39,11 +41,18 @@ export default function LoginPage() {
       }
 
       if (result?.ok) {
-        AppToast.success("Login successful");
-        router.push("/");
+        const session = await getSession();
+
+        if (session?.user?.role?.toLowerCase() === "admin") {
+          AppToast.success("Welcome, Admin!");
+          router.push("/admin/report");
+        } else {
+          AppToast.success("Login successful");
+          router.push("/");
+        }
       }
     } catch (err: any) {
-      AppToast.error("An error occurred during login");
+      AppToast.error(`An error occurred during login: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -98,12 +107,12 @@ export default function LoginPage() {
               </div>
 
               <div className="font-chakra text-neutral-white flex justify-between text-base">
-                <a href="/reset-password" className="">
+                <Link href="/reset-password" className="">
                   Forgot Password?
-                </a>
-                <a href="/register" className="">
+                </Link>
+                <Link href="/register" className="">
                   Sign Up
-                </a>
+                </Link>
               </div>
             </form>
           </div>

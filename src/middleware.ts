@@ -42,6 +42,7 @@ const AllowProphetPath = [
   "/account/prophet/transaction-account",
   "/course/prophet",
   "/course/prophet/my-session",
+  "/course/prophet/my-session/[id]",
   "/course/prophet/my-courses",
   "/course/prophet/my-courses/create",
   "/course/prophet/my-courses/details/[courseld]",
@@ -150,7 +151,7 @@ function getRedirectUrl(userRole: RoleType | null): string {
     case "admin":
       return "/admin/report";
     case "prophet":
-      return "/course/prophet";
+      return "/course/prophet/my-session";
     case "customer":
       return "/course";
     default:

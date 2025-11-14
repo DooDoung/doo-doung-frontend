@@ -64,20 +64,36 @@ export default function CourseProphetPage() {
             )}
           </div>
 
-          <GlobalButton
-            variant={"primary"}
-            size="default"
-            className="mt-4 mr-13 self-end"
-            onClick={() => {
-              try {
-                router.push("/course/prophet/my-courses");
-              } catch (error) {
-                console.error("Navigation error:", error);
-              }
-            }}
-          >
-            VIEW MY COURSES
-          </GlobalButton>
+          <div className="flex w-full flex-row items-end justify-end space-x-2">
+            <GlobalButton
+              variant={"secondary"}
+              size="default"
+              className="mt-4 mr-13 self-end bg-amber-700"
+              onClick={() => {
+                try {
+                  router.push("/course/prophet/my-courses/create");
+                } catch (error) {
+                  console.error("Navigation error:", error);
+                }
+              }}
+            >
+              Create New COURSES
+            </GlobalButton>
+            <GlobalButton
+              variant={"primary"}
+              size="default"
+              className="mt-4 mr-13 self-end"
+              onClick={() => {
+                try {
+                  router.push("/course/prophet/my-courses");
+                } catch (error) {
+                  console.error("Navigation error:", error);
+                }
+              }}
+            >
+              VIEW MY COURSES
+            </GlobalButton>
+          </div>
 
           <div className="mt-4 flex gap-24">
             {/* my sessions */}

@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Pencil } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import { EditCourseProfileDialog } from "@/components/course/Prophet/EditCourseProfileDialog";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
@@ -18,14 +20,40 @@ import {
 } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
-import { BANKS,MOCK_ACCOUNTS } from "@/constants/transaction";
+import { MOCK_ACCOUNTS } from "@/constants/transaction";
 import { AppToast } from "@/lib/app-toast";
+
+const backendUrl =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+
+// Helper functions for localStorage
+const getLocalStorageKey = (field: string) => `course_${field}`;
+
+const loadFromLocalStorage = (field: string): string => {
+  try {
+    return localStorage.getItem(getLocalStorageKey(field)) || "";
+  } catch {
+    return "";
+  }
+};
+
+const saveToLocalStorage = (field: string, value: string) => {
+  try {
+    localStorage.setItem(getLocalStorageKey(field), value);
+  } catch {
+    // Silently fail if localStorage is not available
+  }
+};
 
 export default function CreateCoursePage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const token = session?.accessToken;
+
   const [formData, setFormData] = useState({
     courseName: "",
     prophetMethod: "",
+    horoscopeSector: "",
     duration: "",
     description: "",
     price: "",
@@ -33,36 +61,75 @@ export default function CreateCoursePage() {
     courseProfile: "",
   });
   const [openDialog, setOpenDialog] = useState(false);
-
-  const user = {
-    profileUrl:
-      "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg",
-    username: "JohnYakDoodoung",
-  };
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<{ profileUrl: string; username: string } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    // Save to localStorage for persistence
+    if (field === "prophetMethod" || field === "description") {
+      saveToLocalStorage(field, value);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchAccount = async () => {
+      if (status === "loading" || !token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${backendUrl}/account/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const userData = response.data.data;
+        setUser({
+          profileUrl: userData.profileUrl || "",
+          username: userData.username || "",
+        });
+      } catch (error) {
+        console.error("Failed to fetch account data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAccount();
+  }, [token, status]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const {
       courseName,
       prophetMethod,
+      horoscopeSector,
       duration,
       description,
       price,
       transactionAccount,
-      courseProfile,
     } = formData;
+
+    console.log(
+      !courseName,
+      prophetMethod,
+      horoscopeSector,
+      duration,
+      description,
+      price,
+    );
 
     if (
       !courseName.trim() ||
       !prophetMethod.trim() ||
+      !horoscopeSector.trim() ||
       !duration.trim() ||
       !description.trim() ||
-      !price.trim() ||
-      !courseProfile.trim()
+      !price.trim()
     ) {
       AppToast.error("Every field must be completed.");
       return;
@@ -73,8 +140,44 @@ export default function CreateCoursePage() {
       return;
     }
 
-    AppToast.success("Course created!");
-    router.push("/course/prophet/my-course");
+    try {
+      setIsLoading(true);
+
+      const accessToken = session?.accessToken;
+
+      const config = accessToken
+        ? {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        : {};
+
+      const payload = {
+        courseName,
+        courseDescription: description || "",
+        horoscopeMethod: prophetMethod || "",
+        horoscopeSector: horoscopeSector.toUpperCase(),
+        durationMin: parseInt(duration),
+        price: parseFloat(price),
+      };
+
+      const response = await axios.post(
+        `${backendUrl}/course/prophet`,
+        payload,
+        config,
+      );
+
+      AppToast.success("Course created successfully!");
+      router.push("/course/prophet/my-courses");
+    } catch (error) {
+      const errorMessage = axios.isAxiosError(error)
+        ? error.response?.data?.message || error.message
+        : "Failed to create course";
+      AppToast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -97,7 +200,7 @@ export default function CreateCoursePage() {
                 className="h-full w-full rounded-full object-cover"
                 width={150}
                 height={150}
-                src={user.profileUrl}
+                src={user?.profileUrl || "/user-profile.svg"}
                 unoptimized={true}
               />
             </div>
@@ -112,32 +215,16 @@ export default function CreateCoursePage() {
                 fullWidth
                 readOnly
                 disabled
-                value={user.username}
+                value={user?.username || "Loading..."}
               />
             </div>
 
-            <div className="font-chakra bg-secondary relative h-[300px] w-full rounded-lg border-2">
-              <Image
-                alt="Course Profile"
-                src={formData.courseProfile}
-                unoptimized={true}
-                className="rounded-lg object-cover"
-                fill
-              />
-              <GlobalButton
-                variant="secondary"
-                className="absolute right-3 bottom-2"
-                icon={<Pencil />}
-                onClick={() => setOpenDialog(true)}
-              >
-                Edit course profile
-              </GlobalButton>
-            </div>
+            <div className="font-chakrarelative h-[300px] w-full rounded-lg"></div>
           </div>
         </GlassContainer2>
 
         {/* right box */}
-        <div className="bg-neutral-white shadow-all-around flex h-full flex-1 flex-col rounded-3xl p-12">
+        <div className="bg-neutral-white shadow-all-around custom-scrollbar flex h-full flex-1 flex-col overflow-y-scroll rounded-3xl p-12">
           <h3 className="font-sanctuary text-neutral-black mb-4 text-5xl">
             Create Course
           </h3>
@@ -176,6 +263,31 @@ export default function CreateCoursePage() {
             </div>
 
             <div className="col-span-3">
+              <label className="text-neutral-black mb-1 flex items-center">
+                Horoscope Sector
+                <Pencil className="ml-2" size={18} />
+              </label>
+              <Select
+                value={formData.horoscopeSector}
+                onValueChange={(value) =>
+                  handleChange("horoscopeSector", value)
+                }
+              >
+                <SelectTrigger className="min-h-10 w-full">
+                  <SelectValue placeholder="Select sector" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="LOVE">Love</SelectItem>
+                  <SelectItem value="WORK">Work</SelectItem>
+                  <SelectItem value="STUDY">Study</SelectItem>
+                  <SelectItem value="MONEY">Money</SelectItem>
+                  <SelectItem value="LUCK">Luck</SelectItem>
+                  <SelectItem value="FAMILY">Family</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="col-span-2">
               <label className="text-neutral-black mb-1 flex items-center">
                 Duration
                 <Pencil className="ml-2" size={18} />
@@ -251,8 +363,9 @@ export default function CreateCoursePage() {
                 variant="secondary"
                 className="min-h-12"
                 onClick={handleCancel}
+                disabled={isLoading}
               >
-                <p className="m-8">Cancle</p>
+                <p className="m-8">Cancel</p>
               </GlobalButton>
             </div>
             <div className="col-span-3 justify-self-end">
@@ -260,8 +373,9 @@ export default function CreateCoursePage() {
                 variant="primary"
                 type="submit"
                 className="min-h-12"
+                disabled={isLoading}
               >
-                <p className="m-8">Create</p>
+                <p className="m-8">{isLoading ? "Creating..." : "Create"}</p>
               </GlobalButton>
             </div>
           </form>

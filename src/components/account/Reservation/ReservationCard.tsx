@@ -1,7 +1,7 @@
 import React from "react";
+import Image from "next/image";
 
 import StarRating from "@/components/account/StarRating";
-
 function ReservationCard({
   imageUrl,
   score,
@@ -23,9 +23,11 @@ function ReservationCard({
 }) {
   return (
     <div className="flex w-full rounded-3xl border bg-white shadow-md">
-      <img
+      <Image
         src={imageUrl}
         alt={courseName}
+        width={100}
+        height={100}
         className="mr-4 h-full w-30 rounded-3xl object-cover"
       />
       <div className="text-neutral-black flex w-full flex-col py-4 pr-4">

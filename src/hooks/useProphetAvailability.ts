@@ -60,7 +60,7 @@ export function useProphetAvailability() {
   const [weeklyAvailability, setWeeklyAvailability] = useState<
     Record<number, Array<{ day: string; time: string }>>
   >({});
-  const accessToken = (session?.user as any)?.accessToken;
+  const accessToken = session?.accessToken;
 
   useEffect(() => {
     if (!accessToken) return;
@@ -88,7 +88,6 @@ export function useProphetAvailability() {
     }
 
     // frontend part
-    const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
     const dayName = dayNames[day.getDay()];
     setWeeklyAvailability((prev) => {
       const currentAvailability = [...prev[currentWeek]];
@@ -109,15 +108,9 @@ export function useProphetAvailability() {
     });
 
     // backend intergrate part
-    // Calculate the correct slot date for PATCH API
-    const weekMonday = getCurrentWeekMonday(currentWeek);
-    const dayIndex = day.getDay(); // 0=Sun, 1=Mon, ...
-    const slotDate = new Date(weekMonday);
-    slotDate.setDate(weekMonday.getDate() + dayIndex);
-    const slotDateString = slotDate.toISOString().split("T")[0];
+    // Use the exact date that was passed in (which is already correct from the table)
+    const slotDateString = day.toISOString().split("T")[0];
 
-    // Check if slot currently exists
-    console.log(weeklyAvailability);
 
     const currentAvailability = weeklyAvailability[currentWeek];
     const existingSlot = currentAvailability.find(
@@ -125,8 +118,6 @@ export function useProphetAvailability() {
     );
 
     const updateType = existingSlot ? "delete" : "add";
-
-    console.log(day.toISOString());
 
     try {
       // Use calculated slotDateString for API
@@ -141,7 +132,7 @@ export function useProphetAvailability() {
           body: JSON.stringify({
             items: [
               {
-                date: slotDateString, // Correct date for the slot
+                date: slotDateString, // Use the exact date from the day parameter
                 start_time: time, // Send time in HH:mm format
                 update_type: updateType,
               },
@@ -155,9 +146,9 @@ export function useProphetAvailability() {
       }
 
       toast.success(
-        `success to ${updateType}  ${slotDate.getDate()}/${slotDate.getMonth() + 1} - ${time}`,
+        `success to ${updateType}  ${day.getDate()}/${day.getMonth() + 1} - ${time}`,
       );
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to update availability");
     }
   };
@@ -293,7 +284,4 @@ export function useProphetAvailability() {
     goToPreviousWeek,
     goToNextWeek,
   };
-}
-function azync() {
-  throw new Error("Function not implemented.");
 }
