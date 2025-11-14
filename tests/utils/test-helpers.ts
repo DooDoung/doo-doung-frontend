@@ -24,6 +24,21 @@ export async function loginAsProphet(page: Page) {
   await page.waitForLoadState("networkidle");
 }
 
+export async function loginAsCustomer(page: Page) {
+  await page.goto("/login");
+
+  await page.fill('input[placeholder="DooDoung"]', "dev_customer");
+  await page.fill('input[placeholder="Enter your password"]', "dev_password");
+
+  await page.click('button[type="submit"]');
+
+  await page.waitForURL((url) => !url.pathname.includes("/login"), {
+    timeout: 20000,
+  });
+
+  await page.waitForLoadState("networkidle");
+}
+
 /**
  * Navigate to prophet availability page
  */
