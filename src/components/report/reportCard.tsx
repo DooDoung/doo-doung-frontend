@@ -31,20 +31,22 @@ function ReportCard({
 }) {
   return (
     <div
-      className={`font-chakra relative flex h-40 w-[97%] rounded-3xl border bg-white shadow-md`}
+      className={`font-chakra relative flex h-fit w-[97%] p-3 rounded-3xl border bg-white shadow-md`}
     >
-        <div className="flex justify-between">
-            <div className="flex flex-col justify-between">
-                <div className="flex p-3 gap-2 items-center">
-                    <div className="w-12 h-12 flex items-center justify-center bg-secondary rounded-full text-xs">
-                        Profile
-                    </div>
+      <div className="h-fit flex flex-col gap-2 justify-between">
+          <div className="flex gap-2 items-center">
+              <div className="w-12 h-12 flex items-center justify-center bg-secondary rounded-full text-xs">
+                  Profile
+              </div>
 
-                    <p className="font-chakra text-xl">{customerName}</p>
-                    <p className="font-chakra text-sm">{createdDate} {createdTime}</p>
-                </div>
-            </div>
-        </div>
+              <p className="text-xl">{customerName.toUpperCase()}</p>
+              <p className="text-sm mt-1.5">{createdDate} {createdTime}</p>
+          </div>
+          <p className="text-xl font-bold">{topic}</p>
+          <p className="text-base">{description}</p>
+      </div>
+      <div>
+      </div>
     </div>
   );
 }
