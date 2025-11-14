@@ -98,7 +98,7 @@ export default function SessionTableBooking({
 
       const convertSlotsArray = formatSlotToTimeData(sortedSlots, durationMinutes, currentMonday);
       
-      sessionStorage.setItem("selectedSlots", JSON.stringify(convertSlotsArray));
+      localStorage.setItem("selectedSlots", JSON.stringify(convertSlotsArray));
 
       onSelectedChange?.(slotsArray);
       return newSet;
@@ -142,6 +142,14 @@ export default function SessionTableBooking({
           disabled={selectedSlots.size < MAX_SLOTS}
           onClick={() => {
             if (selectedSlots.size > 0) {
+              const slotsArray = Array.from(selectedSlots).map((s) => {
+                const [day, time] = s.split("-");
+                return { day, time };
+              });
+              
+              const convertSlotsArray = formatSlotToTimeData(slotsArray, durationMinutes, currentMonday);
+              localStorage.setItem("selectedSlots", JSON.stringify(convertSlotsArray));
+              
               AppToast.success(
                 `Selected slot(s): ` +
                   Array.from(selectedSlots)

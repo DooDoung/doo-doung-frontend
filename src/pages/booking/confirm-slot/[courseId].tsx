@@ -37,8 +37,9 @@ export default function ConfirmSlotPage() {
   const handlePurchase = async () => {
     if (!selectedSlots || !courseData) return;
     try {
+      const actualCourseId = Array.isArray(courseId) ? courseId[0] : courseId;
       const payload = {
-        courseId: courseId,
+        courseId: actualCourseId,
         accountId: session?.user?.id,
         prophetId: courseData.prophetId,
         startDateTime: selectedSlots.start_datetime,
@@ -46,8 +47,6 @@ export default function ConfirmSlotPage() {
       };
 
       const result = await createBooking(token, payload);
-
-      console.log("Booking created:", result);
       
       const bookingId = result?.booking?.id || result?.data?.booking?.id;
 
@@ -68,7 +67,18 @@ export default function ConfirmSlotPage() {
 
   useEffect(() => {
     const fetchCourse = async () => {
-      if (!courseId) return;
+      // Wait for router to be ready
+      if (!router.isReady) {
+        return;
+      }
+      
+      const actualCourseId = Array.isArray(courseId) ? courseId[0] : courseId;
+      
+      if (!actualCourseId) {
+        setError("Course ID is required. Please select a course first.");
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       setError(null);
 
@@ -76,7 +86,7 @@ export default function ConfirmSlotPage() {
         process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
       try {
-        const res = await fetch(`${backendUrl}/course/${courseId}`, {
+        const res = await fetch(`${backendUrl}/course/${actualCourseId}`, {
           headers: token
             ? {
                 Authorization: `Bearer ${token}`,
@@ -85,11 +95,21 @@ export default function ConfirmSlotPage() {
             : { "Content-Type": "application/json" },
         });
 
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: Failed to fetch course data`);
+        }
+
         const resualt = await res.json();
+        
         const fetched =
-          resualt?.data?.courseData ?? resualt?.data?.data ?? resualt.data;
+          resualt?.data?.courseData ?? resualt?.data ?? resualt;
+        
         if (!fetched) {
-          throw new Error("Course data not found");
+          throw new Error("Course data not found in response");
+        }
+        
+        if (!fetched.id) {
+          throw new Error("Invalid course data: missing course ID");
         }
         const transformedData: CourseData = {
           prophetId: fetched.prophetId,
@@ -98,9 +118,9 @@ export default function ConfirmSlotPage() {
           title: fetched.courseName,
           method: fetched.horoscopeMethodId, // You might want to map this to actual method names
           duration: fetched.durationMin,
-          description: `${fetched.courseName} course by ${fetched.prophetName}. Duration: ${fetched.durationMin} minutes.`, // Add if you have description in backend
-          price: fetched.price, // Format price as needed
-          prophetName: fetched.name,
+          description: `${fetched.courseName} course by ${fetched.name} ${fetched.lastname || ''}. Duration: ${fetched.durationMin} minutes.`,
+          price: fetched.price,
+          prophetName: `${fetched.name} ${fetched.lastname || ''}`.trim(),
           prophetImageSrc: "/images/course.svg", // Add default image or get from backend
         };
         setCourseData(transformedData);
@@ -111,10 +131,10 @@ export default function ConfirmSlotPage() {
       }
     };
     fetchCourse();
-  }, [courseId, token]);
+  }, [courseId, token, router.isReady]);
 
   useEffect(() => {
-    const stored = sessionStorage.getItem("selectedSlots");
+    const stored = localStorage.getItem("selectedSlots");
     if (stored) {
       setSelectedSlots(JSON.parse(stored));
     }
@@ -131,9 +151,37 @@ export default function ConfirmSlotPage() {
   }
 
   if (error || !courseData || !selectedSlots) {
+    const actualCourseId = Array.isArray(courseId) ? courseId[0] : courseId;
+    const errorMessage = error || (!courseData ? "Course not found" : "No time slot selected");
+    const showReturnButton = actualCourseId && !selectedSlots;
+    
     return (
       <DefaultLayout contentClassName="flex justify-center items-center">
-        <p className="text-white">Error: {error ?? "Course not found"}</p>
+        <div className="text-center space-y-4">
+          <p className="text-white text-lg">Error: {errorMessage}</p>
+          {showReturnButton && (
+            <div className="space-y-2">
+              <p className="text-gray-300 text-sm">Please select a time slot first</p>
+              <button
+                onClick={() => router.push(`/booking/booking-slot/${actualCourseId}`)}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
+              >
+                Select Time Slot
+              </button>
+            </div>
+          )}
+          {!actualCourseId && (
+            <div className="space-y-2">
+              <p className="text-gray-300 text-sm">Please start by selecting a course</p>
+              <button
+                onClick={() => router.push('/courses')}
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors"
+              >
+                Browse Courses
+              </button>
+            </div>
+          )}
+        </div>
       </DefaultLayout>
     );
   }
