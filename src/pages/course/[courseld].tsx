@@ -24,6 +24,28 @@ export default function ProphetCoursePage() {
   const [active, setActive] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState<Review[]>([]);
+
+  const fetchReviews = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await axios.get(
+        `${backendUrl}/review/course/${courseId}`,
+      );
+      setReviews(response.data.data.reviews);
+      console.log(response.data.data);
+    } catch (err) {
+      const errorMessage = axios.isAxiosError(err)
+        ? err.response?.data?.message || err.message
+        : "Failed to fetch reviews";
+      setError(errorMessage);
+      AppToast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Fetch course data from API
   useEffect(() => {
@@ -53,6 +75,7 @@ export default function ProphetCoursePage() {
 
     if (courseId && courseId !== "[courseld]") {
       fetchCourseData();
+      fetchReviews();
     }
   }, [courseId]);
 
