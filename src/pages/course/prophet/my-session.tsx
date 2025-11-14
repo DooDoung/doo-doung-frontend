@@ -106,7 +106,7 @@ const SessionHistory = ({
                   {session.customerName}
                 </td>
                 <td className="p-2 whitespace-nowrap">
-                  {new Date(session.startDateTime.replace("Z", "")).toLocaleString()}
+                  {new Date(session.startDateTime).toLocaleString()}
                 </td>
                 <td className="p-2 whitespace-nowrap">{session.amount} Baht</td>
                 <td className="p-2">{session.status.toLowerCase()}</td>
@@ -164,7 +164,6 @@ const Dashboard = ({
         new Date(b.startDateTime).getTime() -
         new Date(a.startDateTime).getTime(),
     )
-    .slice(0, 5);
 
   return (
     <div className="flex h-full w-[70%] flex-col p-4">
@@ -206,7 +205,7 @@ const Dashboard = ({
               <tr key={session.id} className="border-b border-gray-200">
                 <td className="p-1">{session.customerName}</td>
                 <td className="p-1">
-                  {new Date(session.startDateTime.replace("Z", "")).toLocaleString()}
+                  {new Date(session.startDateTime).toLocaleString()}
                 </td>
                 <td className="p-1">{session.amount} Baht</td>
                 <td className="p-1">{session.status.toLowerCase()}</td>

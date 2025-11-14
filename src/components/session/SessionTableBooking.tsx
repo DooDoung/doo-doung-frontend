@@ -147,9 +147,6 @@ export default function SessionTableBooking({
                 return { day, time };
               });
               
-              const convertSlotsArray = formatSlotToTimeData(slotsArray, durationMinutes, currentMonday);
-              localStorage.setItem("selectedSlots", JSON.stringify(convertSlotsArray));
-              
               AppToast.success(
                 `Selected slot(s): ` +
                   Array.from(selectedSlots)
@@ -175,12 +172,6 @@ export default function SessionTableBooking({
 }
 
 const DAY = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-const fmtLocalISO = (d: Date) =>
-  new Date(d.getTime() - d.getTimezoneOffset() * 60000)
-    .toISOString()
-    .slice(0, 19)
-    .replace("T", " ");
-const fmt = (d: Date) => fmtLocalISO(d);
 
 function formatSlotToTimeData(
   slots: { day: string; time: string }[],
@@ -190,25 +181,32 @@ function formatSlotToTimeData(
   // same day
   const day = slots[0].day;
   const startTime = slots[0].time;
-  const endTime = slots[slots.length - 1].time;
 
-  const startDate = new Date(currentMonday);
-  startDate.setDate(currentMonday.getDate() + DAY.indexOf(day));
+  const baseDate = new Date(currentMonday);
+  baseDate.setDate(currentMonday.getDate() + DAY.indexOf(day));
 
-  // starting time
+  const y = baseDate.getFullYear();
+  const m = baseDate.getMonth();
+  const d = baseDate.getDate();
+
   const [startH, startM] = startTime.split(":").map(Number);
-  startDate.setHours(startH, startM, 0, 0);
 
-  // ending time = starting time + duration
+  const startDate = new Date(y, m, d, startH, startM, 0, 0);
   const endDate = new Date(startDate);
-  const [endH, endM] = startTime.split(":").map(Number);
-  endDate.setHours(endH, endM, 0, 0);
   endDate.setMinutes(endDate.getMinutes() + durationMin);
 
   return {
-    start_datetime: fmt(startDate),
-    end_datetime: fmt(endDate),
+    start_datetime: fmtLocal(startDate),
+    end_datetime: fmtLocal(endDate),
   };
+}
+
+function fmtLocal(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+    d.getDate()
+  ).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(
+    d.getMinutes()
+  ).padStart(2, "0")}:00`;
 }
 
 function isPastSlot(
