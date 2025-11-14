@@ -40,6 +40,28 @@ export default function ReviewPage() {
   const BackendUrl =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
+  const createReview = async (data: {
+    accountId: string;
+    bookingId: string;
+    courseId: string;
+    score: number;
+    description: string;
+  }) => {
+    if (!token || !userId) return;
+    try {
+      console.log("Creating review with data:", data);
+      const res = await axios.post(`${BackendUrl}/review/create`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Review created:", res.data);
+    } catch (error) {
+      console.error("Error creating review:", error);
+    }
+  };
+
   // Fetch completed bookings with course details
   const fetchBookingDetails = async () => {
     if (!token || !userId) return;
@@ -183,14 +205,61 @@ export default function ReviewPage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (formData.rating === "0" || formData.description.trim() === "") {
       AppToast.error("Every field must be completed.");
       return;
     }
-    AppToast.success("Review Submitted.");
-    setIsReviewed(true);
-    setIsPopupOpen(false);
+    if (!selectedCourse || !userId || !token) return;
+
+    const selectedBooking = completedBookings.find(
+      (booking) => booking.course?.courseName === selectedCourse,
+    );
+
+    if (
+      !selectedBooking ||
+      !selectedBooking.id ||
+      !selectedBooking.course?.id
+    ) {
+      AppToast.error("Invalid course selection.");
+      return;
+    }
+
+    const payload = {
+      accountId: userId,
+      bookingId: selectedBooking.id,
+      courseId: selectedBooking.course.id,
+      score: parseInt(formData.rating, 10),
+      description: formData.description,
+    };
+
+    console.log("Submitting review payload:", payload);
+
+    try {
+      await createReview(payload);
+      // update local state
+      setReviews((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          courseId: payload.courseId,
+          courseName: selectedCourse,
+          customerName: userName,
+          score: payload.score,
+          describtion: payload.description,
+          customerProfileURL:
+            "https://images.unsplash.com/photo-1544006659-f0b21884ce1d?q=80&w=640",
+        },
+      ]);
+
+      AppToast.success("Review Submitted.");
+      setIsReviewed(true);
+      setIsPopupOpen(false);
+      setFormData({ rating: "0", description: "" });
+    } catch (error) {
+      AppToast.error("Failed to submit review. Try again.");
+      console.error(error);
+    }
   };
 
   return (
