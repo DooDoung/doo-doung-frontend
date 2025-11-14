@@ -68,8 +68,8 @@ async function getBookingSlots(
     const slots: Array<{ id: string; day: string; time: string; variant: string }> = [];
 
     const getTimeString = (date: Date): string => {
-        const h = String(date.getUTCHours()).padStart(2, "0");
-        const m = String(date.getUTCMinutes()).padStart(2, "0");
+        const h = String(date.getHours()).padStart(2, "0");
+        const m = String(date.getMinutes()).padStart(2, "0");
         return `${h}:${m}`;
     };
 
