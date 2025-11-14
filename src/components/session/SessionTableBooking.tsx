@@ -110,7 +110,10 @@ export default function SessionTableBooking({
       <SessionTableBase
         variant="customer"
         availableSlots={availableSlots}
-        bookingSlots={bookingSlots}
+        bookingSlots={bookingSlots.map(slot => ({
+          ...slot,
+          variant: slot.variant === "FREE" ? "FREE" : "TAKEN",
+        }))}
         startMonday={currentMonday}
         onToggleProphetAvail={undefined}
         isEdit={true}
