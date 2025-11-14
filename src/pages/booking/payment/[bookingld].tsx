@@ -5,7 +5,6 @@ import { CourseCard, TimeSlotWithPurchase } from "@/components/booking";
 import { DefaultLayout } from "@/components/globalComponents";
 import GlobalButton from "@/components/globalComponents/Button";
 import GlassContainer2 from "@/components/globalComponents/GlassContainer2";
-import Image from "next/image";
 
 export default function BookingPaymentPage() {
   const router = useRouter();
@@ -13,11 +12,11 @@ export default function BookingPaymentPage() {
   const [timeLeft, setTimeLeft] = useState(300);
   const handlePaymentSuccess = useCallback(() => {
     setShowQRCode(false);
-    router.push('/booking/booking-success/[bookingld]');
+    router.push("/booking/booking-success/[bookingld]");
   }, [router]);
 
   useEffect(() => {
-    if (timeLeft === 295) { 
+    if (timeLeft === 295) {
       setTimeout(() => {
         handlePaymentSuccess();
       }, 100);
@@ -35,7 +34,7 @@ export default function BookingPaymentPage() {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
   const handleCancel = () => {
@@ -52,12 +51,12 @@ export default function BookingPaymentPage() {
     description: "Current course description description",
     price: "1,750",
     prophetName: "แม่หมอออม",
-    prophetImageSrc: "/images/course.svg"
+    prophetImageSrc: "/images/course.svg",
   };
 
   const timeSlotData = {
     selectedDate: "10 October 2025",
-    selectedTime: "00:15-00:45 AM"
+    selectedTime: "00:15-00:45 AM",
   };
 
   const handlePurchaseClick = () => {
@@ -66,18 +65,20 @@ export default function BookingPaymentPage() {
 
   return (
     <DefaultLayout>
-      <div className="flex justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
+      <div className="flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8">
         <GlassContainer2>
-          <div className="w-full flex flex-col items-center p-4 sm:p-6 lg:p-8">
-            <h1 className="text-white text-3xl sm:text-4xl lg:text-5xl font-light mb-6 sm:mb-8 font-sanctuary">
+          <div className="flex w-full flex-col items-center p-4 sm:p-6 lg:p-8">
+            <h1 className="font-sanctuary mb-6 text-3xl font-light text-white sm:mb-8 sm:text-4xl lg:text-5xl">
               Booking
             </h1>
 
-            <div className={`flex h-[50vh] sm:h-[55vh] lg:h-[50vh] w-full flex-col items-center overflow-y-auto px-2 sm:px-4 transition-opacity duration-300 ${showQRCode ? 'opacity-30' : 'opacity-100'}`}>
+            <div
+              className={`flex h-[50vh] w-full flex-col items-center overflow-y-auto px-2 transition-opacity duration-300 sm:h-[55vh] sm:px-4 lg:h-[50vh] ${showQRCode ? "opacity-30" : "opacity-100"}`}
+            >
               <CourseCard {...courseData} />
-              
-              <div className="w-full max-w-4xl mt-4">
-                <TimeSlotWithPurchase 
+
+              <div className="mt-4 w-full max-w-4xl">
+                <TimeSlotWithPurchase
                   selectedDate={timeSlotData.selectedDate}
                   selectedTime={timeSlotData.selectedTime}
                   onPurchase={handlePurchaseClick}
@@ -89,33 +90,41 @@ export default function BookingPaymentPage() {
 
         {showQRCode && (
           <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
-            <div className="bg-primary-500 rounded-3xl items-start p-6 sm:p-8 max-w-sm sm:max-w-md w-full mx-4 shadow-2xl">
-              <div className="bg-primary text-neutral-white text-center py-3 sm:py-8 rounded-xl mb-4 sm:mb-10 -mt-8 -mx-6 sm:-mx-8 px-6 sm:px-8">
-                <h2 className="text-lg sm:text-xl font-semibold font-chakra">QR CODE FOR PAYMENT</h2>
+            <div className="bg-primary-500 mx-4 w-full max-w-sm items-start rounded-3xl p-6 shadow-2xl sm:max-w-md sm:p-8">
+              <div className="bg-primary text-neutral-white -mx-6 -mt-8 mb-4 rounded-xl px-6 py-3 text-center sm:-mx-8 sm:mb-10 sm:px-8 sm:py-8">
+                <h2 className="font-chakra text-lg font-semibold sm:text-xl">
+                  QR CODE FOR PAYMENT
+                </h2>
               </div>
 
-              <div className="rounded-2xl p-4 sm:p-6 mb-4 sm:mb-6 flex justify-center">
-                <div className="w-50 h-50 sm:w-48 sm:h-48 bg-neutral-white border-2 border-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
-                  <Image
+              <div className="mb-4 flex justify-center rounded-2xl p-4 sm:mb-6 sm:p-6">
+                <div className="bg-neutral-white flex h-50 w-50 items-center justify-center overflow-hidden rounded-lg border-2 border-gray-200 sm:h-48 sm:w-48">
+                  <img
                     src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://promptpay.io/0891234567/1750.00"
                     alt="QR Code for Payment"
                     width={200}
                     height={200}
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover"
                   />
                 </div>
               </div>
 
-              <div className="text-center mb-4 sm:mb-6">
-                <div className="text-2xl sm:text-3xl font-bold text-neutral-black font-mono">
+              <div className="mb-4 text-center sm:mb-6">
+                <div className="text-neutral-black font-mono text-2xl font-bold sm:text-3xl">
                   {formatTime(timeLeft)}
                 </div>
-                <p className="text-neutral-black font-chakra mt-2 text-sm sm:text-base">กรุณาสแกน QR Code ภายในเวลาที่กำหนด</p>
+                <p className="text-neutral-black font-chakra mt-2 text-sm sm:text-base">
+                  กรุณาสแกน QR Code ภายในเวลาที่กำหนด
+                </p>
               </div>
 
               {/* Cancel Button */}
               <div className="flex justify-center">
-                <GlobalButton variant="secondary" className="w-28" onClick={handleCancel}>
+                <GlobalButton
+                  variant="secondary"
+                  className="w-28"
+                  onClick={handleCancel}
+                >
                   Cancel
                 </GlobalButton>
               </div>
