@@ -167,36 +167,6 @@ function EditCustomerInfo({ user, onUserUpdate }: EditCustomerInfoProps) {
           handleSave();
         }}
       >
-        {/* First Name */}
-        <div>
-          <label className="mb-1 block flex items-center font-light text-white uppercase">
-            First Name
-            <Pencil className="ml-2" size={18} />
-          </label>
-          <GlobalInput
-            type="text"
-            className="w-full"
-            // value={customer.firstName}
-            value={userInfo.firstName}
-            onChange={(e) => handleChange("firstName", e.target.value)}
-          />
-        </div>
-
-        {/* Last Name */}
-        <div>
-          <label className="mb-1 block flex items-center font-light text-white uppercase">
-            Last Name
-            <Pencil className="ml-2" size={18} />
-          </label>
-          <GlobalInput
-            type="text"
-            className="w-full"
-            // value={customer.lastName}
-            value={userInfo.lastName}
-            onChange={(e) => handleChange("lastName", e.target.value)}
-          />
-        </div>
-
         {/* Gender */}
         <div>
           <label className="mb-1 block flex items-center font-light text-white uppercase">

@@ -29,18 +29,16 @@ export const validateUserRole = (user: any): boolean => {
  */
 export const validateRequiredFields = (userInfo: UserInfo): boolean => {
   const requiredFields = {
-    'First Name': userInfo.firstName,
-    'Last Name': userInfo.lastName,
-    'Email': userInfo.email,
-    'Phone Number': userInfo.phone,
-    'Gender': userInfo.gender,
-    'Date of Birth': userInfo.dob,
-    'Time of Birth': userInfo.tob,
-    'Zodiac Sign': userInfo.zodiac
+    Email: userInfo.email,
+    "Phone Number": userInfo.phone,
+    Gender: userInfo.gender,
+    "Date of Birth": userInfo.dob,
+    "Time of Birth": userInfo.tob,
+    "Zodiac Sign": userInfo.zodiac,
   };
 
   for (const [fieldName, value] of Object.entries(requiredFields)) {
-    if (!value || value.toString().trim() === '' || value === 'undefined') {
+    if (!value || value.toString().trim() === "" || value === "undefined") {
       AppToast.error(`${fieldName} is required`);
       return false;
     }

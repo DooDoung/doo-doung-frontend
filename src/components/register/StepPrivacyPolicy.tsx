@@ -96,7 +96,6 @@ const PRIVACY_POLICY_HTML = `
 <h4>Personal Data</h4>
 <p>While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:</p>
 <ul>
-  <li>First name and last name</li>
   <li>Email address</li>
   <li>Phone number</li>
   <li>Birth date and time</li>
