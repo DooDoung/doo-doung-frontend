@@ -62,7 +62,7 @@ export default function AdminReportPage() {
     
     console.log("accessToken: ", authToken);
     if (!authToken) {
-      AppToast.error("Please login to view reports.");
+      console.log("Please login to view reports.");
       setLoading(false);
       return;
     }
@@ -83,9 +83,9 @@ export default function AdminReportPage() {
         }));
 
         setReports(parsed);
-        AppToast.success("Fetched all reports successfully.");
+        console.log("Fetched all reports successfully.");
       } catch (error) {
-        AppToast.error(
+        console.log(
           error instanceof Error ? error.message : String(error)
         );
       } finally {
