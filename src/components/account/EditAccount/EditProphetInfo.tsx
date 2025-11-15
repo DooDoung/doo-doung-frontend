@@ -331,7 +331,7 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
               feat={feat}
               transaction={{
                 ...userInfo.txAccounts[0],
-                bank: String(userInfo.txAccounts[0]?.bank),
+                bank: userInfo.txAccounts[0]?.bank,
               }}
             />
           ))}

@@ -43,6 +43,7 @@ export default function ReportPage() {
           imageUrl: "/images/course.svg",
           title: report.topic,
           description: report.description,
+          reportStatus: report.reportStatus,
           issueType: report.reportType,
         }),
       );

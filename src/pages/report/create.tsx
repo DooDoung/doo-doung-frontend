@@ -17,7 +17,6 @@ import {
 } from "@/components/globalComponents/Select";
 
 import { AppToast } from "@/lib/app-toast";
-import { ca } from "date-fns/locale";
 
 const reportTopicOptions = [
   { value: "COURSE_ISSUE", label: "Course Issue" },

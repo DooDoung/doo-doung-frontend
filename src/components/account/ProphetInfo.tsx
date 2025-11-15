@@ -92,7 +92,13 @@ function ProphetInfo({ prophet }: { prophet: ProphetAccount }) {
           <ProphetCard
             key={index}
             feat={feat}
-            transaction={prophet.txAccounts[0]}
+            transaction={{
+              id: prophet.txAccounts[0].id,
+              accountNumber: prophet.txAccounts[0].accountNumber,
+              accountName: prophet.txAccounts[0].accountName,
+              bank: prophet.txAccounts[0].bank,
+              isDefault: prophet.txAccounts[0].isDefault,
+            }}
           />
         ))}
       </div>
