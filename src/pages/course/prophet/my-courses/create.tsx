@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-import { EditCourseProfileDialog } from "@/components/course/Prophet/EditCourseProfileDialog";
 import TransactionAccountSelectItem from "@/components/course/Prophet/TransactionAccountSelectItem";
 import { DefaultLayout } from "@/components/globalComponents";
 import {
@@ -50,20 +49,7 @@ export default function CreateCoursePage() {
   const { data: session, status } = useSession();
   const token = session?.accessToken;
 
-  const {
-    mode,
-    accounts,
-    editingAccount,
-    selectedAccountId,
-    handleStartCreate,
-    handleStartEdit,
-    // handleCancel,
-    handleCreateConfirm,
-    handleEditConfirm,
-    handleDelete,
-    handleSelectAccount,
-    handleSetDefault,
-  } = useTransactionAccounts();
+  const { accounts } = useTransactionAccounts();
 
   const [formData, setFormData] = useState({
     courseName: "",
