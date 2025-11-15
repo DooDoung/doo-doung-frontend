@@ -1,50 +1,70 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { AppToast } from "@/lib/app-toast";
-
 import CourseSection from "./Course/CourseSection";
+import { useRouter } from "next/router";
 
-const backendUrl =
-  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+import { AccountData } from "@/interface/User";
 
-interface ProphetPublicInfoProps {
-  prophetId: string;
-}
+type Course = {
+  id: number | string;
+  imageUrl: string;
+  score: number;
+  courseName: string;
+  prophetName: string;
+  description: string;
+  price: number;
+  date: string;
+  time: string;
+};
 
-function ProphetPublicInfo({ prophetId }: ProphetPublicInfoProps) {
-  const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
+function ProphetPublicInfo({ user }: { user: AccountData }) {
+  const router = useRouter();
+  const { "account-id": accountId } = router.query;
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchCouses = async () => {
       try {
         setLoading(true);
+        setError(null);
+
+        const backendUrl =
+          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+
         const response = await axios.get(
-          `${backendUrl}/course/prophet/${prophetId}`,
+          `${backendUrl}/course/prophet/${accountId}`,
         );
-        setCourses(response.data.data || response.data);
-      } catch (error: any) {
-        AppToast.error(`Error fetching courses: ${error.message}`);
-        setCourses([]);
+
+        if (response.status !== 200) {
+          throw new Error(`Failed to fetch account data: ${response.status}`);
+        }
+
+        const mappedCourses: Course[] = response.data.data.map(
+          (course: any) => ({
+            id: course.id,
+            imageUrl: null,
+            score: 0,
+            courseName: course.courseName,
+            prophetName: user.username,
+            description: null,
+            price: course.price,
+            date: course.createAt,
+            time: null,
+          }),
+        );
+        setCourses(mappedCourses);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
     };
-
-    if (prophetId) {
-      fetchCourses();
-    }
-  }, [prophetId]);
-
-  if (loading) {
-    return (
-      <div className="custom-scrollbar h-full w-full p-4 sm:overflow-y-auto">
-        <p>Loading courses...</p>
-      </div>
-    );
-  }
+    fetchCouses();
+  });
 
   return (
     <div className="custom-scrollbar h-full w-full p-4 sm:overflow-y-auto">
