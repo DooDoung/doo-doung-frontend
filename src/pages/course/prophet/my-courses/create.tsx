@@ -20,8 +20,8 @@ import {
 } from "@/components/globalComponents";
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
-import { MOCK_ACCOUNTS } from "@/constants/transaction";
 import { AppToast } from "@/lib/app-toast";
+import { useTransactionAccounts } from "@/hooks/useTransactionAccounts";
 
 const backendUrl =
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
@@ -50,6 +50,21 @@ export default function CreateCoursePage() {
   const { data: session, status } = useSession();
   const token = session?.accessToken;
 
+  const {
+    mode,
+    accounts,
+    editingAccount,
+    selectedAccountId,
+    handleStartCreate,
+    handleStartEdit,
+    // handleCancel,
+    handleCreateConfirm,
+    handleEditConfirm,
+    handleDelete,
+    handleSelectAccount,
+    handleSetDefault,
+  } = useTransactionAccounts();
+
   const [formData, setFormData] = useState({
     courseName: "",
     prophetMethod: "",
@@ -62,7 +77,10 @@ export default function CreateCoursePage() {
   });
   const [openDialog, setOpenDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState<{ profileUrl: string; username: string } | null>(null);
+  const [user, setUser] = useState<{
+    profileUrl: string;
+    username: string;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
 
   const handleChange = (field: string, value: string) => {
@@ -349,7 +367,7 @@ export default function CreateCoursePage() {
                   <SelectValue placeholder="Select Transaction Account" />
                 </SelectTrigger>
                 <SelectContent>
-                  {MOCK_ACCOUNTS.map((acc) => (
+                  {accounts.map((acc) => (
                     <SelectItem key={acc.id} value={acc.id}>
                       <TransactionAccountSelectItem account={acc} />
                     </SelectItem>
@@ -381,14 +399,6 @@ export default function CreateCoursePage() {
           </form>
         </div>
       </div>
-      <EditCourseProfileDialog
-        open={openDialog}
-        onOpenChange={setOpenDialog}
-        currentImageUrl={formData.courseProfile}
-        onSave={(newUrl) => {
-          handleChange("courseProfile", newUrl);
-        }}
-      />
     </DefaultLayout>
   );
 }
