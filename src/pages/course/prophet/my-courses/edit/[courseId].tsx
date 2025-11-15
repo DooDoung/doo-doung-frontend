@@ -21,8 +21,12 @@ import {
 import { GlassContainer2 } from "@/components/globalComponents/GlassContainer2";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { MOCK_ACCOUNTS } from "@/constants/transaction";
+//import { MOCK_ACCOUNTS } from "@/constants/transaction";
 import { AppToast } from "@/lib/app-toast";
+import { ProphetAccount } from "@/interface/User";
+import { TransactionAccount } from "@/types/transaction";
+import { getCourseImage } from "@/utils/courseImage";
+import { getBankImageUrl } from "@/utils/getBankImageUrl";
 
 const backendUrl =
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
@@ -50,11 +54,12 @@ export default function EditCoursePage() {
   const router = useRouter();
   const pathname = usePathname() || "";
   const courseId = pathname.split("/").pop();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [openDialog, setOpenDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const token = session?.accessToken;
 
   // auto focus course name field
   const inputRef = useRef<HTMLInputElement>(null);
@@ -73,6 +78,31 @@ export default function EditCoursePage() {
     courseProfile: "",
     isOpen: true,
   });
+  // fetch prophet
+  const [prophet, setProphet] = useState<ProphetAccount | null>(null);
+  useEffect(() => {
+    const fetchAccount = async () => {
+      if (status === "loading" || !token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${backendUrl}/account/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        setProphet(response.data.data);
+      } catch (error: any) {
+        setError(error.message || "Failed to fetch account data");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAccount();
+  }, [token, status]);
 
   // Fetch course details
   useEffect(() => {
@@ -114,7 +144,8 @@ export default function EditCoursePage() {
               ? courseData.courseDescription
               : loadFromLocalStorage("description"),
           price: courseData.price?.toString() || "",
-          transactionAccount: MOCK_ACCOUNTS[0]?.id,
+          transactionAccount:
+            courseData.txAccountId || prophet?.txAccounts?.[0]?.id || "",
           courseProfile: courseData.courseProfile || "",
           isOpen: courseData.isActive || true,
         });
@@ -132,13 +163,7 @@ export default function EditCoursePage() {
     if (courseId && session) {
       fetchCourseDetails();
     }
-  }, [courseId, session]);
-
-  const user = {
-    profileUrl:
-      "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg",
-    username: "JohnYakDoodoung",
-  };
+  }, [courseId, session, prophet]);
 
   const handleChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -159,7 +184,6 @@ export default function EditCoursePage() {
       duration,
       description,
       price,
-      transactionAccount,
       courseProfile,
       horoscopeSector,
     } = formData;
@@ -173,11 +197,6 @@ export default function EditCoursePage() {
       !price.trim()
     ) {
       AppToast.error("Every field must be completed.");
-      return;
-    }
-
-    if (transactionAccount === "Undefined" || !transactionAccount) {
-      AppToast.error("Transaction account required.");
       return;
     }
 
@@ -235,7 +254,7 @@ export default function EditCoursePage() {
                 className="h-full w-full rounded-full object-cover"
                 width={150}
                 height={150}
-                src={user.profileUrl}
+                src={prophet?.profileUrl || ""}
                 unoptimized={true}
               />
             </div>
@@ -250,14 +269,19 @@ export default function EditCoursePage() {
                 fullWidth
                 readOnly
                 disabled
-                value={user.username}
+                value={prophet?.username}
               />
             </div>
 
             <div className="bg-secondary relative h-[300px] w-full rounded-lg border-2">
               <Image
                 alt="Course Profile"
-                src={formData.courseProfile}
+                src={
+                  formData.courseProfile ||
+                  getCourseImage({
+                    horoscopeSector: formData.horoscopeSector,
+                  } as any)
+                }
                 unoptimized={true}
                 className="rounded-lg object-cover"
                 fill
@@ -406,23 +430,13 @@ export default function EditCoursePage() {
               <label className="text-neutral-black flex items-center">
                 Transaction Account
               </label>
-              <Select
-                value={formData.transactionAccount}
-                onValueChange={(value) =>
-                  handleChange("transactionAccount", value)
-                }
-              >
-                <SelectTrigger className="min-h-10 w-full">
-                  <SelectValue placeholder="Select Transaction Account" />
-                </SelectTrigger>
-                <SelectContent>
-                  {MOCK_ACCOUNTS.map((acc) => (
-                    <SelectItem key={acc.id} value={acc.id}>
-                      <TransactionAccountSelectItem account={acc} />
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="text-neutral-black pr-[150px]">
+                {prophet?.txAccounts?.[0] && (
+                  <TransactionAccountSelectItem
+                    account={prophet.txAccounts[0]}
+                  />
+                )}
+              </div>
             </div>
             <div className="col-span-full flex justify-end gap-8">
               <GlobalButton
