@@ -30,7 +30,7 @@ const prophetLinks = [
   { href: "/", label: "Home", icon: <Home size={24} /> },
   { href: "/course/prophet", label: "Courses", icon: <Search size={24} /> },
   {
-    href: "/course/my-session",
+    href: "/course/prophet/my-session",
     label: "Booking",
     icon: <ShoppingCart size={24} />,
   },

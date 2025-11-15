@@ -67,7 +67,7 @@ const SessionHistory = ({
       >
         Back
       </GlobalButton>
-      <h2 className="text-center text-2xl font-bold text-neutral-white">
+      <h2 className="text-neutral-white text-center text-2xl font-bold">
         Session History
       </h2>
       <div className="mt-4 flex justify-center space-x-4">
@@ -163,7 +163,7 @@ const Dashboard = ({
       (a, b) =>
         new Date(b.startDateTime).getTime() -
         new Date(a.startDateTime).getTime(),
-    )
+    );
 
   return (
     <div className="flex h-full w-[70%] flex-col p-4">

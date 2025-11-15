@@ -48,13 +48,15 @@ const SessionDetailPage = () => {
 
   const completeSessionHandler = async () => {
     const dateNow = Date.now();
-    const sessionEndTime = new Date(sessionDetails?.endDateTime || "").getTime();
+    const sessionEndTime = new Date(
+      sessionDetails?.endDateTime || "",
+    ).getTime();
     if (dateNow < sessionEndTime) {
       AppToast.error("Cannot complete session before it ends.");
       return;
     } else {
       console.log("Completing session...");
-      
+
       try {
         console.log(accessToken);
         const response = await fetch(`${backendUrl}/booking/${id}/complete`, {
@@ -196,14 +198,18 @@ const SessionDetailPage = () => {
                 <p>Account Number: {sessionDetails.txAccountNumber}</p>
               </div>
             </div>
-            <GlobalButton
-              variant="primary"
-              className="absolute right-4 bottom-4"
-              size="default"
-              onClick={completeSessionHandler}
-            >
-              Mark as Completed
-            </GlobalButton>
+
+            {new Date().getTime() >
+              new Date(sessionDetails.endDateTime).getTime() && (
+              <GlobalButton
+                variant="primary"
+                className="absolute right-4 bottom-4"
+                size="default"
+                onClick={completeSessionHandler}
+              >
+                Mark as Completed
+              </GlobalButton>
+            )}
           </div>
         </GlassContainer2>
       </div>
