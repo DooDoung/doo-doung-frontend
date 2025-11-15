@@ -83,7 +83,7 @@ function ReportCard({
                   Profile
               </div>
 
-              <p className="text-lg">{customerName.toUpperCase()}</p>
+              <p className="text-lg">{customerName?.toUpperCase() ?? "ANONYMOUS"}</p>
               <p className="text-sm mt-1">{createdDate} {createdTime}</p>
           </div>
           <p className="text-lg font-bold">{topic}</p>
