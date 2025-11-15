@@ -4,7 +4,7 @@ import { GlobalButton } from "@/components/globalComponents";
 import PublicReviewCard from "@/components/public-review/PublicReviewCard";
 
 import Meta from "./Meta";
-import { CourseItem, Review } from "./types";
+import { CourseItem} from "./types";
 
 interface CourseRightPanelProps {
   activeItem: CourseItem | null;
@@ -15,14 +15,14 @@ interface CourseRightPanelProps {
 function transformReview(review: Review, courseName: string): any {
   return {
     id: review.id,
-    profileUrl: review.profileBadge,
-    userName: review.profileName,
+    profileUrl: review.profileUrl,
+    userName: review.userName,
     courseName: courseName,
-    description: review.content,
-    score: review.rating,
-    date: new Date(review.dateISO).toLocaleDateString(),
-    time: new Date(review.dateISO).toLocaleTimeString(),
-    updatedAt: review.dateISO,
+    description: review.description,
+    score: review.score,
+    date: new Date(review.updatedAt).toLocaleDateString(),
+    time: new Date(review.updatedAt).toLocaleTimeString(),
+    updatedAt: review.updatedAt,
   };
 }
 

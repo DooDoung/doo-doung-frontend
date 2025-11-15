@@ -123,7 +123,7 @@ export default function ProphetCoursePage() {
         />
         <CourseRightPanel
           activeItem={activeItem}
-          reviews={activeItem?.reviews || []}
+          reviews={reviews}
         />
       </div>
     </DefaultLayout>
