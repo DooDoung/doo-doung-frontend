@@ -25,7 +25,8 @@ function OtherProfile({
         <Image
           alt="Profile"
           src={user.profileUrl === "" ? "/user-profile.svg" : user.profileUrl}
-          className="h-full w-full rounded-full object-cover p-1"
+          fill
+          className="h-full w-full rounded-full object-contain p-1"
         />
 
         {user.role == "CUSTOMER" && isPublic && (

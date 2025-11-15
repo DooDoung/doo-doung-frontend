@@ -26,6 +26,27 @@ export default function ProphetCoursePage() {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState<Review[]>([]);
 
+  const fetchReviews = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await axios.get(
+        `${backendUrl}/review/course/${courseId}`,
+      );
+      setReviews(response.data.data.reviews);
+      console.log(response.data.data);
+    } catch (err) {
+      const errorMessage = axios.isAxiosError(err)
+        ? err.response?.data?.message || err.message
+        : "Failed to fetch reviews";
+      setError(errorMessage);
+      AppToast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch course data from API
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -35,9 +56,6 @@ export default function ProphetCoursePage() {
 
         const response = await axios.get(`${backendUrl}/course/${courseId}`);
         const courseData = response.data.data || response.data;
-
-        // const courseData = response.data.data || response.data;
-        // console.log(courseData);
 
         // Transform API data to match CourseItem structure
         const transformedData: CourseItem[] = [courseData];
@@ -55,28 +73,7 @@ export default function ProphetCoursePage() {
       }
     };
 
-    const fetchReviews = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await axios.get(
-          `${backendUrl}/review/course/${courseId}`,
-        );
-        setReviews(response.data.data.reviews);
-        console.log(response.data.data);
-      } catch (err) {
-        const errorMessage = axios.isAxiosError(err)
-          ? err.response?.data?.message || err.message
-          : "Failed to fetch reviews";
-        setError(errorMessage);
-        AppToast.error(errorMessage);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (courseId && courseId !== "[courseld]") {
+    if (courseId && courseId !== "[courseId]") {
       fetchCourseData();
       fetchReviews();
     }
@@ -124,7 +121,10 @@ export default function ProphetCoursePage() {
           active={active}
           setActive={setActive}
         />
-        <CourseRightPanel activeItem={activeItem} reviews={reviews} />
+        <CourseRightPanel
+          activeItem={activeItem}
+          reviews={reviews}
+        />
       </div>
     </DefaultLayout>
   );

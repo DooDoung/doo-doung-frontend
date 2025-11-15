@@ -22,7 +22,7 @@ interface CourseData {
 
 export default function ConfirmSlotPage() {
   const router = useRouter();
-  const { courseId } = router.query; // dynamic param from filename [bookingld].tsx
+  const { courseId } = router.query; // dynamic param from filename [courseId].tsx
   const { data: session } = useSession();
   const token = (session as any)?.accessToken;
 
