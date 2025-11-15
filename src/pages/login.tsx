@@ -48,7 +48,7 @@ export default function LoginPage() {
           router.push("/admin/report");
         } else {
           AppToast.success("Login successful");
-          router.push("/");
+          router.push("/gotoanything");
         }
       }
     } catch (err: any) {

@@ -67,7 +67,7 @@ export function Footer({ className }: FooterProps) {
       <div className="from-accent-pink to-accent-violet bg-linear-to-r py-4">
         <div className="container mx-12 max-w-screen-xl px-4 sm:px-8">
           <p className="text-sm text-white">
-            DooDoung @{currentYear} all rights reserved
+            DooDoung @2025 all rights reserved
           </p>
         </div>
       </div>
