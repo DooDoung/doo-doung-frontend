@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
+import { TransactionAccount } from "@/types/transaction";
 import { getBankImageUrl } from "@/utils/getBankImageUrl";
 
 function ProphetCard({
@@ -35,7 +35,7 @@ function ProphetCard({
             <div className="flex w-full px-2">
               <Image
                 src={getBankImageUrl(transaction?.bank ?? "")}
-                alt={transaction?.bank || ""}
+                alt={transaction?.bank.name || ""}
                 width={80}
                 height={50}
                 className="mr-3 mb-2 h-full self-start rounded-full object-cover"
