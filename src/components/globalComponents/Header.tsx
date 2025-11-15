@@ -29,7 +29,11 @@ const customerLinks = [
 const prophetLinks = [
   { href: "/", label: "Home", icon: <Home size={24} /> },
   { href: "/course/prophet", label: "Courses", icon: <Search size={24} /> },
-  { href: "/booking", label: "Booking", icon: <ShoppingCart size={24} /> },
+  {
+    href: "/course/my-session",
+    label: "Booking",
+    icon: <ShoppingCart size={24} />,
+  },
   { href: "/account", label: "Account", icon: <User size={24} /> },
 ];
 
@@ -71,24 +75,27 @@ export function Header({ className, role = "customer" }: HeaderProps) {
 
         {isOpen && (
           <nav className="flex flex-col items-center gap-6">
-            {role === "admin"?
-              <button 
+            {role === "admin" ? (
+              <button
                 className="hover:text-primary-300 flex cursor-pointer flex-col items-center gap-1 text-white transition-colors hover:scale-110"
-                onClick={() => signOut({ callbackUrl: "/login"})}>
+                onClick={() => signOut({ callbackUrl: "/login" })}
+              >
                 <User size={24} />
                 <span className="text-xs font-medium">Logout</span>
               </button>
-            :links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="hover:text-primary-300 flex cursor-pointer flex-col items-center gap-1 text-white transition-colors hover:scale-110"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.icon}
-                <span className="text-xs font-medium">{link.label}</span>
-              </Link>
-            ))}
+            ) : (
+              links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="hover:text-primary-300 flex cursor-pointer flex-col items-center gap-1 text-white transition-colors hover:scale-110"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.icon}
+                  <span className="text-xs font-medium">{link.label}</span>
+                </Link>
+              ))
+            )}
           </nav>
         )}
       </div>
