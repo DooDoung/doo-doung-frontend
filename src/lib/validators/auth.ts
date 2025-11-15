@@ -28,8 +28,6 @@ export const baseSchema = z.object({
       "Password must include an uppercase letter, a lowercase letter, a number, and a special character (@, #, %)",
     ),
   confirmPassword: z.string(),
-  firstName: z.string().min(2, "First name must be at least 2 characters"),
-  lastName: z.string().min(2, "Last name must be at least 2 characters"),
   phoneNumber: z
     .string()
     .regex(/^[0-9]{9,10}$/, "Please enter a valid 9 or 10-digit phone number"),

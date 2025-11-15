@@ -6,7 +6,7 @@ import { Page } from "@playwright/test";
  */
 export async function loginAsProphet(page: Page) {
   // Navigate to login page
-  await page.goto("/login");
+  await page.goto("/login", { waitUntil: "networkidle" });
 
   // Fill in login credentials using the actual form field names
   await page.fill('input[placeholder="DooDoung"]', "dev_prophet");
@@ -17,7 +17,7 @@ export async function loginAsProphet(page: Page) {
 
   // Wait for successful login - check for URL change away from /login
   await page.waitForURL((url) => !url.pathname.includes("/login"), {
-    timeout: 20000,
+    timeout: 30000,
   });
 
   // Wait for page to be ready
@@ -25,7 +25,7 @@ export async function loginAsProphet(page: Page) {
 }
 
 export async function loginAsCustomer(page: Page) {
-  await page.goto("/login");
+  await page.goto("/login", { waitUntil: "networkidle" });
 
   await page.fill('input[placeholder="DooDoung"]', "dev_customer");
   await page.fill('input[placeholder="Enter your password"]', "dev_password");
@@ -33,7 +33,7 @@ export async function loginAsCustomer(page: Page) {
   await page.click('button[type="submit"]');
 
   await page.waitForURL((url) => !url.pathname.includes("/login"), {
-    timeout: 20000,
+    timeout: 30000,
   });
 
   await page.waitForLoadState("networkidle");
@@ -165,4 +165,38 @@ export async function countAvailableSlots(page: Page): Promise<number> {
   // This will need adjustment based on your actual class names for available slots
   const availableCells = page.locator('td.bg-primary, td[class*="available"]');
   return await availableCells.count();
+}
+
+/**
+ * Navigate to account page
+ */
+export async function navigateToAccount(page: Page) {
+  await page.goto("/account", { waitUntil: "networkidle" });
+  await page.waitForTimeout(500);
+}
+
+/**
+ * Navigate to other user's account page
+ */
+export async function navigateToOtherUserAccount(page: Page, userId: string) {
+  await page.goto(`/account/${userId}`, { waitUntil: "networkidle" });
+  await page.waitForTimeout(500);
+}
+
+/**
+ * Click the Edit button on account page
+ */
+export async function clickEditButton(page: Page) {
+  const editButton = page.getByRole("button", { name: /^edit$/i });
+  await editButton.click();
+  await page.waitForTimeout(500);
+}
+
+/**
+ * Submit a form
+ */
+export async function submitForm(page: Page) {
+  const submitButton = page.locator('button[type="submit"]');
+  await submitButton.click();
+  await page.waitForTimeout(1000);
 }

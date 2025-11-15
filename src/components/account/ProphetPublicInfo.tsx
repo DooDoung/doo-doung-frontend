@@ -43,19 +43,7 @@ function ProphetPublicInfo({ user }: { user: AccountData }) {
           throw new Error(`Failed to fetch account data: ${response.status}`);
         }
 
-        const mappedCourses: Course[] = response.data.data.map(
-          (course: any) => ({
-            id: course.id,
-            imageUrl: null,
-            score: 0,
-            courseName: course.courseName,
-            prophetName: user.username,
-            description: null,
-            price: course.price,
-            date: course.createAt,
-            time: null,
-          }),
-        );
+        const mappedCourses: Course[] = response.data.data;
         setCourses(mappedCourses);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -64,7 +52,7 @@ function ProphetPublicInfo({ user }: { user: AccountData }) {
       }
     };
     fetchCouses();
-  });
+  }, []);
 
   return (
     <div className="custom-scrollbar h-full w-full p-4 sm:overflow-y-auto">

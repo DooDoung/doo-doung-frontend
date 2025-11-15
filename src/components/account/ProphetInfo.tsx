@@ -21,32 +21,6 @@ function ProphetInfo({ prophet }: { prophet: ProphetAccount }) {
         id="prophetInfoForm"
         className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2"
       >
-        {/* First Name */}
-        <div>
-          <label className="mb-1 block font-light text-white uppercase">
-            First Name
-          </label>
-          <GlobalInput
-            type="text"
-            className="w-full cursor-not-allowed"
-            value={prophet.name}
-            readOnly
-          />
-        </div>
-
-        {/* Last Name */}
-        <div>
-          <label className="mb-1 block font-light text-white uppercase">
-            Last Name
-          </label>
-          <GlobalInput
-            type="text"
-            className="w-full cursor-not-allowed"
-            value={prophet.lastName}
-            readOnly
-          />
-        </div>
-
         {/* Gender */}
         <div>
           <label className="mb-1 block font-light text-white uppercase">

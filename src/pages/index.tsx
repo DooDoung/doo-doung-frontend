@@ -1,6 +1,7 @@
 import { Filter, Search } from "lucide-react";
+import Link from "next/link";
 
-import { DefaultLayout } from "@/components/globalComponents";
+import { DefaultLayout, GlobalButton } from "@/components/globalComponents";
 import { cn } from "@/lib/utils";
 
 export default function LandingPage() {
@@ -14,14 +15,9 @@ export default function LandingPage() {
         >
           DooDoung
         </h1>
-        <div className="flex w-1/3 items-center rounded-full bg-white/50 px-4 py-2 shadow-lg backdrop-blur-sm">
-          <Search className="mr-3 text-black" />
-          <input
-            type="text"
-            className="w-full bg-transparent text-black placeholder-gray-300 focus:outline-none"
-          />
-          <Filter className="ml-3 text-black" />
-        </div>
+        <Link href="/login">
+          <GlobalButton variant="primary">LOGIN</GlobalButton>
+        </Link>
       </div>
     </DefaultLayout>
   );
