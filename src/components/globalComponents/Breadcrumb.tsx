@@ -76,38 +76,38 @@ export function Breadcrumb({ className }: BreadcrumbProps) {
     
     // ======= BOOKING FLOW =======
     if (pathname.startsWith("/booking")) {
-      if (pathname === "/booking/[bookingld]" && query.bookingld) {
+      if (pathname === "/booking/[bookingId]" && query.bookingId) {
         return [
           { label: "Home", href: "/", isHome: true },
-          { label: "Booking Details", href: `/booking/${query.bookingld}` }
+          { label: "Booking Details", href: `/booking/${query.bookingId}` }
         ];
       }
-      if (pathname === "/booking/booking-slot/[bookingld]" && query.bookingld) {
+      if (pathname === "/booking/booking-slot/[bookingId]" && query.bookingId) {
         return [
           { label: "Home", href: "/", isHome: true },
-          { label: "Booking Details", href: `/booking/${query.bookingld}` },
-          { label: "Select Time Slot", href: `/booking/booking-slot/${query.bookingld}` }
+          { label: "Booking Details", href: `/booking/${query.bookingId}` },
+          { label: "Select Time Slot", href: `/booking/booking-slot/${query.bookingId}` }
         ];
       }
-      if (pathname === "/booking/confirm-slot/[bookingld]" && query.bookingld) {
+      if (pathname === "/booking/confirm-slot/[bookingId]" && query.bookingId) {
         return [
           { label: "Home", href: "/", isHome: true },
-          { label: "Booking Details", href: `/booking/${query.bookingld}` },
-          { label: "Select Time Slot", href: `/booking/booking-slot/${query.bookingld}` },
-          { label: "Confirm Time Slot", href: `/booking/confirm-slot/${query.bookingld}` }
+          { label: "Booking Details", href: `/booking/${query.bookingId}` },
+          { label: "Select Time Slot", href: `/booking/booking-slot/${query.bookingId}` },
+          { label: "Confirm Time Slot", href: `/booking/confirm-slot/${query.bookingId}` }
         ];
       }
-      if (pathname === "/booking/payment/[bookingld]" && query.bookingld) {
+      if (pathname === "/booking/payment/[bookingId]" && query.bookingId) {
         return [
           { label: "Home", href: "/", isHome: true },
-          { label: "Booking Details", href: `/booking/${query.bookingld}` },
-          { label: "Payment", href: `/booking/payment/${query.bookingld}` }
+          { label: "Booking Details", href: `/booking/${query.bookingId}` },
+          { label: "Payment", href: `/booking/payment/${query.bookingId}` }
         ];
       }
-      if (pathname === "/booking/booking-success/[bookingld]" && query.bookingld) {
+      if (pathname === "/booking/booking-success/[bookingId]" && query.bookingId) {
         return [
           { label: "Home", href: "/", isHome: true },
-          { label: "Booking Success", href: `/booking/booking-success/${query.bookingld}` }
+          { label: "Booking Success", href: `/booking/booking-success/${query.bookingId}` }
         ];
       }
     }
@@ -120,11 +120,11 @@ export function Breadcrumb({ className }: BreadcrumbProps) {
           { label: "All Courses", href: "/courses" }
         ];
       }
-      if (pathname === "/course/[courseld]" && query.courseld) {
+      if (pathname === "/course/[courseId]" && query.courseId) {
         return [
           { label: "Home", href: "/", isHome: true },
           { label: "All Courses", href: "/courses" },
-          { label: "Course Details", href: `/course/${query.courseld}` }
+          { label: "Course Details", href: `/course/${query.courseId}` }
         ];
       }
       
@@ -150,12 +150,12 @@ export function Breadcrumb({ className }: BreadcrumbProps) {
           { label: "Create Course", href: "/course/prophet/my-courses/create" }
         ];
       }
-      if (pathname === "/course/prophet/my-courses/edit/[courseld]" && query.courseld) {
+      if (pathname === "/course/prophet/my-courses/edit/[courseId]" && query.courseId) {
         return [
           { label: "Home", href: "/", isHome: true },
           { label: "Prophet Courses", href: "/course/prophet" },
           { label: "My Courses", href: "/course/prophet/my-courses" },
-          { label: "Edit Course", href: `/course/prophet/my-courses/edit/${query.courseld}` }
+          { label: "Edit Course", href: `/course/prophet/my-courses/edit/${query.courseId}` }
         ];
       }
       if (pathname === "/course/prophet/my-courses/details/[courseId]" && query.courseId) {

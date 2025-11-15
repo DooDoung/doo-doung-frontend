@@ -60,8 +60,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { firstName, lastName, gender, birthDate, ...rest } =
-      formData;
+    const { firstName, lastName, gender, birthDate, ...rest } = formData;
 
     const body = {
       ...rest,
@@ -91,9 +90,11 @@ export default function RegisterPage() {
 
       if (!response.ok) {
         const errorMessage =
-          result.error && typeof result.error === "string"
-            ? result.error
-            : "Registration failed";
+          result.message && typeof result.message === "string"
+            ? result.message
+            : result.error && typeof result.error === "string"
+              ? result.error
+              : "Registration failed";
         throw new Error(errorMessage);
       }
 

@@ -118,6 +118,8 @@ function EditUserProfile({
           src={accountData?.profileUrl || "/user-profile.svg"}
           fill
           className="h-full w-full rounded-full object-cover p-1"
+          height={20}
+          width={20}
         />
 
         {role == "customer" && (
@@ -125,7 +127,8 @@ function EditUserProfile({
             <Image
               src={`/images/zodiac-sign/${accountData?.zodiacSign}.svg`}
               alt={accountData?.zodiacSign || "zodiac-sign"}
-              fill
+              height={20}
+              width={20}
               className="object-contain p-[6px]"
             />
           </div>

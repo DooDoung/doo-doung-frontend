@@ -10,6 +10,8 @@ function PublicReviewCard({ review }: { review: Review }) {
       <div className="flex gap-4">
         <Image
           src={`${review?.profileUrl || ""}`}
+          width={20}
+          height={20}
           alt="Profile"
           className="h-24 w-24 flex-shrink-0 rounded-full border-1 border-black/20 object-cover"
         />

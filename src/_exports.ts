@@ -18,18 +18,20 @@ export { default as CourseProphetPage } from "@/pages/course/prophet";
 export { default as MyCoursesPage } from "@/pages/course/prophet/my-courses";
 export { default as CreateCoursePage } from "@/pages/course/prophet/my-courses/create";
 export { default as CourseDetailsPage } from "@/pages/course/prophet/my-courses/details/[courseId]";
-export { default as EditCoursePage } from "@/pages/course/prophet/my-courses/edit/[courseld]";
+export { default as EditCoursePage } from "@/pages/course/prophet/my-courses/edit/[courseId]";
 export { default as CourseMySessionPage } from "@/pages/course/prophet/my-session";
 
 // Courses (Public) Pages
 export { default as CoursesPage } from "@/pages/course";
-export { default as CourseDetailPage } from "@/pages/course/[courseld]";
+export { default as CourseDetailPage } from "@/pages/course/[courseId]";
 export { default as CoursesMySessionPage } from "@/pages/course/my-session";
 
 // Booking Pages
-export { default as BookingSuccessPage } from "@/pages/booking/booking-success/[bookingld]";
-export { default as BookingPage } from "@/pages/booking/[bookingld]";
-export { default as BookingPaymentPage } from "@/pages/booking/payment/[bookingld]";
+export { default as BookingSuccessPage } from "@/pages/booking/booking-success/[bookingId]";
+export { default as BookingPage } from "@/pages/booking/[courseId]";
+export { default as BookingPaymentPage } from "@/pages/booking/payment/[bookingId]";
+export { default as BookingSlotPage } from "@/pages/booking/booking-slot/[courseId]";
+export { default as ConfirmSlotPagePage } from "@/pages/booking/confirm-slot/[courseId]";
 
 // Review Pages
 export { default as ReviewPage } from "@/pages/review";
