@@ -21,7 +21,7 @@ export function Footer({ className }: FooterProps) {
   ];
 
   return (
-    <footer className={cn("font-chakra text-white", className)}>
+    <footer className={cn("font-chakra w-full text-white", className)}>
       {/* ===== Upper Section ===== */}
       <div className="bg-neutral-white px-2 py-12 sm:px-8">
         <div className="container mx-12 flex max-w-screen-xl flex-col justify-between gap-8 md:flex-row">
