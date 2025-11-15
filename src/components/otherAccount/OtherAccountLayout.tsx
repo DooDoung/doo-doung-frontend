@@ -50,7 +50,7 @@ function OtherAccountLayout({
       ) : (
         <>
           <OtherProfile user={user} />
-          <ProphetPublicInfo />
+          <ProphetPublicInfo prophetId={accountId} />
         </>
       )}
     </GlassContainer2>

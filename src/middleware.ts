@@ -153,7 +153,7 @@ function getRedirectUrl(userRole: RoleType | null): string {
     case "prophet":
       return "/course/prophet/my-session";
     case "customer":
-      return "/course";
+      return "/courses";
     default:
       return "/login";
   }
