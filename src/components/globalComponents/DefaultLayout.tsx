@@ -69,6 +69,7 @@ export function DefaultLayout({
     const lower = r.toLowerCase();
     if (lower === "prophet") return "prophet";
     if (lower === "customer") return "customer";
+    if (lower === "admin") return "admin";
     return undefined;
   })() as "customer" | "prophet" | undefined;
   return (

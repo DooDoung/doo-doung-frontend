@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
+import { signOut } from "next-auth/react";
 
 // ------------------- Data -------------------
 
@@ -36,7 +37,7 @@ const prophetLinks = [
 
 interface HeaderProps {
   className?: string;
-  role?: "customer" | "prophet";
+  role?: "customer" | "prophet" | "admin";
 }
 
 // ------------------- Component -------------------
@@ -70,7 +71,14 @@ export function Header({ className, role = "customer" }: HeaderProps) {
 
         {isOpen && (
           <nav className="flex flex-col items-center gap-6">
-            {links.map((link) => (
+            {role === "admin"?
+              <button 
+                className="hover:text-primary-300 flex cursor-pointer flex-col items-center gap-1 text-white transition-colors hover:scale-110"
+                onClick={() => signOut({ callbackUrl: "/login"})}>
+                <User size={24} />
+                <span className="text-xs font-medium">Logout</span>
+              </button>
+            :links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
