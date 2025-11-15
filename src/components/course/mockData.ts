@@ -18,7 +18,7 @@ export const mockCourseData = (): CourseItem[] => {
     "https://images.unsplash.com/photo-1503264116251-35a269479413?q=80&w=960",
   ];
 
-  return Array.from({ length: 5 }).map((_, i) => ({
+  return (Array.from({ length: 5 }).map((_, i) => ({
     id: `course-${i + 1}`,
     courseName:
       i === 0 ? "คอร์สดูดวงความรัก 3 คำถาม" : `คอร์สดูดวงหัวข้อพิเศษ #${i + 1}`,
@@ -57,5 +57,5 @@ export const mockCourseData = (): CourseItem[] => {
         dateISO: "2025-07-12T18:00:00.000Z",
       },
     ],
-  }));
+  })) as unknown) as CourseItem[];
 };
