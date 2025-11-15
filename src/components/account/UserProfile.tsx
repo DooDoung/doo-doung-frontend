@@ -30,7 +30,8 @@ function UserProfile({ user }: { user: AccountData }) {
             <Image
               src={`/images/zodiac-sign/${user.zodiacSign}.svg`}
               alt={user.zodiacSign}
-              fill
+              height={100}
+              width={100}
               className="object-contain p-[6px]"
             />
           </div>
