@@ -34,6 +34,8 @@ interface ProphetUserInfo {
 // Validation function for Prophet required fields
 const validateProphetRequiredFields = (userInfo: ProphetUserInfo): boolean => {
   const requiredFields = {
+    "First Name": userInfo.firstName,
+    "Last Name": userInfo.lastName,
     Email: userInfo.email,
     "Phone Number": userInfo.phone,
     Gender: userInfo.gender,

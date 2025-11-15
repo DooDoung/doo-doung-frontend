@@ -118,6 +118,8 @@ function EditUserProfile({
           src={accountData?.profileUrl || "/user-profile.svg"}
           fill
           className="h-full w-full rounded-full object-cover p-1"
+          height={20}
+          width={20}
         />
 
         {role == "customer" && (

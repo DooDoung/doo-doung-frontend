@@ -92,6 +92,21 @@ export default function Step3PersonalInfo({
       `}</style>
       <div className="grid grid-cols-2 gap-4">
         <div className="pb-4">
+          <label htmlFor="firstName" className={labelStyle}>
+            First Name
+          </label>
+          <GlobalInput
+            type="text"
+            name="firstName"
+            placeholder="Chuttiro"
+            value={formData.firstName}
+            onChange={handleChange}
+            isInvalid={!!errors.firstName}
+            hasHintText={true}
+            hintText={errors.firstName?.[0]}
+          />
+        </div>
+        <div className="pb-4">
           <label htmlFor="lastName" className={labelStyle}>
             Last Name
           </label>
@@ -101,7 +116,9 @@ export default function Step3PersonalInfo({
             placeholder="ChobDooDoung"
             value={formData.lastName}
             onChange={handleChange}
+            isInvalid={!!errors.lastName}
             hasHintText={true}
+            hintText={errors.lastName?.[0]}
           />
         </div>
       </div>
