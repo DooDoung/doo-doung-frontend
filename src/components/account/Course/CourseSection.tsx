@@ -28,6 +28,8 @@ type Course = {
 };
 
 function CourseSection({ courses }: { courses: Course[] }) {
+  // console.log(courses);
+
   return (
     // The <section> tag itself doesn't need flex properties for this layout
     <section className="my-8">
@@ -41,6 +43,7 @@ function CourseSection({ courses }: { courses: Course[] }) {
           const sector = (course.horoscopeSector || "work").toLowerCase();
           const imageUrl = mockCourseImages[sector] || mockCourseImages.work;
 
+          // return <p>{course.horoscopeSector}</p>;
           return <CourseCard key={course.id} {...course} imageUrl={imageUrl} />;
         })}
       </div>
