@@ -6,7 +6,7 @@ export default function ProphetAvailabilityPage() {
     <DefaultLayout>
       <div className="flex w-full flex-col items-center justify-center">
         <div></div>
-        <div className="w-8/10 items-center self-center">
+        <div className="w-8/10 items-center self-center pt-20">
           <SessionTableProphet />
         </div>
       </div>
