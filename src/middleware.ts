@@ -151,7 +151,7 @@ function getRedirectUrl(userRole: RoleType | null): string {
     case "admin":
       return "/admin/report";
     case "prophet":
-      return "/course/prophet/my-session";
+      return "/course/prophet";
     case "customer":
       return "/courses";
     default:

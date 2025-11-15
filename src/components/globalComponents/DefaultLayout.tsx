@@ -75,7 +75,7 @@ export function DefaultLayout({
   return (
     <div
       className={cn(
-        "flex min-h-screen flex-col bg-white bg-[url('/images/background/BG_cloud.webp')] bg-cover bg-center",
+        "-z-40 flex min-h-screen flex-col bg-white bg-[url('/images/background/BG_cloud.webp')] bg-cover bg-center",
         className,
       )}
     >
@@ -84,7 +84,7 @@ export function DefaultLayout({
       {includeHeader && <Header {...headerProps} role={role} />}
 
       {/* Main Content */}
-      <main className={cn("mt-3 mb-12 flex-1", contentClassName)}>
+      <main className={cn("z-20 mt-3 mb-12 flex-1", contentClassName)}>
         {children}
       </main>
 
