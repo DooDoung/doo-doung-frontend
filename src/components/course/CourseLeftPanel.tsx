@@ -3,18 +3,7 @@ import Image from "next/image";
 import { GlobalInput } from "../globalComponents";
 
 import { CourseItem } from "./types";
-
-// Mock images mapped by horoscope sector (same as useFetchCourses)
-const mockCourseImages: Record<string, string> = {
-  love: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvPGA1OrVL7SNCMOzNz4F6fjc-AgNASxraHg&s",
-  work: "https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=500",
-  study:
-    "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
-  money:
-    "https://images.unsplash.com/photo-1553729459-efe14ef6055d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
-  luck: "https://images.unsplash.com/photo-1582744709859-2d89c6920cfb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
-  family: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500",
-};
+import { getCourseImage } from "@/utils/courseImage";
 
 interface CourseLeftPanelProps {
   activeItem: CourseItem | null;
@@ -29,20 +18,13 @@ export default function CourseLeftPanel({
   active,
   setActive,
 }: CourseLeftPanelProps) {
-  // Get course image based on horoscope sector
-  const getCourseImage = (item: CourseItem | null) => {
-    if (!item) return mockCourseImages.work;
-    const sector = (item.horoscopeSector || "work").toLowerCase();
-    return mockCourseImages[sector] || mockCourseImages.work;
-  };
-
   return (
     <aside className="bg-neutral-black/60 flex w-2/5 flex-col items-center justify-start space-y-2 rounded-4xl p-12 text-center">
       {" "}
       {activeItem && activeItem.prophetProfileUrl && (
         <div className="relative mb-6 h-[150px] w-[150px] flex-shrink-0 rounded-full border-2 bg-white">
           <Image
-            src={activeItem.prophetProfileUrl}
+            src={activeItem.prophetProfileUrl || ""}
             alt="Prophet Profile"
             width={500}
             height={500}
