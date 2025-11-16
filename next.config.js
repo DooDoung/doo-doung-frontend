@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
   images: {
     unoptimized: false,
     remotePatterns: [
@@ -8,20 +7,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "**",
       },
-      {
-        protocol: "http",
-        hostname: "**",
-      },
-      {
-        protocol: "https",
-        hostname: "example.com",
-        port: "",
-        pathname: "/**",
-      },
     ],
     dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    contentSecurityPolicy: `
+      default-src 'self';
+      img-src * data:;
+      script-src 'none';
+      sandbox;
+    `,
   },
 };
 
