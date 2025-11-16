@@ -1,5 +1,8 @@
+import { TransactionAccount } from "@/types/transaction";
+
 export interface BaseAccountData {
   username: string;
+  firstName?: string;
   profileUrl: string;
   role: "CUSTOMER" | "PROPHET";
   gender: string;

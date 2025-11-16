@@ -89,8 +89,9 @@ export function useProphetAvailability() {
 
     // frontend part
     const dayName = dayNames[day.getDay()];
+
     setWeeklyAvailability((prev) => {
-      const currentAvailability = [...prev[currentWeek]];
+      const currentAvailability = [...(prev[currentWeek] || [])];
       const existingIndex = currentAvailability.findIndex(
         (slot) => slot.day === dayName && slot.time === time,
       );
@@ -110,7 +111,6 @@ export function useProphetAvailability() {
     // backend intergrate part
     // Use the exact date that was passed in (which is already correct from the table)
     const slotDateString = day.toISOString().split("T")[0];
-
 
     const currentAvailability = weeklyAvailability[currentWeek];
     const existingSlot = currentAvailability.find(

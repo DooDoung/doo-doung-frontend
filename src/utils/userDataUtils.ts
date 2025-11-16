@@ -18,10 +18,14 @@ export interface UserInfo {
  */
 export const mapGenderFromAPI = (apiGender: string): string => {
   switch (apiGender) {
-    case "MALE": return "Male";
-    case "FEMALE": return "Female";
-    case "LGBTQ_PLUS": return "LGBTQ+";
-    default: return "Undefined";
+    case "MALE":
+      return "Male";
+    case "FEMALE":
+      return "Female";
+    case "LGBTQ_PLUS":
+      return "LGBTQ+";
+    default:
+      return "Undefined";
   }
 };
 
@@ -30,11 +34,16 @@ export const mapGenderFromAPI = (apiGender: string): string => {
  */
 export const mapGenderToAPI = (uiGender: string): string => {
   switch (uiGender) {
-    case "Male": return "MALE";
-    case "Female": return "FEMALE";
-    case "LGBTQ+": return "LGBTQ_PLUS";
-    case "Undefined": return "UNDEFINED";
-    default: return "UNDEFINED";
+    case "Male":
+      return "MALE";
+    case "Female":
+      return "FEMALE";
+    case "LGBTQ+":
+      return "LGBTQ_PLUS";
+    case "Undefined":
+      return "UNDEFINED";
+    default:
+      return "UNDEFINED";
   }
 };
 
@@ -56,10 +65,10 @@ export const formatTimeFromAPI = (apiTime: string): string => {
  */
 export const processUserData = (userData: any): UserInfo => {
   return {
-    firstName: userData.firstName || "",
-    lastName: userData.lastName || "",
+    firstName: userData.name || "",
+    lastName: userData.lastname || "",
     gender: mapGenderFromAPI(userData.gender),
-    dob: userData.birthDate ? userData.birthDate.split('T')[0] : "",
+    dob: userData.birthDate ? userData.birthDate.split("T")[0] : "",
     tob: formatTimeFromAPI(userData.birthTime),
     zodiac: userData.zodiacSign ? userData.zodiacSign.toLowerCase() : "",
     email: userData.email || "",
@@ -73,7 +82,7 @@ export const processUserData = (userData: any): UserInfo => {
 export const prepareAPIData = (userInfo: UserInfo, user: any) => {
   const birthDate = new Date(`${userInfo.dob}T00:00:00.000Z`).toISOString();
   const birthTime = `${userInfo.tob}:00`;
-  
+
   return {
     id: user?.id,
     role: user?.role,
@@ -84,6 +93,6 @@ export const prepareAPIData = (userInfo: UserInfo, user: any) => {
     zodiacSign: userInfo.zodiac.toUpperCase(),
     gender: mapGenderToAPI(userInfo.gender),
     birthDate,
-    birthTime
+    birthTime,
   };
 };

@@ -40,7 +40,7 @@ function UserProfile({ user }: { user: AccountData }) {
 
       {/* Username */}
       <p className="font-chakra text-neutral-black mb-4 self-start text-lg">
-        USERNAME
+        USERNAME ja
       </p>
       <GlobalInput
         type="text"

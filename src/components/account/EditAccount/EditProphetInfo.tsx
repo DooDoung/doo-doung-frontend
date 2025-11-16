@@ -87,7 +87,7 @@ const mapGenderToAPI = (uiGender: string): string => {
 
 const processProphetData = (userData: any): ProphetUserInfo => {
   return {
-    firstName: userData.firstName || "",
+    firstName: userData.name || "",
     lastName: userData.lastName || userData.lastname || "",
     gender: mapGenderFromAPI(userData.gender),
     email: userData.email || "",
@@ -137,6 +137,8 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
 
   React.useEffect(() => {
     const fetchTxAccount = async () => {
+      if (!session?.user?.id) return;
+
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/tx-account`,
@@ -262,9 +264,37 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
           handleSave();
         }}
       >
+        {/* First Name */}
+        <div>
+          <label className="mb-1 flex items-center font-light text-white uppercase">
+            First Name
+            <Pencil className="ml-2" size={18} />
+          </label>
+          <GlobalInput
+            type="text"
+            className="w-full"
+            value={userInfo.firstName}
+            onChange={(e) => handleChange("firstName", e.target.value)}
+          />
+        </div>
+
+        {/* Last Name */}
+        <div>
+          <label className="mb-1 flex items-center font-light text-white uppercase">
+            Last Name
+            <Pencil className="ml-2" size={18} />
+          </label>
+          <GlobalInput
+            type="text"
+            className="w-full"
+            value={userInfo.lastName}
+            onChange={(e) => handleChange("lastName", e.target.value)}
+          />
+        </div>
+
         {/* Gender */}
         <div>
-          <label className="mb-1 block flex items-center font-light text-white uppercase">
+          <label className="mb-1 flex items-center font-light text-white uppercase">
             Gender
             <Pencil className="ml-2" size={18} />
           </label>
@@ -283,7 +313,7 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
 
         {/* Phone Number */}
         <div>
-          <label className="mb-1 block flex items-center font-light text-white uppercase">
+          <label className="mb-1 flex items-center font-light text-white uppercase">
             Phone Number
             <Pencil className="ml-2" size={18} />
           </label>
@@ -297,7 +327,7 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
 
         {/* Email */}
         <div>
-          <label className="mb-1 block flex items-center font-light text-white uppercase">
+          <label className="mb-1 flex items-center font-light text-white uppercase">
             Email
             <Pencil className="ml-2" size={18} />
           </label>
@@ -311,7 +341,7 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
 
         {/* Line ID */}
         <div>
-          <label className="mb-1 block flex items-center font-light text-white uppercase">
+          <label className="mb-1 flex items-center font-light text-white uppercase">
             Line ID
             <Pencil className="ml-2" size={18} />
           </label>
@@ -331,7 +361,7 @@ function EditProphetInfo({ user, onUserUpdate }: EditProphetInfoProps) {
               feat={feat}
               transaction={{
                 ...userInfo.txAccounts[0],
-                bank: String(userInfo.txAccounts[0]?.bank),
+                bank: userInfo.txAccounts[0]?.bank,
               }}
             />
           ))}
