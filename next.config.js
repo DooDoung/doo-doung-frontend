@@ -6,15 +6,18 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "**",
+        pathname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "**",
+        pathname: "**",
       },
     ],
     dangerouslyAllowSVG: true,
-    contentSecurityPolicy: `
-      default-src 'self';
-      img-src * data:;
-      script-src 'none';
-      sandbox;
-    `,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    formats: ["image/avif", "image/webp"],
   },
 };
 
