@@ -1,23 +1,34 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    unoptimized: false,
     remotePatterns: [
+      // Google Images
+      {
+        protocol: "https",
+        hostname: "*.gstatic.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.googleusercontent.com",
+      },
+      // Unsplash
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.unsplash.com",
+      },
+      // Allow all HTTPS domains as fallback
       {
         protocol: "https",
         hostname: "**",
-        pathname: "**",
-      },
-      {
-        protocol: "http",
-        hostname: "**",
-        pathname: "**",
       },
     ],
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    formats: ["image/avif", "image/webp"],
   },
 };
 
