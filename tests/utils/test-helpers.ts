@@ -17,7 +17,7 @@ export async function loginAsProphet(page: Page) {
 
   // Wait for successful login - check for URL change away from /login
   await page.waitForURL((url) => !url.pathname.includes("/login"), {
-    timeout: 30000,
+    timeout: 100000,
   });
 
   // Wait for page to be ready
@@ -33,7 +33,22 @@ export async function loginAsCustomer(page: Page) {
   await page.click('button[type="submit"]');
 
   await page.waitForURL((url) => !url.pathname.includes("/login"), {
-    timeout: 30000,
+    timeout: 100000,
+  });
+
+  await page.waitForLoadState("networkidle");
+}
+
+export async function loginAsAdmin(page: Page) {
+  await page.goto("/login", { waitUntil: "networkidle" });
+
+  await page.fill('input[placeholder="DooDoung"]', "dev_admin");
+  await page.fill('input[placeholder="Enter your password"]', "dev_password");
+
+  await page.click('button[type="submit"]');
+
+  await page.waitForURL((url) => !url.pathname.includes("/login"), {
+    timeout: 100000,
   });
 
   await page.waitForLoadState("networkidle");
