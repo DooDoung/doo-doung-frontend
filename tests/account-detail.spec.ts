@@ -342,3 +342,4 @@ test.describe("US2-4 - Prophet Report Page", () => {
     }
   });
 });
+
