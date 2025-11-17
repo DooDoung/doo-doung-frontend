@@ -136,6 +136,7 @@ function EditUserProfile({
           <div
             className="bg-secondary absolute bottom-2 left-0 flex h-9 w-9 items-center justify-center rounded-full"
             onClick={handleChangeProfile}
+            data-testid="edit-profile-picture"
           >
             <Camera strokeWidth={1} size={26} />
           </div>
