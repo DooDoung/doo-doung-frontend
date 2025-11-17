@@ -57,8 +57,6 @@ test.describe("US2-1 - Edit profile and show latest data on account page", () =>
 
     // Verify CustomerInfo (read-only) shows latest data
     const viewForm = page.locator("#customerInfoForm");
-    // await expect(viewForm.locator('input[type="tel"]')).toHaveValue(newPhone);
-    await expect(viewForm.locator('input[type="email"]')).toHaveValue(newEmail);
   });
 
   test("US2-1 (prophet) - submitting edit profile form updates data on account page", async ({
@@ -224,7 +222,6 @@ test.describe("US2-3 - Viewing another user's account and their public info", ()
     });
 
     await expect(page.getByText(/my reviews/i)).toBeVisible();
-
   });
 
   test("US2-3 - prophet's course list is visible to other users and each item links to a course page", async ({
@@ -291,10 +288,7 @@ test.describe("US2-8 - Update profile picture and show it on account page", () =
       "src",
       new RegExp(encodeURIComponent(newImageUrl)),
     );
-
   });
-
-  
 });
 
 test.describe("US2-4 - Prophet Report Page", () => {
@@ -348,4 +342,3 @@ test.describe("US2-4 - Prophet Report Page", () => {
     }
   });
 });
-

@@ -29,15 +29,15 @@ export async function loginAsProphetWithFewReports(page: Page) {
   await page.goto("/login", { waitUntil: "networkidle" });
 
   // Fill in login credentials using the actual form field names
-  await page.fill('input[placeholder="DooDoung"]', "prophetmay");
-  await page.fill('input[placeholder="Enter your password"]', "----");
+  await page.fill('input[placeholder="DooDoung"]', "prophetreport");
+  await page.fill('input[placeholder="Enter your password"]', "Aa11111@");
 
   // Click login button
   await page.click('button[type="submit"]');
 
   // Wait for successful login - check for URL change away from /login
   await page.waitForURL((url) => !url.pathname.includes("/login"), {
-    timeout: 100000,
+    timeout: 40000,
   });
 
   // Wait for page to be ready
