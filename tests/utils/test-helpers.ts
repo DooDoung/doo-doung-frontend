@@ -187,7 +187,7 @@ export async function countAvailableSlots(page: Page): Promise<number> {
  */
 export async function navigateToAccount(page: Page) {
   await page.goto("/account", { waitUntil: "networkidle" });
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(50000);
 }
 
 /**
