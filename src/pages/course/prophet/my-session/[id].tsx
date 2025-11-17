@@ -140,17 +140,8 @@ const SessionDetailPage = () => {
         <GlassContainer2 className="mt-4 flex h-[80vh] w-[calc(80vh*1261/746)] flex-row p-0">
           <div className="bg-primary-500/60 flex h-full w-[30%] flex-col items-center rounded-l-3xl border-r-0 border-white/50 py-8">
             <h2 className="font-sanctuary text-neutral-black text-2xl font-bold">
-              PROPHET
+              My Session
             </h2>
-            <div className="my-6 flex h-32 w-32 items-center justify-center rounded-full bg-gray-200">
-              <p className="text-neutral-black">Profile</p>
-            </div>
-            <p className="text-neutral-black text-sm">USERNAME</p>
-            <div className="mt-2 w-2/3 rounded-full bg-white/80 px-4 py-2 text-center">
-              <p className="text-neutral-black font-semibold">
-                {sessionDetails.prophetUsername}
-              </p>
-            </div>
           </div>
           <div className="relative w-[70%] p-8 pt-16">
             <GlobalButton
@@ -176,12 +167,14 @@ const SessionDetailPage = () => {
               </div>
               <div className="rounded-lg border-2 border-gray-300 bg-white p-4">
                 <h3 className="mb-2 font-bold">Customer's Information</h3>
-                <p>Name: {sessionDetails.customerName}</p>
-                <p>Username: {sessionDetails.customerName}</p>
+                <p>Name: {sessionDetails.customerName ?? "customer"}</p>
+                <p>
+                  Username:{" "}
+                  {sessionDetails.customerUsername ?? "customer_username"}
+                </p>
               </div>
               <div className="rounded-lg border-2 border-gray-300 bg-white p-4">
                 <h3 className="mb-2 font-bold">Transaction Information</h3>
-                <p>Transaction ID: {sessionDetails.transactionId}</p>
                 <p>Amount: {sessionDetails.amount} Baht</p>
                 <p>Payout Status: {sessionDetails.payoutStatus}</p>
                 <p>
