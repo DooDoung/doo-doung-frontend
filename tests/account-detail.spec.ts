@@ -5,6 +5,7 @@ import {
   loginAsCustomer,
   submitForm,
   loginAsAdmin,
+  loginAsProphetWithFewReports,
 } from "./utils/test-helpers";
 
 async function navigateToAccount(page: Page) {
@@ -292,4 +293,59 @@ test.describe("US2-8 - Update profile picture and show it on account page", () =
     );
 
   });
+
+  
 });
+
+test.describe("US2-4 - Prophet Report Page", () => {
+  test("US2-4 Prophet with <= 5 reports sees NO warning and only approved reports", async ({
+    page,
+  }) => {
+    await loginAsProphetWithFewReports(page); // <= 5 reports
+    await page.goto("/prophet/report", { waitUntil: "networkidle" });
+
+    // Wait page load
+    await expect(page.getByText(/loading/i)).not.toBeVisible({
+      timeout: 20000,
+    });
+
+    // 1) No Warning Banner
+    await expect(page.getByText(/warning/i)).not.toBeVisible();
+
+    // 2) Only approved reports should render
+    const reportItems = page.locator("[data-testid='report-item']");
+    const count = await reportItems.count();
+
+    for (let i = 0; i < count; i++) {
+      const item = reportItems.nth(i);
+      await expect(item.getByText(/approved by admin/i)).toBeVisible();
+    }
+  });
+
+  test("US2-4 Prophet with > 5 reports sees WARNING and only approved reports", async ({
+    page,
+  }) => {
+    await loginAsProphet(page); // >= 6 reports
+    await page.goto("/account/prophet/report", { waitUntil: "networkidle" });
+
+    // Wait page load
+    await expect(page.getByText(/loading/i)).not.toBeVisible({
+      timeout: 20000,
+    });
+
+    // 1) Warning Banner displayed
+    await expect(
+      page.getByText(/exceeded the weekly report threshold|warning/i),
+    ).toBeVisible();
+
+    // 2) Only approved reports should render
+    const reportItems = page.locator("[data-testid='report-item']");
+    const count = await reportItems.count();
+
+    for (let i = 0; i < count; i++) {
+      const item = reportItems.nth(i);
+      await expect(item.getByText(/approved by admin/i)).toBeVisible();
+    }
+  });
+});
+

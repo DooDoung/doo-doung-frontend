@@ -24,6 +24,26 @@ export async function loginAsProphet(page: Page) {
   await page.waitForLoadState("networkidle");
 }
 
+export async function loginAsProphetWithFewReports(page: Page) {
+  // Navigate to login page
+  await page.goto("/login", { waitUntil: "networkidle" });
+
+  // Fill in login credentials using the actual form field names
+  await page.fill('input[placeholder="DooDoung"]', "prophetmay");
+  await page.fill('input[placeholder="Enter your password"]', "----");
+
+  // Click login button
+  await page.click('button[type="submit"]');
+
+  // Wait for successful login - check for URL change away from /login
+  await page.waitForURL((url) => !url.pathname.includes("/login"), {
+    timeout: 100000,
+  });
+
+  // Wait for page to be ready
+  await page.waitForLoadState("networkidle");
+}
+
 export async function loginAsCustomer(page: Page) {
   await page.goto("/login", { waitUntil: "networkidle" });
 
