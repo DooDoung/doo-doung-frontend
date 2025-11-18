@@ -49,7 +49,7 @@ export default function ResetPasswordPage() {
       }
 
       const res = await fetch(
-        "http://localhost:8000/auth/reset-password/request",
+        `${process.env.BACKEND_URL}/auth/reset-password/request`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
